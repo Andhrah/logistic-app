@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/utils/colors.dart';
 
 class Button extends StatelessWidget {
   const Button({Key? key, 
@@ -25,10 +26,16 @@ class Button extends StatelessWidget {
     return ElevatedButton(
       onPressed: onPress,
       child: isLoading ? Image.asset('name', color: Colors.white, height: 35.0, width: 35.0) : Text(text, style: TextStyle(fontSize: 17.0, color: textColor, fontWeight: FontWeight.w700),),
-      style: ElevatedButton.styleFrom(
-        primary: color,
-        onPrimary: textColor,
-        minimumSize: const Size(300.0 , 45.0)
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.all(color),
+        minimumSize: MaterialStateProperty.all(const Size(300.0 , 55.0)),
+        elevation: MaterialStateProperty.all(0.0),
+        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(5.0),
+            side: BorderSide(color: appPrimaryColor.withOpacity(0.2)),
+          )
+        )
       )
     );
   }
