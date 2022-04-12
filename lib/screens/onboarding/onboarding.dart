@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/my_color.dart';
@@ -112,7 +113,7 @@ class _OnboardingState extends State<Onboarding> {
                 child: SkipButton(
                   onPress: () {
                     Navigator.of(context).pushNamedAndRemoveUntil(
-                      Tabs.id, (route) => false
+                      Home.id, (route) => false
                     );
                   }
                 ),
@@ -234,7 +235,7 @@ class _OnboardingState extends State<Onboarding> {
                       onPress: () {
                         currentScreen != 4 ? buttonCarouselController.nextPage() :
                         Navigator.of(context).pushNamedAndRemoveUntil(
-                          Tabs.id, (route) => false
+                          Home.id, (route) => false
                         );
                       },
                     )
