@@ -1,9 +1,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.trakk">
+    <uses-permission android:name="android.permission.INTERNET"/>
    <application
         android:label="trakk"
         android:name="${applicationName}"
         android:icon="@mipmap/trakk_logo">
+        <meta-data 
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCdZJFgRG89stLX7k__td7FKoJPirST87M"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
