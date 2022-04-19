@@ -6,7 +6,7 @@ class Button extends StatelessWidget {
     required this.text,
     required this.onPress,
     required this.color,
-    // required this.width,
+    required this.width,
     // required this.height,
     required this.textColor,
     // required this.font,
@@ -16,7 +16,7 @@ class Button extends StatelessWidget {
   final String text;
   final VoidCallback onPress;
   final Color color;
-  // final double width;
+  final double width;
   // final double height;
   final Color textColor;
   final bool isLoading;
@@ -28,7 +28,7 @@ class Button extends StatelessWidget {
       child: isLoading ? Image.asset('name', color: Colors.white, height: 35.0, width: 35.0) : Text(text, style: TextStyle(fontSize: 17.0, color: textColor, fontWeight: FontWeight.w700),),
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all(color),
-        minimumSize: MaterialStateProperty.all(const Size(300.0 , 55.0)),
+        minimumSize: MaterialStateProperty.all(Size(width, 55.0)),
         elevation: MaterialStateProperty.all(0.0),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
