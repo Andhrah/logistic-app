@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:trakk/screens/home.dart';
-import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/my_color.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -232,6 +231,7 @@ class _OnboardingState extends State<Onboarding> {
                       color: appPrimaryColor,
                       textColor: const Color(0XFFFFFFFF),
                       isLoading: false,
+                      width: 300.0,
                       onPress: () {
                         currentScreen != 4 ? buttonCarouselController.nextPage() :
                         Navigator.of(context).pushNamedAndRemoveUntil(

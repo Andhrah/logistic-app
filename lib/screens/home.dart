@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -22,15 +25,17 @@ class _HomeState extends State<Home> {
               margin: const EdgeInsets.only(right: 30.0, top: 30.0),
               alignment: Alignment.centerRight,
               child: InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.of(context).pushNamed(Signup.id);
+                },
                 customBorder: const CircleBorder(),
                 child: const Text(
                   'Sign up',
-                  textScaleFactor: 1.2,
+                  textScaleFactor: 1.0,
                   style: TextStyle(
                     color: appPrimaryColor,
                     fontWeight: FontWeight.bold,
-                    decoration: TextDecoration.underline,
+                    // decoration: TextDecoration.underline,
                   ),
                 ),
               ),
@@ -52,11 +57,14 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 70.0),
 
             Button(
-              text: 'Dispatch an item',
-              onPress: () {},
+              text: 'Dispatch an Item',
+              onPress: () {
+                Navigator.of(context).pushNamed(ItemDetails.id);
+              },
               color: appPrimaryColor,
               isLoading: false,
               textColor: whiteColor,
+              width: 300,
             ),
             const SizedBox(height: 15.0),
             Button(
@@ -64,15 +72,17 @@ class _HomeState extends State<Home> {
               onPress: () {},
               color: whiteColor,
               isLoading: false,
-              textColor: appPrimaryColor,
+              textColor: appPrimaryColor, 
+              width: 300,
             ),
             const SizedBox(height: 15.0),
             Button(
-              text: 'Become a marchant',
+              text: 'Become a Merchant',
               onPress: () {},
               color: whiteColor,
               isLoading: false,
               textColor: appPrimaryColor,
+              width: 300,
             ),
             const SizedBox(height: 15.0),
             const Text(

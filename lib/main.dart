@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
@@ -41,7 +42,8 @@ class MyApp extends StatelessWidget {
         SplashScreen.id: (context) => const SplashScreen(),
         Onboarding.id: (context) => const Onboarding(),
         Tabs.id: (context) => const Tabs(),
-        Home.id: (context) => const Home()
+        Home.id: (context) => const Home(),
+        Signup.id: (context) => const Signup(),
       },
       // home: const GetStarted(),
     );
