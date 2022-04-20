@@ -27,7 +27,7 @@ class Header extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(width: 60.0),
+        const SizedBox(width: 60.0),
       ],
     );
   }

@@ -12,6 +12,7 @@ class InputField extends StatelessWidget {
     this.suffixIcon,
     required this.textHeight,
     required this.borderColor,
+    // this.maxLines,
     this.area,
   }) : _node = node, super(key: key);
 
@@ -23,6 +24,7 @@ class InputField extends StatelessWidget {
   final Widget? suffixIcon;
   final double textHeight;
   final Color borderColor;
+  // final double maxLines;
   final int? area;
 
   @override
