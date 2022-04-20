@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/elevated_container.dart';
 import 'package:trakk/widgets/input_field.dart';
 
-class Signup extends StatefulWidget {
-  static const String id = 'signup';
+class Login extends StatefulWidget {
+  static const String id = 'login';
 
-  const Signup({Key? key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
-  _SignupState createState() => _SignupState();
+  _LoginState createState() => _LoginState();
 }
 
-class _SignupState extends State<Signup> {
+class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,19 +27,20 @@ class _SignupState extends State<Signup> {
             children: [
               const SizedBox(height: 10.0),
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackIcon(
                     onPress: () {Navigator.pop(context);},
                   ),
 
                   Container(
-                    margin: const EdgeInsets.only(left: 40.0),
+                    margin: const EdgeInsets.only(right: 70.0),
                     alignment: Alignment.center,
                     child: InkWell(
                       onTap: () {},
                       customBorder: const CircleBorder(),
                       child: const Text(
-                        'CREATE AN ACCOUNT',
+                        'LOG IN',
                         textScaleFactor: 1.2,
                         style: TextStyle(
                           color: appPrimaryColor,
@@ -49,6 +50,8 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
                   ),
+
+                  const SizedBox(),
                 ],
               ),
 
@@ -60,42 +63,6 @@ class _SignupState extends State<Signup> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: InputField(
-                            text: 'First Name',
-                            hintText: 'Jane',
-                            textHeight: 10.0,
-                            borderColor: appPrimaryColor.withOpacity(0.9),
-                            suffixIcon: const Icon(
-                              Remix.user_line,
-                              size: 18.0,
-                              color: Color(0xFF909090),
-                            ),
-                          ),
-                        ),
-
-                        const SizedBox(width: 8.0),
-
-                        Expanded(
-                          child: InputField(
-                            text: 'Last Name',
-                            hintText: 'Doe',
-                            textHeight: 10.0,
-                            borderColor: appPrimaryColor.withOpacity(0.9),
-                            suffixIcon: const Icon(
-                              Remix.user_line,
-                              size: 18.0,
-                              color: Color(0xFF909090),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    
-                    const SizedBox(height: 30.0),
                     InputField(
                       text: 'Email Address',
                       hintText: 'jane@email.com',
@@ -103,19 +70,6 @@ class _SignupState extends State<Signup> {
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(
                         Remix.mail_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
-                      ),
-                    ),
-
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      text: 'Phone Number',
-                      hintText: '08000000000',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.phone_line,
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),
@@ -134,11 +88,23 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
 
+                    const SizedBox(height: 10.0),
+                    InkWell(
+                      onTap: (){},
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(
+                          color: secondaryColor,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ),
+
                     const SizedBox(height: 40.0),
                     Align(
                       alignment: Alignment.center,
                       child: Button(
-                        text: 'Create an account', 
+                        text: 'Log in', 
                         onPress: () {}, 
                         color: appPrimaryColor, 
                         textColor: whiteColor, 
@@ -146,23 +112,23 @@ class _SignupState extends State<Signup> {
                         width: 350.0
                       )
                     ),
-                    
+
                     const SizedBox(height: 15.0),
                     InkWell(
                       onTap: (){
-                        Navigator.of(context).pushNamed(Login.id);
+                        Navigator.of(context).pushNamed(Signup.id);
                       },
                       child: Align(
                         child: RichText(
                           textScaleFactor: 0.9,
                           text: const TextSpan(
-                            text: 'Already have an account? ',
+                            text: 'Don’t have an account? ',
                             style: TextStyle(
                               color: appPrimaryColor,
                               fontWeight: FontWeight.w500,
                             ),
                             children: <TextSpan>[
-                              TextSpan(text: 'Log in', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
+                              TextSpan(text: 'Sign up', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
                             ],
                           ),
                         ),

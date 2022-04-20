@@ -18,29 +18,30 @@ class ElevatedContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      padding: const EdgeInsets.all(7.0),
-      height: height,
-      width: width,
-      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
-      child: GestureDetector(
-        onTap: onPress,
+    return InkWell(
+       onTap: onPress,
+      child: Container(
+        alignment: Alignment.center,
+        padding: const EdgeInsets.all(7.0),
+        height: height,
+        width: width,
+        margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
         child: child,
-      ),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.all(
-          Radius.circular(radius),
-        ),
-        boxShadow: const[
-          BoxShadow(
-            color: Color(0XFFBDBDBD),
-            offset: Offset(0.0, 0.5), //(x,y)
-            blurRadius: 1.8,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.all(
+            Radius.circular(radius),
           ),
-        ],
-      ),
+          boxShadow: const[
+            BoxShadow(
+              color: Color(0XFFBDBDBD),
+              offset: Offset(0.0, 0.5), //(x,y)
+              blurRadius: 1.8,
+            ),
+          ],
+        ),
+      )
     );
+    
   }
 }
