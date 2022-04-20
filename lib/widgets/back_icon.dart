@@ -11,7 +11,7 @@ class BackIcon extends StatelessWidget {
     return Container(
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(7.0),
-      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+      margin: const EdgeInsets.only(left: 25.0, top: 15.0, bottom: 15.0),
       child: InkWell(
         onTap: onPress,
         customBorder: const CircleBorder(),
