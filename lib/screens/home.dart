@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/screens/dispatch/checkout.dart';
+import 'package:trakk/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/payment.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
@@ -42,7 +46,7 @@ class _HomeState extends State<Home> {
             ),
             Container(
               alignment: Alignment.center,
-              margin: const EdgeInsets.only(top: 70.0),
+              margin: const EdgeInsets.only(top: 40.0),
               decoration: const BoxDecoration(
                 //   AssetImage('assets/images/home.png'),
                 //   fit: BoxFit.cover,
@@ -50,7 +54,7 @@ class _HomeState extends State<Home> {
               ),
               child: Image.asset(
                 'assets/images/home_delivery_img.png',
-                height: 250.0,
+                height: 200.0,
               ),
             ),
 
@@ -69,7 +73,9 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 15.0),
             Button(
               text: 'Become a Rider',
-              onPress: () {},
+              onPress: () {
+                Navigator.of(context).pushNamed(Checkout.id);
+              },
               color: whiteColor,
               isLoading: false,
               textColor: appPrimaryColor, 

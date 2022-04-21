@@ -23,7 +23,7 @@ class ElevatedContainer extends StatelessWidget {
       padding: const EdgeInsets.all(7.0),
       height: height,
       width: width,
-      margin: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 15.0),
+      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
       child: GestureDetector(
         onTap: onPress,
         child: child,

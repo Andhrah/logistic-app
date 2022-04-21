@@ -51,25 +51,27 @@ class _ItemDetailsState extends State<ItemDetails> {
                           ),
 
                           const SizedBox(width: 20.0),
-                          Container(
-                            padding: const EdgeInsets.only(bottom: 15.0),
-                            width: 280.0,
-                            child: Column(
-                              children: [
-                                InputField(
-                                  text: '',
-                                  hintText: 'Item’s Location',
-                                  textHeight: 0.0,
-                                  borderColor: appPrimaryColor.withOpacity(0.5),
-                                ),
-
-                                InputField(
-                                  text: '',
-                                  hintText: 'Item’s Destination',
-                                  textHeight: 0,
-                                  borderColor: appPrimaryColor.withOpacity(0.5),
-                                ),
-                              ],
+                          Expanded(
+                            child: Container(
+                              padding: const EdgeInsets.only(bottom: 15.0),
+                              width: 280.0,
+                              child: Column(
+                                children: [
+                                  InputField(
+                                    text: '',
+                                    hintText: 'Item’s Location',
+                                    textHeight: 0.0,
+                                    borderColor: appPrimaryColor.withOpacity(0.5),
+                                  ),
+                          
+                                  InputField(
+                                    text: '',
+                                    hintText: 'Item’s Destination',
+                                    textHeight: 0,
+                                    borderColor: appPrimaryColor.withOpacity(0.5),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
@@ -124,7 +126,24 @@ class _ItemDetailsState extends State<ItemDetails> {
                 ),
               ),
 
-              const SizedBox(height: 30.0),
+              const SizedBox(height: 20.0),
+
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0, right: 30),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                  Text('Add Another pickup detail',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 138, 136, 136),
+                    fontSize: 18, fontWeight:FontWeight.w600,
+                  ),),
+                  FloatingActionButton(onPressed: () {},
+                  backgroundColor: Colors.black,
+                  child: Icon(Icons.add),
+                  ),
+                ],),
+              ),
+               const SizedBox(height: 20.0),
 
               Button(
                 text: 'Proceed', 
@@ -135,7 +154,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                 textColor: whiteColor, 
                 isLoading: false,
                 width: MediaQuery.of(context).size.width/1.2,
-              )
+              ),
+              SizedBox(height: 50,)
             ],
           )
         ),

@@ -1,6 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/screens/dispatch/checkout.dart';
+import 'package:trakk/screens/dispatch/dispatch_summary.dart';
+import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/payment.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
@@ -44,6 +49,11 @@ class MyApp extends StatelessWidget {
         Tabs.id: (context) => const Tabs(),
         Home.id: (context) => const Home(),
         Signup.id: (context) => const Signup(),
+        ItemDetails.id: (context) => const ItemDetails(),
+        PickRide.id: (context) => const PickRide(),
+        Payment.id: (context) => const Payment(),
+        DispatchSummary.id:(context) => const DispatchSummary(),
+        Checkout.id: (context) => const Checkout(),
       },
       // home: const GetStarted(),
     );
