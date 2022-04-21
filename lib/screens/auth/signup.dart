@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -118,18 +119,39 @@ class _SignupState extends State<Signup> {
                           size: 18.0,
                           color: Color(0xFF909090),
                         ),
-                      ),
-          
-                      const SizedBox(height: 30.0),
-                      InputField(
-                        text: 'Password',
-                        hintText: 'password',
-                        textHeight: 10.0,
-                        borderColor: appPrimaryColor.withOpacity(0.9),
-                        suffixIcon: const Icon(
-                          Remix.eye_close_line,
-                          size: 18.0,
-                          color: Color(0xFF909090),
+                      ),),
+
+                    const SizedBox(height: 40.0),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Button(
+                        text: 'Create an account', 
+                        onPress: () {}, 
+                        color: appPrimaryColor, 
+                        textColor: whiteColor, 
+                        isLoading: false,
+                        width: 350.0
+                      )
+                    ),
+                    
+                    const SizedBox(height: 15.0),
+                    InkWell(
+                      onTap: (){
+                        Navigator.of(context).pushNamed(Login.id);
+                      },
+                      child: Align(
+                        child: RichText(
+                          textScaleFactor: 0.9,
+                          text: const TextSpan(
+                            text: 'Already have an account? ',
+                            style: TextStyle(
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w500,
+                            ),
+                            children: <TextSpan>[
+                              TextSpan(text: 'Log in', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
+                            ],
+                          ),
                         ),
                       ),
           
@@ -167,7 +189,6 @@ class _SignupState extends State<Signup> {
                               color: appPrimaryColor,
                             ),
                           ),
-          
                           Padding(
                             padding: EdgeInsets.symmetric(horizontal: 8.0),
                             child: Text(

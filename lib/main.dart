@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
@@ -51,9 +52,10 @@ class MyApp extends StatelessWidget {
         Signup.id: (context) => const Signup(),
         ItemDetails.id: (context) => const ItemDetails(),
         PickRide.id: (context) => const PickRide(),
-        Payment.id: (context) => const Payment(),
-        DispatchSummary.id:(context) => const DispatchSummary(),
         Checkout.id: (context) => const Checkout(),
+        DispatchSummary.id: (context) => const DispatchSummary(),
+        Payment.id: (context) => const Payment(),
+        Login.id: (context) => const Login(),
       },
       // home: const GetStarted(),
     );
