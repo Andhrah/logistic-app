@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -90,7 +91,9 @@ class _LoginState extends State<Login> {
 
                     const SizedBox(height: 10.0),
                     InkWell(
-                      onTap: (){},
+                      onTap: (){
+                        Navigator.of(context).pushNamed(ForgetPassword.id);
+                      },
                       child: const Text(
                         'Forgot Password?',
                         style: TextStyle(

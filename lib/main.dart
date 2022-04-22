@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:trakk/screens/auth/forgot_password.dart';
+import 'package:trakk/screens/auth/forgot_password_pin.dart';
 import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/auth/reset_password.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
@@ -56,6 +59,9 @@ class MyApp extends StatelessWidget {
         DispatchSummary.id: (context) => const DispatchSummary(),
         Payment.id: (context) => const Payment(),
         Login.id: (context) => const Login(),
+        ForgetPassword.id: (context) => const ForgetPassword(),
+        ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
+        ResetPassword.id: (context) => const ResetPassword(),
       },
       // home: const GetStarted(),
     );
