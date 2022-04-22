@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
-import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -43,11 +43,7 @@ class _HomeState extends State<Home> {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 70.0),
-              decoration: const BoxDecoration(
-                //   AssetImage('assets/images/home.png'),
-                //   fit: BoxFit.cover,
-                // )
-              ),
+              
               child: Image.asset(
                 'assets/images/home_delivery_img.png',
                 height: 250.0,
@@ -85,12 +81,24 @@ class _HomeState extends State<Home> {
               width: 300,
             ),
             const SizedBox(height: 15.0),
-            const Text(
-              'Already have an account ? Log in',
-              textScaleFactor: 0.9,
-              style: TextStyle(
-                color: appPrimaryColor,
-                fontWeight: FontWeight.w500,
+            InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed(Login.id);
+              },
+              child: Align(
+                child: RichText(
+                  textScaleFactor: 0.9,
+                  text: const TextSpan(
+                    text: 'Already have an account? ',
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(text: 'Log in', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
