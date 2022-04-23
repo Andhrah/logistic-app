@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
+<<<<<<< HEAD
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
+=======
+>>>>>>> staging
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -46,12 +50,17 @@ class _HomeState extends State<Home> {
             ),
             Container(
               alignment: Alignment.center,
+<<<<<<< HEAD
               margin: const EdgeInsets.only(top: 40.0),
               decoration: const BoxDecoration(
                 //   AssetImage('assets/images/home.png'),
                 //   fit: BoxFit.cover,
                 // )
               ),
+=======
+              margin: const EdgeInsets.only(top: 70.0),
+              
+>>>>>>> staging
               child: Image.asset(
                 'assets/images/home_delivery_img.png',
                 height: 200.0,
@@ -91,12 +100,24 @@ class _HomeState extends State<Home> {
               width: 300,
             ),
             const SizedBox(height: 15.0),
-            const Text(
-              'Already have an account ? Log in',
-              textScaleFactor: 0.9,
-              style: TextStyle(
-                color: appPrimaryColor,
-                fontWeight: FontWeight.w500,
+            InkWell(
+              onTap: (){
+                Navigator.of(context).pushNamed(Login.id);
+              },
+              child: Align(
+                child: RichText(
+                  textScaleFactor: 0.9,
+                  text: const TextSpan(
+                    text: 'Already have an account? ',
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    children: <TextSpan>[
+                      TextSpan(text: 'Log in', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],
