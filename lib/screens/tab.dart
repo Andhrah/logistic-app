@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trakk/screens/home.dart';
+import 'package:trakk/screens/riders/offline_rider.dart';
 import 'package:trakk/screens/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 
@@ -22,7 +23,7 @@ class _TabsState extends State<Tabs> {
     switch (page){
       case 0 :
         currentTitle = 'Home';
-        return const WalletScreen();
+        return const RiderHomeScreen();
       case 1 :
         currentTitle = 'Vehicles';
         return Container();

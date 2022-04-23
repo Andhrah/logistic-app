@@ -65,7 +65,9 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 15.0),
             Button(
               text: 'Become a Rider',
-              onPress: () {},
+              onPress: () {
+                Navigator.of(context).pushNamed(Signup.id);
+              },
               color: whiteColor,
               isLoading: false,
               textColor: appPrimaryColor, 

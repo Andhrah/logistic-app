@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/rider/personal_data.dart';
+import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/elevated_container.dart';
 import 'package:trakk/widgets/input_field.dart';
 
-class Signup extends StatefulWidget {
-  static const String id = 'signup';
+class NextOfKin extends StatefulWidget {
+  static const String id = 'nextOfKin';
 
-  const Signup({Key? key}) : super(key: key);
+  const NextOfKin({Key? key}) : super(key: key);
 
   @override
-  _SignupState createState() => _SignupState();
+  _NextOfKinState createState() => _NextOfKinState();
 }
 
-class _SignupState extends State<Signup> {
+class _NextOfKinState extends State<NextOfKin> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,13 +59,23 @@ class _SignupState extends State<Signup> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    const Text(
+                      'Next Of Kin',
+                      textScaleFactor: 1.2,
+                      style: TextStyle(
+                        color: appPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    
+                    const SizedBox(height: 30.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Expanded(
                           child: InputField(
-                            text: 'First Name',
-                            hintText: 'Jane',
+                            text: 'First Name of Kin',
+                            hintText: 'John',
                             textHeight: 10.0,
                             borderColor: appPrimaryColor.withOpacity(0.9),
                             suffixIcon: const Icon(
@@ -82,7 +90,7 @@ class _SignupState extends State<Signup> {
 
                         Expanded(
                           child: InputField(
-                            text: 'Last Name',
+                            text: ' Last Name of Kin',
                             hintText: 'Doe',
                             textHeight: 10.0,
                             borderColor: appPrimaryColor.withOpacity(0.9),
@@ -95,11 +103,11 @@ class _SignupState extends State<Signup> {
                         ),
                       ],
                     ),
-                    
+
                     const SizedBox(height: 30.0),
                     InputField(
-                      text: 'Email Address',
-                      hintText: 'jane@email.com',
+                      text: 'Email Address of Kin',
+                      hintText: 'johndoe@email.com',
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(
@@ -111,7 +119,20 @@ class _SignupState extends State<Signup> {
 
                     const SizedBox(height: 30.0),
                     InputField(
-                      text: 'Phone Number',
+                      text: 'Address of Kin',
+                      hintText: 'Address of next of kin',
+                      textHeight: 10.0,
+                      borderColor: appPrimaryColor.withOpacity(0.9),
+                      suffixIcon: const Icon(
+                        Remix.home_7_line,
+                        size: 18.0,
+                        color: Color(0xFF909090),
+                      ),
+                    ),
+
+                    const SizedBox(height: 30.0),
+                    InputField(
+                      text: 'Phone number of Kin',
                       hintText: '08000000000',
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
@@ -122,126 +143,19 @@ class _SignupState extends State<Signup> {
                       ),
                     ),
 
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      text: 'Password',
-                      hintText: 'password',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.eye_close_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
-                      ),
-                    ),
-
                     const SizedBox(height: 40.0),
                     Align(
                       alignment: Alignment.center,
                       child: Button(
-                        text: 'Create an account', 
+                        text: 'Create account', 
                         onPress: () {
-                          Navigator.of(context).pushNamed(PersonalData.id);
+                          Navigator.of(context).pushNamed(Tabs.id);
                         }, 
                         color: appPrimaryColor, 
                         textColor: whiteColor, 
                         isLoading: false,
                         width: 350.0
                       )
-                    ),
-                    
-                    const SizedBox(height: 15.0),
-                    InkWell(
-                      onTap: (){
-                        Navigator.of(context).pushNamed(Login.id);
-                      },
-                      child: Align(
-                        child: RichText(
-                          textScaleFactor: 0.9,
-                          text: const TextSpan(
-                            text: 'Already have an account? ',
-                            style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.w500,
-                            ),
-                            children: <TextSpan>[
-                              TextSpan(text: 'Log in', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 25.0),
-                    Row(
-                      children: [
-                        const Expanded(
-                          child: Divider(
-                            color: appPrimaryColor,
-                          ),
-                        ),
-
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                          'Or continue with',
-                            textScaleFactor: 1.2,
-                            style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.w400
-                            ),
-                          ),
-                        ),
-
-                        const Expanded(
-                          child: Divider(
-                            color: appPrimaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    Row(
-                      children: [
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/google_icon.png',
-                            height: 15,
-                            width: 15,
-                          ),
-                        ),
-
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/apple_icon.png',
-                            height: 20,
-                            width: 20,
-                          ),
-                        ),
-
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/facebook_icon.png',
-                            height: 18,
-                            width: 18,
-                          ),
-                        ),
-                      ],
                     ),
                   ],
                 ),

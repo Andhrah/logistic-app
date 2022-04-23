@@ -4,6 +4,9 @@ import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/forgot_password_pin.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/reset_password.dart';
+import 'package:trakk/screens/auth/rider/next_of_kin.dart';
+import 'package:trakk/screens/auth/rider/personal_data.dart';
+import 'package:trakk/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
@@ -62,6 +65,9 @@ class MyApp extends StatelessWidget {
         ForgetPassword.id: (context) => const ForgetPassword(),
         ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
         ResetPassword.id: (context) => const ResetPassword(),
+        PersonalData.id: (context) => const PersonalData(),
+        VehicleData.id: (context) => const VehicleData(),
+        NextOfKin.id: (context) => const NextOfKin(),
       },
       // home: const GetStarted(),
     );
