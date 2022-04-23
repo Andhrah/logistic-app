@@ -46,6 +46,10 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
         primarySwatch: Colors.blue,
+        // canvasColor: Colors.transparent,
+        // bottomSheetTheme: const BottomSheetThemeData(
+        //   backgroundColor: Color(0xFFFFFF), // valid for transparent view (invisible white)
+        // ),
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // home: const SplashScreen(),

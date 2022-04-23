@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trakk/screens/home.dart';
-import 'package:trakk/screens/riders/offline_rider.dart';
+import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 

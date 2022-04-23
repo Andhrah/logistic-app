@@ -7,7 +7,7 @@ class Button extends StatelessWidget {
     required this.onPress,
     required this.color,
     required this.width,
-    // required this.height,
+    this.borderColor,
     required this.textColor,
     // required this.font,
     required this.isLoading,
@@ -17,7 +17,7 @@ class Button extends StatelessWidget {
   final VoidCallback onPress;
   final Color color;
   final double width;
-  // final double height;
+  final Color? borderColor;
   final Color textColor;
   final bool isLoading;
 
@@ -33,7 +33,7 @@ class Button extends StatelessWidget {
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(
           RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(5.0),
-            side: BorderSide(color: appPrimaryColor.withOpacity(0.2)),
+            side: BorderSide(color: appPrimaryColor.withOpacity(0.1)),
           )
         )
       )
