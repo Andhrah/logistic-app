@@ -4,6 +4,7 @@ import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
 class RiderHomeScreen extends StatefulWidget {
+  static const String id = 'riderHome';
 
   const RiderHomeScreen({Key? key}) : super(key: key);
 

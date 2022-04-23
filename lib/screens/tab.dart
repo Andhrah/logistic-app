@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trakk/screens/home.dart';
+import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
+import 'package:trakk/screens/riders/rider_order.dart';
 import 'package:trakk/screens/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 
@@ -16,17 +17,16 @@ class Tabs extends StatefulWidget {
 
 class _TabsState extends State<Tabs> {
   int _selectedIndex = 0;
-  int _page = 0;
   String currentTitle = 'Home';
 
-  Widget _currentPage (int page){
-    switch (page){
+  Widget _currentPage (_selectedIndex){
+    switch (_selectedIndex){
       case 0 :
         currentTitle = 'Home';
         return const RiderHomeScreen();
       case 1 :
-        currentTitle = 'Vehicles';
-        return Container();
+        currentTitle = 'Order';
+        return const RiderOrderScreen();
       case 2 :
         currentTitle = 'Wallet';
         return Container();
@@ -54,79 +54,85 @@ class _TabsState extends State<Tabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _currentPage(_page),
+      body: _currentPage(_selectedIndex),
       bottomNavigationBar: BottomNavigationBar(
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(
-           icon: SvgPicture.asset("assets/images/home_icon.svg",
-              color: _selectedIndex != 0 ? Colors.grey.withOpacity(0.3) : secondaryColor
+          //  icon: SvgPicture.asset("assets/images/home_icon.svg",
+          //     color: _selectedIndex != 0 ? Colors.grey.withOpacity(0.3) : secondaryColor
+          //   ),
+            icon: Icon(
+              Remix.home_7_line,
+              color: _selectedIndex != 0 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Wallet',
+            label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/images/favorite_icon.svg",
-              color: _selectedIndex != 1 ? Colors.grey.withOpacity(0.3) : secondaryColor
+            icon: Icon(
+              Remix.file_list_fill,
+              color: _selectedIndex != 1 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Favorite',
+            label: 'Order',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/search_icon.svg",
-              color: _selectedIndex != 2 ? Colors.grey.withOpacity(0.3) : secondaryColor
+              color: _selectedIndex != 2 ? appPrimaryColor : secondaryColor
             ),
             label: 'Search',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/cart_icon.svg",
-              color: _selectedIndex != 3 ? Colors.grey.withOpacity(0.3) : secondaryColor
+              color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
             ),
             label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/profile_icon.svg",
-              color: _selectedIndex != 4 ? Colors.grey.withOpacity(0.3) : secondaryColor
+              color: _selectedIndex != 4 ? appPrimaryColor : secondaryColor
             ),
             label: 'Profile',
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.amber[800],
+        selectedItemColor: secondaryColor,
+        unselectedItemColor: appPrimaryColor,
         onTap: _onItemTapped,
       ),
     );
   }
 }
 
-class ButtonBarItem extends StatelessWidget {
-  final String icon;
-  final String title;
-  final Color color;
-  final Function onPressed;
-  const ButtonBarItem({
-    required Key key, required this.icon, required this.title, required this.color, required this.onPressed,
-  }) : super(key: key);
+// class ButtonBarItem extends StatelessWidget {
+//   final String icon;
+//   final String title;
+//   final Color color;
+//   final Function onPressed;
+//   const ButtonBarItem({
+//     required Key key, required this.icon, required this.title, required this.color, required this.onPressed,
+//   }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: onPressed(),
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-          SvgPicture.asset("images/$icon.svg"),
-          SizedBox(height: 5,),
-          Text(
-            title, 
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 14, 
-              color: color),
-            )
-        ],),
-      ),
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return InkWell(
+//       onTap: onPressed(),
+//       child: AnimatedContainer(
+//         duration: Duration(milliseconds: 300),
+//         child: Column(
+//           mainAxisAlignment: MainAxisAlignment.center,
+//           children: <Widget>[
+//           SvgPicture.asset("images/$icon.svg"),
+//           SizedBox(height: 5,),
+//           Text(
+//             title, 
+//             style: TextStyle(
+//               fontWeight: FontWeight.bold,
+//               fontSize: 14, 
+//               color: color),
+//             )
+//         ],),
+//       ),
+//     );
+//   }
+// }
