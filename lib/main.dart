@@ -16,6 +16,8 @@ import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
+import 'package:trakk/screens/polyline.dart';
+import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 
@@ -53,7 +55,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // home: const SplashScreen(),
-      initialRoute: SplashScreen.id,
+      initialRoute: Tabs.id,
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         Onboarding.id: (context) => const Onboarding(),
@@ -72,6 +74,8 @@ class MyApp extends StatelessWidget {
         PersonalData.id: (context) => const PersonalData(),
         VehicleData.id: (context) => const VehicleData(),
         NextOfKin.id: (context) => const NextOfKin(),
+        PickUpScreen.id: (context) => const PickUpScreen(),
+        PolylineScreen.id: (context) => const PolylineScreen(),
       },
       // home: const GetStarted(),
     );

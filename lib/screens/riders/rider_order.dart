@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -38,6 +39,7 @@ class _RiderOrderScreenState extends State<RiderOrderScreen> {
               Expanded(
                 child: ListView.builder(
                   itemCount: 5,
+                  padding: const EdgeInsets.only(bottom: 120.0),
                   itemBuilder: (BuildContext context,int index){
                     return Card(
                       color: whiteColor,
@@ -255,10 +257,10 @@ class _RiderOrderScreenState extends State<RiderOrderScreen> {
                             const SizedBox(height: 30.0),
                             Align(
                               child: Button(
-                                text: 'PICK ORDER', 
+                                text: 'PICK-UP ORDER', 
                                 onPress: () {
-                                  // Navigator.of(context).pushNamed(id);
-                                  Navigator.pop(context);
+                                  Navigator.of(context).pushNamed(PickUpScreen.id);
+                                  // Navigator.pop(context);
                                 }, 
                                 color: appPrimaryColor, 
                                 textColor: whiteColor, 
@@ -275,7 +277,7 @@ class _RiderOrderScreenState extends State<RiderOrderScreen> {
                   }
                 ),
               ),
-              const SizedBox(height: 140.0),
+              // const SizedBox(height: 140.0),
             ],
           ),
           ),
