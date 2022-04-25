@@ -55,7 +55,7 @@ class MyApp extends StatelessWidget {
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // home: const SplashScreen(),
-      initialRoute: Tabs.id,
+      initialRoute: SplashScreen.id,
       routes: {
         SplashScreen.id: (context) => const SplashScreen(),
         Onboarding.id: (context) => const Onboarding(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
@@ -25,15 +26,15 @@ class _ItemDetailsState extends State<ItemDetails> {
             children: [
               const SizedBox(height: 30.0),
               const Header(
-                text: 'CHOOSE A LOCATION',
+                text: 'DISPATCH ITEM',
               ),
 
               Container(
-                height: 310.0,
+                height: MediaQuery.of(context).size.height,
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
                 decoration: const BoxDecoration(
                   image: DecorationImage(
-                    image: AssetImage("assets/images/map_img.png"),
+                    image: AssetImage("assets/images/empty_map.png"),
                     fit: BoxFit.fill,
                   )
                 ),
@@ -46,7 +47,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Image.asset(
-                            "assets/images/map_pin.png",
+                            "assets/images/order_highlighter2.png",
                             height: 100.0,
                           ),
 
@@ -90,52 +91,96 @@ class _ItemDetailsState extends State<ItemDetails> {
                       borderColor: appPrimaryColor.withOpacity(0.5),
                       area: null
                     ),
+
+                    const SizedBox(height: 30.0),
+                    Card(
+                      shape: RoundedRectangleBorder(
+                        side: BorderSide(color: appPrimaryColor.withOpacity(0.3), width: 1),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: SizedBox(
+                        width: MediaQuery.of(context).size.width/1.2,
+                        height: 170,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            InkWell(
+                              splashColor: Colors.black12.withAlpha(30),
+                              child: const Icon(Remix.upload_2_line),
+                              onTap: () {},
+                            ),
+                            const SizedBox(height: 26.0),
+                            const Text(
+                              'Upload item image',
+                              style: TextStyle(
+                                fontSize: 18.0, 
+                                color: appPrimaryColor, 
+                                fontWeight: FontWeight.w400
+                              )
+                            )
+                          ]
+                        ),
+                      ),
+                    ),
+
+                    const SizedBox(height: 30.0),
+
+                    Button(
+                      text: 'Proceed', 
+                      onPress: () {
+                        Navigator.of(context).pushNamed(Checkout.id);
+                      }, 
+                      color: appPrimaryColor, 
+                      textColor: whiteColor, 
+                      isLoading: false,
+                      width: MediaQuery.of(context).size.width/1.2,
+                    ),
                   ]
                 ),
               ),
 
-              Card(
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(color: appPrimaryColor.withOpacity(0.3), width: 1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width/1.2,
-                  height: 170,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        splashColor: Colors.black12.withAlpha(30),
-                        child: const Icon(Remix.upload_2_line),
-                        onTap: () {},
-                      ),
-                      const SizedBox(height: 26.0),
-                      const Text(
-                        'Upload item image',
-                        style: TextStyle(
-                          fontSize: 18.0, 
-                          color: appPrimaryColor, 
-                          fontWeight: FontWeight.w400
-                        )
-                      )
-                    ]
-                  ),
-                ),
-              ),
+              // Card(
+              //   shape: RoundedRectangleBorder(
+              //     side: BorderSide(color: appPrimaryColor.withOpacity(0.3), width: 1),
+              //     borderRadius: BorderRadius.circular(10),
+              //   ),
+              //   child: SizedBox(
+              //     width: MediaQuery.of(context).size.width/1.2,
+              //     height: 170,
+              //     child: Column(
+              //       mainAxisAlignment: MainAxisAlignment.center,
+              //       children: [
+              //         InkWell(
+              //           splashColor: Colors.black12.withAlpha(30),
+              //           child: const Icon(Remix.upload_2_line),
+              //           onTap: () {},
+              //         ),
+              //         const SizedBox(height: 26.0),
+              //         const Text(
+              //           'Upload item image',
+              //           style: TextStyle(
+              //             fontSize: 18.0, 
+              //             color: appPrimaryColor, 
+              //             fontWeight: FontWeight.w400
+              //           )
+              //         )
+              //       ]
+              //     ),
+              //   ),
+              // ),
 
-              const SizedBox(height: 30.0),
+              // const SizedBox(height: 30.0),
 
-              Button(
-                text: 'Proceed', 
-                onPress: () {
-                  Navigator.of(context).pushNamed(PickRide.id);
-                }, 
-                color: appPrimaryColor, 
-                textColor: whiteColor, 
-                isLoading: false,
-                width: MediaQuery.of(context).size.width/1.2,
-              )
+              // Button(
+              //   text: 'Proceed', 
+              //   onPress: () {
+              //     Navigator.of(context).pushNamed(PickRide.id);
+              //   }, 
+              //   color: appPrimaryColor, 
+              //   textColor: whiteColor, 
+              //   isLoading: false,
+              //   width: MediaQuery.of(context).size.width/1.2,
+              // )
             ],
           )
         ),
