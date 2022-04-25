@@ -7,7 +7,7 @@
         android:icon="@mipmap/trakk_logo">
         <meta-data 
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCAikVWyqmfuuDqsV2-IdpnGC0wEG4wUJw"/>
+            android:value="AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"

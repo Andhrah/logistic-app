@@ -1,5 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:overlay_support/overlay_support.dart';
+import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart' as pp;
+
+import 'package:trakk/models/auth/first_time_user.dart';
+import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/forgot_password_pin.dart';
 import 'package:trakk/screens/auth/login.dart';
@@ -21,12 +28,33 @@ import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 
-void main() {
+void main() async {
+  await _openHive();
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+_openHive() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  var appDocDir = await pp.getApplicationDocumentsDirectory();
+  await Hive.initFlutter(appDocDir.path);
+  // await Hive.openBox();
+  // Register the generated adapter
+  Hive.registerAdapter(FirstTimeUserAdapter());
+}
+
+class MyApp extends StatefulWidget {
   const MyApp({Key? key}) : super(key: key);
+
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void dispose() {
+    Hive.close();
+    super.dispose();
+  }
 
   // This widget is the root of your application.
   @override
@@ -34,50 +62,55 @@ class MyApp extends StatelessWidget {
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: appPrimaryColor
     ));
-    return MaterialApp(
-      title: 'Trakk',
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-        // canvasColor: Colors.transparent,
-        // bottomSheetTheme: const BottomSheetThemeData(
-        //   backgroundColor: Color(0xFFFFFF), // valid for transparent view (invisible white)
-        // ),
+    return MultiProvider(
+      providers: appProviders,
+      child: OverlaySupport(
+        child: MaterialApp(
+          title: 'Trakk',
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            // This is the theme of your application.
+            //
+            // Try running your application with "flutter run". You'll see the
+            // application has a blue toolbar. Then, without quitting the app, try
+            // changing the primarySwatch below to Colors.green and then invoke
+            // "hot reload" (press "r" in the console where you ran "flutter run",
+            // or simply save your changes to "hot reload" in a Flutter IDE).
+            // Notice that the counter didn't reset back to zero; the application
+            // is not restarted.
+            primarySwatch: Colors.blue,
+            // canvasColor: Colors.transparent,
+            // bottomSheetTheme: const BottomSheetThemeData(
+            //   backgroundColor: Color(0xFFFFFF), // valid for transparent view (invisible white)
+            // ),
+          ),
+          // home: const MyHomePage(title: 'Flutter Demo Home Page'),
+          // home: const SplashScreen(),
+          initialRoute: SplashScreen.id,
+          routes: {
+            SplashScreen.id: (context) => const SplashScreen(),
+            Onboarding.id: (context) => const Onboarding(),
+            Tabs.id: (context) => const Tabs(),
+            Home.id: (context) => const Home(),
+            Signup.id: (context) => const Signup(),
+            ItemDetails.id: (context) => const ItemDetails(),
+            PickRide.id: (context) => const PickRide(),
+            Checkout.id: (context) => const Checkout(),
+            DispatchSummary.id: (context) => const DispatchSummary(),
+            Payment.id: (context) => const Payment(),
+            Login.id: (context) => const Login(),
+            ForgetPassword.id: (context) => const ForgetPassword(),
+            ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
+            ResetPassword.id: (context) => const ResetPassword(),
+            PersonalData.id: (context) => const PersonalData(),
+            VehicleData.id: (context) => const VehicleData(),
+            NextOfKin.id: (context) => const NextOfKin(),
+            PickUpScreen.id: (context) => const PickUpScreen(),
+            PolylineScreen.id: (context) => const PolylineScreen(),
+          },
+          // home: const GetStarted(),
+        ),
       ),
-      // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      // home: const SplashScreen(),
-      initialRoute: SplashScreen.id,
-      routes: {
-        SplashScreen.id: (context) => const SplashScreen(),
-        Onboarding.id: (context) => const Onboarding(),
-        Tabs.id: (context) => const Tabs(),
-        Home.id: (context) => const Home(),
-        Signup.id: (context) => const Signup(),
-        ItemDetails.id: (context) => const ItemDetails(),
-        PickRide.id: (context) => const PickRide(),
-        Checkout.id: (context) => const Checkout(),
-        DispatchSummary.id: (context) => const DispatchSummary(),
-        Payment.id: (context) => const Payment(),
-        Login.id: (context) => const Login(),
-        ForgetPassword.id: (context) => const ForgetPassword(),
-        ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
-        ResetPassword.id: (context) => const ResetPassword(),
-        PersonalData.id: (context) => const PersonalData(),
-        VehicleData.id: (context) => const VehicleData(),
-        NextOfKin.id: (context) => const NextOfKin(),
-        PickUpScreen.id: (context) => const PickUpScreen(),
-        PolylineScreen.id: (context) => const PolylineScreen(),
-      },
-      // home: const GetStarted(),
     );
   }
 }
