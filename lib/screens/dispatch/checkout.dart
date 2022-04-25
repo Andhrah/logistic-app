@@ -27,7 +27,7 @@ class _CheckoutState extends State<Checkout> {
             children: [
               const SizedBox(height: 30.0),
               const Header(
-                text: 'CHECKOUT',
+                text: 'ADD INFO',
               ),
 
               Container(
