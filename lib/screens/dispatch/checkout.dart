@@ -219,7 +219,8 @@ class _CheckoutState extends State<Checkout> {
                 textColor: whiteColor, 
                 isLoading: false,
                 width: MediaQuery.of(context).size.width/1.2,
-              )
+              ),
+              const SizedBox(height: 20,),
             ],
           )
         ),
