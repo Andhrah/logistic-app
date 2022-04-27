@@ -60,39 +60,30 @@ class _SignupState extends State<Signup> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: InputField(
-                            text: 'First Name',
-                            hintText: 'Jane',
-                            textHeight: 10.0,
-                            borderColor: appPrimaryColor.withOpacity(0.9),
-                            suffixIcon: const Icon(
-                              Remix.user_line,
-                              size: 18.0,
-                              color: Color(0xFF909090),
-                            ),
-                          ),
-                        ),
+                    InputField(
+                      text: 'First Name',
+                      hintText: 'Jane',
+                      textHeight: 10.0,
+                      borderColor: appPrimaryColor.withOpacity(0.9),
+                      suffixIcon: const Icon(
+                        Remix.user_line,
+                        size: 18.0,
+                        color: Color(0xFF909090),
+                      ),
+                    ),
 
-                        const SizedBox(width: 8.0),
+                    const SizedBox(height: 30.0),
 
-                        Expanded(
-                          child: InputField(
-                            text: 'Last Name',
-                            hintText: 'Doe',
-                            textHeight: 10.0,
-                            borderColor: appPrimaryColor.withOpacity(0.9),
-                            suffixIcon: const Icon(
-                              Remix.user_line,
-                              size: 18.0,
-                              color: Color(0xFF909090),
-                            ),
-                          ),
-                        ),
-                      ],
+                    InputField(
+                      text: 'Last Name',
+                      hintText: 'Doe',
+                      textHeight: 10.0,
+                      borderColor: appPrimaryColor.withOpacity(0.9),
+                      suffixIcon: const Icon(
+                        Remix.user_line,
+                        size: 18.0,
+                        color: Color(0xFF909090),
+                      ),
                     ),
                     
                     const SizedBox(height: 30.0),
