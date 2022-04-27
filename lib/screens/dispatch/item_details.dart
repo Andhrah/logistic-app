@@ -132,7 +132,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     Button(
                       text: 'Proceed', 
                       onPress: () {
-                        Navigator.of(context).pushNamed(Checkout.id);
+                        // Navigator.of(context).pushNamed(Checkout.id);
                       }, 
                       color: appPrimaryColor, 
                       textColor: whiteColor, 

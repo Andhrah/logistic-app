@@ -8,16 +8,21 @@ import 'package:trakk/services/auth_service.dart';
 class Auth extends ChangeNotifier {
   final AuthService _authApi = AuthService();
 
+  late String _token;
   late FirstTimeUser _firstTimeUser;
   late User _user;
 
+  String get token => _token;
   FirstTimeUser get firstTimeUser => _firstTimeUser;
   User get user => _user;
+
 
   // static BuildContext _context;
 
   setFirstTimerUser(FirstTimeUser firstTimeUser) => _firstTimeUser = firstTimeUser;
   setUser(User user) => _user = user;
+  setToken(String token) => _token = token;
+
 
   static Auth authProvider(BuildContext context, {bool listen = false}) {
     // _context = context;
@@ -28,6 +33,13 @@ class Auth extends ChangeNotifier {
     setFirstTimerUser(myFirst);
     print('myfirst ${_firstTimeUser.firstTimeUserBool}');
     return myFirst;
+  }
+
+  void _setInitialData(data) {
+    setUser(User.fromJson(data["data"]["data"]));
+    print("=========== Jehovah is AWESOME ==========");
+    print(data["data"]["data"]["token"]);
+    setToken(data["data"]["data"]["token"]);
   }
 
   // create a user
@@ -47,6 +59,18 @@ class Auth extends ChangeNotifier {
         phoneNumber,
         userType,
       );
+      return response;
+    } catch(err) {
+      throw ApiFailureException(err);
+    }
+  }
+
+  // login a user
+  Future login(String email, String password) async {
+    try {
+      var response = await _authApi.login(email, password);
+      // _setInitialData(response);
+      print('Logged In users Object $response');
       return response;
     } catch(err) {
       throw ApiFailureException(err);

@@ -38,7 +38,6 @@ class AuthService {
     String password,
     String phoneNumber,
     String userType) async {
-    // var body = User(email: email).toJson();
     var body = {
       "firstName": firstName,
       "lastName": lastName,
@@ -50,82 +49,11 @@ class AuthService {
     return await authRequest(body, 'api/v1/auth/signup');
   }
 
-  // Future<dynamic> createUser(
-  //   String firstName,
-  //   String lastName,
-  //   String email,
-  //   String password,
-  //   String phoneNumber,
-  //   String userType) async {
-
-  //   print('Im trying to make this happen');
-
-    // var body = {
-    //   "firstName": firstName,
-    //   ":lastName": lastName,
-    //   "email": email,
-    //   "phoneNumber": phoneNumber,
-    //   "password": password,
-    //   "userType": userType,
-    // };
-  //    var url = "$baseUrl/auth/signup";
-  //   try {
-  //     var response = await http.post(uriConverter(url), body: json.encode(body));
-  //     print(response.body);
-  //   } catch(err) {
-  //     print(err);
-  //     rethrow;
-  //   }
-  //   // return await authRequest(body, 'auth/signup');
-  // }
-
-  // Future<Map<String, dynamic>> createUser({
-  //   required String firstName,
-  //   required String lastName,
-  //   required String email,
-  //   required String password,
-  //   required String phoneNumber,
-  //   required String userType,
-  //   }) async {
-  //   Map<String, dynamic> result = {};
-
-  //   var body = jsonEncode({
-  //     "firstName": firstName,
-  //     ":lastName": lastName,
-  //     "email": email,
-  //     "phoneNumber": phoneNumber,
-  //     "password": password,
-  //     "userType": userType,
-  //   });
-  //   var url = "${MyStrings.baseUrl}/users/patients";
-
-  //   try{
-  //     var response  =await dio.post(url, data: body);
-          
-
-  //     final int statusCode = response.statusCode;
-  //     if (statusCode != 200 || response.data['status'] != 'success') {
-
-  //       result['message'] = "Sorry, we could not complete your request, try again later";
-  //       result['error'] = true;
-  //     }else {
-  //       result['error'] = false;
-  //       var user = User.fromJson(response.data);
-  //       result['user'] = user;
-  //     }
-  //   }on DioError catch(e){
-  //     result['error'] = true;
-  //     if(e.response != null ){
-  //       result['message'] = e.response.data['message'];
-
-  //     }else{
-  //       print(e.toString());
-  //       result['message'] = "Sorry, We could not complete your request";
-  //     }
-
-  //   }
-
-
-  //   return result;
-  // }
+  Future<dynamic> login(String email, String password) async {
+    var body = {
+      "email": email,
+      "password": password,
+    };
+    return await authRequest(body, 'api/v1/auth/login');
+  }
 }
