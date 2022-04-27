@@ -16,16 +16,12 @@ class Auth extends ChangeNotifier {
   FirstTimeUser get firstTimeUser => _firstTimeUser;
   User get user => _user;
 
-
-  // static BuildContext _context;
-
   setFirstTimerUser(FirstTimeUser firstTimeUser) => _firstTimeUser = firstTimeUser;
   setUser(User user) => _user = user;
   setToken(String token) => _token = token;
 
 
   static Auth authProvider(BuildContext context, {bool listen = false}) {
-    // _context = context;
     return Provider.of<Auth>(context, listen: listen);
   }
 
@@ -70,7 +66,6 @@ class Auth extends ChangeNotifier {
     try {
       var response = await _authApi.login(email, password);
       // _setInitialData(response);
-      print('Logged In users Object $response');
       return response;
     } catch(err) {
       throw ApiFailureException(err);
@@ -82,7 +77,6 @@ class Auth extends ChangeNotifier {
     try {
       var response = await _authApi.forgetPassword(email);
       // _setInitialData(response);
-      print('Forget Password In users Object $response');
       return response;
     } catch(err) {
       throw ApiFailureException(err);
@@ -93,7 +87,6 @@ class Auth extends ChangeNotifier {
   Future resetPassword(String code, String password) async {
     try {
       var response = await _authApi.resetPassword(code, password);
-      print('Reset Password In users Object $response');
       return response;
     } catch(err) {
       throw ApiFailureException(err);

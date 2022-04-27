@@ -53,8 +53,6 @@ class _ResetPasswordState extends State<ResetPassword> {
     setState(() {
       _loading = true;
     });
-
-    print('========== Your Code is $code ===============');
     
     final FormState? form = _formKey.currentState;
     if(form!.validate()){
@@ -86,13 +84,13 @@ class _ResetPasswordState extends State<ResetPassword> {
             borderRadius: BorderRadius.circular(10),
             duration: const Duration(seconds: 2),
           ).show(context);
-          // Navigator.of(context).pushNamed(ForgetPasswordPin.id);
+          Navigator.of(context).pushNamed(Login.id);
         } else {
           await Flushbar(
-            messageText: Text(
+            messageText: const Text(
               'An Error Occurred',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: whiteColor,
                 fontSize: 18,
               ),
@@ -106,16 +104,14 @@ class _ResetPasswordState extends State<ResetPassword> {
         }
         // Auth.authProvider(context)
       } catch(err){
-        print('======== Error ========');
-        print(err);
         setState(() {
           _loading = false;
         });
         await Flushbar(
-          messageText: Text(
+          messageText: const Text(
              'An Error Occurred',
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               color: whiteColor,
               fontSize: 18,
             ),
@@ -136,10 +132,9 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   @override
   Widget build(BuildContext context) {
+
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    code = arg["code"];
-    print('======CODE======');
-    print(arg["code"]);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SingleChildScrollView(

@@ -31,8 +31,8 @@ class AuthService {
       print('data: $decoded');
       return decoded;
     } else {
-      print('reason is ${response.reasonPhrase} message is ${decoded['data'][0]['message']}');
-      throw ApiFailureException(decoded['data'][0]['message'] ?? response.reasonPhrase);
+      print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
+      throw ApiFailureException(decoded['data']['message'] ?? response.reasonPhrase);
     }
   }
 
@@ -53,10 +53,9 @@ class AuthService {
     print('Encoded body ${json.encode(body)}');
     var response = await http.post(
       ssoUriConverter(url),
-      // headers: kHeaders(null),
-      body: body
+      headers: kHeaders(""),
+      body: json.encode(body)
     );
-    print('======= GOT HERE ==========');
     print(response.body);
     print('======= GOT HERE ==========');
     var decoded = jsonDecode(response.body);
@@ -64,22 +63,10 @@ class AuthService {
       print('data: $decoded');
       return decoded;
     } else {
-      print('reason is ${response.reasonPhrase} message is ${decoded['data'][0]['message']}');
-      throw ApiFailureException(decoded['data'] ?? response.reasonPhrase);
+      print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
+      // throw ApiFailureException(decoded['data'] ?? response.reasonPhrase);
     }
   }
-
-  // Future<dynamic> resetPasswordRequest(Map body, String url) async {
-  //   var response = await http.post(ssoUriConverter(url));
-  //   var decoded = jsonDecode(response.body);
-  //   print('Forget Password Response: $decoded');
-  //   print(response.headers);
-  //   if (response.statusCode.toString().startsWith('2')) {
-  //     return decoded;
-  //   } else {
-  //     throw ApiFailureException(decoded['message'] ?? response.reasonPhrase ?? 'Unknown error');
-  //   }
-  // }
 
   Future<dynamic> createUser(
     String firstName,
