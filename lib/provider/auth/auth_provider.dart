@@ -76,4 +76,27 @@ class Auth extends ChangeNotifier {
       throw ApiFailureException(err);
     }
   }
+
+  // forget password
+  Future forgetPassword(String email) async {
+    try {
+      var response = await _authApi.forgetPassword(email);
+      // _setInitialData(response);
+      print('Forget Password In users Object $response');
+      return response;
+    } catch(err) {
+      throw ApiFailureException(err);
+    }
+  }
+
+  // reset password
+  Future resetPassword(String code, String password) async {
+    try {
+      var response = await _authApi.resetPassword(code, password);
+      print('Reset Password In users Object $response');
+      return response;
+    } catch(err) {
+      throw ApiFailureException(err);
+    }
+  }
 }

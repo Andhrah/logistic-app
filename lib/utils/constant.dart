@@ -1,6 +1,7 @@
 const String kFirstTimeUser = 'firstTimeUser';
 const String baseUrl = '2ba8-102-89-32-193.ngrok.io';
 const kHeaders = _headers;
+const ssoUrl = "zebrrasso.herokuapp.com";
 
 
 Map<String, String> _headers(String token) {
