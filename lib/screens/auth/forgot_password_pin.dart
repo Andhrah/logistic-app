@@ -1,7 +1,10 @@
 import 'dart:async';
 
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
+import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/reset_password.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -17,6 +20,8 @@ class ForgetPasswordPin extends StatefulWidget {
 
 class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
 
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController textEditingController = TextEditingController();
   // ..text = "123456";
 
@@ -24,8 +29,12 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
-  String currentText = "";
-  final formKey = GlobalKey<FormState>();
+  bool _loading = false;
+
+  String code = "";
+  String? _email;
+
+  
 
   @override
   void initState() {
@@ -51,8 +60,92 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
     );
   }
 
+  _onSubmit() async {
+    setState(() {
+      _loading = true;
+    });
+    
+    final FormState? form = _formKey.currentState;
+    if(form!.validate()){
+
+      form.save();
+      
+      try {
+        var response = await Auth.authProvider(context).forgetPassword(
+          _email.toString(), 
+        );
+        setState(() {
+          _loading = false;
+        });
+        if (response["statusCode"] == "OK") {
+          form.reset();
+          await Flushbar(
+            messageText: Text(
+              response["message"],
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: whiteColor,
+                fontSize: 18,
+              ),
+            ),
+            backgroundColor: green,
+            maxWidth: MediaQuery.of(context).size.width/1.2,
+            flushbarPosition: FlushbarPosition.TOP,
+            borderRadius: BorderRadius.circular(10),
+            duration: const Duration(seconds: 2),
+          ).show(context);
+          // Navigator.of(context).pushNamed(ForgetPasswordPin.id);
+        } else {
+          await Flushbar(
+            messageText: Text(
+              response["message"],
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: whiteColor,
+                fontSize: 18,
+              ),
+            ),
+            backgroundColor: redColor,
+            maxWidth: MediaQuery.of(context).size.width/1.2,
+            flushbarPosition: FlushbarPosition.TOP,
+            borderRadius: BorderRadius.circular(10),
+            duration: const Duration(seconds: 5),
+          ).show(context);
+        }
+        // Auth.authProvider(context)
+      } catch(err){
+        setState(() {
+          _loading = false;
+        });
+        await Flushbar(
+          messageText: Text(
+            err.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: whiteColor,
+              fontSize: 18,
+            ),
+          ),
+          backgroundColor: redColor,
+          maxWidth: MediaQuery.of(context).size.width/1.2,
+          flushbarPosition: FlushbarPosition.TOP,
+          borderRadius: BorderRadius.circular(10),
+          duration: const Duration(seconds: 5),
+        ).show(context);
+        rethrow;
+      }
+    }
+    setState(() {
+      _loading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    _email = arg["email"];
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SingleChildScrollView(
@@ -112,19 +205,20 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                       padding: const EdgeInsets.symmetric(horizontal: 5.0, vertical: 8),
                       child: RichText(
                         textScaleFactor: 1.0,
-                        text: const TextSpan(
+                        text: TextSpan(
                           text: "Enter the code sent to ",
                           children: [
                             TextSpan(
-                              text: "janedoe@example.com",
-                              style: TextStyle(
+                              // text: "your email address",
+                              text: _email,
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 // fontSize: 15
                               )
                             ),
                           ],
-                          style: TextStyle(color: Colors.black54, fontSize: 15)
+                          style: const TextStyle(color: Colors.black54, fontSize: 15)
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -133,7 +227,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                     const SizedBox(height: 10.0),
 
                     Form(
-                      key: formKey,
+                      key: _formKey,
                       child: Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 0),
                         child: PinCodeTextField(
@@ -171,14 +265,19 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                           enableActiveFill: true,
                           errorAnimationController: errorController,
                           controller: textEditingController,
-                          keyboardType: TextInputType.number,
+                          keyboardType: TextInputType.emailAddress,
                           onCompleted: (v) {
                             debugPrint("Completed");
                             snackBar(
                               "Code Verified!!",
                               green,
                             );
-                            Navigator.of(context).pushNamed(ResetPassword.id);
+                            Navigator.of(context).pushNamed(
+                              ResetPassword.id,
+                              arguments: {
+                                "code": code,
+                              }
+                            );
                           },
                           // onTap: () {
                           //   print("Pressed");
@@ -186,7 +285,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                           onChanged: (value) {
                             debugPrint(value);
                             setState(() {
-                              currentText = value;
+                              code = value;
                             });
                           },
                           beforeTextPaste: (text) {
@@ -224,15 +323,22 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                           textScaleFactor: 1.0,
                         ),
                         TextButton(
-                          onPressed: () => snackBar("Code resend!!", green),
-                          child: const Text(
+                          onPressed: _onSubmit,
+                          child: _loading ? const Text(
+                            "RESENDING...",
+                            style: TextStyle(
+                              color: secondaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16
+                            ),
+                          ) : const Text(
                             "RESEND",
                             style: TextStyle(
                               color: secondaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 16
                             ),
-                          ),
+                          ), 
                         )
                       ],
                     ),
