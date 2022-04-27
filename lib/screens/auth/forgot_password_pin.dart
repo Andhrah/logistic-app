@@ -29,6 +29,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
+  bool _loading = false;
 
   String code = "";
   String? _email;
@@ -60,9 +61,9 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
   }
 
   _onSubmit() async {
-    // setState(() {
-    //   _loading = true;
-    // });
+    setState(() {
+      _loading = true;
+    });
     
     final FormState? form = _formKey.currentState;
     if(form!.validate()){
@@ -73,9 +74,9 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
         var response = await Auth.authProvider(context).forgetPassword(
           _email.toString(), 
         );
-        // setState(() {
-        //   _loading = false;
-        // });
+        setState(() {
+          _loading = false;
+        });
         if (response["statusCode"] == "OK") {
           form.reset();
           await Flushbar(
@@ -93,7 +94,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
             borderRadius: BorderRadius.circular(10),
             duration: const Duration(seconds: 2),
           ).show(context);
-          Navigator.of(context).pushNamed(ForgetPasswordPin.id);
+          // Navigator.of(context).pushNamed(ForgetPasswordPin.id);
         } else {
           await Flushbar(
             messageText: Text(
@@ -113,9 +114,9 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
         }
         // Auth.authProvider(context)
       } catch(err){
-        // setState(() {
-        //   _loading = false;
-        // });
+        setState(() {
+          _loading = false;
+        });
         await Flushbar(
           messageText: Text(
             err.toString(),
@@ -134,9 +135,9 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
         rethrow;
       }
     }
-    // setState(() {
-    //   _loading = false;
-    // });
+    setState(() {
+      _loading = false;
+    });
   }
 
   @override
@@ -210,14 +211,14 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                             TextSpan(
                               // text: "your email address",
                               text: _email,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 // fontSize: 15
                               )
                             ),
                           ],
-                          style: TextStyle(color: Colors.black54, fontSize: 15)
+                          style: const TextStyle(color: Colors.black54, fontSize: 15)
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -322,15 +323,22 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                           textScaleFactor: 1.0,
                         ),
                         TextButton(
-                          onPressed: () => snackBar("Code resend!!", green),
-                          child: const Text(
+                          onPressed: _onSubmit,
+                          child: _loading ? const Text(
+                            "RESENDING...",
+                            style: TextStyle(
+                              color: secondaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16
+                            ),
+                          ) : const Text(
                             "RESEND",
                             style: TextStyle(
                               color: secondaryColor,
                               fontWeight: FontWeight.bold,
                               fontSize: 16
                             ),
-                          ),
+                          ), 
                         )
                       ],
                     ),
