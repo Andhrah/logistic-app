@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:trakk/models/auth/first_time_user.dart';
+import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/repository/hive_repository.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/my_color.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -40,11 +44,13 @@ class IndicatorCircle extends StatelessWidget {
 }
 
 class _OnboardingState extends State<Onboarding> {
-
   CarouselController buttonCarouselController = CarouselController();
   int currentScreen = 1;
   double _widget_opacity = 1;
   Curve _animation_curve = Curves.fastLinearToSlowEaseIn;
+
+  FirstTimeUser? firstTimeUser;
+  final HiveRepository _hiveRepository = HiveRepository();
 
   List<Map> screenStates = [
     {
@@ -89,6 +95,18 @@ class _OnboardingState extends State<Onboarding> {
     setState(() {
       reason = changeReason.toString();
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    firstTimeUser = Auth.authProvider(context).myFirst(FirstTimeUser.fromJson({"bool": true}));
+    print('first: $firstTimeUser');
+    _hiveRepository.add(
+      item: firstTimeUser,
+      key: 'firstTimeUser',
+      name: kFirstTimeUser,
+    );
   }
 
   @override

@@ -9,6 +9,8 @@ import 'package:trakk/widgets/button.dart';
 class Home extends StatefulWidget {
   static const String id = 'home';
 
+  // final String? title;
+
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -67,7 +69,7 @@ class _HomeState extends State<Home> {
             Button(
               text: 'Become a Rider',
               onPress: () {
-                Navigator.of(context).pushNamed(Checkout.id);
+                Navigator.of(context).pushNamed(Signup.id);
               },
               color: whiteColor,
               isLoading: false,

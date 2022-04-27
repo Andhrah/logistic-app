@@ -42,6 +42,15 @@ dependencies:
   remixicon: ^1.0.0
   google_maps_flutter: ^2.1.3
   pin_code_fields: ^7.4.0
+  flutter_polyline_points: ^1.0.0
+  dio: ^4.0.6
+  google_place: ^0.4.7
+  flutter_secure_storage: ^4.2.1
+  hive: ^2.1.0
+  hive_flutter: ^1.1.0
+  overlay_support: ^1.2.1
+  path_provider: ^2.0.9
+  another_flushbar: ^1.10.28
 
 dev_dependencies:
   flutter_test:
@@ -54,7 +63,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
   mockito: ^5.1.0
-  build_runner: ^2.1.7
+  hive_generator: ^1.1.2
+  build_runner: ^2.1.10
+
 
 
 # For information on the generic Dart part of this file, see the

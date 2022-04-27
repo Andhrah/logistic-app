@@ -14,6 +14,14 @@ class InputField extends StatelessWidget {
     required this.borderColor,
     // this.maxLines,
     this.area,
+    this.keyboardType,
+    this.validator,
+    this.onTap,
+    this.onSaved,
+    this.onChanged,
+    this.autovalidateMode,
+    required this.obscureText,
+    this.maxLines,
   }) : _node = node, super(key: key);
 
   final TextEditingController? textController;
@@ -26,6 +34,15 @@ class InputField extends StatelessWidget {
   final Color borderColor;
   // final double maxLines;
   final int? area;
+  final TextInputType? keyboardType;
+  final String? Function(String?)? validator;
+  final VoidCallback? onTap;
+  final String? Function(String?)? onSaved;
+  final String? Function(String?)? onChanged;
+  final AutovalidateMode? autovalidateMode;
+  final bool obscureText;
+  final int? maxLines;
+
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +61,14 @@ class InputField extends StatelessWidget {
         TextFormField(
           controller: textController,
           focusNode: _node,
-          maxLines: area,
+          maxLines: maxLines ?? area,
+          keyboardType: keyboardType,
+          validator: validator,
+          onTap: onTap,
+          onSaved: onSaved,
+          onChanged: onChanged,
+          autovalidateMode: autovalidateMode,
+          obscureText: obscureText,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
             enabledBorder:  OutlineInputBorder(
@@ -52,6 +76,9 @@ class InputField extends StatelessWidget {
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: secondaryColor.withOpacity(0.8)),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: redColor.withOpacity(0.8)),
             ),
             // labelText: labelText,
             labelStyle: const TextStyle(fontSize: 18.0, color: Color(0xFF8C8C8C), fontWeight: FontWeight.w600),

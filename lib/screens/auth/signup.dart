@@ -1,6 +1,12 @@
+// ignore_for_file: unnecessary_null_comparison
+
+import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/auth/rider/personal_data.dart';
+import 'package:trakk/screens/home.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -17,8 +23,155 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
+
+  static String userType = "user";
+
+  final _formKey = GlobalKey<FormState>();
+
+  late TextEditingController _firstNameController;
+  late TextEditingController _lastNameController;
+  late TextEditingController _emailController;
+  late TextEditingController _phoneNumberController;
+  late TextEditingController _passwordController;
+  late TextEditingController _confirmPasswordController;
+
+  FocusNode? _firstNameNode;
+  FocusNode? _lastNameNode;
+  FocusNode? _phoneNumberNode;
+  FocusNode? _emailNode;
+  FocusNode? _passwordNode;
+  FocusNode? _confirmPasswordNode;
+
+  String? _firstName;
+  String? _lastName;
+  String? _email;
+  String? _phoneNumber;
+  String? _password;
+  String? _confirmPassword;
+
+  bool _loading = false;
+  bool _passwordIsValid = false;
+  bool _confirmPasswordIsValid = false;
+  bool _hidePassword = true;
+  bool _autoValidate = false;
+  bool _emailIsValid = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneNumberController = TextEditingController();
+    _passwordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
+  }
+
+  _validateEmail() {
+    RegExp regex;
+    String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    String email = _emailController.text;
+    if (email.trim().isEmpty) {
+      setState(() {
+        _emailIsValid = false;
+      });
+      return "Email address cannot be empty";
+    } else {
+      regex = RegExp(pattern);
+      setState(() {
+        _emailIsValid = regex.hasMatch(email);
+        print(_emailIsValid);
+      });
+      if(_emailIsValid == false){
+        return "Enter a valid email address";
+      }
+    }
+  }
+
+  isConfirmPasswordValid() {
+    setState(() {
+      _confirmPasswordIsValid = _confirmPasswordController.text != null &&
+        _confirmPasswordController.text == _passwordController.text;
+      print(_confirmPasswordIsValid);
+    });
+  }
+
+  /*
+   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
+  */
+  _onSubmit() async {
+    setState(() {
+      _loading = true;
+    });
+    
+    final FormState? form = _formKey.currentState;
+    if(form!.validate()){
+
+      form.save();
+      
+      try {
+        var response = await Auth.authProvider(context).createUser(
+          _firstName.toString(), 
+          _lastName.toString(), 
+          _email.toString(), 
+          _password.toString(), 
+          _phoneNumber.toString(),
+          userType
+        );
+        setState(() {
+          _loading = false;
+        });
+        if (response["code"] == 201) {
+          form.reset();
+          await Flushbar(
+            messageText: Text(
+              response["message"] + ' Please login',
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: whiteColor,
+                fontSize: 18,
+              ),
+            ),
+            backgroundColor: green,
+            flushbarPosition: FlushbarPosition.TOP,
+            duration: const Duration(seconds: 2),
+          ).show(context);
+          Navigator.of(context).pushNamed(Login.id);
+        }
+        // Auth.authProvider(context)
+      } catch(err){
+        setState(() {
+          _loading = false;
+        });
+        await Flushbar(
+          messageText: Text(
+            err.toString(),
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: whiteColor,
+              fontSize: 18,
+            ),
+          ),
+          backgroundColor: redColor,
+          flushbarPosition: FlushbarPosition.TOP,
+          duration: const Duration(seconds: 5),
+        ).show(context);
+        rethrow;
+      }
+    }
+    setState(() {
+      _loading = false;
+    });
+  }
+  
   @override
   Widget build(BuildContext context) {
+
+    // final args = ModalRoute.of(context)?.settings.arguments as Home;
+    // userType = args.title.toString();
+    // print('================================');
+    // print(userType);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SingleChildScrollView(
@@ -57,86 +210,228 @@ class _SignupState extends State<Signup> {
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InputField(
-                      text: 'First Name',
-                      hintText: 'Jane',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.user_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
-                      ),
-                    ),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: InputField(
+                              key: const Key('firstName'),
+                              textController: _firstNameController,
+                              node: _firstNameNode,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              obscureText: false,
+                              text: 'First Name',
+                              hintText: 'Jane',
+                              textHeight: 10.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
+                              suffixIcon: const Icon(
+                                Remix.user_line,
+                                size: 18.0,
+                                color: Color(0xFF909090),
+                              ),
+                              validator: (value) {
+                                if (value!.trim().length > 2) {
+                                  return null;
+                                }
+                                return "Enter a valid first name";
+                              },
+                              onSaved: (value){
+                                _firstName = value!.trim();
+                                return null;
+                              },
+                            ),
+                          ),
 
-                    const SizedBox(height: 30.0),
+                          const SizedBox(width: 8.0),
 
-                    InputField(
-                      text: 'Last Name',
-                      hintText: 'Doe',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.user_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
+                          Expanded(
+                            child: InputField(
+                              key: const Key('lastName'),
+                              textController: _lastNameController,
+                              node: _lastNameNode,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              obscureText: false,
+                              text: 'Last Name',
+                              hintText: 'Doe',
+                              textHeight: 10.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
+                              suffixIcon: const Icon(
+                                Remix.user_line,
+                                size: 18.0,
+                                color: Color(0xFF909090),
+                              ),
+                              validator: (value) {
+                                if (value!.trim().length > 2) {
+                                  return null;
+                                }
+                                return "Enter a valid last name";
+                              },
+                              onSaved: (value) {
+                                _lastName = value!.trim();
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
                     
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      text: 'Email Address',
-                      hintText: 'jane@email.com',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.mail_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('email'),
+                        textController: _emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        node: _emailNode,
+                        // autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Email Address',
+                        hintText: 'jane@email.com',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.mail_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          return _validateEmail();
+                        },
+                        onSaved: (value){
+                          _email = value!.trim();
+                          return null;
+                        },
                       ),
-                    ),
 
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      text: 'Phone Number',
-                      hintText: '08000000000',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.phone_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('phoneNumber'),
+                        textController: _phoneNumberController,
+                        keyboardType: TextInputType.phone,
+                        node: _phoneNumberNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Phone Number',
+                        hintText: '08000000000',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.phone_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length == 11) {
+                            return null;
+                          }
+                          return "Enter a valid phone number";
+                        },
+                        onSaved: (value) {
+                          _phoneNumber = value!.trim();
+                          return null;
+                        },
                       ),
-                    ),
 
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      text: 'Password',
-                      hintText: 'password',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.eye_close_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
+                      const SizedBox(height: 30.0),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Expanded(
+                            child: InputField(
+                              key: const Key('password'),
+                              textController: _passwordController,
+                              node: _passwordNode,
+                              obscureText: _hidePassword,
+                              maxLines: 1,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              text: 'Password',
+                              hintText: 'password',
+                              textHeight: 10.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
+                                  size: 18.0,
+                                  color: const Color(0xFF909090),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _hidePassword = !_hidePassword;
+                                  });
+                                },
+                              ),
+                              validator: (value) {
+                                if (value!.trim().length < 7) {
+                                  return "Password should be 8\ncharacters or more";
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _password = value!.trim();
+                                return null;
+                              },
+                            ),
+                          ),
+
+                          const SizedBox(width: 8.0),
+
+                          Expanded(
+                            child: InputField(
+                              key: const Key('confirmPassword'),
+                              textController: _confirmPasswordController,
+                              node: _confirmPasswordNode,
+                              maxLines: 1,
+                              autovalidateMode: AutovalidateMode.onUserInteraction,
+                              obscureText: _hidePassword,
+                              text: 'Confirm Password',
+                              hintText: 'password',
+                              textHeight: 10.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
+                              suffixIcon: IconButton(
+                                icon: Icon(
+                                  _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
+                                  size: 18.0,
+                                  color: const Color(0xFF909090),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _hidePassword = !_hidePassword;
+                                  });
+                                },
+                              ),
+                              validator: (value) {
+                                if(_confirmPasswordController.text != _passwordController.text){
+                                  return "Password does not match";
+                                }
+                                return null;
+                              },
+                              onSaved: (value) {
+                                _password = value!.trim();
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ),
 
-                    const SizedBox(height: 40.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Button(
-                        text: 'Create an account', 
-                        onPress: () {}, 
-                        color: appPrimaryColor, 
-                        textColor: whiteColor, 
-                        isLoading: false,
-                        width: 350.0
-                      )
-                    ),
+                      const SizedBox(height: 40.0),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Button(
+                          text: 'Create an account',
+                          onPress: _onSubmit,
+                          // onPress: () {
+                          //   Navigator.of(context).pushNamed(PersonalData.id);
+                          // }, 
+                          color: appPrimaryColor, 
+                          textColor: whiteColor, 
+                          isLoading: _loading,
+                          width: 350.0
+                        )
+                      ),
                     
                     const SizedBox(height: 15.0),
                     InkWell(
@@ -162,14 +457,14 @@ class _SignupState extends State<Signup> {
 
                     const SizedBox(height: 25.0),
                     Row(
-                      children: [
-                        const Expanded(
+                      children: const [
+                        Expanded(
                           child: Divider(
                             color: appPrimaryColor,
                           ),
                         ),
 
-                        const Padding(
+                        Padding(
                           padding: EdgeInsets.symmetric(horizontal: 8.0),
                           child: Text(
                           'Or continue with',
@@ -181,7 +476,7 @@ class _SignupState extends State<Signup> {
                           ),
                         ),
 
-                        const Expanded(
+                        Expanded(
                           child: Divider(
                             color: appPrimaryColor,
                           ),
@@ -238,6 +533,7 @@ class _SignupState extends State<Signup> {
                       ],
                     ),
                   ],
+                ),
                 ),
               ),
             ],
