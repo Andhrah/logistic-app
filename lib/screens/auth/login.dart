@@ -103,7 +103,7 @@ class _LoginState extends State<Login> {
             borderRadius: BorderRadius.circular(10),
             duration: const Duration(seconds: 2),
           ).show(context);
-          // Navigator.of(context).pushNamed(ItemDetails.id);
+          Navigator.of(context).pushNamed(ItemDetails.id);
         }
         // Auth.authProvider(context)
       } catch(err){
