@@ -65,6 +65,7 @@ class _LoginState extends State<Login> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InputField(
+                      obscureText: false,
                       text: 'Email Address',
                       hintText: 'jane@email.com',
                       textHeight: 10.0,
@@ -78,6 +79,7 @@ class _LoginState extends State<Login> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Password',
                       hintText: 'password',
                       textHeight: 10.0,

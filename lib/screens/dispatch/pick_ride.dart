@@ -62,6 +62,7 @@ class _PickRideState extends State<PickRide> {
                       child: Column(
                         children: [
                           InputField(
+                            obscureText: false,
                             text: '',
                             hintText: 'Item’s Location',
                             textHeight: 0.0,
@@ -69,6 +70,7 @@ class _PickRideState extends State<PickRide> {
                           ),
 
                           InputField(
+                            obscureText: false,
                             text: '',
                             hintText: 'Item’s Destination',
                             textHeight: 0,

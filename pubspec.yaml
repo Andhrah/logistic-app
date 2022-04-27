@@ -50,6 +50,7 @@ dependencies:
   hive_flutter: ^1.1.0
   overlay_support: ^1.2.1
   path_provider: ^2.0.9
+  another_flushbar: ^1.10.28
 
 dev_dependencies:
   flutter_test:

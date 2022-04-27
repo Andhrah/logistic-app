@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/models/auth/first_time_user.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/repository/hive_repository.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
-import 'package:trakk/screens/repository/hive_repository.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
 
@@ -51,9 +51,17 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     FirstTimeUser? firstTimeUser;
 
     try {
+      print('<<<<<<<<<< DEBUGGING >>>>>>>>>>>>>>>>');
+      print('<<<<<<<<<<  >>>>>>>>>>>>>>>>');
+      // print(firstTimeUser);
       firstTimeUser = _hiveRepository.get<FirstTimeUser>(key: 'firstTimeUser', name: kFirstTimeUser);
+      print(firstTimeUser);
+      print('<<<<<<<<<< DEBUGGING 2>>>>>>>>>>>>>>>>');
+      print(firstTimeUser);
       Auth.authProvider(context).setFirstTimerUser(firstTimeUser);
     } catch(err) {
+      print('<<<<<<<<<< Logging error >>>>>>>>>>>>>>>>');
+      print(err.toString());
       rethrow;
     }
 

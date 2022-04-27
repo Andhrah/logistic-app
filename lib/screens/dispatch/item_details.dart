@@ -58,6 +58,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                             child: Column(
                               children: [
                                 InputField(
+                                  obscureText: false,
                                   text: '',
                                   hintText: 'Item’s Location',
                                   textHeight: 0.0,
@@ -65,6 +66,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                 ),
 
                                 InputField(
+                                  obscureText: false,
                                   text: '',
                                   hintText: 'Item’s Destination',
                                   textHeight: 0,
@@ -78,6 +80,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '',
                       hintText: 'Item',
                       textHeight: 0,
@@ -85,6 +88,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '',
                       hintText: 'Item details',
                       textHeight: 0,

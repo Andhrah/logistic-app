@@ -92,6 +92,7 @@ class _PersonalDataState extends State<PersonalData> {
                     
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'State of origin',
                        hintText: 'Rivers',
                       textHeight: 10.0,
@@ -100,6 +101,7 @@ class _PersonalDataState extends State<PersonalData> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'State of residence',
                        hintText: 'lagos',
                       textHeight: 10.0,
@@ -108,6 +110,7 @@ class _PersonalDataState extends State<PersonalData> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Residential address',
                       hintText: '50b tapa street, yaba',
                       textHeight: 10.0,

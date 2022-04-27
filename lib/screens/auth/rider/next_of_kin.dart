@@ -74,6 +74,7 @@ class _NextOfKinState extends State<NextOfKin> {
                       children: [
                         Expanded(
                           child: InputField(
+                            obscureText: false,
                             text: 'First Name of Kin',
                             hintText: 'John',
                             textHeight: 10.0,
@@ -90,6 +91,7 @@ class _NextOfKinState extends State<NextOfKin> {
 
                         Expanded(
                           child: InputField(
+                            obscureText: false,
                             text: ' Last Name of Kin',
                             hintText: 'Doe',
                             textHeight: 10.0,
@@ -106,6 +108,7 @@ class _NextOfKinState extends State<NextOfKin> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Email Address of Kin',
                       hintText: 'johndoe@email.com',
                       textHeight: 10.0,
@@ -119,6 +122,7 @@ class _NextOfKinState extends State<NextOfKin> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Address of Kin',
                       hintText: 'Address of next of kin',
                       textHeight: 10.0,
@@ -132,6 +136,7 @@ class _NextOfKinState extends State<NextOfKin> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Phone number of Kin',
                       hintText: '08000000000',
                       textHeight: 10.0,

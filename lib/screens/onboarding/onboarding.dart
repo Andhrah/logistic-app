@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:trakk/models/auth/first_time_user.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/repository/hive_repository.dart';
 import 'package:trakk/screens/home.dart';
-import 'package:trakk/screens/repository/hive_repository.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/my_color.dart';
@@ -51,7 +50,7 @@ class _OnboardingState extends State<Onboarding> {
   Curve _animation_curve = Curves.fastLinearToSlowEaseIn;
 
   FirstTimeUser? firstTimeUser;
-  HiveRepository _hiveRepository = HiveRepository();
+  final HiveRepository _hiveRepository = HiveRepository();
 
   List<Map> screenStates = [
     {

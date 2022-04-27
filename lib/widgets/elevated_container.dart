@@ -19,7 +19,7 @@ class ElevatedContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-       onTap: onPress,
+      onTap: onPress,
       child: Container(
         alignment: Alignment.center,
         padding: const EdgeInsets.all(7.0),

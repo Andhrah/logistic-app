@@ -1,7 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:trakk/screens/repository/hive_interface.dart';
-// import 'package:vpay_merchant_mobile/repository/hive_interface.dart';
-import 'package:trakk/screens/repository/hive_repository.dart';
+import 'package:trakk/repository/hive_interface.dart';
 
 class HiveRepository implements IRepository {
   HiveRepository();

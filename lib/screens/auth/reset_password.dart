@@ -65,6 +65,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     InputField(
                       text: 'Enter new password',
                       hintText: 'password',
+                      obscureText: false,
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(
@@ -78,6 +79,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                     InputField(
                       text: 'Confirm password',
                       hintText: 'password',
+                      obscureText: false,
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(

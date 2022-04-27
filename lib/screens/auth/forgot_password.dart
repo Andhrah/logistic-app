@@ -74,6 +74,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                     const SizedBox(height: 50.0),
 
                     InputField(
+                      obscureText: false,
                       text: 'Email Address',
                       hintText: 'jane@email.com',
                       textHeight: 10.0,

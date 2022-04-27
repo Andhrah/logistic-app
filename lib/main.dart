@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as pp;
 
 import 'package:trakk/models/auth/first_time_user.dart';
+import 'package:trakk/models/auth/user.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/forgot_password_pin.dart';
@@ -40,6 +41,7 @@ _openHive() async {
   // await Hive.openBox();
   // Register the generated adapter
   Hive.registerAdapter(FirstTimeUserAdapter());
+  Hive.registerAdapter(UserAdapter());
 }
 
 class MyApp extends StatefulWidget {
@@ -86,7 +88,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: SplashScreen.id,
+          initialRoute: Home.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),

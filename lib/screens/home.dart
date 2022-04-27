@@ -8,6 +8,8 @@ import 'package:trakk/widgets/button.dart';
 class Home extends StatefulWidget {
   static const String id = 'home';
 
+  // final String? title;
+
   const Home({Key? key}) : super(key: key);
 
   @override
