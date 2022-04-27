@@ -16,7 +16,7 @@ class _PolylineScreenState extends State<PolylineScreen> {
   GoogleMapController? mapController; //contrller for Google map
   PolylinePoints polylinePoints = PolylinePoints();
 
-  String googleAPiKey = "AIzaSyCAikVWyqmfuuDqsV2-IdpnGC0wEG4wUJw";
+  String googleAPiKey = "AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U";
   
   Set<Marker> markers = {}; //markers for google map
   Map<PolylineId, Polyline> polylines = {}; //polylines to show direction

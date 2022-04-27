@@ -61,6 +61,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),
@@ -73,6 +74,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),
@@ -85,6 +87,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),
@@ -111,6 +114,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),
@@ -123,6 +127,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),
@@ -135,6 +140,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),
@@ -160,6 +166,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),
@@ -185,6 +192,7 @@ class _CheckoutState extends State<Checkout> {
                     ),
 
                     InputField(
+                      obscureText: false,
                       text: '', 
                       textHeight: 0.0, 
                       borderColor: appPrimaryColor.withOpacity(0.3),

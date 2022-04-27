@@ -60,14 +60,16 @@ class _VehicleDataState extends State<VehicleData> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     InputField(
+                      obscureText: false,
                       text: 'Name of vehicle',
-                     hintText: 'Name of vehicle',
+                      hintText: 'Name of vehicle',
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                     ),
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Color of vehicle',
                        hintText: 'blue',
                       textHeight: 10.0,
@@ -76,6 +78,7 @@ class _VehicleDataState extends State<VehicleData> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Vehicle number',
                       hintText: 'Vehicle number',
                       textHeight: 10.0,
@@ -84,6 +87,7 @@ class _VehicleDataState extends State<VehicleData> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      obscureText: false,
                       text: 'Vehicle capacity',
                       hintText: 'Vehicle capacity',
                       textHeight: 10.0,
