@@ -2,6 +2,7 @@
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
@@ -23,8 +24,6 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-
-  static String userType = "user";
 
   final _formKey = GlobalKey<FormState>();
 
@@ -48,6 +47,7 @@ class _SignupState extends State<Signup> {
   String? _phoneNumber;
   String? _password;
   String? _confirmPassword;
+  String? userType;
 
   bool _loading = false;
   bool _passwordIsValid = false;
@@ -96,6 +96,15 @@ class _SignupState extends State<Signup> {
     });
   }
 
+  // var userData = {
+  //   "firstName": _firstName,
+  //   "lastName": _lastName,
+  //   "email": _email,
+  //   "phoneNumber": _phoneNumber,
+  //   "password": _password,
+  //   "userType": userType,
+  // }
+
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
@@ -108,36 +117,127 @@ class _SignupState extends State<Signup> {
     if(form!.validate()){
 
       form.save();
+      var box = await Hive.openBox('userData');
+
+      // var box = Hive.box('userData');
+      box.putAll({
+        "firstName": _firstName,
+        "lastName": _lastName,
+        "email": _email,
+        "phoneNumber": _phoneNumber,
+        "password": _password,
+        "userType": userType,
+      });
+      print("Using Hive to ake it easier");
+      print(box.get("userType"));
       
       try {
-        var response = await Auth.authProvider(context).createUser(
-          _firstName.toString(), 
-          _lastName.toString(), 
-          _email.toString(), 
-          _password.toString(), 
-          _phoneNumber.toString(),
-          userType
-        );
-        setState(() {
-          _loading = false;
-        });
-        if (response["code"] == 201) {
-          form.reset();
-          await Flushbar(
-            messageText: Text(
-              response["message"] + ' Please login',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 18,
+        print("this is the value of loading: ${_loading}");
+        if(userType == "user") {
+          var response = await Auth.authProvider(context).createUser(
+            _firstName.toString(), 
+            _lastName.toString(), 
+            _email.toString(), 
+            _password.toString(), 
+            _phoneNumber.toString(),
+            userType.toString()
+          );
+          setState(() {
+            _loading = false;
+          });
+          if (response["code"] == 201) {
+            form.reset();
+            await Flushbar(
+              messageText: Text(
+                response["message"] + ' Please login',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: whiteColor,
+                  fontSize: 18,
+                ),
               ),
-            ),
-            backgroundColor: green,
-            flushbarPosition: FlushbarPosition.TOP,
-            duration: const Duration(seconds: 2),
-          ).show(context);
-          Navigator.of(context).pushNamed(Login.id);
+              backgroundColor: green,
+              maxWidth: MediaQuery.of(context).size.width/1.4,
+              flushbarPosition: FlushbarPosition.TOP,
+              borderRadius: BorderRadius.circular(10),
+              duration: const Duration(seconds: 2),
+            ).show(context);
+            // Navigator.of(context).pushNamed(Login.id);
+          }
+        } else {
+          Navigator.of(context).pushNamed(PersonalData.id);
         }
+        // signupUser() async {
+        //   var response = await Auth.authProvider(context).createUser(
+        //     _firstName.toString(), 
+        //     _lastName.toString(), 
+        //     _email.toString(), 
+        //     _password.toString(), 
+        //     _phoneNumber.toString(),
+        //     userType.toString()
+        //   );
+        //   setState(() {
+        //     _loading = false;
+        //   });
+
+        //   if (response["code"] == 201) {
+        //     form.reset();
+        //     await Flushbar(
+        //       messageText: Text(
+        //         response["message"] + ' Please login',
+        //         textAlign: TextAlign.center,
+        //         style: const TextStyle(
+        //           color: whiteColor,
+        //           fontSize: 18,
+        //         ),
+        //       ),
+        //       backgroundColor: green,
+        //       flushbarPosition: FlushbarPosition.TOP,
+        //       duration: const Duration(seconds: 2),
+        //     ).show(context);
+        //     Navigator.of(context).pushNamed(Login.id);
+        //   }
+        // }
+        // userType == "user" ? signupUser : Navigator.of(context).pushNamed(
+        //   PersonalData.id,
+        //   arguments: {
+        //     "firstName": _firstName,
+        //     "lastName": _lastName,
+        //     "email": _email,
+        //     "phoneNumber": _phoneNumber,
+        //     "password": _password,
+        //     "userType": userType,
+        //   }
+        // );
+        // setState(() {
+        //   _loading = false;
+        // });
+        // if (response["code"] == 201) {
+        //   form.reset();
+        //   await Flushbar(
+        //     messageText: Text(
+        //       response["message"] + ' Please login',
+        //       textAlign: TextAlign.center,
+        //       style: const TextStyle(
+        //         color: whiteColor,
+        //         fontSize: 18,
+        //       ),
+        //     ),
+        //     backgroundColor: green,
+        //     flushbarPosition: FlushbarPosition.TOP,
+        //     duration: const Duration(seconds: 2),
+        //   ).show(context);
+        //   userType == "userType" ? Navigator.of(context).pushNamed(
+        //     PersonalData.id,
+        //     arguments: {
+        //       "firstName": _firstName,
+        //       "lastName": _lastName,
+        //       "email": _email,
+        //       "phoneNumber": _phoneNumber,
+        //       "userType": "user",
+        //     }
+        //   ) : Navigator.of(context).pushNamed(Login.id);
+        // }
         // Auth.authProvider(context)
       } catch(err){
         setState(() {
@@ -154,6 +254,8 @@ class _SignupState extends State<Signup> {
           ),
           backgroundColor: redColor,
           flushbarPosition: FlushbarPosition.TOP,
+          maxWidth: MediaQuery.of(context).size.width/1.2,
+          borderRadius: BorderRadius.circular(10),
           duration: const Duration(seconds: 5),
         ).show(context);
         rethrow;
@@ -163,14 +265,88 @@ class _SignupState extends State<Signup> {
       _loading = false;
     });
   }
+
+  /*
+   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
+  */
+  // _onSubmit() async {
+  //   setState(() {
+  //     _loading = true;
+  //   });
+    
+  //   final FormState? form = _formKey.currentState;
+  //   if(form!.validate()){
+
+  //     form.save();
+      
+  //     try {
+  //       var response = await Auth.authProvider(context).createUser(
+  //         _firstName.toString(), 
+  //         _lastName.toString(), 
+  //         _email.toString(), 
+  //         _password.toString(), 
+  //         _phoneNumber.toString(),
+  //         userType.toString(),
+  //       );
+  //       setState(() {
+  //         _loading = false;
+  //       });
+  //       if (response["code"] == 201) {
+  //         form.reset();
+  //         await Flushbar(
+  //           messageText: Text(
+  //             response["message"] + ' Please login',
+  //             textAlign: TextAlign.center,
+  //             style: const TextStyle(
+  //               color: whiteColor,
+  //               fontSize: 18,
+  //             ),
+  //           ),
+  //           backgroundColor: green,
+  //           flushbarPosition: FlushbarPosition.TOP,
+  //           duration: const Duration(seconds: 2),
+  //         ).show(context);
+  //         Navigator.of(context).pushNamed(Login.id);
+  //       }
+  //       // Auth.authProvider(context)
+  //     } catch(err){
+  //       setState(() {
+  //         _loading = false;
+  //       });
+  //       print("==============================");
+  //       print(err);
+  //       print("==============================");
+  //       await Flushbar(
+  //         messageText: Text(
+  //           err.toString(),
+  //           textAlign: TextAlign.center,
+  //           style: const TextStyle(
+  //             color: whiteColor,
+  //             fontSize: 18,
+  //           ),
+  //         ),
+  //         backgroundColor: redColor,
+  //         flushbarPosition: FlushbarPosition.TOP,
+  //         duration: const Duration(seconds: 5),
+  //       ).show(context);
+  //       rethrow;
+  //     }
+  //   }
+  //   setState(() {
+  //     _loading = false;
+  //   });
+  // }
   
   @override
   Widget build(BuildContext context) {
 
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    userType = arg["userType"];
+
     // final args = ModalRoute.of(context)?.settings.arguments as Home;
     // userType = args.title.toString();
-    // print('================================');
-    // print(userType);
+    print('================================');
+    print(userType);
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -215,6 +391,60 @@ class _SignupState extends State<Signup> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // InputField(
+                      //   key: const Key('firstName'),
+                      //   textController: _firstNameController,
+                      //   node: _firstNameNode,
+                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //   obscureText: false,
+                      //   text: 'First Name',
+                      //   hintText: 'Jane Doe',
+                      //   textHeight: 5.0,
+                      //   borderColor: appPrimaryColor.withOpacity(0.9),
+                      //   suffixIcon: const Icon(
+                      //     Remix.user_line,
+                      //     size: 18.0,
+                      //     color: Color(0xFF909090),
+                      //   ),
+                      //   validator: (value) {
+                      //     if (value!.trim().length > 2) {
+                      //       return null;
+                      //     }
+                      //     return "Enter a valid first name";
+                      //   },
+                      //   onSaved: (value){
+                      //     _firstName = value!.trim();
+                      //     return null;
+                      //   },
+                      // ),
+
+                      // const SizedBox(height: 30.0),
+                      // InputField(
+                      //   key: const Key('lastName'),
+                      //   textController: _lastNameController,
+                      //   node: _lastNameNode,
+                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //   obscureText: false,
+                      //   text: 'Last Name',
+                      //   hintText: 'Doe',
+                      //   textHeight: 5.0,
+                      //   borderColor: appPrimaryColor.withOpacity(0.9),
+                      //   suffixIcon: const Icon(
+                      //     Remix.user_line,
+                      //     size: 18.0,
+                      //     color: Color(0xFF909090),
+                      //   ),
+                      //   validator: (value) {
+                      //     if (value!.trim().length > 2) {
+                      //       return null;
+                      //     }
+                      //     return "Enter a valid last name";
+                      //   },
+                      //   onSaved: (value) {
+                      //     _lastName = value!.trim();
+                      //     return null;
+                      //   },
+                      // ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -286,11 +516,10 @@ class _SignupState extends State<Signup> {
                         textController: _emailController,
                         keyboardType: TextInputType.emailAddress,
                         node: _emailNode,
-                        // autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
                         text: 'Email Address',
                         hintText: 'jane@email.com',
-                        textHeight: 10.0,
+                        textHeight: 5.0,
                         borderColor: appPrimaryColor.withOpacity(0.9),
                         suffixIcon: const Icon(
                           Remix.mail_line,
@@ -316,7 +545,7 @@ class _SignupState extends State<Signup> {
                         obscureText: false,
                         text: 'Phone Number',
                         hintText: '08000000000',
-                        textHeight: 10.0,
+                        textHeight: 5.0,
                         borderColor: appPrimaryColor.withOpacity(0.9),
                         suffixIcon: const Icon(
                           Remix.phone_line,
@@ -336,102 +565,93 @@ class _SignupState extends State<Signup> {
                       ),
 
                       const SizedBox(height: 30.0),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: InputField(
-                              key: const Key('password'),
-                              textController: _passwordController,
-                              node: _passwordNode,
-                              obscureText: _hidePassword,
-                              maxLines: 1,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              text: 'Password',
-                              hintText: 'password',
-                              textHeight: 10.0,
-                              borderColor: appPrimaryColor.withOpacity(0.9),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
-                                  size: 18.0,
-                                  color: const Color(0xFF909090),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _hidePassword = !_hidePassword;
-                                  });
-                                },
-                              ),
-                              validator: (value) {
-                                if (value!.trim().length < 7) {
-                                  return "Password should be 8\ncharacters or more";
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _password = value!.trim();
-                                return null;
-                              },
-                            ),
+                      InputField(
+                        key: const Key('password'),
+                        textController: _passwordController,
+                        node: _passwordNode,
+                        obscureText: _hidePassword,
+                        maxLines: 1,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        text: 'Password',
+                        hintText: 'password',
+                        textHeight: 5.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
+                            size: 18.0,
+                            color: const Color(0xFF909090),
                           ),
-
-                          const SizedBox(width: 8.0),
-
-                          Expanded(
-                            child: InputField(
-                              key: const Key('confirmPassword'),
-                              textController: _confirmPasswordController,
-                              node: _confirmPasswordNode,
-                              maxLines: 1,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              obscureText: _hidePassword,
-                              text: 'Confirm Password',
-                              hintText: 'password',
-                              textHeight: 10.0,
-                              borderColor: appPrimaryColor.withOpacity(0.9),
-                              suffixIcon: IconButton(
-                                icon: Icon(
-                                  _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
-                                  size: 18.0,
-                                  color: const Color(0xFF909090),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _hidePassword = !_hidePassword;
-                                  });
-                                },
-                              ),
-                              validator: (value) {
-                                if(_confirmPasswordController.text != _passwordController.text){
-                                  return "Password does not match";
-                                }
-                                return null;
-                              },
-                              onSaved: (value) {
-                                _password = value!.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
+                          onPressed: () {
+                            setState(() {
+                              _hidePassword = !_hidePassword;
+                            });
+                          },
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length < 7) {
+                            return "Password should be 8 characters or more";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _password = value!.trim();
+                          return null;
+                        },
                       ),
 
-                      const SizedBox(height: 40.0),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Button(
-                          text: 'Create an account',
-                          onPress: _onSubmit,
-                          // onPress: () {
-                          //   Navigator.of(context).pushNamed(PersonalData.id);
-                          // }, 
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: _loading,
-                          width: 350.0
-                        )
-                      ),
+                      // const SizedBox(height: 30.0),
+                      // InputField(
+                      //   key: const Key('confirmPassword'),
+                      //   textController: _confirmPasswordController,
+                      //   node: _confirmPasswordNode,
+                      //   maxLines: 1,
+                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //   obscureText: _hidePassword,
+                      //   text: 'Confirm Password',
+                      //   hintText: 'password',
+                      //   textHeight: 10.0,
+                      //   borderColor: appPrimaryColor.withOpacity(0.9),
+                      //   suffixIcon: IconButton(
+                      //     icon: Icon(
+                      //       _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
+                      //       size: 18.0,
+                      //       color: const Color(0xFF909090),
+                      //     ),
+                      //     onPressed: () {
+                      //       setState(() {
+                      //         _hidePassword = !_hidePassword;
+                      //       });
+                      //     },
+                      //   ),
+                      //   validator: (value) {
+                      //     if(_confirmPasswordController.text != _passwordController.text){
+                      //       return "Password does not match";
+                      //     }
+                      //     return null;
+                      //   },
+                      //   onSaved: (value) {
+                      //     _password = value!.trim();
+                      //     return null;
+                      //   },
+                      // ),
+                     
+
+                    const SizedBox(height: 40.0),
+                    Align(
+                      alignment: Alignment.center,
+                      child: Button(
+                        text: userType == "rider" ? "Next" : 'Create an account',
+                        onPress: _onSubmit,
+                        // onPress: () {
+                        //   Navigator.of(context).pushNamed(PersonalData.id);
+                        // }, 
+                        color: appPrimaryColor, 
+                        textColor: whiteColor, 
+                        isLoading: _loading,
+                        width: 350.0
+                      )
+                    ),
                     
                     const SizedBox(height: 15.0),
                     InkWell(

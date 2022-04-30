@@ -16,6 +16,7 @@ import 'package:trakk/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
 import 'package:trakk/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/screens/country.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
@@ -109,6 +110,7 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
+            // Country.id: (context) => const Country(),
           },
           // home: const GetStarted(),
         ),

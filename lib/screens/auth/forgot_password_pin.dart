@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
-import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/reset_password.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -23,7 +23,6 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController textEditingController = TextEditingController();
-  // ..text = "123456";
 
   // ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
@@ -69,7 +68,8 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
     if(form!.validate()){
 
       form.save();
-      
+
+      var box = await Hive.openBox('userData');
       try {
         var response = await Auth.authProvider(context).forgetPassword(
           _email.toString(), 
@@ -309,9 +309,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                         ),
                       ),
                     ),
-                    // const SizedBox(
-                    //   height: 20,
-                    // ),
+                   
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [

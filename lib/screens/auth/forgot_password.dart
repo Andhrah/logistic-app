@@ -234,9 +234,6 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         alignment: Alignment.center,
                         child: Button(
                           text: 'Request reset code', 
-                          // onPress: () {
-                          //   Navigator.of(context).pushNamed(ForgetPasswordPin.id);
-                          // }, 
                           onPress: _onSubmit, 
                           color: appPrimaryColor, 
                           textColor: whiteColor, 

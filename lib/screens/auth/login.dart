@@ -271,7 +271,12 @@ class _LoginState extends State<Login> {
                       const SizedBox(height: 15.0),
                       InkWell(
                         onTap: (){
-                          Navigator.of(context).pushNamed(Signup.id);
+                          Navigator.of(context).pushNamed(
+                            Signup.id,
+                            arguments: {
+                              "userType": "unknown",
+                            }
+                          );
                         },
                         child: Align(
                           child: RichText(

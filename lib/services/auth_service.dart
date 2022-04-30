@@ -32,7 +32,7 @@ class AuthService {
       return decoded;
     } else {
       print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(decoded['data']['message'] ?? response.reasonPhrase);
+      throw ApiFailureException(decoded['data']["message"] ?? response.reasonPhrase);
     }
   }
 
@@ -57,14 +57,15 @@ class AuthService {
       body: json.encode(body)
     );
     print(response.body);
-    print('======= GOT HERE ==========');
     var decoded = jsonDecode(response.body);
-    if (response.statusCode.toString().startsWith('2')) {
-      print('data: $decoded');
+     print(decoded);
+    if (response.statusCode.toString().startsWith('2') && decoded["status"]) {
+      print('data here for reset: $decoded');
       return decoded;
     } else {
-      print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
-      // throw ApiFailureException(decoded['data'] ?? response.reasonPhrase);
+      print('======= GOT HERE ELSE ==========');
+      print('reason is ${response.reasonPhrase} message is ${decoded['status']}');
+      throw ApiFailureException(decoded["message"] ?? response.reasonPhrase ?? 'Internal server error');
     }
   }
 
@@ -82,6 +83,59 @@ class AuthService {
       "phoneNumber": phoneNumber,
       "password": password,
       "userType": userType,
+    };
+    return await authRequest(body, 'api/v1/auth/signup');
+  }
+
+  Future<dynamic> createRider(
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+    String phoneNumber,
+    String userType,
+
+    String stateOfOrigin,
+    String stateOfResidence,
+    String residentialAddress,
+    String userPassport,
+
+    String vehicleName,
+    String vehicleColor,
+    String vehicleNumber,
+    String vehicleCapacity,
+    String vehicleParticulars,
+    String vehicleImage,
+
+    String kinFullName,
+    String kinEmail,
+    String kinAddress,
+    String kinPhoneNumber,
+    ) async {
+    var body = {
+      "firstName": firstName,
+      "lastName": lastName,
+      "email": email,
+      "phoneNumber": phoneNumber,
+      "password": password,
+      "userType": userType,
+
+      "stateOfOrigin": stateOfOrigin,
+      "stateOfResidence": stateOfResidence,
+      "residentialAddress": residentialAddress,
+      "avatar": userPassport,
+
+      "vehicleName": vehicleName,
+      "vehicleColor": vehicleColor,
+      "vehicleNumber": vehicleNumber,
+      "vehicleCapacity": vehicleCapacity,
+      "vehicleImage": vehicleImage,
+      "vehicleParticulars": vehicleParticulars,
+
+      "nOKFullName": kinFullName,
+      "nOKEmail": kinEmail,
+      "nOKAddress": kinAddress,
+      "nOKPhoneNumber": kinPhoneNumber,
     };
     return await authRequest(body, 'api/v1/auth/signup');
   }

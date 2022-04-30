@@ -61,6 +61,60 @@ class Auth extends ChangeNotifier {
     }
   }
 
+  Future createRider(
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+    String phoneNumber,
+    String userType,
+
+    String stateOfOrigin,
+    String stateOfResidence,
+    String residentialAddress,
+    String userPassport,
+
+    String vehicleName,
+    String vehicleColor,
+    String vehicleNumber,
+    String vehicleCapacity,
+    String vehicleParticulars,
+    String vehicleImage,
+
+    String kinFullName,
+    String kinEmail,
+    String kinAddress,
+    String kinPhoneNumber,
+    ) async {
+    try {
+      var response = await _authApi.createRider(
+        firstName,
+        lastName,
+        email,
+        password,
+        phoneNumber,
+        userType,
+        stateOfOrigin,
+        stateOfResidence,
+        residentialAddress,
+        userPassport,
+        vehicleName,
+        vehicleColor,
+        vehicleNumber,
+        vehicleCapacity,
+        vehicleParticulars,
+        vehicleImage,
+        kinFullName,
+        kinEmail,
+        kinAddress,
+        kinPhoneNumber,
+      );
+      return response;
+    } catch(err) {
+      throw ApiFailureException(err);
+    }
+  }
+
   // login a user
   Future login(String email, String password) async {
     try {
@@ -89,6 +143,7 @@ class Auth extends ChangeNotifier {
       var response = await _authApi.resetPassword(code, password);
       return response;
     } catch(err) {
+      print(err);
       throw ApiFailureException(err);
     }
   }

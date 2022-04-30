@@ -108,10 +108,11 @@ class _ResetPasswordState extends State<ResetPassword> {
           _loading = false;
         });
         await Flushbar(
-          messageText: const Text(
-             'An Error Occurred',
+          messageText: Text(
+            //  'An Error Occurred',
+            err.toString(),
             textAlign: TextAlign.center,
-            style: TextStyle(
+            style: const TextStyle(
               color: whiteColor,
               fontSize: 18,
             ),
@@ -134,6 +135,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
 
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    code = arg["code"];
 
     return Scaffold(
       backgroundColor: whiteColor,
