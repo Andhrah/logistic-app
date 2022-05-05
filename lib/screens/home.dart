@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -78,7 +79,9 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 15.0),
             Button(
               text: 'Become a Merchant',
-              onPress: () {},
+              onPress: () {
+                Navigator.of(context).pushNamed(SignupMerchant.id);
+              },
               color: whiteColor,
               isLoading: false,
               textColor: appPrimaryColor,
