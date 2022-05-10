@@ -162,7 +162,7 @@ class _SignupState extends State<Signup> {
               borderRadius: BorderRadius.circular(10),
               duration: const Duration(seconds: 2),
             ).show(context);
-            // Navigator.of(context).pushNamed(Login.id);
+            Navigator.of(context).pushNamed(Login.id);
           }
         } else {
           Navigator.of(context).pushNamed(PersonalData.id);

@@ -99,6 +99,9 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
                             ElevatedButton(
                               child: const Text('Show Order'),
+                              style: ElevatedButton.styleFrom(
+                                  primary: Colors.black, // Background color
+                              ),
                               onPressed: () {
                                 showModalBottomSheet(
                                   context: context,

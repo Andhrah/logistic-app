@@ -85,7 +85,7 @@ class _PickUpScreenState extends State<PickUpScreen> {
     PolylineId id = const PolylineId("poly");
     Polyline polyline = Polyline(
       polylineId: id,
-      color: Colors.deepPurpleAccent,
+      color: appPrimaryColor,
       points: polylineCoordinates,
       width: 8,
     );

@@ -30,9 +30,16 @@ class AuthService {
     if (response.statusCode.toString().startsWith('2')) {
       print('data: $decoded');
       return decoded;
-    } else {
+    } else if(decoded['data']) {
+      print('reason is ...${response.reasonPhrase} message is ${decoded['data']}');
+      throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
+    }
+    else {
+      // if(decoded['data'] && decoded['data'][0]){
+      //   throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
+      // }
       print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(decoded['data']["message"] ?? response.reasonPhrase);
+      throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
     }
   }
 
