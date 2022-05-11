@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/screens/dispatch/dispatch_summary.dart';
+import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
@@ -16,7 +18,7 @@ class CartScreen extends StatefulWidget {
 
 class _CartScreenState extends State<CartScreen> {
 
-  int itemCount = 1;
+  int itemCount = 2;
 
   @override
   void initState() {
@@ -92,6 +94,20 @@ class _CartScreenState extends State<CartScreen> {
                                     color: appPrimaryColor.withOpacity(0.3),
                                   ),
                                 ),
+
+                                TextButton(
+                                  onPressed: () {
+                                     Navigator.of(context).pushNamed(DispatchSummary.id);
+                                  }, 
+                                  child: const Text(
+                                    'View Details',
+                                    textScaleFactor: 1.1,
+                                    style: TextStyle(
+                                      color: secondaryColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
 
@@ -159,56 +175,93 @@ class _CartScreenState extends State<CartScreen> {
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(
-                                      Remix.price_tag_3_fill,
-                                      color: secondaryColor,
-                                    ),
-                                    Text(
-                                      ' ₦1,500',
+                                
+                                 Column(
+                                  children: [
+                                     const Text(
+                                      'Price',
                                       textScaleFactor: 1.0,
                                       style: TextStyle(
-                                        color: secondaryColor,
+                                        color: appPrimaryColor,
                                         fontWeight: FontWeight.bold
                                       ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Icon(
+                                          Remix.price_tag_3_line,
+                                          color: secondaryColor,
+                                        ),
+                                        Text(
+                                          ' ₦1,500',
+                                          textScaleFactor: 1.0,
+                                          style: TextStyle(
+                                            color: secondaryColor,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(
-                                      Remix.time_fill,
-                                      color: secondaryColor,
-                                    ),
-                                    Text(
-                                      ' 12:05',
+                                Column(
+                                  children: [
+                                     const Text(
+                                      'ETA',
                                       textScaleFactor: 1.0,
                                       style: TextStyle(
-                                        color: secondaryColor,
+                                        color: appPrimaryColor,
                                         fontWeight: FontWeight.bold
                                       ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Icon(
+                                          Remix.time_line,
+                                          color: secondaryColor,
+                                        ),
+                                        Text(
+                                          ' 12:05',
+                                          textScaleFactor: 1.0,
+                                          style: TextStyle(
+                                            color: secondaryColor,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
 
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Icon(
-                                      Remix.pin_distance_fill,
-                                     color: secondaryColor,
-                                    ),
-                                    Text(
-                                      ' 29.7km',
+                                Column(
+                                  children: [
+                                    const Text(
+                                      'Distance',
                                       textScaleFactor: 1.0,
                                       style: TextStyle(
-                                        color: secondaryColor,
+                                        color: appPrimaryColor,
                                         fontWeight: FontWeight.bold
                                       ),
+                                    ),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                      children: const [
+                                        Icon(
+                                          Remix.pin_distance_line,
+                                        color: secondaryColor,
+                                        ),
+                                        Text(
+                                          ' 29.7km',
+                                          textScaleFactor: 1.0,
+                                          style: TextStyle(
+                                            color: secondaryColor,
+                                            fontWeight: FontWeight.bold
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -274,21 +327,62 @@ class _CartScreenState extends State<CartScreen> {
                             ),
                             
                             const SizedBox(height: 30.0),
-                            Align(
-                              child: Button(
-                                text: 'CHECKOUT', 
-                                // onPress: () {
-                                //   Navigator.of(context).pushNamed(PickUpScreen.id);
-                                //   // Navigator.pop(context);
-                                // }, 
-                                onPress: _checkOut,
-                                color: appPrimaryColor, 
-                                textColor: whiteColor, 
-                                isLoading: false,
-                                width: MediaQuery.of(context).size.width/1.5,
-                                // width: MediaQuery.of(context).size.width/6
-                              ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: Align(
+                                    child: Button(
+                                      text: 'Pick A Rider', 
+                                      // onPress: () {
+                                      //   Navigator.of(context).pushNamed(PickUpScreen.id);
+                                      //   // Navigator.pop(context);
+                                      // }, 
+                                      onPress: _checkOut,
+                                      color: secondaryColor, 
+                                      textColor: appPrimaryColor, 
+                                      isLoading: false,
+                                      width: MediaQuery.of(context).size.width/1.5,
+                                      // width: MediaQuery.of(context).size.width/6
+                                    ),
+                                  ),
+                                ),
+
+                                const SizedBox(width: 10.0),
+
+                                Expanded(
+                                  child: Align(
+                                    child: Button(
+                                      text: 'CHECKOUT', 
+                                      // onPress: () {
+                                      //   Navigator.of(context).pushNamed(PickUpScreen.id);
+                                      //   // Navigator.pop(context);
+                                      // }, 
+                                      onPress: _checkOut,
+                                      color: appPrimaryColor, 
+                                      textColor: whiteColor, 
+                                      isLoading: false,
+                                      width: MediaQuery.of(context).size.width/1.5,
+                                      // width: MediaQuery.of(context).size.width/6
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
+                            // Align(
+                            //   child: Button(
+                            //     text: 'CHECKOUT', 
+                            //     // onPress: () {
+                            //     //   Navigator.of(context).pushNamed(PickUpScreen.id);
+                            //     //   // Navigator.pop(context);
+                            //     // }, 
+                            //     onPress: _checkOut,
+                            //     color: appPrimaryColor, 
+                            //     textColor: whiteColor, 
+                            //     isLoading: false,
+                            //     width: MediaQuery.of(context).size.width/1.5,
+                            //     // width: MediaQuery.of(context).size.width/6
+                            //   ),
+                            // ),
                             const SizedBox(height: 20.0),
                           ],
                         ),
