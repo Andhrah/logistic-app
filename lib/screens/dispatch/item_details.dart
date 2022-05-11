@@ -49,6 +49,8 @@ class _ItemDetailsState extends State<ItemDetails> {
   String _itemImage = "";
   String? _pickUpDate;
   String? _dropOffDate;
+  dynamic _buttonText = "";
+  dynamic _previousRoute = "";
 
   late GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
@@ -68,6 +70,13 @@ class _ItemDetailsState extends State<ItemDetails> {
         predictions = result.predictions!;
       });
     }
+  }
+
+  _getPreviousRoute() async {
+    var box = await Hive.openBox('routes');
+    setState(() {
+      _previousRoute = box.get('previousRoute');
+    });
   }
 
   @override
@@ -93,6 +102,8 @@ class _ItemDetailsState extends State<ItemDetails> {
     _dropOffDateNode = FocusNode();
     _receiverNameNode = FocusNode();
     _receiverphoneNumberNode = FocusNode();
+
+     _getPreviousRoute();
   }
 
   @override
@@ -129,10 +140,6 @@ class _ItemDetailsState extends State<ItemDetails> {
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
   _onAddItemPress() async {
-    // setState(() {
-    //   _isButtonPress = true;
-    // });
-    
     final FormState? form = _formKey.currentState;
     if(form!.validate()){
 
@@ -155,8 +162,21 @@ class _ItemDetailsState extends State<ItemDetails> {
    
   }
 
+  _saveEdittedItem() async {
+    var box = await Hive.openBox('routes');
+    setState(() {
+      _previousRoute = box.delete('previousRoute');
+    });
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
+    if(_previousRoute == "DispatchSummary"){
+      final arg = ModalRoute.of(context)!.settings.arguments as Map;
+      _buttonText = arg["buttonText"];
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -169,10 +189,7 @@ class _ItemDetailsState extends State<ItemDetails> {
               ),
 
               Container(
-                // height: MediaQuery.of(context).size.height,
-                // height: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                // color: secondaryColor,
                 decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/images/empty_map.png"),
@@ -602,11 +619,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                       const SizedBox(height: 30.0),
                       
                       Button(
-                        text: 'Add Item', 
-                        // onPress: () {
-                          // Navigator.of(context).pushNamed(Checkout.id);
-                        // }, 
-                        onPress: _onAddItemPress,
+                        text: _buttonText.length < 1 ? 'Add Item' : _buttonText, 
+                        onPress: _buttonText.length < 1 ? _onAddItemPress : _saveEdittedItem,
                         color: appPrimaryColor, 
                         textColor: whiteColor, 
                         isLoading: false,
@@ -615,61 +629,10 @@ class _ItemDetailsState extends State<ItemDetails> {
 
                       const SizedBox(height: 40.0),
 
-                      // InputField(
-                      //   obscureText: false,
-                      //   text: '',
-                      //   hintText: 'Item details',
-                      //   textHeight: 0,
-                      //   borderColor: appPrimaryColor.withOpacity(0.5),
-                      //   area: null
-                      // ),
                     ]
                   ),
                 ),
               ),
-
-              // Card(
-              //   shape: RoundedRectangleBorder(
-              //     side: BorderSide(color: appPrimaryColor.withOpacity(0.3), width: 1),
-              //     borderRadius: BorderRadius.circular(10),
-              //   ),
-              //   child: SizedBox(
-              //     width: MediaQuery.of(context).size.width/1.2,
-              //     height: 170,
-              //     child: Column(
-              //       mainAxisAlignment: MainAxisAlignment.center,
-              //       children: [
-              //         InkWell(
-              //           splashColor: Colors.black12.withAlpha(30),
-              //           child: const Icon(Remix.upload_2_line),
-              //           onTap: () {},
-              //         ),
-              //         const SizedBox(height: 26.0),
-              //         const Text(
-              //           'Upload item image',
-              //           style: TextStyle(
-              //             fontSize: 18.0, 
-              //             color: appPrimaryColor, 
-              //             fontWeight: FontWeight.w400
-              //           )
-              //         )
-              //       ]
-              //     ),
-              //   ),
-              // ),
-
-              // const SizedBox(height: 30.0),
-
-              // Button(
-              //   text: 'Proceed', 
-              //   onPress: () {
-              //     Navigator.of(context).pushNamed(PickRide.id);
-              //   }, 
-              //   color: appPrimaryColor, 
-              //   textColor: whiteColor, 
-              //   isLoading: false,
-              //   width: MediaQuery.of(context).size.width/1.2,
-              // )
             ],
           )
         ),
