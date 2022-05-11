@@ -39,7 +39,7 @@ class _SignupState extends State<Signup> {
   FocusNode? _phoneNumberNode;
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
-  FocusNode? _confirmPasswordNode;
+  // FocusNode? _confirmPasswordNode;
 
   String? _firstName;
   String? _lastName;
@@ -64,7 +64,7 @@ class _SignupState extends State<Signup> {
     _emailController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    // _confirmPasswordController = TextEditingController();
   }
 
   _validateEmail() {
@@ -80,7 +80,6 @@ class _SignupState extends State<Signup> {
       regex = RegExp(pattern);
       setState(() {
         _emailIsValid = regex.hasMatch(email);
-        print(_emailIsValid);
       });
       if(_emailIsValid == false){
         return "Enter a valid email address";
@@ -92,18 +91,8 @@ class _SignupState extends State<Signup> {
     setState(() {
       _confirmPasswordIsValid = _confirmPasswordController.text != null &&
         _confirmPasswordController.text == _passwordController.text;
-      print(_confirmPasswordIsValid);
     });
   }
-
-  // var userData = {
-  //   "firstName": _firstName,
-  //   "lastName": _lastName,
-  //   "email": _email,
-  //   "phoneNumber": _phoneNumber,
-  //   "password": _password,
-  //   "userType": userType,
-  // }
 
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
@@ -128,11 +117,8 @@ class _SignupState extends State<Signup> {
         "password": _password,
         "userType": userType,
       });
-      print("Using Hive to ake it easier");
-      print(box.get("userType"));
       
       try {
-        print("this is the value of loading: ${_loading}");
         if(userType == "user") {
           var response = await Auth.authProvider(context).createUser(
             _firstName.toString(), 
@@ -167,78 +153,6 @@ class _SignupState extends State<Signup> {
         } else {
           Navigator.of(context).pushNamed(PersonalData.id);
         }
-        // signupUser() async {
-        //   var response = await Auth.authProvider(context).createUser(
-        //     _firstName.toString(), 
-        //     _lastName.toString(), 
-        //     _email.toString(), 
-        //     _password.toString(), 
-        //     _phoneNumber.toString(),
-        //     userType.toString()
-        //   );
-        //   setState(() {
-        //     _loading = false;
-        //   });
-
-        //   if (response["code"] == 201) {
-        //     form.reset();
-        //     await Flushbar(
-        //       messageText: Text(
-        //         response["message"] + ' Please login',
-        //         textAlign: TextAlign.center,
-        //         style: const TextStyle(
-        //           color: whiteColor,
-        //           fontSize: 18,
-        //         ),
-        //       ),
-        //       backgroundColor: green,
-        //       flushbarPosition: FlushbarPosition.TOP,
-        //       duration: const Duration(seconds: 2),
-        //     ).show(context);
-        //     Navigator.of(context).pushNamed(Login.id);
-        //   }
-        // }
-        // userType == "user" ? signupUser : Navigator.of(context).pushNamed(
-        //   PersonalData.id,
-        //   arguments: {
-        //     "firstName": _firstName,
-        //     "lastName": _lastName,
-        //     "email": _email,
-        //     "phoneNumber": _phoneNumber,
-        //     "password": _password,
-        //     "userType": userType,
-        //   }
-        // );
-        // setState(() {
-        //   _loading = false;
-        // });
-        // if (response["code"] == 201) {
-        //   form.reset();
-        //   await Flushbar(
-        //     messageText: Text(
-        //       response["message"] + ' Please login',
-        //       textAlign: TextAlign.center,
-        //       style: const TextStyle(
-        //         color: whiteColor,
-        //         fontSize: 18,
-        //       ),
-        //     ),
-        //     backgroundColor: green,
-        //     flushbarPosition: FlushbarPosition.TOP,
-        //     duration: const Duration(seconds: 2),
-        //   ).show(context);
-        //   userType == "userType" ? Navigator.of(context).pushNamed(
-        //     PersonalData.id,
-        //     arguments: {
-        //       "firstName": _firstName,
-        //       "lastName": _lastName,
-        //       "email": _email,
-        //       "phoneNumber": _phoneNumber,
-        //       "userType": "user",
-        //     }
-        //   ) : Navigator.of(context).pushNamed(Login.id);
-        // }
-        // Auth.authProvider(context)
       } catch(err){
         setState(() {
           _loading = false;
@@ -266,76 +180,7 @@ class _SignupState extends State<Signup> {
     });
   }
 
-  /*
-   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
-  */
-  // _onSubmit() async {
-  //   setState(() {
-  //     _loading = true;
-  //   });
-    
-  //   final FormState? form = _formKey.currentState;
-  //   if(form!.validate()){
-
-  //     form.save();
-      
-  //     try {
-  //       var response = await Auth.authProvider(context).createUser(
-  //         _firstName.toString(), 
-  //         _lastName.toString(), 
-  //         _email.toString(), 
-  //         _password.toString(), 
-  //         _phoneNumber.toString(),
-  //         userType.toString(),
-  //       );
-  //       setState(() {
-  //         _loading = false;
-  //       });
-  //       if (response["code"] == 201) {
-  //         form.reset();
-  //         await Flushbar(
-  //           messageText: Text(
-  //             response["message"] + ' Please login',
-  //             textAlign: TextAlign.center,
-  //             style: const TextStyle(
-  //               color: whiteColor,
-  //               fontSize: 18,
-  //             ),
-  //           ),
-  //           backgroundColor: green,
-  //           flushbarPosition: FlushbarPosition.TOP,
-  //           duration: const Duration(seconds: 2),
-  //         ).show(context);
-  //         Navigator.of(context).pushNamed(Login.id);
-  //       }
-  //       // Auth.authProvider(context)
-  //     } catch(err){
-  //       setState(() {
-  //         _loading = false;
-  //       });
-  //       print("==============================");
-  //       print(err);
-  //       print("==============================");
-  //       await Flushbar(
-  //         messageText: Text(
-  //           err.toString(),
-  //           textAlign: TextAlign.center,
-  //           style: const TextStyle(
-  //             color: whiteColor,
-  //             fontSize: 18,
-  //           ),
-  //         ),
-  //         backgroundColor: redColor,
-  //         flushbarPosition: FlushbarPosition.TOP,
-  //         duration: const Duration(seconds: 5),
-  //       ).show(context);
-  //       rethrow;
-  //     }
-  //   }
-  //   setState(() {
-  //     _loading = false;
-  //   });
-  // }
+  
   
   @override
   Widget build(BuildContext context) {
@@ -343,8 +188,6 @@ class _SignupState extends State<Signup> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     userType = arg["userType"];
 
-    // final args = ModalRoute.of(context)?.settings.arguments as Home;
-    // userType = args.title.toString();
     print('================================');
     print(userType);
 
