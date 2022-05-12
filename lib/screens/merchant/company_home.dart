@@ -85,7 +85,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                 color: Colors.grey,
                 //spreadRadius: 5,
                 blurRadius: 2.0,
-                offset: const Offset(0.0, 1.0), // changes position of shadow
+                offset: const Offset(0.0, 1.0), 
               ),
             ],
           ),
@@ -238,9 +238,10 @@ class _CompanyHomeState extends State<CompanyHome> {
                   ),
                   //const SizedBox(width: 20,),
                   Expanded(
-                    child: SizedBox(height: 160,
-        width: 160,)
-                    ),
+                      child: SizedBox(
+                    height: 160,
+                    width: 160,
+                  )),
                 ],
               ),
             ],
@@ -250,5 +251,3 @@ class _CompanyHomeState extends State<CompanyHome> {
     );
   }
 }
-
-
