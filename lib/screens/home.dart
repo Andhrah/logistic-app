@@ -5,6 +5,8 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
+import 'user_profile/user_profile _menu.dart';
+
 class Home extends StatefulWidget {
   static const String id = 'home';
 
@@ -78,7 +80,9 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 15.0),
             Button(
               text: 'Become a Merchant',
-              onPress: () {},
+              onPress: () {
+                Navigator.of(context).pushNamed(UserMenu.id);
+              },
               color: whiteColor,
               isLoading: false,
               textColor: appPrimaryColor,

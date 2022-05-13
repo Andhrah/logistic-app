@@ -16,12 +16,12 @@ class BackIcon extends StatelessWidget {
         onTap: onPress,
         customBorder: const CircleBorder(),
         child: const Icon(
-          Icons.arrow_back_ios_new_outlined,
+          Icons.arrow_back_ios_new_outlined,color: kTextColor,
           size: 18.0,
         )
       ),
       decoration: const BoxDecoration(
-        color: secondaryColor,
+        color: whiteColor,
         borderRadius: BorderRadius.all(
           Radius.circular(50.0)
         ),

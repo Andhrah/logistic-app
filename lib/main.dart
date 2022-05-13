@@ -27,6 +27,8 @@ import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/tab.dart';
+import 'package:trakk/screens/user_profile/edit_profile.dart';
+import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/utils/colors.dart';
 
 void main() async {
@@ -109,6 +111,8 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
+            UserMenu.id:(context) => const UserMenu(),
+            EditProfile.id:(context) => const EditProfile(),
           },
           // home: const GetStarted(),
         ),
