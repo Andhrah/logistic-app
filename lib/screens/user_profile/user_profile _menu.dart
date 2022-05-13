@@ -90,45 +90,63 @@ class _UserMenuState extends State<UserMenu> {
             const SizedBox(
               height: 18,
             ),
-            const ProfileList(
-              svg: 'assets/images/wallet.svg',
-              title: 'Wallet',
+             InkWell(
+              onTap: () {},
+              child: const ProfileList(
+                svg: 'assets/images/wallet.svg',
+                title: 'Wallet',
+              ),
             ),
             const SizedBox(
               height: 18,
             ),
-            const ProfileList(
-              svg: 'assets/images/history.svg',
-              title: 'Dispatch History',
-            ),
+             InkWell(
+               onTap:  () {},
+               child: const ProfileList(
+                svg: 'assets/images/history.svg',
+                title: 'Dispatch History',
+                         ),
+             ),
             const SizedBox(
               height: 18,
             ),
-            const ProfileList(
-              svg: 'assets/images/settings.svg',
-              title: 'Settings',
-            ),
+             InkWell(
+               onTap: () {},
+               child: const ProfileList(
+                svg: 'assets/images/settings.svg',
+                title: 'Settings',
+                         ),
+             ),
             const SizedBox(
               height: 18,
             ),
-            const ProfileList(
-              svg: 'assets/images/help.svg',
-              title: 'Help and Support',
-            ),
+             InkWell(
+               onTap: () {},
+               child: const ProfileList(
+                svg: 'assets/images/help.svg',
+                title: 'Help and Support',
+                         ),
+             ),
             const SizedBox(
               height: 18,
             ),
-            const ProfileList(
-              svg: 'assets/images/e-commerce.svg',
-              title: 'E-commerce',
-            ),
+             InkWell(
+               onTap: () {},
+               child: const ProfileList(
+                svg: 'assets/images/e-commerce.svg',
+                title: 'E-commerce',
+                         ),
+             ),
             const SizedBox(
               height: 18,
             ),
-            const ProfileList(
-              svg: 'assets/images/insurance.svg',
-              title: 'Insurance',
-            ),
+             InkWell(
+               onTap: () {},
+               child: const ProfileList(
+                svg: 'assets/images/insurance.svg',
+                title: 'Insurance',
+                         ),
+             ),
             const SizedBox(
               height: 50,
             ),
@@ -154,13 +172,16 @@ class _UserMenuState extends State<UserMenu> {
                         color: redColor,
                       ),
                       SizedBox(width: 22,),
-                      const Text(
-                        "Log out",
-                        style: TextStyle(
-                            color: redColor,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w400),
-                      ),
+                        InkWell(
+                         onTap: () {},
+                         child: const Text(
+                          "Log out",
+                          style: TextStyle(
+                              color: redColor,
+                              fontSize: 14,
+                              fontWeight: FontWeight.w400),
+                                             ),
+                       ),
                     ],
                   )),
             ),
