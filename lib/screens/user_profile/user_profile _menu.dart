@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -22,8 +23,7 @@ class _UserMenuState extends State<UserMenu> {
       body: SingleChildScrollView(
         child: SafeArea(
           child:
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             const SizedBox(height: 10.0),
             Row(
               children: [
@@ -64,7 +64,8 @@ class _UserMenuState extends State<UserMenu> {
             const SizedBox(
               height: 20,
             ),
-            Container(padding: EdgeInsets.only(left: 20),
+            Container(
+              padding: EdgeInsets.only(left: 20),
               height: 87,
               decoration: const BoxDecoration(
                 color: whiteColor,
@@ -81,8 +82,9 @@ class _UserMenuState extends State<UserMenu> {
                 alignment: Alignment.center,
                 child: ListTile(
                   title: Text(
-                      'Share App with your Trakk\ncode and get ₦500 bonus in\nyour wallet', 
-                      textAlign: TextAlign.justify,),
+                    'Share App with your Trakk\ncode and get ₦500 bonus in\nyour wallet',
+                    textAlign: TextAlign.justify,
+                  ),
                   trailing: Icon(Icons.share),
                 ),
               ),
@@ -90,7 +92,7 @@ class _UserMenuState extends State<UserMenu> {
             const SizedBox(
               height: 18,
             ),
-             InkWell(
+            InkWell(
               onTap: () {},
               child: const ProfileList(
                 svg: 'assets/images/wallet.svg',
@@ -100,57 +102,60 @@ class _UserMenuState extends State<UserMenu> {
             const SizedBox(
               height: 18,
             ),
-             InkWell(
-               onTap:  () {},
-               child: const ProfileList(
+            InkWell(
+              onTap: () {},
+              child: const ProfileList(
                 svg: 'assets/images/history.svg',
                 title: 'Dispatch History',
-                         ),
-             ),
+              ),
+            ),
             const SizedBox(
               height: 18,
             ),
-             InkWell(
-               onTap: () {},
-               child: const ProfileList(
+            InkWell(
+              onTap: () {},
+              child: const ProfileList(
                 svg: 'assets/images/settings.svg',
                 title: 'Settings',
-                         ),
-             ),
+              ),
+            ),
             const SizedBox(
               height: 18,
             ),
-             InkWell(
-               onTap: () {},
-               child: const ProfileList(
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(Help.id);
+              },
+              child: const ProfileList(
                 svg: 'assets/images/help.svg',
                 title: 'Help and Support',
-                         ),
-             ),
+              ),
+            ),
             const SizedBox(
               height: 18,
             ),
-             InkWell(
-               onTap: () {},
-               child: const ProfileList(
+            InkWell(
+              onTap: () {},
+              child: const ProfileList(
                 svg: 'assets/images/e-commerce.svg',
                 title: 'E-commerce',
-                         ),
-             ),
+              ),
+            ),
             const SizedBox(
               height: 18,
             ),
-             InkWell(
-               onTap: () {},
-               child: const ProfileList(
+            InkWell(
+              onTap: () {},
+              child: const ProfileList(
                 svg: 'assets/images/insurance.svg',
                 title: 'Insurance',
-                         ),
-             ),
+              ),
+            ),
             const SizedBox(
               height: 50,
             ),
-            Container(padding: EdgeInsets.only(left: 30),
+            Container(
+              padding: EdgeInsets.only(left: 30),
               height: 48,
               decoration: const BoxDecoration(
                 color: whiteColor,
@@ -171,34 +176,44 @@ class _UserMenuState extends State<UserMenu> {
                         'assets/images/Logout.svg',
                         color: redColor,
                       ),
-                      SizedBox(width: 22,),
-                        InkWell(
-                         onTap: () {},
-                         child: const Text(
+                      const SizedBox(
+                        width: 22,
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        child: const Text(
                           "Log out",
                           style: TextStyle(
                               color: redColor,
                               fontSize: 14,
                               fontWeight: FontWeight.w400),
-                                             ),
-                       ),
+                        ),
+                      ),
                     ],
                   )),
             ),
-            const SizedBox(height: 45,),
-            Align(alignment: Alignment.center,
-            child: Button(text: 'Become a rider and earn',
-             onPress: () {}, color: kTextColor, width: 344, 
-             textColor: whiteColor, isLoading: false),),
-             SizedBox(height: 30,),
+            const SizedBox(
+              height: 45,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: Button(
+                  text: 'Become a rider and earn',
+                  onPress: () {},
+                  color: kTextColor,
+                  width: 344,
+                  textColor: whiteColor,
+                  isLoading: false),
+            ),
+            const SizedBox(
+              height: 30,
+            ),
           ]),
         ),
       ),
     );
   }
 }
-
-
 
 class MenuContainer extends StatelessWidget {
   const MenuContainer({

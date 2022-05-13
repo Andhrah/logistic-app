@@ -26,6 +26,7 @@ import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
+import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
@@ -113,6 +114,7 @@ class _MyAppState extends State<MyApp> {
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserMenu.id:(context) => const UserMenu(),
             EditProfile.id:(context) => const EditProfile(),
+            Help.id:(context) => const Help(),
           },
           // home: const GetStarted(),
         ),
