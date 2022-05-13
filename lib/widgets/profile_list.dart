@@ -20,10 +20,10 @@ class ProfileList extends StatelessWidget {
         color: whiteColor,
         boxShadow: [
           BoxShadow(
-            spreadRadius: 2,
+            spreadRadius: 0,
             color: Color(0XFFBDBDBD),
-            offset: Offset(2.0, 4.0), //(x,y)
-            blurRadius: 16,
+            offset: Offset(2.0, 3.0), //(x,y)
+            blurRadius: 8,
           ),
         ],
       ),
