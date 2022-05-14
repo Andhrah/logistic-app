@@ -486,42 +486,48 @@ class _SignupState extends State<Signup> {
 
                     Row(
                       children: [
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/google_icon.png',
-                            height: 15,
-                            width: 15,
+                        Expanded(
+                          child: ElevatedContainer(
+                            onPress: (){},
+                            radius: 5.0, 
+                            color: whiteColor,
+                            height: 55.0,
+                            width: 55.0,
+                            child: Image.asset(
+                              'assets/images/google_icon.png',
+                              height: 15,
+                              width: 15,
+                            ),
                           ),
                         ),
 
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/apple_icon.png',
-                            height: 20,
-                            width: 20,
+                        Expanded(
+                          child: ElevatedContainer(
+                            onPress: (){},
+                            radius: 5.0, 
+                            color: whiteColor,
+                            height: 55.0,
+                            width: 55.0,
+                            child: Image.asset(
+                              'assets/images/apple_icon.png',
+                              height: 20,
+                              width: 20,
+                            ),
                           ),
                         ),
 
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/facebook_icon.png',
-                            height: 18,
-                            width: 18,
+                        Expanded(
+                          child: ElevatedContainer(
+                            onPress: (){},
+                            radius: 5.0, 
+                            color: whiteColor,
+                            height: 55.0,
+                            width: 55.0,
+                            child: Image.asset(
+                              'assets/images/facebook_icon.png',
+                              height: 18,
+                              width: 18,
+                            ),
                           ),
                         ),
                       ],
