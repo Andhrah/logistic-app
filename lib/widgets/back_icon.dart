@@ -25,13 +25,14 @@ class BackIcon extends StatelessWidget {
         borderRadius: BorderRadius.all(
           Radius.circular(50.0)
         ),
+        //shape: BoxShape.rectangle,
         boxShadow: [
           BoxShadow(
             color: Color(0XFFBDBDBD),
             offset: Offset(0.0, 1.0), //(x,y)
             blurRadius: 0.5,
           ),
-        ],
+        ],        
       ),
     );
   }

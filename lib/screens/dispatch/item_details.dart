@@ -173,18 +173,36 @@ class _ItemDetailsState extends State<ItemDetails> {
               //   ),
               // ),
 
-              // const SizedBox(height: 30.0),
+              const SizedBox(height: 20.0),
 
-              // Button(
-              //   text: 'Proceed', 
-              //   onPress: () {
-              //     Navigator.of(context).pushNamed(PickRide.id);
-              //   }, 
-              //   color: appPrimaryColor, 
-              //   textColor: whiteColor, 
-              //   isLoading: false,
-              //   width: MediaQuery.of(context).size.width/1.2,
-              // )
+              Padding(
+                padding: const EdgeInsets.only(left: 30.0, right: 30),
+                child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children:  [
+                  Text('Add Another pickup detail',
+                  style: TextStyle(
+                    color: Color.fromARGB(255, 138, 136, 136),
+                    fontSize: 18, fontWeight:FontWeight.w600,
+                  ),),
+                  FloatingActionButton(onPressed: () {},
+                  backgroundColor: Colors.black,
+                  child: Icon(Icons.add),
+                  ),
+                ],),
+              ),
+               const SizedBox(height: 20.0),
+
+              Button(
+                text: 'Proceed', 
+                onPress: () {
+                  Navigator.of(context).pushNamed(PickRide.id);
+                }, 
+                color: appPrimaryColor, 
+                textColor: whiteColor, 
+                isLoading: false,
+                width: MediaQuery.of(context).size.width/1.2,
+              ),
+              SizedBox(height: 50,)
             ],
           )
         ),

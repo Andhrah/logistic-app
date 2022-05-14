@@ -22,6 +22,8 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
+import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';

@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/rider/personal_data.dart';
-import 'package:trakk/screens/home.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -486,42 +484,48 @@ class _SignupState extends State<Signup> {
 
                     Row(
                       children: [
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/google_icon.png',
-                            height: 15,
-                            width: 15,
+                        Expanded(
+                          child: ElevatedContainer(
+                            onPress: (){},
+                            radius: 5.0, 
+                            color: whiteColor,
+                            height: 55.0,
+                            width: 55.0,
+                            child: Image.asset(
+                              'assets/images/google_icon.png',
+                              height: 15,
+                              width: 15,
+                            ),
                           ),
                         ),
 
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/apple_icon.png',
-                            height: 20,
-                            width: 20,
+                        Expanded(
+                          child: ElevatedContainer(
+                            onPress: (){},
+                            radius: 5.0, 
+                            color: whiteColor,
+                            height: 55.0,
+                            width: 55.0,
+                            child: Image.asset(
+                              'assets/images/apple_icon.png',
+                              height: 20,
+                              width: 20,
+                            ),
                           ),
                         ),
 
-                        ElevatedContainer(
-                          onPress: (){},
-                          radius: 5.0, 
-                          color: whiteColor,
-                          height: 55.0,
-                          width: 55.0,
-                          child: Image.asset(
-                            'assets/images/facebook_icon.png',
-                            height: 18,
-                            width: 18,
+                        Expanded(
+                          child: ElevatedContainer(
+                            onPress: (){},
+                            radius: 5.0, 
+                            color: whiteColor,
+                            height: 55.0,
+                            width: 55.0,
+                            child: Image.asset(
+                              'assets/images/facebook_icon.png',
+                              height: 18,
+                              width: 18,
+                            ),
                           ),
                         ),
                       ],
