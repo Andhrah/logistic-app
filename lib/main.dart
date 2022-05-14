@@ -22,6 +22,8 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
+import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
@@ -109,6 +111,8 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
+            SignupMerchant.id:(context) => const SignupMerchant(),
+            CompanyHome.id:(context) => const CompanyHome(),
           },
           // home: const GetStarted(),
         ),
