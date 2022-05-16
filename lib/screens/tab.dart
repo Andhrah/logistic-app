@@ -49,8 +49,8 @@ class _TabsState extends State<Tabs> {
         currentTitle = 'Order';
         return const UserOrderScreen();
       case 3 :
-        currentTitle = 'Histroy';
-        return Container();
+        currentTitle = 'Wallet';
+        return const WalletScreen();
       default:
         currentTitle = 'Profile';
         return Container();
@@ -124,12 +124,16 @@ class _TabsState extends State<Tabs> {
             ),
             label: 'Order',
           ),
-          // BottomNavigationBarItem(
-          //   icon: SvgPicture.asset("assets/images/cart_icon.svg",
-          //     color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
-          //   ),
-          //   label: 'Cart',
-          // ),
+          BottomNavigationBarItem(
+            // icon: SvgPicture.asset("assets/images/cart_icon.svg",
+            //   color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
+            // ),
+            icon: Icon(
+              Remix.wallet_2_line,
+              color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
+            ),
+            label: 'Wallet',
+          ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/profile_icon.svg",
               color: _selectedIndex != 4 ? appPrimaryColor : secondaryColor
