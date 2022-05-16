@@ -20,6 +20,7 @@ const Color kShadowColor = Colors.grey;
 const Color kBackgroundColor = Color(0XFFF8F8F8);
 const Color whiteColor = Color(0xFFFFFFFF);
 const Color darkBrownColor = Color(0xFF6F6F6F);
+const Color dividerColor = Color(0xff909090);
 const Color boarderline = Color(0xffEEEEEE);
 
 const TextStyle kTextHeavyWeight = TextStyle(fontWeight: FontWeight.w600);
