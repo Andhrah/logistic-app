@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
@@ -17,8 +18,19 @@ class DispatchSummary extends StatefulWidget {
 }
 
 class _DispatchSummaryState extends State<DispatchSummary> {
+
+  _onPressEdit() async {
+    var box = await Hive.openBox('routes');
+    await box.put('previousRoute', 'DispatchSummary');
+
+    Navigator.of(context).pushNamed(ItemDetails.id, arguments: {
+      "buttonText": "Save Changes",
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -26,7 +38,7 @@ class _DispatchSummaryState extends State<DispatchSummary> {
             children: [
               const SizedBox(height: 30.0),
               const Header(
-                text: 'DISPATCH SUMMARY',
+                text: 'ITEM SUMMARY',
               ),
 
               Container(
@@ -151,122 +163,118 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                     ),
                     
 
-                    const SizedBox(height: 30.0),
+                    // const SizedBox(height: 30.0),
 
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '  Sender’s Info',
-                        style: TextStyle(
-                          fontSize: 15.0, 
-                          color: appPrimaryColor, 
-                          fontWeight: FontWeight.w700
-                        ),
-                      ),
-                    ),
+                    // const Align(
+                    //   alignment: Alignment.centerLeft,
+                    //   child: Text(
+                    //     '  Sender’s Info',
+                    //     style: TextStyle(
+                    //       fontSize: 15.0, 
+                    //       color: appPrimaryColor, 
+                    //       fontWeight: FontWeight.w700
+                    //     ),
+                    //   ),
+                    // ),
 
-                    const SizedBox(height: 5.0),
+                    // const SizedBox(height: 5.0),
 
-                    Card(
-                      elevation: 0.0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                        // height: 110,
-                        child: Expanded(
-                          child: Column(
-                            children: [
-                              Row(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: MediaQuery.of(context).size.width/3,
-                                    child:const Text(
-                                      'Name:',
-                                      style: TextStyle(
-                                        fontSize: 15.0, 
-                                        color: appPrimaryColor, 
-                                        fontWeight: FontWeight.w700
-                                      ),
-                                    ),
-                                  ),
-                                
-                                  const Text(
-                                    'Alexandra Collins',
-                                    style: TextStyle(
-                                      fontSize: 15.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w400
-                                    )
-                                  )
-                                ],
-                              ),
-                        
-                              const SizedBox(height: 10.0),
-                        
-                              Row(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: MediaQuery.of(context).size.width/3,
-                                    child:const Text(
-                                      'Email Address:',
-                                      style: TextStyle(
-                                        fontSize: 14.0, 
-                                        color: appPrimaryColor, 
-                                        fontWeight: FontWeight.w700
-                                      ),
-                                    ),
-                                  ),
-                                
-                                  Expanded(
-                                    child: const Text(
-                                      'alexandra@zebrra.com',
-                                      style: TextStyle(
-                                        fontSize: 14.0, 
-                                        color: appPrimaryColor, 
-                                        fontWeight: FontWeight.w400
-                                      )
-                                    ),
-                                  )
-                                ],
-                              ),
-                        
-                              const SizedBox(height: 10.0),
-                        
-                              Row(
-                                children: [
-                                  Container(
-                                    alignment: Alignment.centerLeft,
-                                    width: MediaQuery.of(context).size.width/3,
-                                    child:const Text(
-                                      'Phone Number:',
-                                      style: TextStyle(
-                                        fontSize: 14.0, 
-                                        color: appPrimaryColor, 
-                                        fontWeight: FontWeight.w700
-                                      ),
-                                    ),
-                                  ),
-                                
-                                  const Text(
-                                    '+234-698-942-96',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w400
-                                    )
-                                  )
-                                ],
-                              ),
-                            ],
-                          ),
-                        )
-                      ),
-                    ),
+                    // Card(
+                    //   elevation: 0.0,
+                    //   shape: RoundedRectangleBorder(
+                    //     side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
+                    //     borderRadius: BorderRadius.circular(10),
+                    //   ),
+                    //   child: Container(
+                    //     padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+                    //     // height: 110,
+                    //     child: Column(
+                    //       children: [
+                    //         Row(
+                    //           children: [
+                    //             Container(
+                    //               alignment: Alignment.centerLeft,
+                    //               width: MediaQuery.of(context).size.width/3,
+                    //               child:const Text(
+                    //                 'Name:',
+                    //                 style: TextStyle(
+                    //                   fontSize: 15.0, 
+                    //                   color: appPrimaryColor, 
+                    //                   fontWeight: FontWeight.w700
+                    //                 ),
+                    //               ),
+                    //             ),
+                              
+                    //             const Text(
+                    //               'Alexandra Collins',
+                    //               style: TextStyle(
+                    //                 fontSize: 15.0, 
+                    //                 color: appPrimaryColor, 
+                    //                 fontWeight: FontWeight.w400
+                    //               )
+                    //             )
+                    //           ],
+                    //         ),
+
+                    //         const SizedBox(height: 10.0),
+
+                    //         Row(
+                    //           children: [
+                    //             Container(
+                    //               alignment: Alignment.centerLeft,
+                    //               width: MediaQuery.of(context).size.width/3,
+                    //               child:const Text(
+                    //                 'Email Address:',
+                    //                 style: TextStyle(
+                    //                   fontSize: 14.0, 
+                    //                   color: appPrimaryColor, 
+                    //                   fontWeight: FontWeight.w700
+                    //                 ),
+                    //               ),
+                    //             ),
+                              
+                    //             const Text(
+                    //               'alexandra@zebrra.com',
+                    //               style: TextStyle(
+                    //                 fontSize: 14.0, 
+                    //                 color: appPrimaryColor, 
+                    //                 fontWeight: FontWeight.w400
+                    //               )
+                    //             )
+                    //           ],
+                    //         ),
+
+                    //         const SizedBox(height: 10.0),
+
+                    //         Row(
+                    //           children: [
+                    //             Container(
+                    //               alignment: Alignment.centerLeft,
+                    //               width: MediaQuery.of(context).size.width/3,
+                    //               child:const Text(
+                    //                 'Phone Number:',
+                    //                 style: TextStyle(
+                    //                   fontSize: 14.0, 
+                    //                   color: appPrimaryColor, 
+                    //                   fontWeight: FontWeight.w700
+                    //                 ),
+                    //               ),
+                    //             ),
+                              
+                    //             const Text(
+                    //               '+234-698-942-96',
+                    //               style: TextStyle(
+                    //                 fontSize: 14.0, 
+                    //                 color: appPrimaryColor, 
+                    //                 fontWeight: FontWeight.w400
+                    //               )
+                    //             )
+                    //           ],
+                    //         ),
+                    //       ],
+                    //     )
+                    //   ),
+                    // ),
 
                     const SizedBox(height: 30.0),
 
@@ -586,27 +594,30 @@ class _DispatchSummaryState extends State<DispatchSummary> {
 
               const SizedBox(height: 10.0),
               Button(
-                text: 'Proceed to payment', 
-                onPress: () {
-                  Navigator.of(context).pushNamed(Payment.id);
-                }, 
+                text: 'Edit Order', 
+                // onPress: () {
+                //   Navigator.of(context).pushNamed(ItemDetails.id, arguments: {
+                //     "buttonText": "Save Changes",
+                //   });
+                // }, 
+                onPress: _onPressEdit,
                 color: appPrimaryColor, 
                 textColor: whiteColor, 
                 isLoading: false,
                 width: MediaQuery.of(context).size.width/1.2,
               ),
 
-              const SizedBox(height: 10.0),
-              Button(
-                text: 'Edit', 
-                onPress: () {
-                  Navigator.of(context).pushNamed(Checkout.id);
-                }, 
-                color: whiteColor, 
-                textColor: appPrimaryColor,
-                isLoading: false,
-                width: MediaQuery.of(context).size.width/1.2,
-              )
+              // const SizedBox(height: 10.0),
+              // Button(
+              //   text: 'Edit', 
+              //   onPress: () {
+              //     Navigator.of(context).pushNamed(Checkout.id);
+              //   }, 
+              //   color: whiteColor, 
+              //   textColor: appPrimaryColor,
+              //   isLoading: false,
+              //   width: MediaQuery.of(context).size.width/1.2,
+              // )
             ],
           )
         ),

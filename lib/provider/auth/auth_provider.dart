@@ -16,16 +16,12 @@ class Auth extends ChangeNotifier {
   FirstTimeUser get firstTimeUser => _firstTimeUser;
   User get user => _user;
 
-
-  // static BuildContext _context;
-
   setFirstTimerUser(FirstTimeUser firstTimeUser) => _firstTimeUser = firstTimeUser;
   setUser(User user) => _user = user;
   setToken(String token) => _token = token;
 
 
   static Auth authProvider(BuildContext context, {bool listen = false}) {
-    // _context = context;
     return Provider.of<Auth>(context, listen: listen);
   }
 
@@ -65,12 +61,65 @@ class Auth extends ChangeNotifier {
     }
   }
 
+  Future createRider(
+    String firstName,
+    String lastName,
+    String email,
+    String password,
+    String phoneNumber,
+    String userType,
+
+    String stateOfOrigin,
+    String stateOfResidence,
+    String residentialAddress,
+    String userPassport,
+
+    String vehicleName,
+    String vehicleColor,
+    String vehicleNumber,
+    String vehicleCapacity,
+    String vehicleParticulars,
+    String vehicleImage,
+
+    String kinFullName,
+    String kinEmail,
+    String kinAddress,
+    String kinPhoneNumber,
+    ) async {
+    try {
+      var response = await _authApi.createRider(
+        firstName,
+        lastName,
+        email,
+        password,
+        phoneNumber,
+        userType,
+        stateOfOrigin,
+        stateOfResidence,
+        residentialAddress,
+        userPassport,
+        vehicleName,
+        vehicleColor,
+        vehicleNumber,
+        vehicleCapacity,
+        vehicleParticulars,
+        vehicleImage,
+        kinFullName,
+        kinEmail,
+        kinAddress,
+        kinPhoneNumber,
+      );
+      return response;
+    } catch(err) {
+      throw ApiFailureException(err);
+    }
+  }
+
   // login a user
   Future login(String email, String password) async {
     try {
       var response = await _authApi.login(email, password);
       // _setInitialData(response);
-      print('Logged In users Object $response');
       return response;
     } catch(err) {
       throw ApiFailureException(err);
@@ -82,7 +131,6 @@ class Auth extends ChangeNotifier {
     try {
       var response = await _authApi.forgetPassword(email);
       // _setInitialData(response);
-      print('Forget Password In users Object $response');
       return response;
     } catch(err) {
       throw ApiFailureException(err);
@@ -93,9 +141,9 @@ class Auth extends ChangeNotifier {
   Future resetPassword(String code, String password) async {
     try {
       var response = await _authApi.resetPassword(code, password);
-      print('Reset Password In users Object $response');
       return response;
     } catch(err) {
+      print(err);
       throw ApiFailureException(err);
     }
   }

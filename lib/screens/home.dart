@@ -12,8 +12,6 @@ import 'user_profile/user_profile _menu.dart';
 class Home extends StatefulWidget {
   static const String id = 'home';
 
-  // final String? title;
-
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -32,7 +30,12 @@ class _HomeState extends State<Home> {
               alignment: Alignment.centerRight,
               child: InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(Signup.id);
+                  Navigator.of(context).pushNamed(
+                    Signup.id,
+                    arguments: {
+                      "userType": "user",
+                    }
+                  );
                 },
                 customBorder: const CircleBorder(),
                 child: const Text(
@@ -49,7 +52,6 @@ class _HomeState extends State<Home> {
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.only(top: 70.0),
-              
               child: Image.asset(
                 'assets/images/home_delivery_img.png',
                 height: 200.0,
@@ -72,7 +74,12 @@ class _HomeState extends State<Home> {
             Button(
               text: 'Become a Rider',
               onPress: () {
-                Navigator.of(context).pushNamed(Signup.id);
+                Navigator.of(context).pushNamed(
+                  Signup.id,
+                  arguments: {
+                    "userType": "rider",
+                  }
+                );
               },
               color: whiteColor,
               isLoading: false,
