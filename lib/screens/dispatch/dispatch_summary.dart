@@ -61,16 +61,18 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                               height: 120,
                               child: Row(
                                 children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 30.0),
-                                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                    child: Image.asset(
-                                      "assets/images/item_img.png",
-                                      height: 90.0,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  Expanded(
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 30.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                                      child: Image.asset(
+                                        "assets/images/item_img.png",
+                                        height: 90.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                      ),
                                     ),
                                   ),
 
@@ -114,16 +116,18 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                               height: 120,
                               child: Row(
                                 children: [
-                                  Container(
-                                    margin: const EdgeInsets.only(right: 30.0),
-                                    padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                    child: Image.asset(
-                                      "assets/images/item_img.png",
-                                      height: 90.0,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.grey.withOpacity(0.1),
-                                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                  Expanded(
+                                    child: Container(
+                                      margin: const EdgeInsets.only(right: 30.0),
+                                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+                                      child: Image.asset(
+                                        "assets/images/item_img.png",
+                                        height: 90.0,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.withOpacity(0.1),
+                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
+                                      ),
                                     ),
                                   ),
 
@@ -342,13 +346,15 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                                   ),
                                 ),
                               
-                                const Text(
-                                  'alexandra@zebrra.com',
-                                  style: TextStyle(
-                                    fontSize: 14.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
+                                Expanded(
+                                  child: const Text(
+                                    'alexandra@zebrra.com',
+                                    style: TextStyle(
+                                      fontSize: 14.0, 
+                                      color: appPrimaryColor, 
+                                      fontWeight: FontWeight.w400
+                                    )
+                                  ),
                                 )
                               ],
                             ),
@@ -528,13 +534,15 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                                   ),
                                 ),
                               
-                                const Text(
-                                  'alexandra@zebrra.com',
-                                  style: TextStyle(
-                                    fontSize: 14.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
+                                const Expanded(
+                                  child: Text(
+                                    'alexandra@zebrra.com',
+                                    style: TextStyle(
+                                      fontSize: 14.0, 
+                                      color: appPrimaryColor, 
+                                      fontWeight: FontWeight.w400
+                                    )
+                                  ),
                                 )
                               ],
                             ),

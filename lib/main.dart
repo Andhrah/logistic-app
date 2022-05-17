@@ -26,12 +26,17 @@ import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
+import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
+import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
+import 'package:trakk/screens/user_profile/edit_profile.dart';
+import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/utils/colors.dart';
 
 void main() async {
@@ -93,7 +98,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: Home.id,
+          initialRoute: Tabs.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -118,6 +123,9 @@ class _MyAppState extends State<MyApp> {
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
+            UserMenu.id:(context) => const UserMenu(),
+            EditProfile.id:(context) => const EditProfile(),
+            Help.id:(context) => const Help(),
           },
           // home: const GetStarted(),
         ),

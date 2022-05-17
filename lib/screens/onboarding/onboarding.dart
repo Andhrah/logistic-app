@@ -139,7 +139,7 @@ class _OnboardingState extends State<Onboarding> {
           ),
 
           Expanded(
-          // flex: 11,
+           flex: 1,
           child: Row(
             children: <Widget>[
               Expanded(
@@ -177,7 +177,7 @@ class _OnboardingState extends State<Onboarding> {
         ),
         
         Expanded(
-          // flex: 9,
+           flex: 2,
           child: Row(
             children: <Widget>[
               Expanded(
@@ -198,7 +198,7 @@ class _OnboardingState extends State<Onboarding> {
                       ),
                     ),
                     SizedBox(
-                      height: 60.0,
+                      height: 80.0,
                       width: 300.0,
                       child: Align(
                         alignment: Alignment.center,
@@ -219,9 +219,9 @@ class _OnboardingState extends State<Onboarding> {
                       )
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 20),
+                      margin: const EdgeInsets.only(top: 10),
                       child: SizedBox(
-                        height: 80.0,
+                        height: 60.0,
                         width: 300.0,
                         child: Center(
                           child: AnimatedOpacity(
