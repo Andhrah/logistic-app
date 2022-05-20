@@ -11,7 +11,6 @@ import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
 import '../provider/auth/auth_provider.dart';
-import 'user_profile/user_profile _menu.dart';
 
 class Home extends StatefulWidget {
   static const String id = 'home';
@@ -35,15 +34,15 @@ class _HomeState extends State<Home> {
               child: InkWell(
                 onTap: () {
                   Navigator.of(context).pushNamed(
-                    Signup.id,
+                    ItemDetails.id,
                     arguments: {
-                      "userType": "user",
+                      "userType": "guest",
                     }
                   );
                 },
                 customBorder: const CircleBorder(),
                 child: const Text(
-                  'Sign up',
+                  'Continue As A guest',
                   textScaleFactor: 1.0,
                   style: TextStyle(
                     color: appPrimaryColor,
@@ -65,10 +64,15 @@ class _HomeState extends State<Home> {
             const SizedBox(height: 70.0),
 
             Button(
-              text: 'Dispatch an Item',
+              text: 'Sign Up To Dispatch An Item',
               onPress: () {
-                Provider.of<Auth>(context, listen: false).guestLogin();
-                Navigator.of(context).pushNamed(PickRide.id);
+                // Provider.of<Auth>(context, listen: false).guestLogin();
+                Navigator.of(context).pushNamed(
+                  Signup.id,
+                  arguments: {
+                    "userType": "guest",
+                  }
+                );
               },
               color: appPrimaryColor,
               isLoading: false,
@@ -77,7 +81,7 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 15.0),
             Button(
-              text: 'Become a Rider',
+              text: 'Sign Up As A Rider',
               onPress: () {
                 Navigator.of(context).pushNamed(
                   Signup.id,
@@ -93,7 +97,7 @@ class _HomeState extends State<Home> {
             ),
             const SizedBox(height: 15.0),
             Button(
-              text: 'Become a Merchant',
+              text: 'Sign Up As A Merchant',
               onPress: () {
                 Navigator.of(context).pushNamed(CompanyHome.id);
               },
