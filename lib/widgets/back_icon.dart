@@ -21,7 +21,7 @@ class BackIcon extends StatelessWidget {
         )
       ),
       decoration: const BoxDecoration(
-        color: whiteColor,
+        color: secondaryColor,
         borderRadius: BorderRadius.all(
           Radius.circular(50.0)
         ),

@@ -7,11 +7,11 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
-import 'package:trakk/screens/wallet.dart';
+import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 
 class Tabs extends StatefulWidget {
-    static const String id = 'tab';
+  static const String id = 'tab';
 
   const Tabs({Key? key}) : super(key: key);
 
@@ -85,7 +85,6 @@ class _TabsState extends State<Tabs> {
 
   @override
   void dispose() {
-
     super.dispose();
   }
 

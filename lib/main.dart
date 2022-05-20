@@ -37,6 +37,8 @@ import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
+import 'package:trakk/screens/wallet/fund_wallet.dart';
+import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/utils/colors.dart';
 
 void main() async {
@@ -98,7 +100,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: Tabs.id,
+          initialRoute: Home.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -126,6 +128,7 @@ class _MyAppState extends State<MyApp> {
             UserMenu.id:(context) => const UserMenu(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
+            FundWalletScreen.id: (context) => const FundWalletScreen(),
           },
           // home: const GetStarted(),
         ),
