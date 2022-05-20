@@ -7,18 +7,20 @@ class IconContainer extends StatelessWidget {
     required this.text,
     required this.imgUrl,
     required this.isText,
+    required this.onPress,
   }) : super(key: key);
 
   final String text;
   final String imgUrl;
   final bool isText;
+  final VoidCallback? onPress;
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
         InkWell(
-          onTap: () {},
+          onTap: onPress,
           customBorder: const CircleBorder(),
           child: Container(
             height: 60,

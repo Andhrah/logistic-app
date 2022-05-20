@@ -47,6 +47,8 @@ import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
+import 'package:trakk/screens/wallet/fund_wallet.dart';
+import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/utils/colors.dart';
 
 void main() async {
@@ -136,6 +138,7 @@ class _MyAppState extends State<MyApp> {
             UserMenu.id:(context) => const UserMenu(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
+            FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id:(context) => const CompanyHome(),
             Vehicles.id:(context) => const Vehicles(),
             Riders.id:(context) => const Riders(),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/icon_container.dart';
 
@@ -173,22 +174,27 @@ class _WalletScreenState extends State<WalletScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const IconContainer(
+                      IconContainer(
                         text: 'Fund Wallet', 
                         imgUrl: 'assets/images/fund_wallet_img.png',
                         isText: false,
+                        onPress: (){
+                          Navigator.of(context).pushNamed(FundWalletScreen.id);
+                        },
                       ),
 
-                      const IconContainer(
+                      IconContainer(
                         text: 'Payment', 
                         imgUrl: 'assets/images/payment_img.png',
                         isText: false,
+                        onPress: (){},
                       ),
 
-                      const IconContainer(
+                      IconContainer(
                         text: 'Transfer', 
                         imgUrl: 'assets/images/transfer_img.png',
                         isText: false,
+                        onPress: (){},
                       ),
                     ],
                   ),
@@ -198,22 +204,25 @@ class _WalletScreenState extends State<WalletScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const IconContainer(
+                      IconContainer(
                         text: 'Withdraw', 
                         imgUrl: 'assets/images/withdraw_img.png',
                         isText: false,
+                        onPress: (){},
                       ),
 
-                      const IconContainer(
+                      IconContainer(
                         text: 'QR Code',
                         imgUrl: 'assets/images/qr_img.png',
                         isText: false,
+                        onPress: (){},
                       ),
 
-                      const IconContainer(
+                      IconContainer(
                         text: 'Buy Airtime',
                         imgUrl: 'assets/images/airtime_img.png',
                         isText: false,
+                        onPress: (){},
                       ),
                     ],
                   ),
@@ -223,22 +232,25 @@ class _WalletScreenState extends State<WalletScreen> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      const IconContainer(
+                      IconContainer(
                         text: 'Cards', 
                         imgUrl:  'assets/images/cards_img.png',
                         isText: false,
+                        onPress: (){},
                       ),
 
-                      const IconContainer(
+                      IconContainer(
                         text: 'Transaction\nHistory',
                         imgUrl: 'assets/images/history_img.png',
                         isText: false,
+                        onPress: (){},
                       ),
 
-                      const IconContainer(
+                      IconContainer(
                         text: 'More',
                         imgUrl:  '...',
                         isText: true,
+                        onPress: (){},
                       ),
                     ],
                   ),
