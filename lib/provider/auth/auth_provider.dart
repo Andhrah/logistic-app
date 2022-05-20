@@ -4,21 +4,22 @@ import 'package:trakk/Exceptions/api_failure_exception.dart';
 import 'package:trakk/models/auth/first_time_user.dart';
 import 'package:trakk/models/auth/user.dart';
 import 'package:trakk/services/auth_service.dart';
+import 'package:trakk/utils/helper_utils.dart';
 
 class Auth extends ChangeNotifier {
   final AuthService _authApi = AuthService();
 
-  late String _token;
+   String? _token;
   late FirstTimeUser _firstTimeUser;
-  late User _user;
+   User? _user;
 
-  String get token => _token;
+  String? get token => _token;
   FirstTimeUser get firstTimeUser => _firstTimeUser;
-  User get user => _user;
+  User? get user => _user;
 
   setFirstTimerUser(FirstTimeUser firstTimeUser) => _firstTimeUser = firstTimeUser;
-  setUser(User user) => _user = user;
-  setToken(String token) => _token = token;
+  setUser(User? user) => _user = user;
+  setToken(String? token) => _token = token;
 
 
   static Auth authProvider(BuildContext context, {bool listen = false}) {
@@ -29,6 +30,13 @@ class Auth extends ChangeNotifier {
     setFirstTimerUser(myFirst);
     print('myfirst ${_firstTimeUser.firstTimeUserBool}');
     return myFirst;
+  }
+
+  void guestLogin(){
+    setUser(null);
+    String randomToken = generateRandomString(25);
+    setToken(randomToken);
+    notifyListeners();
   }
 
   void _setInitialData(data) {

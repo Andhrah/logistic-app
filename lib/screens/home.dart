@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
+import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
+import '../provider/auth/auth_provider.dart';
 import 'user_profile/user_profile _menu.dart';
 
 class Home extends StatefulWidget {
@@ -63,7 +67,8 @@ class _HomeState extends State<Home> {
             Button(
               text: 'Dispatch an Item',
               onPress: () {
-                Navigator.of(context).pushNamed(ItemDetails.id);
+                Provider.of<Auth>(context, listen: false).guestLogin();
+                Navigator.of(context).pushNamed(PickRide.id);
               },
               color: appPrimaryColor,
               isLoading: false,
@@ -90,7 +95,7 @@ class _HomeState extends State<Home> {
             Button(
               text: 'Become a Merchant',
               onPress: () {
-                Navigator.of(context).pushNamed(UserMenu.id);
+                Navigator.of(context).pushNamed(CompanyHome.id);
               },
               color: whiteColor,
               isLoading: false,
