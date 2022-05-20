@@ -56,6 +56,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
 
   double _width = 160;
   final List<Item> _data = generateItems(1);
+
   bool isActive = false;
   bool showAll = true;
 
@@ -123,7 +124,24 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 _listOfVehicles = newValue!;
+                                if(newValue.contains("All vahicles")){
+                                  showAll = showAll;
+                                  isActive = false;
+                                } else if(newValue.contains("Active vehicles")){
+                                  isActive = true;
+                                  showAll = false;
+                                }else if(newValue.contains("Inactive vehicles")){
+                                  isActive = false;
+                                  showAll = false;
+                                  
+                                }else if(newValue.contains("search")){
+                                  showAll = showAll;
+                                  isActive = false;
+                                  
+                                };
                               });
+                              
+                              print(newValue);
                             },
                             items: vehicles.map((String value) {
                               return DropdownMenuItem(onTap: () {
