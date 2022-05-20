@@ -22,8 +22,8 @@ class AuthService {
     print('Encoded body ${json.encode(body)}');
     var response = await http.post(
       uriConverter(url),
-      // headers: kHeaders(null),
-      body: body
+      // headers: kHeaders(''),
+      body: json.encode(body)
     );
     print(response.body);
     var decoded = jsonDecode(response.body);
@@ -40,6 +40,26 @@ class AuthService {
       // }
       print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
       throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
+    }
+  }
+
+  Future<dynamic> loginRequest(Map body, String url) async {
+    print('body is $body');
+    print('Encoded body ${json.encode(body)}');
+    var response = await http.post(
+      ssoUriConverter(url),
+      headers: kHeaders(""),
+      body: json.encode(body)
+    );
+    print(response.body);
+    var decoded = jsonDecode(response.body);
+     print(decoded);
+    if (response.statusCode.toString().startsWith('2') && decoded["status"]) {
+      print('data here for reset: $decoded');
+      return decoded;
+    } else {
+      print('reason is ${response.reasonPhrase} message is ${decoded['status']}');
+      throw ApiFailureException(decoded["message"] ?? response.reasonPhrase ?? 'Internal server error');
     }
   }
 
@@ -89,9 +109,9 @@ class AuthService {
       "email": email,
       "phoneNumber": phoneNumber,
       "password": password,
-      "userType": userType,
+      // "userType": userType,
     };
-    return await authRequest(body, 'api/v1/auth/signup');
+    return await authRequest(body, 'api/User/register');
   }
 
   Future<dynamic> createRider(
@@ -152,7 +172,7 @@ class AuthService {
       "email": email,
       "password": password,
     };
-    return await authRequest(body, 'api/v1/auth/login');
+    return await loginRequest(body, 'api/User/token');
   }
 
   Future<dynamic> forgetPassword(String email) async {

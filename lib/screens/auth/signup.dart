@@ -130,7 +130,9 @@ class _SignupState extends State<Signup> {
           setState(() {
             _loading = false;
           });
-          if (response["code"] == 201) {
+          print("======== THIS IS OUR RESPONSE ==========");
+          print(response);
+          if (response["status"] == true) {
             form.reset();
             await Flushbar(
               messageText: Text(
@@ -145,10 +147,26 @@ class _SignupState extends State<Signup> {
               maxWidth: MediaQuery.of(context).size.width/1.4,
               flushbarPosition: FlushbarPosition.TOP,
               borderRadius: BorderRadius.circular(10),
-              duration: const Duration(seconds: 2),
+              duration: const Duration(seconds: 5),
             ).show(context);
             Navigator.of(context).pushNamed(Login.id);
-          }
+          } else {
+            await Flushbar(
+              messageText: Text(
+                response["message"],
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: whiteColor,
+                  fontSize: 18,
+                ),
+              ),
+              backgroundColor: redColor,
+              flushbarPosition: FlushbarPosition.TOP,
+              maxWidth: MediaQuery.of(context).size.width/1.2,
+              borderRadius: BorderRadius.circular(10),
+              duration: const Duration(seconds: 5),
+            ).show(context);
+              }
         } else {
           Navigator.of(context).pushNamed(PersonalData.id);
         }
@@ -233,124 +251,126 @@ class _SignupState extends State<Signup> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // InputField(
-                      //   key: const Key('firstName'),
-                      //   textController: _firstNameController,
-                      //   node: _firstNameNode,
-                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //   obscureText: false,
-                      //   text: 'First Name',
-                      //   hintText: 'Jane Doe',
-                      //   textHeight: 5.0,
-                      //   borderColor: appPrimaryColor.withOpacity(0.9),
-                      //   suffixIcon: const Icon(
-                      //     Remix.user_line,
-                      //     size: 18.0,
-                      //     color: Color(0xFF909090),
-                      //   ),
-                      //   validator: (value) {
-                      //     if (value!.trim().length > 2) {
-                      //       return null;
-                      //     }
-                      //     return "Enter a valid first name";
-                      //   },
-                      //   onSaved: (value){
-                      //     _firstName = value!.trim();
-                      //     return null;
-                      //   },
-                      // ),
-
-                      // const SizedBox(height: 30.0),
-                      // InputField(
-                      //   key: const Key('lastName'),
-                      //   textController: _lastNameController,
-                      //   node: _lastNameNode,
-                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //   obscureText: false,
-                      //   text: 'Last Name',
-                      //   hintText: 'Doe',
-                      //   textHeight: 5.0,
-                      //   borderColor: appPrimaryColor.withOpacity(0.9),
-                      //   suffixIcon: const Icon(
-                      //     Remix.user_line,
-                      //     size: 18.0,
-                      //     color: Color(0xFF909090),
-                      //   ),
-                      //   validator: (value) {
-                      //     if (value!.trim().length > 2) {
-                      //       return null;
-                      //     }
-                      //     return "Enter a valid last name";
-                      //   },
-                      //   onSaved: (value) {
-                      //     _lastName = value!.trim();
-                      //     return null;
-                      //   },
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: InputField(
-                              key: const Key('firstName'),
-                              textController: _firstNameController,
-                              node: _firstNameNode,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              obscureText: false,
-                              text: 'First Name',
-                              hintText: 'Jane',
-                              textHeight: 10.0,
-                              borderColor: appPrimaryColor.withOpacity(0.9),
-                              suffixIcon: const Icon(
-                                Remix.user_line,
-                                size: 18.0,
-                                color: Color(0xFF909090),
-                              ),
-                              validator: (value) {
-                                if (value!.trim().length > 2) {
-                                  return null;
-                                }
-                                return "Enter a valid first name";
-                              },
-                              onSaved: (value){
-                                _firstName = value!.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-
-                          const SizedBox(width: 8.0),
-
-                          Expanded(
-                            child: InputField(
-                              key: const Key('lastName'),
-                              textController: _lastNameController,
-                              node: _lastNameNode,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              obscureText: false,
-                              text: 'Last Name',
-                              hintText: 'Doe',
-                              textHeight: 10.0,
-                              borderColor: appPrimaryColor.withOpacity(0.9),
-                              suffixIcon: const Icon(
-                                Remix.user_line,
-                                size: 18.0,
-                                color: Color(0xFF909090),
-                              ),
-                              validator: (value) {
-                                if (value!.trim().length > 2) {
-                                  return null;
-                                }
-                                return "Enter a valid last name";
-                              },
-                              onSaved: (value) {
-                                _lastName = value!.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
+                      InputField(
+                        key: const Key('firstName'),
+                        textController: _firstNameController,
+                        node: _firstNameNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'First Name',
+                        hintText: 'Jane',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.user_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length > 2) {
+                            return null;
+                          }
+                          return "Enter a valid first name";
+                        },
+                        onSaved: (value){
+                          _firstName = value!.trim();
+                          return null;
+                        },
                       ),
+
+                      const SizedBox(height: 30.0),
+
+                      InputField(
+                        key: const Key('lastName'),
+                        textController: _lastNameController,
+                        node: _lastNameNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Last Name',
+                        hintText: 'Doe',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.user_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length > 2) {
+                            return null;
+                          }
+                          return "Enter a valid last name";
+                        },
+                        onSaved: (value) {
+                          _lastName = value!.trim();
+                          return null;
+                        },
+                      ),
+
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     Expanded(
+                      //       child: InputField(
+                      //         key: const Key('firstName'),
+                      //         textController: _firstNameController,
+                      //         node: _firstNameNode,
+                      //         autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //         obscureText: false,
+                      //         text: 'First Name',
+                      //         hintText: 'Jane',
+                      //         textHeight: 10.0,
+                      //         borderColor: appPrimaryColor.withOpacity(0.9),
+                      //         suffixIcon: const Icon(
+                      //           Remix.user_line,
+                      //           size: 18.0,
+                      //           color: Color(0xFF909090),
+                      //         ),
+                      //         validator: (value) {
+                      //           if (value!.trim().length > 2) {
+                      //             return null;
+                      //           }
+                      //           return "Enter a valid first name";
+                      //         },
+                      //         onSaved: (value){
+                      //           _firstName = value!.trim();
+                      //           return null;
+                      //         },
+                      //       ),
+                      //     ),
+
+                      //     const SizedBox(width: 8.0),
+
+                      //     Expanded(
+                      //       child: InputField(
+                      //         key: const Key('lastName'),
+                      //         textController: _lastNameController,
+                      //         node: _lastNameNode,
+                      //         autovalidateMode: AutovalidateMode.onUserInteraction,
+                      //         obscureText: false,
+                      //         text: 'Last Name',
+                      //         hintText: 'Doe',
+                      //         textHeight: 10.0,
+                      //         borderColor: appPrimaryColor.withOpacity(0.9),
+                      //         suffixIcon: const Icon(
+                      //           Remix.user_line,
+                      //           size: 18.0,
+                      //           color: Color(0xFF909090),
+                      //         ),
+                      //         validator: (value) {
+                      //           if (value!.trim().length > 2) {
+                      //             return null;
+                      //           }
+                      //           return "Enter a valid last name";
+                      //         },
+                      //         onSaved: (value) {
+                      //           _lastName = value!.trim();
+                      //           return null;
+                      //         },
+                      //       ),
+                      //     ),
+                      //   ],
+                      // ),
                     
                       const SizedBox(height: 30.0),
                       InputField(

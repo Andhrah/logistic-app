@@ -70,7 +70,7 @@ class _HomeState extends State<Home> {
                 Navigator.of(context).pushNamed(
                   Signup.id,
                   arguments: {
-                    "userType": "guest",
+                    "userType": "user",
                   }
                 );
               },

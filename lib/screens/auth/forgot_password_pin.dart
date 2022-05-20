@@ -268,10 +268,10 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
                           keyboardType: TextInputType.emailAddress,
                           onCompleted: (v) {
                             debugPrint("Completed");
-                            snackBar(
-                              "Code Verified!!",
-                              green,
-                            );
+                            // snackBar(
+                            //   "Code Verified!!",
+                            //   green,
+                            // );
                             Navigator.of(context).pushNamed(
                               ResetPassword.id,
                               arguments: {

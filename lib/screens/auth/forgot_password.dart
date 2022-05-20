@@ -73,7 +73,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
             maxWidth: MediaQuery.of(context).size.width/1.2,
             flushbarPosition: FlushbarPosition.TOP,
             borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 4),
           ).show(context);
           Navigator.of(context).pushNamed(
             ForgetPasswordPin.id,
