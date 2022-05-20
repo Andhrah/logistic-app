@@ -58,7 +58,6 @@ class _LoginState extends State<Login> {
       regex = RegExp(pattern);
       setState(() {
         _emailIsValid = regex.hasMatch(email);
-        print(_emailIsValid);
       });
       if(_emailIsValid == false){
         return "Enter a valid email address";
@@ -87,13 +86,14 @@ class _LoginState extends State<Login> {
         setState(() {
           _loading = false;
         });
-        if (response["code"] == 200) {
+        
+        if (response["status"] == true) {
           form.reset();
           await Flushbar(
-            messageText: Text(
-              response["message"],
+            messageText: const Text(
+              'Login Successful',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: whiteColor,
                 fontSize: 18,
               ),
@@ -102,7 +102,7 @@ class _LoginState extends State<Login> {
             maxWidth: MediaQuery.of(context).size.width/1.4,
             flushbarPosition: FlushbarPosition.TOP,
             borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 3),
           ).show(context);
           Navigator.of(context).pushNamed(Tabs.id);
         }

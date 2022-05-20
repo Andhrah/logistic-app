@@ -6,6 +6,6 @@ Map<String, String> _headers(String token) {
 }
 
 const String kFirstTimeUser = 'firstTimeUser';
-const String baseUrl = '6a5a-102-89-42-180.ngrok.io';
+const String baseUrl = 'trakk-server.herokuapp.com';
 const kHeaders = _headers;
 const ssoUrl = "zebrrasso.herokuapp.com";
