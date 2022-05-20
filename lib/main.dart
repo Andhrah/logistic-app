@@ -26,8 +26,18 @@ import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
+import 'package:trakk/screens/merchant/add_rider.dart';
+import 'package:trakk/screens/merchant/all_vehicle_container.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/merchant/list_of_riders.dart';
+import 'package:trakk/screens/merchant/list_of_vehicles.dart';
+import 'package:trakk/screens/merchant/edit_rider_profile.dart';
+import 'package:trakk/screens/merchant/referred_rides.dart';
+import 'package:trakk/screens/merchant/register_new_vehicle.dart';
+import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/signup_merchant.dart';
+import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
@@ -129,6 +139,18 @@ class _MyAppState extends State<MyApp> {
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
+            CompanyHome.id:(context) => const CompanyHome(),
+            Vehicles.id:(context) => const Vehicles(),
+            Riders.id:(context) => const Riders(),
+            DispatchHistory.id:(context) => const DispatchHistory(),
+            ListOfVehicles.id:(context) => const ListOfVehicles(),
+            RegisterNewVehicle.id:(context) => const RegisterNewVehicle(),
+            AddRider.id:(context) => const AddRider(),
+            ReferredRides.id:(context) => const ReferredRides(),
+            AllVehicleContainer.id:(context) => const AllVehicleContainer(),
+            EditRiderProfile.id:(context) => const EditRiderProfile(),
+            ListOfRiders.id:(context) => const ListOfRiders(),
+            
           },
           // home: const GetStarted(),
         ),

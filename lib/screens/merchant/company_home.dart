@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/merchant/riders.dart';
+import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/merchant_container.dart';
 
 class CompanyHome extends StatefulWidget {
@@ -26,7 +29,16 @@ class _CompanyHomeState extends State<CompanyHome> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SvgPicture.asset('assets/images/Status bar.svg'),
+                Column(children: const [
+                  CircleAvatar(
+                    backgroundImage:
+                        AssetImage('assets/images/ladySmiling.png'),
+                  ),
+                   Text(
+                  'Admin',
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: secondaryColor),
+                ),
+                ]),
                 SvgPicture.asset('assets/images/alarm.svg'),
               ],
             ),
@@ -40,27 +52,12 @@ class _CompanyHomeState extends State<CompanyHome> {
             padding: const EdgeInsets.only(left: 30.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
+              children: const [
+                 Text(
                   'Hello Glover,',
                   style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(right: 30.0),
-                      child: Button(
-                          text: 'Admin',
-                          onPress: () {},
-                          color: green,
-                          width: 110,
-                          textColor: whiteColor,
-                          isLoading: false),
-                    )
-                  ],
-                ),
-                const Text(
+                Text(
                   "Good evening",
                   style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                 ),
@@ -85,7 +82,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                 color: Colors.grey,
                 //spreadRadius: 5,
                 blurRadius: 2.0,
-                offset: const Offset(0.0, 1.0), 
+                offset: const Offset(0.0, 1.0),
               ),
             ],
           ),
@@ -96,39 +93,54 @@ class _CompanyHomeState extends State<CompanyHome> {
                 height: 15,
               ),
               Row(
-                children: const [
+                children:  [
                   Expanded(
                     child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: MerchantContainer(
-                        color: green,
-                        icon: 'assets/images/vehicle.svg',
-                        title: 'Register new\n vehicle',
+                      padding: const EdgeInsets.all(10),
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Vehicles.id);
+                          },
+                        child: const MerchantContainer(
+                          color: green,
+                          icon: 'assets/images/vehicle.svg',
+                          title: 'Vehicles',
+                        ),
                       ),
                     ),
                   ),
                   //const SizedBox(width: 20,),
-                  Expanded(
+                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: MerchantContainer(
-                        color: secondaryColor,
-                        icon: 'assets/images/users.svg',
-                        title: 'Register new\n Rider',
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Riders.id);
+                        },
+                        child: const MerchantContainer(
+                          color: secondaryColor,
+                          icon: 'assets/images/users.svg',
+                          title: 'Riders',
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
               Row(
-                children: const [
+                children:  [
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.all(10),
-                      child: MerchantContainer(
-                        color: secondaryColor,
-                        icon: 'assets/images/pen.svg',
-                        title: 'Edit Roder\'s\n details',
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(DispatchHistory.id);
+                        },
+                        child: const MerchantContainer(
+                          color: green,
+                          icon: 'assets/images/mark.svg',
+                          title: 'Dispatch\nhistory',
+                        ),
                       ),
                     ),
                   ),
@@ -136,94 +148,23 @@ class _CompanyHomeState extends State<CompanyHome> {
                   Expanded(
                     child: Padding(
                       padding: EdgeInsets.all(10.0),
-                      child: MerchantContainer(
-                        color: secondaryColor,
-                        icon: 'assets/images/vehicle.svg',
-                        title: 'View all\n vehicles',
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(ItemDetails.id);
+                        },
+                        child: MerchantContainer(
+                          color: green,
+                          icon: 'assets/images/vehicle.svg',
+                          title: 'Request for a\n Rider',
+                        ),
                       ),
                     ),
                   ),
                 ],
               ),
-              Row(
-                children: const [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: MerchantContainer(
-                        color: green,
-                        icon: 'assets/images/mark.svg',
-                        title: 'Today\'s\n successful\n delivery',
-                        rides: '5',
-                      ),
-                    ),
-                  ),
-                  //const SizedBox(width: 20,),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: MerchantContainer(
-                        color: green,
-                        icon: 'assets/images/naira.svg',
-                        title: 'Total number \n of referred\n Rides',
-                        rides: '5',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: const [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: MerchantContainer(
-                        color: green,
-                        icon: 'assets/images/naira.svg',
-                        title: 'View my\n Riders',
-                        rides: "(Riders)",
-                      ),
-                    ),
-                  ),
-                  //const SizedBox(width: 20,),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: MerchantContainer(
-                        color: redColor,
-                        icon: 'assets/images/cancel.svg',
-                        title: 'Today\'s\n rejected\nrequest',
-                        rides: '0',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                children: const [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10),
-                      child: MerchantContainer(
-                        color: green,
-                        icon: 'assets/images/vehicle.svg',
-                        title: 'Request for a\n Rider',
-                      ),
-                    ),
-                  ),
-                  //const SizedBox(width: 20,),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(10.0),
-                      child: MerchantContainer(
-                        color: green,
-                        icon: 'assets/images/users.svg',
-                        title: 'Deliver to my\n Customer',
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              
+              
+              
               Row(
                 children: const [
                   Expanded(
@@ -238,10 +179,15 @@ class _CompanyHomeState extends State<CompanyHome> {
                   ),
                   //const SizedBox(width: 20,),
                   Expanded(
-                      child: SizedBox(
-                    height: 160,
-                    width: 160,
-                  )),
+                    child: Padding(
+                      padding: EdgeInsets.all(10),
+                      child: MerchantContainer(
+                        color: green,
+                        icon: 'assets/images/users.svg',
+                        title: 'Deliver to my\n Customer',
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ],
