@@ -202,6 +202,9 @@ class _MyAppState extends State<MyApp> {
             UserOrderScreen.id: (context) => const UserOrderScreen(),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8f9ff8a ( implement user onboarding flow)
             UserMenu.id:(context) => const UserMenu(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
@@ -217,6 +220,7 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
+<<<<<<< HEAD
 <<<<<<< HEAD
             WalletScreen.id:(context) => const WalletScreen(),
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
@@ -252,6 +256,8 @@ class _MyAppState extends State<MyApp> {
             ListOfRiders.id: (context) => const ListOfRiders(),
 <<<<<<< HEAD
 >>>>>>> eb35986 (ft-pusher-client)
+=======
+>>>>>>> 8f9ff8a ( implement user onboarding flow)
 =======
 >>>>>>> eb35986 (ft-pusher-client)
           },

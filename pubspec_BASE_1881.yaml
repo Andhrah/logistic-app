@@ -61,7 +61,6 @@ dependencies:
   flutter_dotenv: ^5.0.2
   flutter_datetime_picker: ^1.5.1
   socket_io_client: ^1.0.2
-  flutter_switch: ^0.3.2
 
 dev_dependencies:
   flutter_test:
@@ -77,10 +76,6 @@ dev_dependencies:
   hive_generator: ^1.1.2
   build_runner: ^2.1.10
   pusher_client: ^2.0.0
-<<<<<<< HEAD
-  flutter_dotenv: ^5.0.2
-=======
->>>>>>> eb35986 (ft-pusher-client)
 
 
 
@@ -100,7 +95,6 @@ flutter:
     - assets/images/
     - assets/
     - assets/states.json
-    - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

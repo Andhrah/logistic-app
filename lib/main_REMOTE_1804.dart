@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as pp;
 
 import 'package:trakk/models/auth/first_time_user.dart';
-import 'package:trakk/models/auth/is_logged_in.dart';
 import 'package:trakk/models/auth/user.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
@@ -47,19 +46,13 @@ import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
-import 'package:trakk/screens/user_profile/settings.dart';
-import 'package:trakk/screens/user_profile/user_dispatch_history.dart';
 import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
-import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
-<<<<<<< HEAD
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-=======
->>>>>>> eb35986 (ft-pusher-client)
 
 void main() async {
   await _openHive();
@@ -76,16 +69,13 @@ _openHive() async {
   WidgetsFlutterBinding.ensureInitialized();
   var appDocDir = await pp.getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocDir.path);
+  // await Hive.openBox();
   // Register the generated adapter
   Hive.registerAdapter(FirstTimeUserAdapter());
   Hive.registerAdapter(UserAdapter());
-  Hive.registerAdapter(IsLoggedInAdapter());
 }
 
 class MyApp extends StatefulWidget {
-
-  //final String _pusher = "ec680890477ff06ecb9a";
-
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -93,34 +83,22 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-<<<<<<< HEAD
   
 
-=======
->>>>>>> eb35986 (ft-pusher-client)
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
   );
 
   PusherClient pusher = PusherClient(
-<<<<<<< HEAD
-    _pusher,
-    
-=======
     "ec680890477ff06ecb9a",
->>>>>>> eb35986 (ft-pusher-client)
+    
     PusherOptions(
       encrypted: false,
     ),
     autoConnect: true,
   );
 
-<<<<<<< HEAD
-  static const String  _pusher = "ec680890477ff06ecb9a";
-
-=======
->>>>>>> eb35986 (ft-pusher-client)
   @override
   void dispose() {
     Hive.close();
@@ -130,14 +108,11 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
 
     
     print(dotenv.env["PUSHER_TOKEN"]);
 
     
-=======
->>>>>>> eb35986 (ft-pusher-client)
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
@@ -200,45 +175,12 @@ class _MyAppState extends State<MyApp> {
             CartScreen.id: (context) => const CartScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
-<<<<<<< HEAD
-<<<<<<< HEAD
-            UserMenu.id:(context) => const UserMenu(),
-            EditProfile.id:(context) => const EditProfile(),
-            Help.id:(context) => const Help(),
-            FundWalletScreen.id: (context) => const FundWalletScreen(),
-            CompanyHome.id:(context) => const CompanyHome(),
-            Vehicles.id:(context) => const Vehicles(),
-            Riders.id:(context) => const Riders(),
-            DispatchHistory.id:(context) => const DispatchHistory(),
-            ListOfVehicles.id:(context) => const ListOfVehicles(),
-            RegisterNewVehicle.id:(context) => const RegisterNewVehicle(),
-            AddRider.id:(context) => const AddRider(),
-            ReferredRides.id:(context) => const ReferredRides(),
-            AllVehicleContainer.id:(context) => const AllVehicleContainer(),
-            EditRiderProfile.id:(context) => const EditRiderProfile(),
-            ListOfRiders.id:(context) => const ListOfRiders(),
-<<<<<<< HEAD
-            WalletScreen.id:(context) => const WalletScreen(),
-            UserDispatchHistory.id:(context) => const UserDispatchHistory(),
-            Settings.id:(context) =>  const Settings(),
-            
-=======
->>>>>>> 8f9ff8a ( implement user onboarding flow)
-=======
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             UserMenu.id: (context) => const UserMenu(),
             EditProfile.id: (context) => const EditProfile(),
             Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
-=======
-            // MyDatePicker.id: (context) => MyDatePicker(),
-            // Country.id: (context) => const Country(),
-            UserMenu.id: (context) => const UserMenu(),
-            EditProfile.id: (context) => const EditProfile(),
-            Help.id: (context) => const Help(),
-            FundWalletScreen.id: (context) => const FundWalletScreen(),
->>>>>>> eb35986 (ft-pusher-client)
             CompanyHome.id: (context) => const CompanyHome(),
             Vehicles.id: (context) => const Vehicles(),
             Riders.id: (context) => const Riders(),
@@ -250,10 +192,6 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id: (context) => const AllVehicleContainer(),
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
-<<<<<<< HEAD
->>>>>>> eb35986 (ft-pusher-client)
-=======
->>>>>>> eb35986 (ft-pusher-client)
           },
           // home: const GetStarted(),
         ),
