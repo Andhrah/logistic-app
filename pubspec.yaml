@@ -78,9 +78,13 @@ dev_dependencies:
   build_runner: ^2.1.10
   pusher_client: ^2.0.0
 <<<<<<< HEAD
+<<<<<<< HEAD
   flutter_dotenv: ^5.0.2
 =======
 >>>>>>> eb35986 (ft-pusher-client)
+=======
+  flutter_dotenv: ^5.0.2
+>>>>>>> 1d3fb76 (ft-pusher-client)
 
 
 

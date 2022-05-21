@@ -55,11 +55,13 @@ import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
-<<<<<<< HEAD
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-=======
->>>>>>> eb35986 (ft-pusher-client)
+
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+
 
 void main() async {
   await _openHive();
@@ -94,10 +96,15 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 <<<<<<< HEAD
+<<<<<<< HEAD
   
 
 =======
 >>>>>>> eb35986 (ft-pusher-client)
+=======
+  
+
+>>>>>>> 1d3fb76 (ft-pusher-client)
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
@@ -109,7 +116,11 @@ class _MyAppState extends State<MyApp> {
     
 =======
     "ec680890477ff06ecb9a",
+<<<<<<< HEAD
 >>>>>>> eb35986 (ft-pusher-client)
+=======
+    
+>>>>>>> 1d3fb76 (ft-pusher-client)
     PusherOptions(
       encrypted: false,
     ),
@@ -131,13 +142,19 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 1d3fb76 (ft-pusher-client)
 
     
     print(dotenv.env["PUSHER_TOKEN"]);
 
     
+<<<<<<< HEAD
 =======
 >>>>>>> eb35986 (ft-pusher-client)
+=======
+>>>>>>> 1d3fb76 (ft-pusher-client)
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
@@ -202,6 +219,9 @@ class _MyAppState extends State<MyApp> {
             UserOrderScreen.id: (context) => const UserOrderScreen(),
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 8f9ff8a ( implement user onboarding flow)
             UserMenu.id:(context) => const UserMenu(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
@@ -217,6 +237,7 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
+<<<<<<< HEAD
 <<<<<<< HEAD
             WalletScreen.id:(context) => const WalletScreen(),
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
@@ -252,6 +273,8 @@ class _MyAppState extends State<MyApp> {
             ListOfRiders.id: (context) => const ListOfRiders(),
 <<<<<<< HEAD
 >>>>>>> eb35986 (ft-pusher-client)
+=======
+>>>>>>> 8f9ff8a ( implement user onboarding flow)
 =======
 >>>>>>> eb35986 (ft-pusher-client)
           },
