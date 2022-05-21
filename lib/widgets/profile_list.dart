@@ -21,9 +21,9 @@ class ProfileList extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             spreadRadius: 0,
-            color: Color(0XFFBDBDBD),
+            color: Color.fromARGB(255, 238, 238, 238),
             offset: Offset(2.0, 3.0), //(x,y)
-            blurRadius: 8,
+            blurRadius: 6,
           ),
         ],
       ),

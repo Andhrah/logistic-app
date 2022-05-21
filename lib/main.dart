@@ -49,6 +49,7 @@ import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
+import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 
 void main() async {
@@ -150,6 +151,7 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
+            WalletScreen.id:(context) => const WalletScreen(),
             
           },
           // home: const GetStarted(),

@@ -7,6 +7,7 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/signup_merchant.dart';
+import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -84,7 +85,7 @@ class _HomeState extends State<Home> {
               text: 'Sign Up As A Rider',
               onPress: () {
                 Navigator.of(context).pushNamed(
-                  Signup.id,
+                  UserMenu.id,
                   arguments: {
                     "userType": "rider",
                   }

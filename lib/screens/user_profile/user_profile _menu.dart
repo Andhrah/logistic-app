@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:trakk/screens/merchant/dispatch_history.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
+import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -72,7 +74,7 @@ class _UserMenuState extends State<UserMenu> {
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 2,
-                    color: Color(0XFFBDBDBD),
+                    color: Color.fromARGB(255, 224, 224, 224),
                     offset: Offset(2.0, 4.0), //(x,y)
                     blurRadius: 10,
                   ),
@@ -93,7 +95,9 @@ class _UserMenuState extends State<UserMenu> {
               height: 18,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(WalletScreen.id);
+              },
               child: const ProfileList(
                 svg: 'assets/images/wallet.svg',
                 title: 'Wallet',
@@ -103,7 +107,9 @@ class _UserMenuState extends State<UserMenu> {
               height: 18,
             ),
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(DispatchHistory.id);
+              },
               child: const ProfileList(
                 svg: 'assets/images/history.svg',
                 title: 'Dispatch History',
