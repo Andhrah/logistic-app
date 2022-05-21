@@ -80,6 +80,9 @@ _openHive() async {
 }
 
 class MyApp extends StatefulWidget {
+
+  //final String _pusher = "ec680890477ff06ecb9a";
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -95,13 +98,15 @@ class _MyAppState extends State<MyApp> {
   );
 
   PusherClient pusher = PusherClient(
-    "ec680890477ff06ecb9a",
+    _pusher,
     
     PusherOptions(
       encrypted: false,
     ),
     autoConnect: true,
   );
+
+  static const String  _pusher = "ec680890477ff06ecb9a";
 
   @override
   void dispose() {
