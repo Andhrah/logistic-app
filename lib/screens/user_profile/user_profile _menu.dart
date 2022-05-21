@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
+import 'package:trakk/screens/user_profile/user_dispatch_history.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -98,8 +100,9 @@ class _UserMenuState extends State<UserMenu> {
               onTap: () {
                 Navigator.of(context).pushNamed(WalletScreen.id);
               },
-              child: const ProfileList(
-                svg: 'assets/images/wallet.svg',
+              child:  ProfileList(
+                icon: Icon(Remix.wallet_3_line),
+                //svg: 'assets/images/wallet.svg',
                 title: 'Wallet',
               ),
             ),
@@ -108,10 +111,11 @@ class _UserMenuState extends State<UserMenu> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(DispatchHistory.id);
+                Navigator.of(context).pushNamed(UserDispatchHistory.id);
               },
-              child: const ProfileList(
-                svg: 'assets/images/history.svg',
+              child:  ProfileList(
+                icon: Icon(Remix.history_line),
+                //svg: 'assets/images/history.svg',
                 title: 'Dispatch History',
               ),
             ),
@@ -120,8 +124,9 @@ class _UserMenuState extends State<UserMenu> {
             ),
             InkWell(
               onTap: () {},
-              child: const ProfileList(
-                svg: 'assets/images/settings.svg',
+              child:  ProfileList(
+                icon: Icon(Remix.settings_2_line),
+                //svg: 'assets/images/settings.svg',
                 title: 'Settings',
               ),
             ),
@@ -133,30 +138,31 @@ class _UserMenuState extends State<UserMenu> {
                 Navigator.of(context).pushNamed(Help.id);
               },
               child: const ProfileList(
-                svg: 'assets/images/help.svg',
+                icon: Icon(Remix.question_line),
+                //svg: 'assets/images/help.svg',
                 title: 'Help and Support',
               ),
             ),
             const SizedBox(
               height: 18,
             ),
-            InkWell(
-              onTap: () {},
-              child: const ProfileList(
-                svg: 'assets/images/e-commerce.svg',
-                title: 'E-commerce',
-              ),
-            ),
-            const SizedBox(
-              height: 18,
-            ),
-            InkWell(
-              onTap: () {},
-              child: const ProfileList(
-                svg: 'assets/images/insurance.svg',
-                title: 'Insurance',
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {},
+            //   child:  ProfileList(
+            //     icon: Remix.wallet_2_line,
+            //     title: 'E-commerce',
+            //   ),
+            // ),
+            // const SizedBox(
+            //   height: 18,
+            // ),
+            // InkWell(
+            //   onTap: () {},
+            //   child: const ProfileList(
+            //     svg: 'assets/images/insurance.svg',
+            //     title: 'Insurance',
+            //   ),
+            // ),
             const SizedBox(
               height: 50,
             ),
@@ -168,7 +174,7 @@ class _UserMenuState extends State<UserMenu> {
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 2,
-                    color: Color(0XFFBDBDBD),
+                    color: Color.fromARGB(255, 224, 224, 224),
                     offset: Offset(2.0, 2.0), //(x,y)
                     blurRadius: 16,
                   ),
@@ -272,7 +278,7 @@ class MenuContainer extends StatelessWidget {
                         Navigator.of(context).pushNamed(EditProfile.id);
                       },
                       color: Colors.black,
-                      width: 100.0,
+                      width: 80.0,
                       textColor: whiteColor,
                       isLoading: false),
                 ],

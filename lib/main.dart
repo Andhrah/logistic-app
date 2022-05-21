@@ -46,6 +46,7 @@ import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
+import 'package:trakk/screens/user_profile/user_dispatch_history.dart';
 import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
@@ -152,6 +153,7 @@ class _MyAppState extends State<MyApp> {
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
             WalletScreen.id:(context) => const WalletScreen(),
+            UserDispatchHistory.id:(context) => const UserDispatchHistory(),
             
           },
           // home: const GetStarted(),

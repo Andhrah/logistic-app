@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:remixicon/remixicon.dart';
 import 'package:trakk/utils/colors.dart';
 
 class ProfileList extends StatelessWidget {
-  final String svg;
+  final Widget icon;
   final String title;
 
   const ProfileList({
     Key? key,
-    required this.svg,
+    required this.icon,
     required this.title,
   }) : super(key: key);
 
@@ -30,7 +31,7 @@ class ProfileList extends StatelessWidget {
       child: Align(
         alignment: Alignment.center,
         child: ListTile(
-          leading: SvgPicture.asset(svg),
+          leading: icon,
           title: Text(
             title,
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400),
