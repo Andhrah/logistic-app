@@ -52,7 +52,6 @@ class _ListOfRidersState extends State<ListOfRiders> {
     "All riders (120)",
     "Active riders (98)",
     "Inactive riders (22)",
-    
   ];
 
   String _listOfRiders = 'All riders (120)';
@@ -126,15 +125,27 @@ class _ListOfRidersState extends State<ListOfRiders> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 _listOfRiders = newValue!;
+                                if (newValue.contains("All riders")) {
+                                  showAll = showAll;
+                                  isActive = false;
+                                } else if (newValue.contains("Active riders")) {
+                                  isActive = true;
+                                  showAll = false;
+                                } else if (newValue
+                                    .contains("Inactive riders")) {
+                                  isActive = false;
+                                  showAll = false;
+                                }
                               });
                             },
                             items: riders.map((String value) {
-                              return DropdownMenuItem(onTap: () {
-                                setState(() {
-                                  showAll = showAll;
-                                          isActive = false;
-                                });
-                              },
+                              return DropdownMenuItem(
+                                onTap: () {
+                                  setState(() {
+                                    showAll = showAll;
+                                    isActive = false;
+                                  });
+                                },
                                 value: value,
                                 child: Text(value),
                               );
@@ -152,74 +163,6 @@ class _ListOfRidersState extends State<ListOfRiders> {
                             ),
                           )
                         : Container(),
-
-                    // ExpansionPanelList(
-                    //   //title: Text('vehicle'),
-                    //   expansionCallback: (int index, bool isExpanded) {
-                    //     setState(() {
-                    //       _data[index].isExpanded = !isExpanded;
-                    //     });
-                    //   },
-                    //   children: _data.map<ExpansionPanel>((Item item) {
-                    //     return ExpansionPanel(
-                    //       headerBuilder:
-                    //           (BuildContext context, bool isExpanded) {
-                    //         return Align(
-                    //             alignment: Alignment.centerLeft,
-                    //             child: Padding(
-                    //               padding: EdgeInsets.all(12.0),
-                    //               child: InkWell(
-                    //                   onTap: () {
-                    //                     setState(() {
-                    //                       showAll = showAll;
-                    //                       isActive = false;
-                    //                     });
-                    //                   },
-                    //                   child: const Text('All vehicle (20)')),
-                    //             ));
-                    //         // return ListTile(
-                    //         //   title: Text(item.headerValue),
-                    //         // );
-                    //       },
-                    //       body: ListView(
-                    //           //scrollDirection: Axis.vertical,
-                    //           shrinkWrap: true,
-                    //           padding: EdgeInsets.all(12),
-                    //           children: [
-                    //             InkWell(
-                    //                 onTap: () {
-                    //                   setState(() {
-                    //                     isActive = true;
-                    //                     showAll = false;
-                    //                   });
-                    //                 },
-                    //                 child: Text('Active vehicle (20)')),
-                    //             SizedBox(
-                    //               height: 10,
-                    //             ),
-                    //             InkWell(
-                    //                 onTap: () {
-                    //                   setState(() {
-                    //                     isActive = false;
-                    //                     showAll = false;
-                    //                   });
-                    //                 },
-                    //                 child: Text('Inactive vehicle (22)')),
-                    //             Padding(
-                    //               padding: const EdgeInsets.symmetric(
-                    //                   horizontal: 8, vertical: 16),
-                    //               child: TextFormField(
-                    //                 decoration: const InputDecoration(
-                    //                   border: UnderlineInputBorder(),
-                    //                   labelText: 'Enter your username',
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ]),
-                    //       isExpanded: item.isExpanded,
-                    //     );
-                    //   }).toList(),
-                    // ),
                   ],
                 ),
               ),
@@ -237,10 +180,10 @@ class _ListOfRidersState extends State<ListOfRiders> {
                       //return RiderListContainer();
                       if (showAll) {
                         return InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(RiderProfile.id);
-                          }, 
-                          child: RiderListContainer());
+                            onTap: () {
+                              Navigator.of(context).pushNamed(RiderProfile.id);
+                            },
+                            child: RiderListContainer());
                       } else if (isActive) {
                         return ActiveContainer();
                       } else if (!isActive) {

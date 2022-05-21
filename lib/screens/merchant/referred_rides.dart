@@ -213,28 +213,22 @@ class _ReferredRidesState extends State<ReferredRides> {
             Container(
               margin: EdgeInsets.only(left: 30, right: 30),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                //crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                    'Select Date',
-                    textScaleFactor: 1.2,
-                    style: TextStyle(
-                      color: appPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                      // decoration: TextDecoration.underline,
-                    ),
-                  ),
+                  
                   Row(
+                    //mainAxisAlignment: MainAxisAlignment.center,
+                  //rossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Expanded(
-                        child: Container(
-                          height: 50,
+                        child: SizedBox(
+                          height: 120,
                           child: Row(
                             children: [
                               Expanded(
                                 child: InputField(
                                   obscureText: false,
-                                  text: 'Pickup Date',
+                                  text: 'Select Date',
                                   hintText: '24/3/2022',
                                   textHeight: 5.0,
                                   node: _pickUpDateNode,
@@ -301,10 +295,13 @@ class _ReferredRidesState extends State<ReferredRides> {
                                 ),
                               ),
                               const SizedBox(width: 10.0),
+                              Align(alignment: Alignment.center,
+                                child: Text('To', style: TextStyle(fontSize: 18),)),
+                              const SizedBox(width: 10.0),
                               Expanded(
                                 child: InputField(
                                   obscureText: false,
-                                  text: 'Dropoff Date',
+                                  text: '',
                                   hintText: '26/3/2022',
                                   textHeight: 5.0,
                                   node: _dropOffDateNode,
