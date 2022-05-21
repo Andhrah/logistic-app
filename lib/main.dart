@@ -54,9 +54,17 @@ import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 void main() async {
   await _openHive();
+  
+  // To load the .env file contents into dotenv.
+  // NOTE: fileName defaults to .env and can be omitted in this case.
+  // Ensure that the filename corresponds to the path in step 1 and 2.
+  await dotenv.load(fileName: ".env");
+    
   runApp(const MyApp());
 }
 
@@ -78,6 +86,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  
+
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
@@ -85,6 +95,7 @@ class _MyAppState extends State<MyApp> {
 
   PusherClient pusher = PusherClient(
     "ec680890477ff06ecb9a",
+    
     PusherOptions(
       encrypted: false,
     ),
@@ -100,6 +111,11 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    
+    print(dotenv.env["PUSHER_TOKEN"]);
+
+    
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
