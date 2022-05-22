@@ -4,7 +4,6 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -106,7 +105,6 @@ class _LoginState extends State<Login> {
           ).show(context);
           Navigator.of(context).pushNamed(Tabs.id);
         }
-        // Auth.authProvider(context)
       } catch(err){
         setState(() {
           _loading = false;
@@ -162,7 +160,6 @@ class _LoginState extends State<Login> {
                         style: TextStyle(
                           color: appPrimaryColor,
                           fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
                         ),
                       ),
                     ),

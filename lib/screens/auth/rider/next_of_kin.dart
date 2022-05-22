@@ -52,11 +52,16 @@ class _NextOfKinState extends State<NextOfKin> {
   String? _vehicleCapacity;
   String _vehicleParticulars = "";
   String _vehicleImage = "";
+  int vehicleTypeId = 1;
+  String? vehicleModel;
   // kin info
-  String? _kinFulltName;
+  String? _kinFullName;
+  String? _kinFirstName;
+  String? _kinLastName;
   String? _kinEmail;
   String? _kinAddress;
   String? _kinPhoneNumber;
+  String? _kinRelationship;
 
   bool _loading = false;
   bool _emailIsValid = false;
@@ -124,7 +129,12 @@ class _NextOfKinState extends State<NextOfKin> {
           _vehicleCapacity = box.get("vehicleCapacity"),
           _vehicleParticulars = box.get("vehicleParticulars"),
           _vehicleImage =  box.get("vehicleImage"),
-          _kinFulltName.toString(),
+          vehicleModel.toString(),
+          // _kinFulltName.toString(),
+           vehicleTypeId,
+          _kinFirstName.toString(),
+          _kinLastName.toString(),
+          _kinRelationship.toString(),
           _kinEmail.toString(),
           _kinAddress.toString(),
           _kinPhoneNumber.toString(),
@@ -236,12 +246,12 @@ class _NextOfKinState extends State<NextOfKin> {
                     
                     const SizedBox(height: 30.0),
                     InputField(
-                      key: const Key('kinFullName'),
+                      key: const Key('kinFirstName'),
                       textController: _kinFirstNameController,
                       node: _kinFirstNameNode,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       obscureText: false,
-                      text: 'Full Name of Kin',
+                      text: 'First Name of Kin',
                       hintText: 'John Doe',
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
@@ -257,7 +267,34 @@ class _NextOfKinState extends State<NextOfKin> {
                         return "Enter a valid full name";
                       },
                         onSaved: (value){
-                          _kinFulltName = value!.trim();
+                          _kinFullName = value!.trim();
+                          return null;
+                      },
+                    ),
+
+                    InputField(
+                      key: const Key('kinLastName'),
+                      textController: _kinFirstNameController,
+                      node: _kinFirstNameNode,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      obscureText: false,
+                      text: 'First Name of Kin',
+                      hintText: 'John',
+                      textHeight: 10.0,
+                      borderColor: appPrimaryColor.withOpacity(0.9),
+                      suffixIcon: const Icon(
+                        Remix.user_line,
+                        size: 18.0,
+                        color: Color(0xFF909090),
+                      ),
+                      validator: (value) {
+                        if (value!.trim().length > 3) {
+                          return null;
+                        }
+                        return "Enter a valid full name";
+                      },
+                        onSaved: (value){
+                          _kinFullName = value!.trim();
                           return null;
                       },
                     ),
