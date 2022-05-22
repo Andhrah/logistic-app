@@ -25,11 +25,13 @@ class _VehicleDataState extends State<VehicleData> {
   late TextEditingController _vehicleColorController;
   late TextEditingController _vehicleNumberController;
   late TextEditingController _vehicleCapacityController;
+  late TextEditingController _vehicleModelController;
 
   FocusNode? _vehicleNameNode;
   FocusNode? _vehicleColorNode;
   FocusNode? _vehicleNumberNode;
   FocusNode? _vehicleCapacityNode;
+  FocusNode? _vehicleModelNode;
 
   String? userType;
 
@@ -43,11 +45,14 @@ class _VehicleDataState extends State<VehicleData> {
   String? _vehicleColor;
   String? _vehicleNumber;
   String? _vehicleCapacity;
+  String? _vehicleModel;
   String _vehicleParticulars = "";
   String _vehicleImage = "";
+  String _driverLicence = "";
 
   bool _isVehicleParticularsImage = false;
   bool _isVehicleImage = false;
+  bool _isDriverLicence = false;
   bool _isButtonPress = false;
 
   @override
@@ -59,6 +64,7 @@ class _VehicleDataState extends State<VehicleData> {
     _vehicleNameController = TextEditingController();
     _vehicleNumberController = TextEditingController();
     _vehicleCapacityController = TextEditingController();
+    _vehicleModelController = TextEditingController();
   }
 
   /*
@@ -80,12 +86,13 @@ class _VehicleDataState extends State<VehicleData> {
         "vehicleColor": _vehicleColor,
         "vehicleNumber": _vehicleNumber,
         "vehicleCapacity": _vehicleCapacity,
+        "_vehicleModel": _vehicleModel,
         "vehicleParticulars": _vehicleParticulars,
         "vehicleImage": _vehicleImage,
+        "driverLicence": _driverLicence,
       });
       Navigator.of(context).pushNamed( NextOfKin.id);
     }
-   
   }
 
   @override
@@ -214,7 +221,7 @@ class _VehicleDataState extends State<VehicleData> {
 
                       const SizedBox(height: 30.0),
                       InputField(
-                         key: const Key('vehicleCapacity'),
+                        key: const Key('vehicleCapacity'),
                         textController: _vehicleCapacityController,
                         node: _vehicleCapacityNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -231,6 +238,29 @@ class _VehicleDataState extends State<VehicleData> {
                         },
                         onSaved: (value){
                           _vehicleCapacity = value!.trim();
+                          return null;
+                        },
+                      ),
+
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('vehicleModel'),
+                        textController: _vehicleModelController,
+                        node: _vehicleCapacityNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Vehicle Model',
+                        hintText: 'Vehicle model',
+                        textHeight: 5.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        validator: (value) {
+                          if (value!.trim().length > 2) {
+                            return null;
+                          }
+                          return "Enter a valid vehicle model";
+                        },
+                        onSaved: (value){
+                          _vehicleModel = value!.trim();
                           return null;
                         },
                       ),
@@ -375,7 +405,81 @@ class _VehicleDataState extends State<VehicleData> {
                       _isButtonPress && _vehicleImage.isEmpty ?
                       const Align(
                         child: Text(
-                        " Upload your vehicle particular for verification",
+                        " Upload vehicle image",
+                          textScaleFactor: 0.9,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Colors.red,
+                            // fontWeight: FontWeight.bold,
+                          )
+                        ),
+                      ): Container(),
+
+                      const SizedBox(height: 30.0),
+                      _isDriverLicence == false ? 
+                      InkWell(
+                        onTap: () async {
+                          final result = await FilePicker.platform.pickFiles();
+                          if(result != null) {
+                            // Open single file open
+                            final file = result.files.first;
+                            print("Image Name: ${file.name}");
+                             setState(() {
+                              _driverLicence = file.name;
+                              _isDriverLicence = true;
+                            });
+                            return;
+                          }
+                        },
+                        child: Align(
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+                            width: MediaQuery.of(context).size.width / 3,
+                            height: MediaQuery.of(context).size.height / 7,
+                            child: Column(
+                              children: [
+                                const Icon(
+                                  Remix.upload_2_line,
+                                  size: 25,
+                                ),
+
+                                const SizedBox(height: 15.0),
+                                const Text(
+                                  'Upload driver’s licence',
+                                  textScaleFactor: 0.9,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: appPrimaryColor,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(
+                                color: appPrimaryColor.withOpacity(0.2),
+                                width: 1,
+                              ),
+                              borderRadius: const BorderRadius.all(
+                                Radius.circular(5.0),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ) : Text(
+                          _driverLicence,
+                          textScaleFactor: 1.5,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                            color: secondaryColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+
+                      const SizedBox(height: 5.0),
+                      _isButtonPress && _driverLicence.isEmpty ?
+                      const Align(
+                        child: Text(
+                        " Upload driver’s licence",
                           textScaleFactor: 0.9,
                           textAlign: TextAlign.center,
                           style: TextStyle(

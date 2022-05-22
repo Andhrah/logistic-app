@@ -22,7 +22,7 @@ class AuthService {
     print('Encoded body ${json.encode(body)}');
     var response = await http.post(
       uriConverter(url),
-      // headers: kHeaders(''),
+      headers: kHeaders(''),
       body: json.encode(body)
     );
     print(response.body);
@@ -51,9 +51,9 @@ class AuthService {
       headers: kHeaders(""),
       body: json.encode(body)
     );
-    print(response.body);
+    // print(response.body);
     var decoded = jsonDecode(response.body);
-     print(decoded);
+    print(decoded);
     if (response.statusCode.toString().startsWith('2') && decoded["status"]) {
       print('data here for reset: $decoded');
       return decoded;
@@ -109,7 +109,7 @@ class AuthService {
       "email": email,
       "phoneNumber": phoneNumber,
       "password": password,
-      // "userType": userType,
+      "userType": userType,
     };
     return await authRequest(body, 'api/User/register');
   }
@@ -133,19 +133,56 @@ class AuthService {
     String vehicleCapacity,
     String vehicleParticulars,
     String vehicleImage,
+    String vehicleModel,
+    int vehicleTypeId,
 
-    String kinFullName,
+    String kinFirstName,
+    String kinLastName,
     String kinEmail,
     String kinAddress,
     String kinPhoneNumber,
+    String kinRelationship,
     ) async {
     var body = {
-      "firstName": firstName,
-      "lastName": lastName,
-      "email": email,
-      "phoneNumber": phoneNumber,
-      "password": password,
-      "userType": userType,
+      "user": {
+        "firstName": firstName,
+        "lastName": lastName,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "password": password,
+        "userType": userType,
+        "nextOfKin": {
+          "firstName": kinFirstName,
+          "lastName": kinLastName,
+          "phoneNumber": kinPhoneNumber,
+          "email": kinEmail,
+          "address": kinAddress,
+          "relationship": kinRelationship,
+        },
+        "residentialAddress": residentialAddress,
+        "stateOfOrigin": stateOfOrigin,
+        "stateOfResidence": stateOfResidence,
+      },
+      "vehicle": {
+        "color": vehicleColor,
+        "name": vehicleName,
+        "number": vehicleNumber,
+        "capacity": vehicleCapacity,
+        "model": vehicleModel,
+        "vehicleTypeId": vehicleTypeId,
+        // "documents": [
+        //   {
+        //     "name": "string",
+        //     "url": "string"
+        //   }
+        // ],
+      },
+      // "firstName": firstName,
+      // "lastName": lastName,
+      // "email": email,
+      // "phoneNumber": phoneNumber,
+      // "password": password,
+      // "userType": userType,
 
       "stateOfOrigin": stateOfOrigin,
       "stateOfResidence": stateOfResidence,
@@ -159,7 +196,7 @@ class AuthService {
       "vehicleImage": vehicleImage,
       "vehicleParticulars": vehicleParticulars,
 
-      "nOKFullName": kinFullName,
+      // "nOKFullName": kinFullName,
       "nOKEmail": kinEmail,
       "nOKAddress": kinAddress,
       "nOKPhoneNumber": kinPhoneNumber,

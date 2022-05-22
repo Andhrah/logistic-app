@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
@@ -22,6 +23,20 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  _isFirstTimeUser() async {
+   var box = await Hive.openBox('userData');
+    box.putAll({
+      "firstTimeUser": true,
+    });
+    print("WE ARE HERE, AT HOME");
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _isFirstTimeUser();
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(

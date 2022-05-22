@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
 import 'package:trakk/Exceptions/api_failure_exception.dart';
 import 'package:trakk/models/auth/first_time_user.dart';
@@ -40,10 +41,9 @@ class Auth extends ChangeNotifier {
   }
 
   void _setInitialData(data) {
-    setUser(User.fromJson(data["data"]["data"]));
-    print("=========== Jehovah is AWESOME ==========");
-    print(data["data"]["data"]["token"]);
-    setToken(data["data"]["data"]["token"]);
+    print(data["data"]['token']);
+    // setUser(User.fromJson(data));
+    setToken(data["data"]["token"]);
   }
 
   // create a user
@@ -88,11 +88,16 @@ class Auth extends ChangeNotifier {
     String vehicleCapacity,
     String vehicleParticulars,
     String vehicleImage,
+    String vehicleModel,
+    int vehicleTypeId,
 
-    String kinFullName,
+    String kinFirstName,
+    String kinLastName,
+    // String kinFullName,
     String kinEmail,
     String kinAddress,
     String kinPhoneNumber,
+    String kinRelationship,
     ) async {
     try {
       var response = await _authApi.createRider(
@@ -112,11 +117,17 @@ class Auth extends ChangeNotifier {
         vehicleCapacity,
         vehicleParticulars,
         vehicleImage,
-        kinFullName,
+        vehicleModel,
+        vehicleTypeId,
+        kinFirstName,
+        kinLastName,
         kinEmail,
         kinAddress,
         kinPhoneNumber,
+        kinRelationship,
       );
+      print('[][][][][][][][][][] REGISTER [][][][][][][][][][][][]');
+      print('user is a ${response}');
       return response;
     } catch(err) {
       throw ApiFailureException(err);
@@ -128,8 +139,20 @@ class Auth extends ChangeNotifier {
     try {
       var response = await _authApi.login(email, password);
       // _setInitialData(response);
+      print('[][][][][][][][][][][][][][][][][][][][][][]');
+      print('user is a ${response['data']['token']}');
+      var box = await Hive.openBox('userData');
+      box.putAll({
+        "token": response['data']['token'],
+      });
+      
+      // User user = User.fromJson(response);
+      print('[][][][][][][][][] THERER [][][][][][][][][][][][][]');
+      print(user);
       return response;
     } catch(err) {
+      print('WE ARE THERE NOW');
+      print(err);
       throw ApiFailureException(err);
     }
   }

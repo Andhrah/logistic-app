@@ -194,35 +194,3 @@ class _TabsState extends State<Tabs> {
   }
 }
 
-// class ButtonBarItem extends StatelessWidget {
-//   final String icon;
-//   final String title;
-//   final Color color;
-//   final Function onPressed;
-//   const ButtonBarItem({
-//     required Key key, required this.icon, required this.title, required this.color, required this.onPressed,
-//   }) : super(key: key);
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return InkWell(
-//       onTap: onPressed(),
-//       child: AnimatedContainer(
-//         duration: Duration(milliseconds: 300),
-//         child: Column(
-//           mainAxisAlignment: MainAxisAlignment.center,
-//           children: <Widget>[
-//           SvgPicture.asset("images/$icon.svg"),
-//           SizedBox(height: 5,),
-//           Text(
-//             title, 
-//             style: TextStyle(
-//               fontWeight: FontWeight.bold,
-//               fontSize: 14, 
-//               color: color),
-//             )
-//         ],),
-//       ),
-//     );
-//   }
-// }
