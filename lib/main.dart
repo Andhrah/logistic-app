@@ -51,9 +51,18 @@ import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:pusher_client/pusher_client.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 
 void main() async {
   await _openHive();
+  
+  // To load the .env file contents into dotenv.
+  // NOTE: fileName defaults to .env and can be omitted in this case.
+  // Ensure that the filename corresponds to the path in step 1 and 2.
+  await dotenv.load(fileName: ".env");
+    
   runApp(const MyApp());
 }
 
@@ -68,6 +77,9 @@ _openHive() async {
 }
 
 class MyApp extends StatefulWidget {
+
+  //final String _pusher = "ec680890477ff06ecb9a";
+
   const MyApp({Key? key}) : super(key: key);
 
   @override
@@ -75,6 +87,24 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  
+
+  PusherOptions options = PusherOptions(
+    host: "https://trakk-server.herokuapp.com",
+    encrypted: false,
+  );
+
+  PusherClient pusher = PusherClient(
+    _pusher,
+    
+    PusherOptions(
+      encrypted: false,
+    ),
+    autoConnect: true,
+  );
+
+  static const String  _pusher = "ec680890477ff06ecb9a";
+
   @override
   void dispose() {
     Hive.close();
@@ -84,9 +114,26 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: appPrimaryColor
-    ));
+
+    
+    print(dotenv.env["PUSHER_TOKEN"]);
+
+    
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    pusher.onConnectionStateChange((state) {
+      print(
+          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+    });
+
+    pusher.onConnectionError((error) {
+      print("error: ${error != null ? error.message : ""}");
+    });
+
+    Channel channel = pusher.subscribe("adelowomi@gmail.com");
+    channel.bind("user", (event) {
+      print(event != null ? event.data : "O ti fail");
+    });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
