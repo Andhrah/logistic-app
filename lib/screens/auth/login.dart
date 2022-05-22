@@ -4,7 +4,6 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -58,7 +57,6 @@ class _LoginState extends State<Login> {
       regex = RegExp(pattern);
       setState(() {
         _emailIsValid = regex.hasMatch(email);
-        print(_emailIsValid);
       });
       if(_emailIsValid == false){
         return "Enter a valid email address";
@@ -87,13 +85,14 @@ class _LoginState extends State<Login> {
         setState(() {
           _loading = false;
         });
-        if (response["code"] == 200) {
+        
+        if (response["status"] == true) {
           form.reset();
           await Flushbar(
-            messageText: Text(
-              response["message"],
+            messageText: const Text(
+              'Login Successful',
               textAlign: TextAlign.center,
-              style: const TextStyle(
+              style: TextStyle(
                 color: whiteColor,
                 fontSize: 18,
               ),
@@ -102,11 +101,10 @@ class _LoginState extends State<Login> {
             maxWidth: MediaQuery.of(context).size.width/1.4,
             flushbarPosition: FlushbarPosition.TOP,
             borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 3),
           ).show(context);
           Navigator.of(context).pushNamed(Tabs.id);
         }
-        // Auth.authProvider(context)
       } catch(err){
         setState(() {
           _loading = false;
@@ -162,7 +160,6 @@ class _LoginState extends State<Login> {
                         style: TextStyle(
                           color: appPrimaryColor,
                           fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
                         ),
                       ),
                     ),

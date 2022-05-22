@@ -33,6 +33,8 @@ class User {
   int code;
   @HiveField(9)
   String fullName;
+  @HiveField(10)
+  String token;
 
   User({
     required this.id,
@@ -45,6 +47,7 @@ class User {
     required this.message,
     required this.code,
     required this.fullName,
+    required this.token,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => User(
@@ -58,6 +61,7 @@ class User {
     message: json["message"],
     code: json["code"],
     fullName: json["fullName"],
+    token: json["token"]
   );
 
   Map<String, dynamic> toJson() => {
@@ -71,6 +75,7 @@ class User {
     "message": message,
     "code": code,
     "fullName": fullName,
+    "token": token,
   };
 }
 

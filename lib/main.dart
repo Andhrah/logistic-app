@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:path_provider/path_provider.dart' as pp;
 
 import 'package:trakk/models/auth/first_time_user.dart';
+import 'package:trakk/models/auth/is_logged_in.dart';
 import 'package:trakk/models/auth/user.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
@@ -69,10 +70,10 @@ _openHive() async {
   WidgetsFlutterBinding.ensureInitialized();
   var appDocDir = await pp.getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocDir.path);
-  // await Hive.openBox();
   // Register the generated adapter
   Hive.registerAdapter(FirstTimeUserAdapter());
   Hive.registerAdapter(UserAdapter());
+  Hive.registerAdapter(IsLoggedInAdapter());
 }
 
 class MyApp extends StatefulWidget {
@@ -180,23 +181,21 @@ class _MyAppState extends State<MyApp> {
             CartScreen.id: (context) => const CartScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
-            // MyDatePicker.id: (context) => MyDatePicker(),
-            // Country.id: (context) => const Country(),
-            UserMenu.id: (context) => const UserMenu(),
-            EditProfile.id: (context) => const EditProfile(),
-            Help.id: (context) => const Help(),
+            UserMenu.id:(context) => const UserMenu(),
+            EditProfile.id:(context) => const EditProfile(),
+            Help.id:(context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
-            CompanyHome.id: (context) => const CompanyHome(),
-            Vehicles.id: (context) => const Vehicles(),
-            Riders.id: (context) => const Riders(),
-            DispatchHistory.id: (context) => const DispatchHistory(),
-            ListOfVehicles.id: (context) => const ListOfVehicles(),
-            RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
-            AddRider.id: (context) => const AddRider(),
-            ReferredRides.id: (context) => const ReferredRides(),
-            AllVehicleContainer.id: (context) => const AllVehicleContainer(),
-            EditRiderProfile.id: (context) => const EditRiderProfile(),
-            ListOfRiders.id: (context) => const ListOfRiders(),
+            CompanyHome.id:(context) => const CompanyHome(),
+            Vehicles.id:(context) => const Vehicles(),
+            Riders.id:(context) => const Riders(),
+            DispatchHistory.id:(context) => const DispatchHistory(),
+            ListOfVehicles.id:(context) => const ListOfVehicles(),
+            RegisterNewVehicle.id:(context) => const RegisterNewVehicle(),
+            AddRider.id:(context) => const AddRider(),
+            ReferredRides.id:(context) => const ReferredRides(),
+            AllVehicleContainer.id:(context) => const AllVehicleContainer(),
+            EditRiderProfile.id:(context) => const EditRiderProfile(),
+            ListOfRiders.id:(context) => const ListOfRiders(),
           },
           // home: const GetStarted(),
         ),
