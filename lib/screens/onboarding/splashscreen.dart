@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:trakk/models/auth/first_time_user.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:hive/hive.dart';
 import 'package:trakk/repository/hive_repository.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
+import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
 
@@ -47,32 +47,32 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     await HiveRepository.openHives([
       kFirstTimeUser,
     ]);
-
-    FirstTimeUser? firstTimeUser;
+    // FirstTimeUser? firstTimeUser;
+    bool? firstTimeUser;
+    String? token;
 
     try {
-      print('<<<<<<<<<< DEBUGGING >>>>>>>>>>>>>>>>');
-      print('<<<<<<<<<<  >>>>>>>>>>>>>>>>');
-      // print(firstTimeUser);
-      firstTimeUser = _hiveRepository.get<FirstTimeUser>(key: 'firstTimeUser', name: kFirstTimeUser);
-      print(firstTimeUser);
-      print('<<<<<<<<<< DEBUGGING 2>>>>>>>>>>>>>>>>');
-      print(firstTimeUser);
-      Auth.authProvider(context).setFirstTimerUser(firstTimeUser);
+      var box = await Hive.openBox('userData');
+      token = box.get("token");
+      firstTimeUser = box.get("firstTimeUser");
+      if(firstTimeUser == null) {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          Onboarding.id, (route) => false
+        );
+      } else if(token != null){
+         Navigator.of(context).pushNamedAndRemoveUntil(
+          Tabs.id, (route) => false
+        );
+      }
+      else {
+        Navigator.of(context).pushNamedAndRemoveUntil(
+          Home.id, (route) => false
+        );
+      }
+      // firstTimeUser = _hiveRepository.get<FirstTimeUser>(key: 'firstTimeUser', name: kFirstTimeUser);
+      // Auth.authProvider(context).setFirstTimerUser(firstTimeUser);
     } catch(err) {
-      print('<<<<<<<<<< Logging error >>>>>>>>>>>>>>>>');
-      print(err.toString());
       rethrow;
-    }
-
-    if(firstTimeUser == null) {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        Onboarding.id, (route) => false
-      );
-    } else {
-      Navigator.of(context).pushNamedAndRemoveUntil(
-        Home.id, (route) => false
-      );
     }
   }
 
