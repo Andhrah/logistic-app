@@ -9,6 +9,7 @@ import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/input_field.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 
 class Settings extends StatefulWidget {
   static String id = "settings";
@@ -20,6 +21,8 @@ class Settings extends StatefulWidget {
 }
 
 class _SettingsState extends State<Settings> {
+  bool status = false;
+
   static String userType = "user";
 
   final _formKey = GlobalKey<FormState>();
@@ -248,7 +251,7 @@ class _SettingsState extends State<Settings> {
               height: 20,
             ),
             Container(
-              height: 150,
+              height: 250,
               margin: EdgeInsets.all(30),
               decoration: const BoxDecoration(
                   borderRadius: BorderRadius.all(
@@ -269,6 +272,44 @@ class _SettingsState extends State<Settings> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+
+                    Text("Custom Colors and Borders"),
+                SizedBox(height: 10.0),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    FlutterSwitch(
+                      width: 60.0,
+                      height: 0.0,
+                      toggleSize: 30.0,
+                      value: status,
+                      borderRadius: 30.0,
+                      padding: 2.0,
+                      toggleColor: Color.fromRGBO(225, 225, 225, 1),
+                      switchBorder: Border.all(
+                        color: appPrimaryColor,
+                        width: 6.0,
+                      ),
+                      toggleBorder: Border.all(
+                        color: appPrimaryColor,
+                        width: 5.0,
+                      ),
+                      activeColor: Color.fromARGB(255, 15, 15, 15),
+                      inactiveColor: Color.fromARGB(96, 252, 252, 252),
+                      onToggle: (val) {
+                        setState(() {
+                          status = val;
+                        });
+                      },
+                    ),
+                    Container(
+                      alignment: Alignment.centerRight,
+                      child: Text(
+                        "Value: $status",
+                      ),
+                    ),
+                  ],
+                ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -287,7 +328,11 @@ class _SettingsState extends State<Settings> {
                           ),
                           Icon(Icons.arrow_forward_ios),
                         ]),
-                    const SettingsRow(icon: Icon(Icons.arrow_forward_ios), statusIcon: Icon(Remix.notification_4_line), title: 'Notifications',),
+                    const SettingsRow(
+                      icon: Icon(Icons.arrow_forward_ios),
+                      statusIcon: Icon(Remix.notification_4_line),
+                      title: 'Notifications',
+                    ),
                     
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -299,7 +344,7 @@ class _SettingsState extends State<Settings> {
                                 width: 25,
                               ),
                               Text(
-                                "Account",
+                                "Privacy & Security",
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.w400),
                               ),
@@ -362,28 +407,28 @@ class SettingsRow extends StatelessWidget {
   final Widget statusIcon;
   final Widget icon;
   const SettingsRow({
-    Key? key, required this.title, required this.statusIcon, required this.icon,
+    Key? key,
+    required this.title,
+    required this.statusIcon,
+    required this.icon,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+      Row(
         children: [
-          Row(
-            children:  [
-              statusIcon,
-              SizedBox(
-                width: 25,
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w400),
-              ),
-            ],
+          statusIcon,
+          SizedBox(
+            width: 25,
           ),
-          icon,
-        ]);
+          Text(
+            title,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+          ),
+        ],
+      ),
+      icon,
+    ]);
   }
 }

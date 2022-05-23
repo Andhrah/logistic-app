@@ -177,7 +177,7 @@ class _UserMenuState extends State<UserMenu> {
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 2,
-                    color: Color.fromARGB(255, 224, 224, 224),
+                    color: Color.fromARGB(255, 231, 231, 231),
                     offset: Offset(2.0, 2.0), //(x,y)
                     blurRadius: 16,
                   ),

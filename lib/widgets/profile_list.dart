@@ -22,7 +22,7 @@ class ProfileList extends StatelessWidget {
         boxShadow: [
           BoxShadow(
             spreadRadius: 0,
-            color: Color.fromARGB(255, 238, 238, 238),
+            color: Color.fromARGB(255, 231, 231, 231),
             offset: Offset(2.0, 3.0), //(x,y)
             blurRadius: 6,
           ),
