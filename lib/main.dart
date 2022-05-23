@@ -54,6 +54,7 @@ import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:pusher_client/pusher_client.dart';
 
 void main() async {
   await _openHive();
@@ -78,6 +79,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  PusherOptions options = PusherOptions(
+    host: "https://trakk-server.herokuapp.com",
+    encrypted: false,
+  );
+
+  PusherClient pusher = PusherClient(
+    "ec680890477ff06ecb9a",
+    PusherOptions(
+      encrypted: false,
+    ),
+    autoConnect: true,
+  );
+
   @override
   void dispose() {
     Hive.close();
@@ -87,9 +101,21 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: appPrimaryColor
-    ));
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    pusher.onConnectionStateChange((state) {
+      print(
+          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+    });
+
+    pusher.onConnectionError((error) {
+      print("error: ${error != null ? error.message : ""}");
+    });
+
+    Channel channel = pusher.subscribe("adelowomi@gmail.com");
+    channel.bind("user", (event) {
+      print(event != null ? event.data : "O ti fail");
+    });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
@@ -137,6 +163,7 @@ class _MyAppState extends State<MyApp> {
             CartScreen.id: (context) => const CartScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
+<<<<<<< HEAD
             UserMenu.id:(context) => const UserMenu(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
@@ -159,6 +186,25 @@ class _MyAppState extends State<MyApp> {
             
 =======
 >>>>>>> 8f9ff8a ( implement user onboarding flow)
+=======
+            // MyDatePicker.id: (context) => MyDatePicker(),
+            // Country.id: (context) => const Country(),
+            UserMenu.id: (context) => const UserMenu(),
+            EditProfile.id: (context) => const EditProfile(),
+            Help.id: (context) => const Help(),
+            FundWalletScreen.id: (context) => const FundWalletScreen(),
+            CompanyHome.id: (context) => const CompanyHome(),
+            Vehicles.id: (context) => const Vehicles(),
+            Riders.id: (context) => const Riders(),
+            DispatchHistory.id: (context) => const DispatchHistory(),
+            ListOfVehicles.id: (context) => const ListOfVehicles(),
+            RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
+            AddRider.id: (context) => const AddRider(),
+            ReferredRides.id: (context) => const ReferredRides(),
+            AllVehicleContainer.id: (context) => const AllVehicleContainer(),
+            EditRiderProfile.id: (context) => const EditRiderProfile(),
+            ListOfRiders.id: (context) => const ListOfRiders(),
+>>>>>>> eb35986 (ft-pusher-client)
           },
           // home: const GetStarted(),
         ),
