@@ -4,5 +4,8 @@ import 'package:provider/single_child_widget.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 
 List<SingleChildWidget> appProviders = [
+  // ChangeNotifierProvider notifies the UI/Widget to update its
+  // content to the latest data whenever there is any notification
+  // about the change of data.
   ChangeNotifierProvider<Auth>(create: (_) => Auth()),
 ];

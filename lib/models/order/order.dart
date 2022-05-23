@@ -1,4 +1,4 @@
-class Order {
+class OrderModel {
   final int id;
   final String pickup;
   final String dropoff;
@@ -10,7 +10,8 @@ class Order {
   // final String receiverEmail;
   final String cost;
 
-  Order({
+  // constructor
+  OrderModel({
     required this.id,
     required this.pickup,
     required this.dropoff,
