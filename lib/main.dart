@@ -200,6 +200,7 @@ class _MyAppState extends State<MyApp> {
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
 <<<<<<< HEAD
+<<<<<<< HEAD
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
 =======
@@ -223,6 +224,12 @@ class _MyAppState extends State<MyApp> {
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
 >>>>>>> eb35986 (ft-pusher-client)
+=======
+=======
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+>>>>>>> de178cc (ft-merchant)
+>>>>>>> c306a3c ("ft-merchant)
           },
           // home: const GetStarted(),
         ),
