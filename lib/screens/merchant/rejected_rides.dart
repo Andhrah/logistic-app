@@ -12,16 +12,16 @@ import 'package:trakk/widgets/input_field.dart';
 
 import '../../widgets/back_icon.dart';
 
-class ReferredRides extends StatefulWidget {
-  static const String id = 'referredrides';
+class RejectedRides extends StatefulWidget {
+  static const String id = 'rejectedrides';
 
-  const ReferredRides({Key? key}) : super(key: key);
+  const RejectedRides({Key? key}) : super(key: key);
 
   @override
-  State<ReferredRides> createState() => _ReferredRidesState();
+  State<RejectedRides> createState() => _RejectedRidesState();
 }
 
-class _ReferredRidesState extends State<ReferredRides> {
+class _RejectedRidesState extends State<RejectedRides> {
   final _formKey = GlobalKey<FormState>();
 
   Color color = whiteColor;

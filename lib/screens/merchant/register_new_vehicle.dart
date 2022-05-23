@@ -182,16 +182,16 @@ class _RegisterNewVehicleState extends State<RegisterNewVehicle> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-          child: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(
+        backgroundColor: whiteColor,
+        body: SafeArea(
+          child: SingleChildScrollView(
+              child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                const SizedBox(
               height: 20,
-            ),
-            Row(
+                ),
+                Row(
               children: [
                 BackIcon(
                   onPress: () {
@@ -212,11 +212,11 @@ class _RegisterNewVehicleState extends State<RegisterNewVehicle> {
                   ),
                 ),
               ],
-            ),
-            SizedBox(
+                ),
+                SizedBox(
               height: 20,
-            ),
-            const Padding(
+                ),
+                const Padding(
               padding: EdgeInsets.only(left: 30),
               child: Text(
                 'Vehicle data',
@@ -227,99 +227,107 @@ class _RegisterNewVehicleState extends State<RegisterNewVehicle> {
                   // decoration: TextDecoration.underline,
                 ),
               ),
-            ),
-            SizedBox(
+                ),
+                SizedBox(
               height: 20,
-            ),
-            Container(
-              width: MediaQuery.of(context).size.width,
-              margin: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    InputField(
-                      key: const Key('name of vehicle'),
-                      textController: _vehicleNameController,
-                      node: _nameNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Name of vehicle',
-                      hintText: 'name of vehicle',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      // suffixIcon: const Icon(
-                      //   Remix.user_line,
-                      //   size: 18.0,
-                      //   color: Color(0xFF909090),
-                      // ),
-                      // validator: (value) {
-                      //   if (value!.trim().length > 2) {
-                      //     return null;
-                      //   }
-                      //   return "Enter a valid first  name";
-                      // },
-                      onSaved: (value) {
-                        _name = value!.trim();
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('color of vehicle'),
-                      textController: _vehicleColorController,
-                      node: _nameNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Color of vehicle',
-                      hintText: 'Color of vehicle',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      // suffixIcon: const Icon(
-                      //   Remix.user_line,
-                      //   size: 18.0,
-                      //   color: Color(0xFF909090),
-                      // ),
-                      // validator: (value) {
-                      //   if (value!.trim().length > 2) {
-                      //     return null;
-                      //   }
-                      //   return "Enter a valid last  name";
-                      // },
-                      onSaved: (value) {
-                        _name = value!.trim();
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('vehiclephoneNumber'),
-                      textController: _vehicleNumberController,
-                      keyboardType: TextInputType.phone,
-                      node: _vehicleNumberNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Vehicle Number',
-                      hintText: 'Vehicle Number',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      // suffixIcon: const Icon(
-                      //   Remix.phone_line,
-                      //   size: 18.0,
-                      //   color: Color(0xFF909090),
-                      // ),
-                      // validator: (value) {
-                      //   if (value!.trim().length == 11) {
-                      //     return null;
-                      //   }
-                      //   return "Enter a valid phone number";
-                      // },
-                      onSaved: (value) {
-                        _vehicleNumber = value!.trim();
-                        return null;
-                      },
-                    ),
+                ),
+                Text("data"),
+                Container(child: Column(children: [Text("data")],),),
+                Container(height: 200,
+                    width: MediaQuery.of(context).size.width,
+                    margin: const EdgeInsets.symmetric(horizontal: 30.0),
+                    child: Form(
+                      key: _formKey,
+                      child: Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            InputField(
+                              key: const Key('name of vehicle'),
+                              textController: _vehicleNameController,
+                              node: _nameNode,
+                              autovalidateMode:
+                                  AutovalidateMode.onUserInteraction,
+                              obscureText: false,
+                              text: 'Name of vehicle',
+                              hintText: 'name of vehicle',
+                              textHeight: 10.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
+                              // suffixIcon: const Icon(
+                              //   Remix.user_line,
+                              //   size: 18.0,
+                              //   color: Color(0xFF909090),
+                              // ),
+                              // validator: (value) {
+                              //   if (value!.trim().length > 2) {
+                              //     return null;
+                              //   }
+                              //   return "Enter a valid first  name";
+                              // },
+                              onSaved: (value) {
+                                _name = value!.trim();
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 30.0),
+                          ],
+                        ),
+                      ),
+                    )),
+                InputField(
+                  key: const Key('color of vehicle'),
+                  textController: _vehicleColorController,
+                  node: _nameNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: false,
+                  text: 'Color of vehicle',
+                  hintText: 'Color of vehicle',
+                  textHeight: 10.0,
+                  borderColor: appPrimaryColor.withOpacity(0.9),
+                  // suffixIcon: const Icon(
+                  //   Remix.user_line,
+                  //   size: 18.0,
+                  //   color: Color(0xFF909090),
+                  // ),
+                  // validator: (value) {
+                  //   if (value!.trim().length > 2) {
+                  //     return null;
+                  //   }
+                  //   return "Enter a valid last  name";
+                  // },
+                  onSaved: (value) {
+                    _name = value!.trim();
+                    return null;
+                  },
+                ),
+                const SizedBox(height: 30.0),
+                // InputField(
+                //   key: const Key('vehiclephoneNumber'),
+                //   textController: _vehicleNumberController,
+                //   keyboardType: TextInputType.phone,
+                //   node: _vehicleNumberNode,
+                //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                //   obscureText: false,
+                //   text: 'Vehicle Number',
+                //   hintText: 'Vehicle Number',
+                //   textHeight: 10.0,
+                //   borderColor: appPrimaryColor.withOpacity(0.9),
+                //   // suffixIcon: const Icon(
+                //   //   Remix.phone_line,
+                //   //   size: 18.0,
+                //   //   color: Color(0xFF909090),
+                //   // ),
+                //   // validator: (value) {
+                //   //   if (value!.trim().length == 11) {
+                //   //     return null;
+                //   //   }
+                //   //   return "Enter a valid phone number";
+                //   // },
+                //   onSaved: (value) {
+                //     _vehicleNumber = value!.trim();
+                //     return null;
+                //   },
+                // ),
                     const SizedBox(height: 30.0),
                     const SizedBox(height: 5.0),
                     DecoratedBox(
@@ -356,18 +364,18 @@ class _RegisterNewVehicleState extends State<RegisterNewVehicle> {
                           ),
                         )),
                     const SizedBox(height: 5.0),
-                    _isButtonPress && _listOfWeights == "Vehicle capacity"
-                        ? const Text(
-                            "Select weight",
-                            textScaleFactor: 0.9,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          )
-                        : Container(),
-                    const SizedBox(height: 30.0),
-                    const SizedBox(height: 40.0),
+                //     _isButtonPress && _listOfWeights == "Vehicle capacity"
+                //         ? const Text(
+                //             "Select weight",
+                //             textScaleFactor: 0.9,
+                //             textAlign: TextAlign.center,
+                //             style: TextStyle(
+                //               color: Colors.red,
+                //             ),
+                //           )
+                //         : Container(),
+                //     const SizedBox(height: 30.0),
+                //     const SizedBox(height: 40.0),
                     Align(
                       alignment: Alignment.center,
                       child: Button(
@@ -384,7 +392,7 @@ class _RegisterNewVehicleState extends State<RegisterNewVehicle> {
                                     height: 250.0,
                                     child: Column(children: [
                                       Row(mainAxisAlignment: MainAxisAlignment.end,
-                                        
+        
                                         children: [
                                           InkWell(
                                             onTap: () {
@@ -419,7 +427,7 @@ class _RegisterNewVehicleState extends State<RegisterNewVehicle> {
                                           ],
                                         ),
                                       ),
-                                     
+        
                                     ]),
                                   ),
                                 ),
@@ -427,22 +435,16 @@ class _RegisterNewVehicleState extends State<RegisterNewVehicle> {
                           color: appPrimaryColor,
                           textColor: whiteColor,
                           isLoading: _loading,
-                          width: 350.0),
+                          width: 300.0),
                     ),
                     const SizedBox(height: 15.0),
                     const SizedBox(height: 25.0),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      )),
-    );
+                //   ],
+                // ),
+              ])),
+        ));
   }
 }
-
-
 
 class EditProfileContainer extends StatelessWidget {
   const EditProfileContainer({

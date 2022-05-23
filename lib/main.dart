@@ -30,11 +30,13 @@ import 'package:trakk/screens/merchant/add_rider.dart';
 import 'package:trakk/screens/merchant/all_vehicle_container.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/screens/merchant/edit_rider_profile.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
+import 'package:trakk/screens/merchant/rejected_rides.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
@@ -150,7 +152,8 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
-            
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
           },
           // home: const GetStarted(),
         ),

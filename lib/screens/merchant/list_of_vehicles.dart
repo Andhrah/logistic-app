@@ -66,7 +66,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
     return Scaffold(
         backgroundColor: whiteColor,
         body: SafeArea(
-            child: SingleChildScrollView(
+            child: SingleChildScrollView(physics: ScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(height: 10.0),
@@ -194,7 +194,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                       //return AllVehicleContainer();
                       return SizedBox();
                       //return isActive ? ActiveContainer() : InactiveContainer();
-                    }),
+                    }
+                    
+                    ),
               )
             ],
           ),
