@@ -77,30 +77,7 @@ dev_dependencies:
   hive_generator: ^1.1.2
   build_runner: ^2.1.10
   pusher_client: ^2.0.0
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-  flutter_dotenv: ^5.0.2
-=======
->>>>>>> eb35986 (ft-pusher-client)
-=======
-  flutter_dotenv: ^5.0.2
->>>>>>> 1d3fb76 (ft-pusher-client)
-=======
-  flutter_dotenv: ^5.0.2
-=======
->>>>>>> 26c2239 (fixing git errors)
->>>>>>> 98be769 (fixing)
-=======
-  flutter_dotenv: ^5.0.2
-=======
->>>>>>> 26c2239 (fixing git errors)
-=======
-  flutter_dotenv: ^5.0.2
->>>>>>> dbb430a (ft-pusher-client)
->>>>>>> 7e95bd7 (yes)
-
+  
 
 
 # For information on the generic Dart part of this file, see the

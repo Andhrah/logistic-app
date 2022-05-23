@@ -7,6 +7,7 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
+import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 
@@ -53,7 +54,7 @@ class _TabsState extends State<Tabs> {
         return const WalletScreen();
       default:
         currentTitle = 'Profile';
-        return Container();
+        return UserMenu();
     }
   }
 

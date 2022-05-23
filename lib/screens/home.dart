@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
               text: 'Sign Up As A Rider',
               onPress: () {
                 Navigator.of(context).pushNamed(
-                  UserMenu.id,
+                  Signup.id,
                   arguments: {
                     "userType": "rider",
                   }
