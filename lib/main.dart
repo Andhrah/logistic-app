@@ -56,14 +56,22 @@ import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 <<<<<<< HEAD
 >>>>>>> 98be769 (fixing)
+=======
+<<<<<<< HEAD
+>>>>>>> 7e95bd7 (yes)
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 =======
 >>>>>>> 26c2239 (fixing git errors)
+=======
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+>>>>>>> dbb430a (ft-pusher-client)
 
 void main() async {
   await _openHive();
@@ -98,13 +106,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 7e95bd7 (yes)
 <<<<<<< HEAD
   
 >>>>>>> 98be769 (fixing)
 
 =======
 >>>>>>> 26c2239 (fixing git errors)
+=======
+  
+
+>>>>>>> dbb430a (ft-pusher-client)
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
@@ -120,7 +135,11 @@ class _MyAppState extends State<MyApp> {
     
 =======
     "ec680890477ff06ecb9a",
+<<<<<<< HEAD
 >>>>>>> 26c2239 (fixing git errors)
+=======
+    
+>>>>>>> dbb430a (ft-pusher-client)
     PusherOptions(
       encrypted: false,
     ),
@@ -142,6 +161,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> dbb430a (ft-pusher-client)
 
 
     
@@ -149,11 +171,18 @@ class _MyAppState extends State<MyApp> {
 
     
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 =======
 >>>>>>> 26c2239 (fixing git errors)
 >>>>>>> 98be769 (fixing)
+=======
+=======
+>>>>>>> 26c2239 (fixing git errors)
+=======
+>>>>>>> dbb430a (ft-pusher-client)
+>>>>>>> 7e95bd7 (yes)
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {

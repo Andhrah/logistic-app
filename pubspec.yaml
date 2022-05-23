@@ -80,6 +80,7 @@ dev_dependencies:
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   flutter_dotenv: ^5.0.2
 =======
 >>>>>>> eb35986 (ft-pusher-client)
@@ -91,6 +92,14 @@ dev_dependencies:
 =======
 >>>>>>> 26c2239 (fixing git errors)
 >>>>>>> 98be769 (fixing)
+=======
+  flutter_dotenv: ^5.0.2
+=======
+>>>>>>> 26c2239 (fixing git errors)
+=======
+  flutter_dotenv: ^5.0.2
+>>>>>>> dbb430a (ft-pusher-client)
+>>>>>>> 7e95bd7 (yes)
 
 
 
