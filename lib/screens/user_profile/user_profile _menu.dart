@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+<<<<<<< HEAD
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/screens/user_profile/settings.dart';
 import 'package:trakk/screens/user_profile/user_dispatch_history.dart';
+=======
+import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/support/help.dart';
+import 'package:trakk/screens/user_profile/edit_profile.dart';
+>>>>>>> b6c4c78 (ft-user-profile)
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -101,9 +107,14 @@ class _UserMenuState extends State<UserMenu> {
               onTap: () {
                 Navigator.of(context).pushNamed(WalletScreen.id);
               },
+<<<<<<< HEAD
               child:  ProfileList(
                 icon: Icon(Remix.wallet_3_line),
                 //svg: 'assets/images/wallet.svg',
+=======
+              child: const ProfileList(
+                svg: 'assets/images/wallet.svg',
+>>>>>>> b6c4c78 (ft-user-profile)
                 title: 'Wallet',
               ),
             ),
@@ -112,11 +123,18 @@ class _UserMenuState extends State<UserMenu> {
             ),
             InkWell(
               onTap: () {
+<<<<<<< HEAD
                 Navigator.of(context).pushNamed(UserDispatchHistory.id);
               },
               child:  ProfileList(
                 icon: Icon(Remix.history_line),
                 //svg: 'assets/images/history.svg',
+=======
+                Navigator.of(context).pushNamed(DispatchHistory.id);
+              },
+              child: const ProfileList(
+                svg: 'assets/images/history.svg',
+>>>>>>> b6c4c78 (ft-user-profile)
                 title: 'Dispatch History',
               ),
             ),
