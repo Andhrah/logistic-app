@@ -6,14 +6,15 @@ class Order extends ChangeNotifier {
   List<OrderModel> _orders = [];
   List<OrderModel> _cart = [];
 
-  OrderModel = _orderDetails = null;
+  // OrderModel = _orderDetails = null;
 
 
   // Order _activeOrder
   // constructor to initialize the
-  Order(){
-    _orders = [];
-
+  setOrder(OrderModel order){
+    _orders.add(order);
+    print("{}{}{}{}{}{}{}{}{}{}{}{}}{}{}{}}");
+    print('order: ${_orders.map((e) => e.notes)}');
     // send notification to the provider
     notifyListeners();
   }
@@ -24,5 +25,5 @@ class Order extends ChangeNotifier {
   List<OrderModel> get orders => _orders;
   List<OrderModel> get cart => _cart;
 
-  OrderModel get orderDetails => _orderDetails;
+  // OrderModel get orderDetails => _orderDetails;
 }
