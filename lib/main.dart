@@ -55,9 +55,15 @@ import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> 98be769 (fixing)
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+=======
+>>>>>>> 26c2239 (fixing git errors)
 
 void main() async {
   await _openHive();
@@ -91,23 +97,41 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+  
+>>>>>>> 98be769 (fixing)
 
+=======
+>>>>>>> 26c2239 (fixing git errors)
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
   );
 
   PusherClient pusher = PusherClient(
+<<<<<<< HEAD
     "ec680890477ff06ecb9a",
+=======
+<<<<<<< HEAD
+    _pusher,
+>>>>>>> 98be769 (fixing)
     
+=======
+    "ec680890477ff06ecb9a",
+>>>>>>> 26c2239 (fixing git errors)
     PusherOptions(
       encrypted: false,
     ),
     autoConnect: true,
   );
 
+<<<<<<< HEAD
   static const String  _pusher = "ec680890477ff06ecb9a";
 
+=======
+>>>>>>> 26c2239 (fixing git errors)
   @override
   void dispose() {
     Hive.close();
@@ -117,13 +141,19 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+<<<<<<< HEAD
 
 
     
     print(dotenv.env["PUSHER_TOKEN"]);
 
     
+<<<<<<< HEAD
 
+=======
+=======
+>>>>>>> 26c2239 (fixing git errors)
+>>>>>>> 98be769 (fixing)
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
@@ -186,7 +216,11 @@ class _MyAppState extends State<MyApp> {
             CartScreen.id: (context) => const CartScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
+<<<<<<< HEAD
 
+=======
+<<<<<<< HEAD
+>>>>>>> 98be769 (fixing)
             UserMenu.id:(context) => const UserMenu(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
@@ -206,12 +240,20 @@ class _MyAppState extends State<MyApp> {
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
             Settings.id:(context) =>  const Settings(),
             
+<<<<<<< HEAD
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             UserMenu.id: (context) => const UserMenu(),
             EditProfile.id: (context) => const EditProfile(),
             Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
+=======
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 8f9ff8a ( implement user onboarding flow)
+=======
+>>>>>>> 98be769 (fixing)
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             UserMenu.id: (context) => const UserMenu(),
@@ -229,8 +271,13 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id: (context) => const AllVehicleContainer(),
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> eb35986 (ft-pusher-client)
+>>>>>>> 26c2239 (fixing git errors)
+>>>>>>> 98be769 (fixing)
           },
           // home: const GetStarted(),
         ),
