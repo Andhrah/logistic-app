@@ -12,15 +12,15 @@ import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/profile_list.dart';
 
-class UserMenu extends StatefulWidget {
+class Profile extends StatefulWidget {
   static const String id = "usermenu";
-  const UserMenu({Key? key}) : super(key: key);
+  const Profile({Key? key}) : super(key: key);
 
   @override
-  State<UserMenu> createState() => _UserMenuState();
+  State<Profile> createState() => _UserMenuState();
 }
 
-class _UserMenuState extends State<UserMenu> {
+class _UserMenuState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

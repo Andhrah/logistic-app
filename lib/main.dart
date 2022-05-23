@@ -49,7 +49,7 @@ import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/screens/user_profile/settings.dart';
 import 'package:trakk/screens/user_profile/user_dispatch_history.dart';
-import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
+import 'package:trakk/screens/user_profile/profile%20_menu.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
@@ -192,7 +192,7 @@ class _MyAppState extends State<MyApp> {
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
 
-            UserMenu.id:(context) => const UserMenu(),
+            Profile.id:(context) => const Profile(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
@@ -213,14 +213,14 @@ class _MyAppState extends State<MyApp> {
             
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
-            UserMenu.id: (context) => const UserMenu(),
+            Profile.id: (context) => const Profile(),
             EditProfile.id: (context) => const EditProfile(),
             Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
 
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
-            UserMenu.id: (context) => const UserMenu(),
+            Profile.id: (context) => const Profile(),
             EditProfile.id: (context) => const EditProfile(),
             Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
