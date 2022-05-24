@@ -9,6 +9,7 @@ import 'package:trakk/utils/helper_utils.dart';
 
 class Auth extends ChangeNotifier {
   final AuthService _authApi = AuthService();
+  //final AuthService _authApi = AuthService();
 
   String? _token;
   late FirstTimeUser _firstTimeUser;
@@ -45,6 +46,31 @@ class Auth extends ChangeNotifier {
     // setUser(User.fromJson(data));
     setToken(data["data"]["token"]);
   }
+
+  // update profile
+  Future updateProfile(
+    String firstName,
+    String lastName,
+    int phoneNumber,
+    String email,
+    String address,
+  ) async {
+    try {
+      var response = await _authApi.updateProfile(
+        firstName,
+        lastName,
+        phoneNumber,
+        email,
+        address,
+        
+      );
+      return response;
+    } catch(err) {
+      throw ApiFailureException(err);
+    }
+
+  }
+
 
   // create a user
   Future createUser(
