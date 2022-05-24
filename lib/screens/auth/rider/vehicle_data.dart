@@ -47,7 +47,7 @@ class _VehicleDataState extends State<VehicleData> {
   String? _vehicleCapacity;
   String? _vehicleModel;
   String _vehicleParticulars = "";
-  String _vehicleImage = "";
+  String _vehicleImageUrl = "";
   String _driverLicence = "";
 
   bool _isVehicleParticularsImage = false;
@@ -61,7 +61,6 @@ class _VehicleDataState extends State<VehicleData> {
    
     _vehicleNameController = TextEditingController();
     _vehicleColorController = TextEditingController();
-    _vehicleNameController = TextEditingController();
     _vehicleNumberController = TextEditingController();
     _vehicleCapacityController = TextEditingController();
     _vehicleModelController = TextEditingController();
@@ -76,21 +75,40 @@ class _VehicleDataState extends State<VehicleData> {
     });
     
     final FormState? form = _formKey.currentState;
-    if(form!.validate() && _vehicleParticulars.isNotEmpty && _vehicleImage.isNotEmpty){
+    if(form!.validate() && _vehicleParticulars.isNotEmpty && _vehicleImageUrl.isNotEmpty){
 
       form.save();
 
+      var vehicleImage = {
+        "name": "vehicleImage",
+        "url": _vehicleImageUrl,
+      };
+      var vehicleParticular = {
+        "name": "vehicleParticular",
+        "url": _vehicleParticulars,
+      };
+      var driverLicence = {
+        "name": "driverLicence",
+        "url": _driverLicence,
+      };
+
       var box = await Hive.openBox('userData');
-      box.putAll({
+      var imgBox = await Hive.openBox('imgDocs');
+
+      await box.putAll({
         "vehicleName": _vehicleName,
         "vehicleColor": _vehicleColor,
         "vehicleNumber": _vehicleNumber,
         "vehicleCapacity": _vehicleCapacity,
-        "_vehicleModel": _vehicleModel,
-        "vehicleParticulars": _vehicleParticulars,
-        "vehicleImage": _vehicleImage,
-        "driverLicence": _driverLicence,
+        "vehicleModel": _vehicleModel,
       });
+      var imgDocs = await imgBox.get("riderDocs");
+      print('============ PRINTING IMAGES 000=============');
+      // imgDocs. (vehicleImage, vehicleParticular, driverLicence);
+      print('============ PRINTING IMAGES =============');
+      print(imgDocs);
+      await imgBox.put('riderDocs', [imgDocs[0], vehicleImage, vehicleParticular, driverLicence]);
+      print(imgBox.get("riderDocs"));
       Navigator.of(context).pushNamed( NextOfKin.id);
     }
   }
@@ -246,7 +264,7 @@ class _VehicleDataState extends State<VehicleData> {
                       InputField(
                         key: const Key('vehicleModel'),
                         textController: _vehicleModelController,
-                        node: _vehicleCapacityNode,
+                        node: _vehicleModelNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
                         text: 'Vehicle Model',
@@ -351,7 +369,7 @@ class _VehicleDataState extends State<VehicleData> {
                             final file = result.files.first;
                             print("Image Name: ${file.name}");
                              setState(() {
-                              _vehicleImage = file.name;
+                              _vehicleImageUrl = file.name;
                               _isVehicleImage = true;
                             });
                             return;
@@ -392,7 +410,7 @@ class _VehicleDataState extends State<VehicleData> {
                           ),
                         ),
                       ) : Text(
-                          _vehicleImage,
+                          _vehicleImageUrl,
                           textScaleFactor: 1.5,
                           textAlign: TextAlign.center,
                           style: const TextStyle(
@@ -402,7 +420,7 @@ class _VehicleDataState extends State<VehicleData> {
                         ),
 
                       const SizedBox(height: 5.0),
-                      _isButtonPress && _vehicleImage.isEmpty ?
+                      _isButtonPress && _vehicleImageUrl.isEmpty ?
                       const Align(
                         child: Text(
                         " Upload vehicle image",

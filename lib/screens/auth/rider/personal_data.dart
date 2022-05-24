@@ -1,8 +1,10 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive/hive.dart';
 import 'package:open_file/open_file.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:uploadcare_client/uploadcare_client.dart';
 import 'package:trakk/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -71,20 +73,19 @@ class _PersonalDataState extends State<PersonalData> {
   String _stateOfOrigin = 'Choose State';   
   String _stateOfResidence = 'Choose State';
   String? _residentialAddress;
-  String _userPassport = "";
+  // String _userPassport = "";
+  String _userPassportUrl = "";
+
+  
 
   bool _isImage = false;
   bool _isButtonPress = false;
 
-  // late List<Object> _;
-
   @override
   void initState() {
     super.initState();
-   
     _residentialAddressController = TextEditingController();
   }
-
 
   void openFile(PlatformFile file) {
     OpenFile.open(file.path!);
@@ -102,17 +103,24 @@ class _PersonalDataState extends State<PersonalData> {
     if(form!.validate() && 
       _stateOfResidence != "Choose State" 
       && _stateOfOrigin != "Choose State" &&
-      _userPassport.isNotEmpty
+      _userPassportUrl.isNotEmpty
       ){
       form.save();
+
+      var _riderPassport = {
+        "name": "userPassport",
+        "url": _userPassportUrl,
+      };
       
       var box = await Hive.openBox('userData');
-      box.putAll({
+      var imgBox = await Hive.openBox('imgDocs');
+      await box.putAll({
         "stateOfOrigin": _stateOfOrigin,
         "stateOfResidence": _stateOfResidence,
         "residentialAddress": _residentialAddress,
-        "userPassport": _userPassport,
       });
+      
+      await imgBox.put('riderDocs', [_riderPassport]);
       
       Navigator.of(context).pushNamed(VehicleData.id);
     }
@@ -367,8 +375,10 @@ class _PersonalDataState extends State<PersonalData> {
                           if(result != null) {
                             // Open single file open
                             final file = result.files.first;
+                            print("============= PRINTING File ========");
+                            print(file);
                              setState(() {
-                              _userPassport = file.name;
+                              _userPassportUrl = file.name;
                               _isImage = true;
                             });
                             return;
@@ -410,7 +420,7 @@ class _PersonalDataState extends State<PersonalData> {
                         ),
                       ) : 
                       Text(
-                        _userPassport,
+                        _userPassportUrl,
                         textScaleFactor: 1.5,
                         textAlign: TextAlign.center,
                         style: const TextStyle(
@@ -420,7 +430,7 @@ class _PersonalDataState extends State<PersonalData> {
                       ),
 
                       const SizedBox(height: 5.0),
-                      _isButtonPress &&_userPassport.isEmpty ?
+                      _isButtonPress && _userPassportUrl.isEmpty ?
                       const Align(
                         child: Text(
                         " Upload your passport",
