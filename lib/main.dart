@@ -44,6 +44,7 @@ import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/support/help.dart';
+import 'package:trakk/screens/support/ride_issues.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
@@ -63,7 +64,7 @@ void main() async {
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
-  await dotenv.load(fileName: ".env");
+ // await dotenv.load(fileName: ".env");
   //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
@@ -91,20 +92,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
+  //static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
 
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
   );
 
-  PusherClient pusher = PusherClient(
-    _pusher!,
-    PusherOptions(
-      encrypted: false,
-    ),
-    autoConnect: true,
-  );
+  // PusherClient pusher = PusherClient(
+  //   _pusher!,
+  //   PusherOptions(
+  //     encrypted: false,
+  //   ),
+  //   autoConnect: true,
+  // );
 
   @override
   void dispose() {
@@ -120,22 +121,22 @@ class _MyAppState extends State<MyApp> {
     //print(dotenv.env["PUSHER_TOKEN"]);
 
     
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
-    pusher.onConnectionStateChange((state) {
-      print(
-        "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}",
-      );
-    });
+    // SystemChrome.setSystemUIOverlayStyle(
+    //   const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    // pusher.onConnectionStateChange((state) {
+    //   print(
+    //     "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}",
+    //   );
+    // });
 
-    pusher.onConnectionError((error) {
-      print("error: ${error != null ? error.message : ""}");
-    });
+    // pusher.onConnectionError((error) {
+    //   print("error: ${error != null ? error.message : ""}");
+    // });
 
-    Channel channel = pusher.subscribe("adelowomi@gmail.com");
-    channel.bind("user", (event) {
-      print(event != null ? event.data : "O ti fail");
-    });
+    // Channel channel = pusher.subscribe("adelowomi@gmail.com");
+    // channel.bind("user", (event) {
+    //   print(event != null ? event.data : "O ti fail");
+    // });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
@@ -160,7 +161,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: SplashScreen.id,
+          initialRoute: Tabs.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -207,6 +208,7 @@ class _MyAppState extends State<MyApp> {
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
             Settings.id:(context) =>  const Settings(),
             EditProfile.id: (context) => const EditProfile(),
+            RideIssues.id:(context) =>  const RideIssues(),
             Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id: (context) => const CompanyHome(),

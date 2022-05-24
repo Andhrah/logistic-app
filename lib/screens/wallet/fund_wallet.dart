@@ -335,7 +335,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Container(
-                                color: Color(0xffCA9E0D),
+                                color: Color.fromARGB(255, 199, 190, 152),
                                 height: 556,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
