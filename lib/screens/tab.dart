@@ -5,6 +5,7 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
+import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
@@ -53,7 +54,7 @@ class _TabsState extends State<Tabs> {
         return const WalletScreen();
       default:
         currentTitle = 'Profile';
-        return Container();
+        return const ProfileMenu();
     }
   }
 
@@ -73,7 +74,7 @@ class _TabsState extends State<Tabs> {
         return Container();
       default:
         currentTitle = 'Profile';
-        return Container();
+        return const ProfileMenu();
     }
   }
 
