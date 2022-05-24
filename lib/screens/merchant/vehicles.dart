@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
-import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
 import 'package:trakk/utils/colors.dart';
 
 import '../../widgets/back_icon.dart';

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/rider/rider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -23,15 +24,18 @@ class _NextOfKinState extends State<NextOfKin> {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _kinFirstNameController;
+  late TextEditingController _kinLastNameController;
   late TextEditingController _kinEmailController;
   late TextEditingController _kinAddressController;
   late TextEditingController _kinPhoneNumberController;
+  late TextEditingController _kinRelationshipController;
 
   FocusNode? _kinFirstNameNode;
+  FocusNode? _kinLastNameNode;
   FocusNode? _kinEmailNode;
   FocusNode? _kinAddressNode;
   FocusNode? _kinPhoneNumberNode;
-
+  FocusNode? _kinRelationshipNode;
 
   String? _firstName;
   String? _lastName;
@@ -50,18 +54,16 @@ class _NextOfKinState extends State<NextOfKin> {
   String? _vehicleColor;
   String? _vehicleNumber;
   String? _vehicleCapacity;
-  String _vehicleParticulars = "";
-  String _vehicleImage = "";
   int vehicleTypeId = 1;
   String? vehicleModel;
   // kin info
-  String? _kinFullName;
   String? _kinFirstName;
   String? _kinLastName;
   String? _kinEmail;
   String? _kinAddress;
   String? _kinPhoneNumber;
   String? _kinRelationship;
+  List? _imgDocs;
 
   bool _loading = false;
   bool _emailIsValid = false;
@@ -70,9 +72,11 @@ class _NextOfKinState extends State<NextOfKin> {
   void initState() {
     super.initState();
     _kinFirstNameController = TextEditingController();
+    _kinLastNameController = TextEditingController();
     _kinEmailController = TextEditingController();
     _kinAddressController = TextEditingController();
     _kinPhoneNumberController = TextEditingController();
+    _kinRelationshipController = TextEditingController();
   }
 
   _validateEmail() {
@@ -102,6 +106,9 @@ class _NextOfKinState extends State<NextOfKin> {
     setState(() {
       _loading = true;
     });
+    var box = await Hive.openBox('imgDocs');
+    print('============ PRINTING IMAGES =============');
+    print(box.get('riderDocs'));
     
     final FormState? form = _formKey.currentState;
 
@@ -110,39 +117,36 @@ class _NextOfKinState extends State<NextOfKin> {
       form.save();
 
       var box = await Hive.openBox('userData');
+      var imgBox = await Hive.openBox('imgDocs');
 
       try {
-        var response = await Auth.authProvider(context).createRider(
+        var response = await RiderAuth.authProvider(context).createRider(
           _firstName = box.get("firstName"),
-          _lastName = box.get("firstName"),
+          _lastName = box.get("lastName"),
           _email = box.get("email"),
           _password = box.get("password"),
           _phoneNumber = box.get("phoneNumber"),
-          userType = box.get("userType"),
           stateOfOrigin = box.get("stateOfOrigin"),
           stateOfResidence = box.get("stateOfResidence"),
           residentialAddress = box.get("residentialAddress"),
-          _userPassport = box.get("userPassport"),
           _vehicleName = box.get("vehicleName"),
           _vehicleColor = box.get("vehicleColor"),
           _vehicleNumber = box.get("vehicleNumber"),
           _vehicleCapacity = box.get("vehicleCapacity"),
-          _vehicleParticulars = box.get("vehicleParticulars"),
-          _vehicleImage =  box.get("vehicleImage"),
-          vehicleModel.toString(),
-          // _kinFulltName.toString(),
-           vehicleTypeId,
+          vehicleModel = box.get("vehicleModel"),
+          vehicleTypeId,
+          _imgDocs = imgBox.get("riderDocs"),
           _kinFirstName.toString(),
           _kinLastName.toString(),
-          _kinRelationship.toString(),
+          _kinPhoneNumber.toString(),
           _kinEmail.toString(),
           _kinAddress.toString(),
-          _kinPhoneNumber.toString(),
+         _kinRelationship.toString(),
         );
         setState(() {
           _loading = false;
         });
-        if (response["code"] == 201) {
+        if (response["status"] == true) {
           // form.reset();
           await Flushbar(
             messageText: Text(
@@ -160,6 +164,22 @@ class _NextOfKinState extends State<NextOfKin> {
             duration: const Duration(seconds: 2),
           ).show(context);
           Navigator.of(context).pushNamed(Login.id);
+        } else {
+          await Flushbar(
+            messageText: Text(
+              response["message"],
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: whiteColor,
+                fontSize: 18,
+              ),
+            ),
+            backgroundColor: redColor,
+            maxWidth: MediaQuery.of(context).size.width/1.2,
+            borderRadius: BorderRadius.circular(10),
+            flushbarPosition: FlushbarPosition.TOP,
+            duration: const Duration(seconds: 2),
+          ).show(context);
         }
       } catch(err){
         setState(() {
@@ -188,7 +208,6 @@ class _NextOfKinState extends State<NextOfKin> {
     });
   }
   
-
   @override
   Widget build(BuildContext context) {
 
@@ -264,22 +283,23 @@ class _NextOfKinState extends State<NextOfKin> {
                         if (value!.trim().length > 3) {
                           return null;
                         }
-                        return "Enter a valid full name";
+                        return "Enter a valid first name";
                       },
                         onSaved: (value){
-                          _kinFullName = value!.trim();
+                          _kinFirstName = value!.trim();
                           return null;
                       },
                     ),
 
+                    const SizedBox(height: 30.0),
                     InputField(
                       key: const Key('kinLastName'),
-                      textController: _kinFirstNameController,
-                      node: _kinFirstNameNode,
+                      textController: _kinLastNameController,
+                      node: _kinLastNameNode,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       obscureText: false,
-                      text: 'First Name of Kin',
-                      hintText: 'John',
+                      text: 'Last Name of Kin',
+                      hintText: 'Doe',
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(
@@ -291,10 +311,10 @@ class _NextOfKinState extends State<NextOfKin> {
                         if (value!.trim().length > 3) {
                           return null;
                         }
-                        return "Enter a valid full name";
+                        return "Enter a valid last name";
                       },
                         onSaved: (value){
-                          _kinFullName = value!.trim();
+                          _kinLastName = value!.trim();
                           return null;
                       },
                     ),
@@ -355,6 +375,34 @@ class _NextOfKinState extends State<NextOfKin> {
 
                     const SizedBox(height: 30.0),
                     InputField(
+                      key: const Key('kinRelationship'),
+                      textController: _kinRelationshipController,
+                      node: _kinRelationshipNode,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      obscureText: false,
+                      text: 'Relationship with Kin',
+                      hintText: 'E.g. brother, sister, mother',
+                      textHeight: 10.0,
+                      borderColor: appPrimaryColor.withOpacity(0.9),
+                      suffixIcon: const Icon(
+                        Remix.home_7_line,
+                        size: 18.0,
+                        color: Color(0xFF909090),
+                      ),
+                      validator: (value) {
+                        if (value!.trim().isEmpty) {
+                          return "Field cannot be empty";
+                        }
+                        return null;
+                      },
+                      onSaved: (value) {
+                        _kinRelationship = value!.trim();
+                        return null;
+                      },
+                    ),
+
+                    const SizedBox(height: 30.0),
+                    InputField(
                       key: const Key('kinPhoneNumber'),
                       textController: _kinPhoneNumberController,
                       node: _kinPhoneNumberNode,
@@ -387,9 +435,6 @@ class _NextOfKinState extends State<NextOfKin> {
                       alignment: Alignment.center,
                       child: Button(
                         text: 'Create account', 
-                        // onPress: () {
-                        //   Navigator.of(context).pushNamed(Tabs.id);
-                        // }, 
                         onPress: _onSubmit,
                         color: appPrimaryColor, 
                         textColor: whiteColor, 
@@ -397,6 +442,8 @@ class _NextOfKinState extends State<NextOfKin> {
                         width: 350.0
                       )
                     ),
+
+                    const SizedBox(height: 40.0),
                   ],
                 ),
                 ),

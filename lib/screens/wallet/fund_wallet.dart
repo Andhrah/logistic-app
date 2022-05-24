@@ -3,7 +3,7 @@ import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 
 class FundWalletScreen extends StatefulWidget {
-  static const String id = 'fund';
+  static const String id = 'fundscreen';
 
   const FundWalletScreen({Key? key}) : super(key: key);
 
@@ -44,7 +44,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                 alignment: Alignment.center,
                 child: Column(
                   children: [
-                    const Align(
+                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Select your top up source',
@@ -55,6 +55,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                         ),
                       ),
                     ),
+                    
                     // const Text(
                     //   'Select your top up source',
                     //   style: TextStyle(
