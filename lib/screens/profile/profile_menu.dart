@@ -1,21 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trakk/screens/support/help.dart';
-import 'package:trakk/screens/user_profile/edit_profile.dart';
+import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/profile_list.dart';
 
-class UserMenu extends StatefulWidget {
-  static const String id = "usermenu";
-  const UserMenu({Key? key}) : super(key: key);
+class ProfileMenu extends StatefulWidget {
+  static const String id = "ProfileMenu";
+  const ProfileMenu({Key? key}) : super(key: key);
 
   @override
-  State<UserMenu> createState() => _UserMenuState();
+  State<ProfileMenu> createState() => _ProfileMenuState();
 }
 
-class _UserMenuState extends State<UserMenu> {
+class _ProfileMenuState extends State<ProfileMenu> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -42,12 +42,12 @@ import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
+import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
-import 'package:trakk/screens/user_profile/edit_profile.dart';
-import 'package:trakk/screens/user_profile/user_profile%20_menu.dart';
+import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/utils/colors.dart';
@@ -176,7 +176,7 @@ class _MyAppState extends State<MyApp> {
             CartScreen.id: (context) => const CartScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
-            UserMenu.id:(context) => const UserMenu(),
+            ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
