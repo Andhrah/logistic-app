@@ -5,7 +5,7 @@ import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/icon_container.dart';
 
 class WalletScreen extends StatefulWidget {
-  static const String id = 'wallet';
+  static const String  id = "wallet";
 
   const WalletScreen({Key? key}) : super(key: key);
 

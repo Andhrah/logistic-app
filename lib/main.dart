@@ -116,6 +116,10 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
+    
+    //print(dotenv.env["PUSHER_TOKEN"]);
+
+    
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
@@ -219,6 +223,7 @@ class _MyAppState extends State<MyApp> {
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
 
+            WalletScreen.id:(context) => const WalletScreen(),
           },
           // home: const GetStarted(),
         ),

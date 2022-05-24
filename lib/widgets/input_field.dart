@@ -59,7 +59,7 @@ class InputField extends StatelessWidget {
           ),
         ),
         SizedBox(height: textHeight),
-        Expanded(
+        Container(color: whiteColor,
           child: TextFormField(
             controller: textController,
             focusNode: _node,

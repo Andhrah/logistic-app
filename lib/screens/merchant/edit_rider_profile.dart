@@ -578,13 +578,8 @@ class _EditRiderProfile extends State<EditRiderProfile> {
                                     ),
                                   ],
                                 ),
-                              ]),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ])
+                          ]),
+                        )])))
                 ],
               ),
             ],
@@ -757,8 +752,8 @@ class _EditRiderProfile extends State<EditRiderProfile> {
               //     ),
               //   ),
 
-              ),
-        ));
+             ] ),
+        )));
   }
 }
 
