@@ -10,9 +10,9 @@ import 'package:trakk/utils/helper_utils.dart';
 class Auth extends ChangeNotifier {
   final AuthService _authApi = AuthService();
 
-   String? _token;
+  String? _token;
   late FirstTimeUser _firstTimeUser;
-   User? _user;
+  User? _user;
 
   String? get token => _token;
   FirstTimeUser get firstTimeUser => _firstTimeUser;
@@ -29,7 +29,7 @@ class Auth extends ChangeNotifier {
 
   FirstTimeUser myFirst(FirstTimeUser myFirst) {
     setFirstTimerUser(myFirst);
-    print('myfirst ${_firstTimeUser.firstTimeUserBool}');
+    // print('myfirst ${_firstTimeUser.firstTimeUserBool}');
     return myFirst;
   }
 
@@ -41,7 +41,7 @@ class Auth extends ChangeNotifier {
   }
 
   void _setInitialData(data) {
-    print(data["data"]['token']);
+    // print(data["data"]['token']);
     // setUser(User.fromJson(data));
     setToken(data["data"]["token"]);
   }

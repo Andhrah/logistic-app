@@ -88,14 +88,13 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   
-
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
   );
 
   PusherClient pusher = PusherClient(
-    _pusher,
+    _pusher!,
     
     PusherOptions(
       encrypted: false,
@@ -103,7 +102,7 @@ class _MyAppState extends State<MyApp> {
     autoConnect: true,
   );
 
-  static const String  _pusher = "ec680890477ff06ecb9a";
+  static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
 
   @override
   void dispose() {
@@ -114,16 +113,12 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
-    
-    print(dotenv.env["PUSHER_TOKEN"]);
-
     
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
       print(
-          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+        "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
     });
 
     pusher.onConnectionError((error) {
@@ -158,7 +153,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: Home.id,
+          initialRoute: SplashScreen.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
