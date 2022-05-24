@@ -31,9 +31,14 @@ class AllVehicleContainer extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                SvgPicture.asset(
-                  'assets/images/cancel.svg',
-                  color: Colors.black,
+                InkWell(
+                  onTap: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: SvgPicture.asset(
+                    'assets/images/cancel.svg',
+                    color: Colors.black,
+                  ),
                 )
               ],
             ),
