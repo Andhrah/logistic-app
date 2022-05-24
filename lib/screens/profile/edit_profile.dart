@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/utils/colors.dart';
@@ -23,6 +24,7 @@ class _EditProfileState extends State<EditProfile> {
 
   final _formKey = GlobalKey<FormState>();
 
+  // this controller keeps track of what the user is typing in th textField
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
@@ -35,14 +37,15 @@ class _EditProfileState extends State<EditProfile> {
   FocusNode? _phoneNumberNode;
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
-  FocusNode? _confirmPasswordNode;
+  FocusNode? _homeAddress;
 
   String? _firstName;
   String? _lastName;
   String? _email;
   String? _phoneNumber;
   String? _password;
-  String? _confirmPassword;
+  String homeAddress = "";
+  String? firstName = "";
 
   bool _loading = false;
   bool _passwordIsValid = false;
@@ -192,7 +195,7 @@ class _EditProfileState extends State<EditProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children:  [
-            const EditProfileContainer(),
+             EditProfileContainer(),
             const Divider( thickness: 1.0,color: Color(0xff909090),),
             const SizedBox(height: 20,),
             Container(
@@ -314,7 +317,7 @@ class _EditProfileState extends State<EditProfile> {
                       InputField(
                         key: const Key('Home address'),
                         textController: _confirmPasswordController,
-                        node: _confirmPasswordNode,
+                        node: _homeAddress,
                         maxLines: 1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: _hidePassword,
@@ -333,6 +336,10 @@ class _EditProfileState extends State<EditProfile> {
                               text: 'Save',
                               //onPress:// _onSubmit,
                               onPress: () {
+                                //firstName = _firstNameController.text;
+                                setState(() {
+                                  firstName = _firstNameController.text;
+                                });
                                 Navigator.of(context).pop();
                               },
                               color: appPrimaryColor,
@@ -355,7 +362,8 @@ class _EditProfileState extends State<EditProfile> {
 }
 
 class EditProfileContainer extends StatelessWidget {
-  const EditProfileContainer({
+   String? firstName ;
+   EditProfileContainer({
     Key? key,
   }) : super(key: key);
 
@@ -376,8 +384,8 @@ class EditProfileContainer extends StatelessWidget {
                   image: DecorationImage(
                       image: AssetImage('assets/images/image.png'))),
             ),
-            const Text(
-              'Malik Johnson',
+             Text(
+              firstName?? "",
               style:
                   TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
             ),

@@ -17,8 +17,6 @@ import 'package:trakk/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
 import 'package:trakk/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/screens/country.dart';
-import 'package:trakk/screens/date_picker.dart';
 import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
@@ -37,22 +35,24 @@ import 'package:trakk/screens/merchant/edit_rider_profile.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/riders.dart';
-import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
-import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
-import 'package:trakk/screens/wallet/fund_wallet.dart';
+import 'package:trakk/screens/profile/settings.dart';
+import 'package:trakk/screens/profile/user_dispatch_history.dart';
+import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'screens/profile/profile_menu.dart';
+import 'screens/profile/user_dispatch_history.dart';
 
 
 void main() async {
@@ -62,6 +62,7 @@ void main() async {
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
   await dotenv.load(fileName: ".env");
+  //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
 }
@@ -87,7 +88,9 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
+
+  static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
+
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
@@ -95,14 +98,11 @@ class _MyAppState extends State<MyApp> {
 
   PusherClient pusher = PusherClient(
     _pusher!,
-    
     PusherOptions(
       encrypted: false,
     ),
     autoConnect: true,
   );
-
-  static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
 
   @override
   void dispose() {
@@ -113,12 +113,12 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    
+
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
       print(
-        "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
     });
 
     pusher.onConnectionError((error) {
@@ -191,6 +191,24 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
+            WalletScreen.id:(context) => const WalletScreen(),
+            UserDispatchHistory.id:(context) => const UserDispatchHistory(),
+            Settings.id:(context) =>  const Settings(),
+            EditProfile.id: (context) => const EditProfile(),
+            Help.id: (context) => const Help(),
+            FundWalletScreen.id: (context) => const FundWalletScreen(),
+            CompanyHome.id: (context) => const CompanyHome(),
+            Vehicles.id: (context) => const Vehicles(),
+            Riders.id: (context) => const Riders(),
+            DispatchHistory.id: (context) => const DispatchHistory(),
+            ListOfVehicles.id: (context) => const ListOfVehicles(),
+            RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
+            AddRider.id: (context) => const AddRider(),
+            ReferredRides.id: (context) => const ReferredRides(),
+            AllVehicleContainer.id: (context) => const AllVehicleContainer(),
+            EditRiderProfile.id: (context) => const EditRiderProfile(),
+            ListOfRiders.id: (context) => const ListOfRiders(),
+
           },
           // home: const GetStarted(),
         ),
