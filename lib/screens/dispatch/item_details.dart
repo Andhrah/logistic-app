@@ -6,7 +6,9 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
 import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:trakk/models/order/order.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
@@ -148,25 +150,53 @@ class _ItemDetailsState extends State<ItemDetails> {
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
-  _onAddItemPress() async {
+  _onAddItemPress(BuildContext cxt) async {
     final FormState? form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-
-      var box = await Hive.openBox('userOrder');
-      box.putAll({
-        "pickUp": _pickUp,
-        "dropOff": _dropOff,
-        "receiverName": _receiverName,
-        "receiverPhoneNumber": _receiverPhoneNumber,
-        "item": _item,
-        "itemDescription": _itemDescription,
-        "pickUpDate": _pickUpDate,
-        "dropOffDate": _dropOffDate,
-        "itemImage": _itemImage,
-      });
-      // Navigator.of(context).pushNamed( NextOfKin.id);
-    }
+    Order _orderProvider = Provider.of<Order>(cxt, listen: false);
+      _orderProvider.setOrder(OrderModel(
+        pickUpLocation: OrderLocation(
+          address: _pickUp.toString(),
+          latitude: 19,
+          longitude: 10,
+          isPickUp: false,
+          isDelivery: false,
+        ),
+        deliveryLocation: OrderLocation(
+          address: _pickUp.toString(),
+          latitude: 19,
+          longitude: 10,
+          isPickUp: false,
+          isDelivery: false,
+        ),
+        orderItem: OrderItem(
+          orderItemTypeId: 1,
+          description: _itemDescription,
+          imageReference: _itemImage,
+          weight: "none"
+        ),
+        notes: "Hello"
+      ));
+    // if (form!.validate()) {
+    //   form.save();
+    //   // Provider.of(context)
+    //   Order _orderProvider = Provider.of<Order>(cxt);
+    //   _orderProvider.setOrder(OrderModel( 
+    //     notes: "Hello"
+    //   ));
+    //   // var box = await Hive.openBox('userOrder');
+    //   // box.putAll({
+    //   //   "pickUp": _pickUp,
+    //   //   "dropOff": _dropOff,
+    //   //   "receiverName": _receiverName,
+    //   //   "receiverPhoneNumber": _receiverPhoneNumber,
+    //   //   "item": _item,
+    //   //   "itemDescription": _itemDescription,
+    //   //   "pickUpDate": _pickUpDate,
+    //   //   "dropOffDate": _dropOffDate,
+    //   //   "itemImage": _itemImage,
+    //   // });
+    //   // Navigator.of(context).pushNamed( NextOfKin.id);
+    // }
   }
 
   _saveEdittedItem() async {
@@ -710,8 +740,8 @@ class _ItemDetailsState extends State<ItemDetails> {
                   Button(
                     text: _buttonText.length < 1 ? 'Add Item' : _buttonText,
                     onPress: _buttonText.length < 1
-                        ? _onAddItemPress
-                        : _saveEdittedItem,
+                        ? () => _onAddItemPress(context)
+                        : () => _saveEdittedItem,
                     color: appPrimaryColor,
                     textColor: whiteColor,
                     isLoading: false,

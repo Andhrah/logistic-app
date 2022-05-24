@@ -34,7 +34,7 @@ class _TabsState extends State<Tabs> {
   
   
   int _selectedIndex = 0;
-  String userType =  "";
+  String userType =  "user";
 
   String currentTitle = 'Home';
 

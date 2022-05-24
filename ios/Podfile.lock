@@ -54,11 +54,21 @@ PODS:
     - Flutter
   - path_provider_ios (0.0.1):
     - Flutter
+  - pusher_client (2.0.0):
+    - Flutter
+    - PusherSwiftWithEncryption (~> 8.0.0)
+  - PusherSwiftWithEncryption (8.0.0):
+    - ReachabilitySwift (~> 5.0)
+    - Sodium (= 0.8.0)
+    - Starscream (~> 3.1)
+  - ReachabilitySwift (5.0.0)
   - SDWebImage (5.12.5):
     - SDWebImage/Core (= 5.12.5)
   - SDWebImage/Core (5.12.5)
   - share (0.0.1):
     - Flutter
+  - Sodium (0.8.0)
+  - Starscream (3.1.1)
   - SwiftyGif (5.4.3)
 
 DEPENDENCIES:
@@ -71,6 +81,7 @@ DEPENDENCIES:
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - package_info_plus (from `.symlinks/plugins/package_info_plus/ios`)
   - path_provider_ios (from `.symlinks/plugins/path_provider_ios/ios`)
+  - pusher_client (from `.symlinks/plugins/pusher_client/ios`)
   - share (from `.symlinks/plugins/share/ios`)
 
 SPEC REPOS:
@@ -78,7 +89,11 @@ SPEC REPOS:
     - DKImagePickerController
     - DKPhotoGallery
     - GoogleMaps
+    - PusherSwiftWithEncryption
+    - ReachabilitySwift
     - SDWebImage
+    - Sodium
+    - Starscream
     - SwiftyGif
 
 EXTERNAL SOURCES:
@@ -100,6 +115,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/package_info_plus/ios"
   path_provider_ios:
     :path: ".symlinks/plugins/path_provider_ios/ios"
+  pusher_client:
+    :path: ".symlinks/plugins/pusher_client/ios"
   share:
     :path: ".symlinks/plugins/share/ios"
 
@@ -116,8 +133,13 @@ SPEC CHECKSUMS:
   package_info: 873975fc26034f0b863a300ad47e7f1ac6c7ec62
   package_info_plus: 6c92f08e1f853dc01228d6f553146438dafcd14e
   path_provider_ios: 14f3d2fd28c4fdb42f44e0f751d12861c43cee02
+  pusher_client: ffcefc0aeeb910ef85e82c9bb333146adad0d8ce
+  PusherSwiftWithEncryption: e8626abf1067a7e1b06afde720934fe1872498e3
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
   share: 0b2c3e82132f5888bccca3351c504d0003b3b410
+  Sodium: 63c0ca312a932e6da481689537d4b35568841bdc
+  Starscream: 4bb2f9942274833f7b4d296a55504dcfc7edb7b0
   SwiftyGif: 6c3eafd0ce693cad58bb63d2b2fb9bacb8552780
 
 PODFILE CHECKSUM: aafe91acc616949ddb318b77800a7f51bffa2a4c

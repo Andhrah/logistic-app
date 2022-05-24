@@ -117,10 +117,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
 
     SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+      const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
       print(
-          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+        "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}",
+      );
     });
 
     pusher.onConnectionError((error) {
