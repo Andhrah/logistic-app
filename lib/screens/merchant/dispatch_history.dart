@@ -2,7 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
+import 'package:trakk/screens/merchant/rejected_rides.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/default_container.dart';
 
@@ -53,7 +55,7 @@ class _DispatchHistoryState extends State<DispatchHistory> {
             ),
             InkWell(
               onTap: () {
-                
+                Navigator.of(context).pushNamed(FulfilledDispatch.id);
               },
               child: const DefaultContainer(title: 'Succesful dispatch',)),
             const SizedBox(
@@ -69,7 +71,7 @@ class _DispatchHistoryState extends State<DispatchHistory> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(ItemDetails.id);
+                Navigator.of(context).pushNamed(RejectedRides.id);
               },
               child: const DefaultContainer(title: 'Rejected request',)),
           ],

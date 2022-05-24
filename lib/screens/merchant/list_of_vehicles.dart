@@ -56,6 +56,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
 
   double _width = 160;
   final List<Item> _data = generateItems(1);
+
   bool isActive = false;
   bool showAll = true;
 
@@ -65,7 +66,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
     return Scaffold(
         backgroundColor: whiteColor,
         body: SafeArea(
-            child: SingleChildScrollView(
+            child: SingleChildScrollView(physics: ScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(height: 10.0),
@@ -123,7 +124,24 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 _listOfVehicles = newValue!;
+                                if(newValue.contains("All vahicles")){
+                                  showAll = showAll;
+                                  isActive = false;
+                                } else if(newValue.contains("Active vehicles")){
+                                  isActive = true;
+                                  showAll = false;
+                                }else if(newValue.contains("Inactive vehicles")){
+                                  isActive = false;
+                                  showAll = false;
+                                  
+                                }else if(newValue.contains("search")){
+                                  showAll = showAll;
+                                  isActive = false;
+                                  
+                                };
                               });
+                              
+                              print(newValue);
                             },
                             items: vehicles.map((String value) {
                               return DropdownMenuItem(onTap: () {
@@ -150,73 +168,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                           )
                         : Container(),
 
-                    // ExpansionPanelList(
-                    //   //title: Text('vehicle'),
-                    //   expansionCallback: (int index, bool isExpanded) {
-                    //     setState(() {
-                    //       _data[index].isExpanded = !isExpanded;
-                    //     });
-                    //   },
-                    //   children: _data.map<ExpansionPanel>((Item item) {
-                    //     return ExpansionPanel(
-                    //       headerBuilder:
-                    //           (BuildContext context, bool isExpanded) {
-                    //         return Align(
-                    //             alignment: Alignment.centerLeft,
-                    //             child: Padding(
-                    //               padding: EdgeInsets.all(12.0),
-                    //               child: InkWell(
-                    //                   onTap: () {
-                    //                     setState(() {
-                    //                       showAll = showAll;
-                    //                       isActive = false;
-                    //                     });
-                    //                   },
-                    //                   child: const Text('All vehicle (20)')),
-                    //             ));
-                    //         // return ListTile(
-                    //         //   title: Text(item.headerValue),
-                    //         // );
-                    //       },
-                    //       body: ListView(
-                    //           //scrollDirection: Axis.vertical,
-                    //           shrinkWrap: true,
-                    //           padding: EdgeInsets.all(12),
-                    //           children: [
-                    //             InkWell(
-                    //                 onTap: () {
-                    //                   setState(() {
-                    //                     isActive = true;
-                    //                     showAll = false;
-                    //                   });
-                    //                 },
-                    //                 child: Text('Active vehicle (20)')),
-                    //             SizedBox(
-                    //               height: 10,
-                    //             ),
-                    //             InkWell(
-                    //                 onTap: () {
-                    //                   setState(() {
-                    //                     isActive = false;
-                    //                     showAll = false;
-                    //                   });
-                    //                 },
-                    //                 child: Text('Inactive vehicle (22)')),
-                    //             Padding(
-                    //               padding: const EdgeInsets.symmetric(
-                    //                   horizontal: 8, vertical: 16),
-                    //               child: TextFormField(
-                    //                 decoration: const InputDecoration(
-                    //                   border: UnderlineInputBorder(),
-                    //                   labelText: 'Enter your username',
-                    //                 ),
-                    //               ),
-                    //             ),
-                    //           ]),
-                    //       isExpanded: item.isExpanded,
-                    //     );
-                    //   }).toList(),
-                    // ),
+                    
                   ],
                 ),
               ),
@@ -242,7 +194,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                       //return AllVehicleContainer();
                       return SizedBox();
                       //return isActive ? ActiveContainer() : InactiveContainer();
-                    }),
+                    }
+                    
+                    ),
               )
             ],
           ),

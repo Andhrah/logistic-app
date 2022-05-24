@@ -12,16 +12,16 @@ import 'package:trakk/widgets/input_field.dart';
 
 import '../../widgets/back_icon.dart';
 
-class ReferredRides extends StatefulWidget {
-  static const String id = 'referredrides';
+class FulfilledDispatch extends StatefulWidget {
+  static const String id = 'fulfilleddispatch';
 
-  const ReferredRides({Key? key}) : super(key: key);
+  const FulfilledDispatch({Key? key}) : super(key: key);
 
   @override
-  State<ReferredRides> createState() => _ReferredRidesState();
+  State<FulfilledDispatch> createState() => _FulfilledDispatchState();
 }
 
-class _ReferredRidesState extends State<ReferredRides> {
+class _FulfilledDispatchState extends State<FulfilledDispatch> {
   final _formKey = GlobalKey<FormState>();
 
   Color color = whiteColor;
@@ -197,15 +197,17 @@ class _ReferredRidesState extends State<ReferredRides> {
                     },
                   ),
                   Container(
-                    margin: const EdgeInsets.only(left: 40.0),
+                    margin: const EdgeInsets.only(left: 20.0),
                     alignment: Alignment.center,
-                    child: const Text(
-                      'REFRRED RIDES',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
+                    child: Expanded(
+                      child: const Text(
+                        'FULFILLMENT DISPATCH HISTORY',
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                          // decoration: TextDecoration.underline,
+                        ),
                       ),
                     ),
                   ),
@@ -227,6 +229,7 @@ class _ReferredRidesState extends State<ReferredRides> {
                           child: SizedBox(
                             height: 120,
                             child: Row(
+                              //mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Expanded(
                                   child: InputField(
@@ -399,22 +402,361 @@ class _ReferredRidesState extends State<ReferredRides> {
                         // decoration: TextDecoration.underline,
                       ),
                     ),
-                    Container(
-                      height: 100,
-                      decoration: BoxDecoration(
-                          color: Color(0xffEEEEEE),
-                          borderRadius: BorderRadius.all(Radius.circular(4))),
-                      child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.all(16.0),
-                          child: Text("None"),
-                        ),
-                      ),
-                    )
+                   
                   ],
                 ),
-              ),SizedBox(height: 20,),
+              ),
+              SizedBox(
+                child: ListView.builder(
+                    physics: const ScrollPhysics(),
+                    shrinkWrap: true,
+                    scrollDirection: Axis.vertical,
+                    itemCount: 1,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(top: 10,right: 30, left: 30),
+                        child: Column(
+                          children: [
+                            ExpansionPanelList(
+                              elevation: 1,
+                              animationDuration: Duration(milliseconds: 200),
+                              children: [
+                                ExpansionPanel(
+                                  backgroundColor: color,
+                                  headerBuilder: (context, isExpanded) {
+                                    return ListTile(
+                                      title: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Row(
+                                            // mainAxisAlignment:
+                                            //     MainAxisAlignment.spaceBetween,
+                                            children: const [
+                                              Expanded(
+                                                child: Text(
+                                                  'Delivery to Ikorodu',
+                                                  textAlign: TextAlign.start,
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w400),
+                                                ),
+                                              ),
+                                              SizedBox(
+                                                width: 30,
+                                              ),
+                                              Expanded(
+                                                child: Text(
+                                                  '₦4000',
+                                                  style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.w600),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          Text(
+                                            '21/2/2022',
+                                            style: TextStyle(
+                                                color: grayColor,
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400),
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  },
+                                  body: Column(
+                                    children: [
+                                      Divider(
+                                        thickness: 2,
+                                        color: appPrimaryColor,
+                                      ),
+                                      Padding(
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            left: 0,
+                                            right: 8,
+                                            bottom: 20),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                                child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Container(
+                                                  width: 50,
+                                                  //height: 100,
+                                                  //color: appPrimaryColor,
+                                                  child: Image.asset(
+                                                    "assets/images/order_highlighter2.png",
+                                                    height: 100.0,
+                                                  ),
+                                                ),
+                                                const SizedBox(width: 0.0),
+                                                Column(
+                                                  children: [
+                                                    Text('Pickup Location'),
+                                                    const SizedBox(
+                                                        height: 65.0),
+                                                    Text(
+                                                      'Delivery Location',
+                                                      // style: TextStyle(
+                                                      //     fontSize: 16,
+                                                      //     fontWeight:
+                                                      //         FontWeight
+                                                      //             .w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                                SizedBox(
+                                                  width: 20,
+                                                ),
+                                                Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text('Pickup Location'),
+                                                    const SizedBox(
+                                                        height: 65.0),
+                                                    Text(
+                                                      'Delivery ',
+                                                      // style: TextStyle(
+                                                      //     fontSize: 16,
+                                                      //     fontWeight:
+                                                      //         FontWeight
+                                                      //             .w500),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ],
+                                            )),
+                                            Container(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.all(
+                                                            4.0),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      children: [
+                                                        Radio(
+                                                          value: null,
+                                                          groupValue: null,
+                                                          fillColor:
+                                                              MaterialStateProperty
+                                                                  .all(
+                                                                      secondaryColor),
+
+                                                          onChanged: null,
+
+                                                          //mouseCursor: MouseCursor.uncontrolled,
+                                                        ),
+                                                        Text("Item"),
+                                                        SizedBox(
+                                                          width: 95,
+                                                        ),
+                                                        Text(
+                                                          'Black handbag',
+                                                          style: TextStyle(
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              fontSize: 16,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w500),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      //crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Radio(
+                                                          value: null,
+                                                          groupValue: null,
+                                                          fillColor:
+                                                              MaterialStateProperty
+                                                                  .all(
+                                                                      secondaryColor),
+
+                                                          onChanged: null,
+
+                                                          //mouseCursor: MouseCursor.uncontrolled,
+                                                        ),
+                                                        Text("Rider"),
+                                                        // const SizedBox(
+                                                        //   width: 20,
+                                                        // ),
+                                                        SizedBox(
+                                                          width: 95,
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: const [
+                                                            Text(
+                                                              'Malik Johnson',
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Text(
+                                                              'Boxer 0098',
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            Container(
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                children: [
+                                                  SizedBox(
+                                                    height: 30,
+                                                  ),
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 4),
+                                                    child: Row(
+                                                      mainAxisAlignment:
+                                                          MainAxisAlignment
+                                                              .start,
+                                                      //crossAxisAlignment: CrossAxisAlignment.start,
+                                                      children: [
+                                                        Radio(
+                                                          value: null,
+                                                          groupValue: null,
+                                                          fillColor:
+                                                              MaterialStateProperty
+                                                                  .all(
+                                                                      secondaryColor),
+
+                                                          onChanged: null,
+
+                                                          //mouseCursor: MouseCursor.uncontrolled,
+                                                        ),
+                                                        Text("Referred to"),
+                                                        // const SizedBox(
+                                                        //   width: 20,
+                                                        // ),
+                                                        SizedBox(
+                                                          width: 65,
+                                                        ),
+                                                        Column(
+                                                          crossAxisAlignment:
+                                                              CrossAxisAlignment
+                                                                  .start,
+                                                          children: const [
+                                                            Text(
+                                                              'Malik Johnson',
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                            SizedBox(
+                                                              height: 5,
+                                                            ),
+                                                            Text(
+                                                              'Boxer 0098',
+                                                              style: TextStyle(
+                                                                  fontSize: 16,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w500),
+                                                            ),
+                                                          ],
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  isExpanded: _expanded1,
+                                  canTapOnHeader: true,
+                                ),
+                              ],
+                              dividerColor: Color.fromARGB(255, 143, 141, 141),
+                              expansionCallback:
+                                  (int panelIndex, bool isExpanded) {
+                                setState(() {
+                                  isExpanded = !_expanded1;
+                                  !isExpanded ? color : grayColor;
+                                });
+                                _expanded1 = !_expanded1;
+                                if (_expanded1 == true) {
+                                  setState(() {
+                                    color = whiteColor;
+                                  });
+                                } else if (_expanded1 == false) {
+                                  setState(() {
+                                    color = Color.fromARGB(255, 235, 235, 235);
+                                  });
+                                }
+                              },
+                            ),
+                          ],
+                        ),
+                      );
+                    }),
+              ),
+              SizedBox(height: 20,),
               Padding(
                 padding: const EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
                 child: Text(
