@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/support/help.dart';
-import 'package:trakk/screens/user_profile/edit_profile.dart';
-import 'package:trakk/screens/user_profile/settings.dart';
-import 'package:trakk/screens/user_profile/user_dispatch_history.dart';
+import 'package:trakk/screens/profile/settings.dart';
+import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/profile_list.dart';
+
+import 'user_dispatch_history.dart';
 
 class Profile extends StatefulWidget {
   static const String id = "usermenu";

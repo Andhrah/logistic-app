@@ -9,7 +9,6 @@ import 'package:trakk/screens/merchant/edit_rider_profile.dart';
 import 'package:trakk/screens/merchant/inactive_vehicle.dart';
 import 'package:trakk/screens/merchant/rider_list_container.dart';
 import 'package:trakk/screens/merchant/rider_profile.dart';
-import 'package:trakk/screens/user_profile/edit_profile.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 

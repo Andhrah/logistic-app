@@ -7,9 +7,10 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
-import 'package:trakk/screens/user_profile/profile%20_menu.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
+
+import 'profile/profile _menu.dart';
 
 class Tabs extends StatefulWidget {
   static const String id = 'tab';

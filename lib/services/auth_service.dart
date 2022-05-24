@@ -20,37 +20,33 @@ class AuthService {
   Future<dynamic> authRequest(Map body, String url) async {
     print('body is $body');
     print('Encoded body ${json.encode(body)}');
-    var response = await http.post(
-      uriConverter(url),
-      headers: kHeaders(''),
-      body: json.encode(body)
-    );
+    var response = await http.post(uriConverter(url),
+        headers: kHeaders(''), body: json.encode(body));
     print(response.body);
     var decoded = jsonDecode(response.body);
     if (response.statusCode.toString().startsWith('2')) {
       print('data: $decoded');
       return decoded;
-    } else if(decoded['data']) {
-      print('reason is ...${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
-    }
-    else {
+    } else if (decoded['data']) {
+      print(
+          'reason is ...${response.reasonPhrase} message is ${decoded['data']}');
+      throw ApiFailureException(
+          decoded['data'][0]["message"] ?? response.reasonPhrase);
+    } else {
       // if(decoded['data'] && decoded['data'][0]){
       //   throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
       // }
       print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
+      throw ApiFailureException(
+          decoded['data'][0]["message"] ?? response.reasonPhrase);
     }
   }
 
   Future<dynamic> loginRequest(Map body, String url) async {
     print('body is $body');
     print('Encoded body ${json.encode(body)}');
-    var response = await http.post(
-      ssoUriConverter(url),
-      headers: kHeaders(""),
-      body: json.encode(body)
-    );
+    var response = await http.post(ssoUriConverter(url),
+        headers: kHeaders(""), body: json.encode(body));
     // print(response.body);
     var decoded = jsonDecode(response.body);
     print(decoded);
@@ -58,8 +54,11 @@ class AuthService {
       print('data here for reset: $decoded');
       return decoded;
     } else {
-      print('reason is ${response.reasonPhrase} message is ${decoded['status']}');
-      throw ApiFailureException(decoded["message"] ?? response.reasonPhrase ?? 'Internal server error');
+      print(
+          'reason is ${response.reasonPhrase} message is ${decoded['status']}');
+      throw ApiFailureException(decoded["message"] ??
+          response.reasonPhrase ??
+          'Internal server error');
     }
   }
 
@@ -71,38 +70,34 @@ class AuthService {
     if (response.statusCode.toString().startsWith('2')) {
       return decoded;
     } else {
-      throw ApiFailureException(decoded['message'] ?? response.reasonPhrase ?? 'Unknown error');
+      throw ApiFailureException(
+          decoded['message'] ?? response.reasonPhrase ?? 'Unknown error');
     }
   }
 
   Future<dynamic> resetPasswordRequest(Map body, String url) async {
     print('body is $body');
     print('Encoded body ${json.encode(body)}');
-    var response = await http.post(
-      ssoUriConverter(url),
-      headers: kHeaders(""),
-      body: json.encode(body)
-    );
+    var response = await http.post(ssoUriConverter(url),
+        headers: kHeaders(""), body: json.encode(body));
     print(response.body);
     var decoded = jsonDecode(response.body);
-     print(decoded);
+    print(decoded);
     if (response.statusCode.toString().startsWith('2') && decoded["status"]) {
       print('data here for reset: $decoded');
       return decoded;
     } else {
       print('======= GOT HERE ELSE ==========');
-      print('reason is ${response.reasonPhrase} message is ${decoded['status']}');
-      throw ApiFailureException(decoded["message"] ?? response.reasonPhrase ?? 'Internal server error');
+      print(
+          'reason is ${response.reasonPhrase} message is ${decoded['status']}');
+      throw ApiFailureException(decoded["message"] ??
+          response.reasonPhrase ??
+          'Internal server error');
     }
   }
 
-  Future<dynamic> createUser(
-    String firstName,
-    String lastName,
-    String email,
-    String password,
-    String phoneNumber,
-    String userType) async {
+  Future<dynamic> createUser(String firstName, String lastName, String email,
+      String password, String phoneNumber, String userType) async {
     var body = {
       "firstName": firstName,
       "lastName": lastName,
@@ -121,12 +116,10 @@ class AuthService {
     String password,
     String phoneNumber,
     String userType,
-
     String stateOfOrigin,
     String stateOfResidence,
     String residentialAddress,
     String userPassport,
-
     String vehicleName,
     String vehicleColor,
     String vehicleNumber,
@@ -135,14 +128,13 @@ class AuthService {
     String vehicleImage,
     String vehicleModel,
     int vehicleTypeId,
-
     String kinFirstName,
     String kinLastName,
     String kinEmail,
     String kinAddress,
     String kinPhoneNumber,
     String kinRelationship,
-    ) async {
+  ) async {
     var body = {
       "user": {
         "firstName": firstName,
@@ -221,6 +213,20 @@ class AuthService {
       "code": code,
       "newPassword": password,
     };
-   return await resetPasswordRequest(body, 'api/User/reset/complete');
+    return await resetPasswordRequest(body, 'api/User/reset/complete');
+  }
+
+  // updateProfile
+  Future<dynamic> updateProfile(String firstName, String lastName,
+      int phoneNumber, String email, String address,) async {
+    var body = {
+      "firstName": firstName,
+      "lastName": lastName,
+      "phoneNumber": phoneNumber,
+      "email": email,
+      "address": address,
+    };
+    // create your http function
+    return await authRequest(body, 'api/User/update');
   }
 }

@@ -17,8 +17,6 @@ import 'package:trakk/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
 import 'package:trakk/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/screens/country.dart';
-import 'package:trakk/screens/date_picker.dart';
 import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
@@ -37,26 +35,27 @@ import 'package:trakk/screens/merchant/edit_rider_profile.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/riders.dart';
-import 'package:trakk/screens/merchant/signup_merchant.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
-import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/tab.dart';
-import 'package:trakk/screens/user_profile/edit_profile.dart';
-import 'package:trakk/screens/user_profile/settings.dart';
-import 'package:trakk/screens/user_profile/user_dispatch_history.dart';
-import 'package:trakk/screens/user_profile/profile%20_menu.dart';
-import 'package:trakk/screens/wallet/fund_wallet.dart';
+import 'package:trakk/screens/profile/edit_profile.dart';
+import 'package:trakk/screens/profile/settings.dart';
+import 'package:trakk/screens/profile/user_dispatch_history.dart';
+// import 'package:trakk/screens/profile/profile.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
 
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+
+import 'screens/profile/profile _menu.dart';
+import 'screens/profile/user_dispatch_history.dart';
+import 'screens/profile/profile _menu.dart';
 
 
 
@@ -220,7 +219,6 @@ class _MyAppState extends State<MyApp> {
 
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
-            Profile.id: (context) => const Profile(),
             EditProfile.id: (context) => const EditProfile(),
             Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
