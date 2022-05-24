@@ -335,10 +335,10 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Container(
-                                color: Color.fromARGB(255, 199, 190, 152),
+                                color: Color(0xffCA9E0D),
                                 height: 556,
                                 child: Padding(
-                                  padding: EdgeInsets.only(
+                                  padding: const EdgeInsets.only(
                                     left: 15,
                                     right: 15,
                                     top: 15,
@@ -348,7 +348,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
-                                      Text("Choose your card",
+                                      const Text("Choose your card",
                                           textScaleFactor: 1.2,
                                           style: TextStyle(
                                               //fontSize: 16,
