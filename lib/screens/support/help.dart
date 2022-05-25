@@ -75,46 +75,46 @@ class Help extends StatelessWidget {
                     const SizedBox(
                       height: 34,
                     ),
-                    InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(PaymentIssues.id);
-                        },
-                        child: const SupportContainer(
-                          title: 'Payment',
-                        )),
-                    const SizedBox(
-                      height: 34,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(AccountDataIssues.id);
-                      },
-                      child: const SupportContainer(
-                        title: 'Account and Data',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 34,
-                    ),
-                    InkWell(
-                      onTap:  () {
-                        Navigator.of(context).pushNamed(AppFeatures.id);
-                      },
-                      child: const SupportContainer(
-                        title: 'APP Features',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 34,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(AboutTrakk.id);
-                      },
-                      child: const SupportContainer(
-                        title: 'About Trakk',
-                      ),
-                    ),
+                    // InkWell(
+                    //     onTap: () {
+                    //       Navigator.of(context).pushNamed(PaymentIssues.id);
+                    //     },
+                    //     child: const SupportContainer(
+                    //       title: 'Payment',
+                    //     )),
+                    // const SizedBox(
+                    //   height: 34,
+                    // ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.of(context).pushNamed(AccountDataIssues.id);
+                    //   },
+                    //   child: const SupportContainer(
+                    //     title: 'Account and Data',
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 34,
+                    // ),
+                    // InkWell(
+                    //   onTap:  () {
+                    //     Navigator.of(context).pushNamed(AppFeatures.id);
+                    //   },
+                    //   child: const SupportContainer(
+                    //     title: 'APP Features',
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 34,
+                    // ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.of(context).pushNamed(AboutTrakk.id);
+                    //   },
+                    //   child: const SupportContainer(
+                    //     title: 'About Trakk',
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

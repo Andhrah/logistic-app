@@ -44,6 +44,7 @@ import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/support/help.dart';
+import 'package:trakk/screens/support/ride_issues.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
@@ -218,6 +219,7 @@ class _MyAppState extends State<MyApp> {
             ListOfRiders.id: (context) => const ListOfRiders(),
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+            RideIssues.id: (context) => const RideIssues(),
 
           },
           // home: const GetStarted(),

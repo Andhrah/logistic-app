@@ -76,7 +76,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 2,
-                    color: Color.fromARGB(255, 224, 224, 224),
+                    color: Color.fromARGB(255, 233, 233, 233),
                     offset: Offset(2.0, 4.0), //(x,y)
                     blurRadius: 10,
                   ),
@@ -176,7 +176,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 2,
-                    color: Color.fromARGB(255, 231, 231, 231),
+                    color: Color.fromARGB(255, 235, 235, 235),
                     offset: Offset(2.0, 2.0), //(x,y)
                     blurRadius: 16,
                   ),
