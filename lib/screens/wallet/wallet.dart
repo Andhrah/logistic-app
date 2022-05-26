@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
+import 'package:trakk/screens/wallet/payments.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/icon_container.dart';
@@ -188,7 +189,7 @@ class _WalletScreenState extends State<WalletScreen> {
                       children: [
                         IconContainer(
                           text: 'Fund Wallet', 
-                          imgUrl: 'assets/images/fund_wallet_img.png',
+                          imgUrl: 'assets/images/fund.svg',
                           isText: false,
                           onPress: (){
                             Navigator.of(context).pushNamed(FundWalletScreen.id);
@@ -197,19 +198,21 @@ class _WalletScreenState extends State<WalletScreen> {
       
                         IconContainer(
                           text: 'Payment', 
-                          imgUrl: 'assets/images/payment_img.png',
+                          imgUrl: 'assets/images/payment.svg',
                           isText: false,
-                          onPress: (){},
+                          onPress: (){
+                            Navigator.of(context).pushNamed(Payments.id);
+                          },
                         ),
       
                         IconContainer(
                           text: 'Transfer', 
-                          imgUrl: 'assets/images/transfer_img.png',
+                          imgUrl: 'assets/images/transfer01.svg',
                           isText: false,
                           onPress: (){},
                         ),
                       ],
-                    ),
+                  ),
       
                     const SizedBox(height: 40.0),
       
@@ -217,46 +220,47 @@ class _WalletScreenState extends State<WalletScreen> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         IconContainer(
-                          text: 'Withdraw', 
-                          imgUrl: 'assets/images/withdraw_img.png',
+                          text: 'All Cards', 
+                          imgUrl: 'assets/images/cards.svg',
                           isText: false,
                           onPress: (){},
                         ),
       
                         IconContainer(
                           text: 'QR Code',
-                          imgUrl: 'assets/images/qr_img.png',
+                          imgUrl: 'assets/images/qrCode.svg',
                           isText: false,
                           onPress: (){},
                         ),
       
                         IconContainer(
                           text: 'Buy Airtime',
-                          imgUrl: 'assets/images/airtime_img.png',
+                          imgUrl: 'assets/images/airtime.svg',
                           isText: false,
                           onPress: (){},
-                        ),
-                      ],
-                    ),
+                        ),]),
+                      
+                    
       
                     const SizedBox(height: 40.0),
       
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        IconContainer(
-                          text: 'Cards', 
-                          imgUrl:  'assets/images/cards_img.png',
-                          isText: false,
-                          onPress: (){},
-                        ),
+                        // IconContainer(
+                        //   text: 'Cards', 
+                        //   imgUrl:  'assets/images/cards.svg',
+                        //   isText: false,
+                        //   onPress: (){},
+                        // ),
       
                         IconContainer(
                           text: 'Transaction\nHistory',
-                          imgUrl: 'assets/images/history_img.png',
+                          imgUrl: 'assets/images/transactionHistory.svg',
                           isText: false,
                           onPress: (){},
                         ),
+                        SizedBox(width: MediaQuery.of(context).size.width / 6.3),
       
                         IconContainer(
                           text: 'More',
@@ -267,10 +271,10 @@ class _WalletScreenState extends State<WalletScreen> {
                       ],
                     ),
                     
-                  ],
-                )
-              )
-            ]
+                  
+                
+            ])
+          )]
           ),
         ),
       )

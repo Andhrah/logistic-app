@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
+import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
+import 'package:trakk/widgets/cancel_button.dart';
 import 'package:trakk/widgets/input_field.dart';
 
 class FundWalletScreen extends StatefulWidget {
@@ -349,7 +351,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               padding: const EdgeInsets.all(20.0),
                               child: Container(
                                 color: Color.fromARGB(255, 231, 226, 202),
-                                height: 800,
+                                height: 650,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                     left: 15,
@@ -567,10 +569,71 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                       ),
                                       Button(
                                           text: "Top Up",
-                                          onPress: () {
-                                            Navigator.of(context)
-                                                .pushNamed(Payment.id);
-                                          },
+                                          onPress: () => showDialog<String>(
+                                              // barrierDismissible: true,
+                                              context: context,
+                                              builder: (BuildContext context) =>
+                                                  AlertDialog(
+                                                    // title: const Text('AlertDialog Title'),
+                                                    // contentPadding:
+                                                    //     const EdgeInsets
+                                                    //             .symmetric(
+                                                    //         horizontal: 50.0,
+                                                    //         vertical: 50.0),
+                                                    content: SizedBox(
+                                                      height: 250.0,
+                                                      child: Column(children: [
+                                                        Row(mainAxisAlignment: MainAxisAlignment.end,
+                                                            crossAxisAlignment:
+                                                                CrossAxisAlignment
+                                                                    .end,
+                                                            children: const [
+                                                              CancelButton()
+                                                            ]),
+                                                            SizedBox(height: 10,),
+                                                            Image.asset("assets/images/confirmPayment.png"),
+                                                            SizedBox(height: 10,),
+                                                        Container(
+                                                          width: 300,
+                                                          child: const Text(
+                                                            "You have successfully funded your Trakk wallet with ₦5000",
+                                                            // maxLines: 2,
+                                                            style: TextStyle(
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w400,
+                                                            ),
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                          ),
+                                                        ),
+                                                        SizedBox(
+                                                          height: 14,
+                                                        ),
+                                                        const SizedBox(
+                                                            height: 10.0),
+                                                        Button(
+                                                          text:
+                                                              'Back to wallet',
+                                                          onPress: () {
+                                                            Navigator.of(
+                                                                    context)
+                                                                .pushNamed(WalletScreen.id);
+                                                          },
+                                                          color:
+                                                              appPrimaryColor,
+                                                          textColor: whiteColor,
+                                                          isLoading: false,
+                                                          width: MediaQuery.of(
+                                                                      context)
+                                                                  .size
+                                                                  .width /
+                                                              1.3,
+                                                        )
+                                                      ]),
+                                                    ),
+                                                  )),
                                           color: appPrimaryColor,
                                           width: 308,
                                           textColor: whiteColor,
