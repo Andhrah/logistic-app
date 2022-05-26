@@ -17,6 +17,16 @@ class FundWalletScreen extends StatefulWidget {
 
 class _FundWalletScreenState extends State<FundWalletScreen> {
   String _wallets = 'Select wallet';
+  int geee = 2;
+  String _cards = "XXXX-XXXX-2356";
+
+  var cards = [
+    "XXXX-XXXX-2356",
+    "XXXX-XXXX-0863",
+    "XXXX-XXXX-7552",
+    "XXXX-XXXX-2535",
+    "Add new card",
+  ];
 
   var wallets = [
     "Select wallet",
@@ -24,8 +34,10 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
     "Zebrra wallet",
   ];
 
+  String? _card;
   String? _wallet;
   String? _amount;
+  int? _cardNumber;
 
   late TextEditingController _walletControler;
   late TextEditingController _amountController;
@@ -87,7 +99,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                             fontWeight: FontWeight.w600),
                       ),
                     ),
-                    
+
                     // const Text(
                     //   'Select your top up source',
                     //   style: TextStyle(
@@ -116,7 +128,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                           borderRadius: const BorderRadius.all(
                             Radius.circular(8),
                           ),
-                          color: secondaryColor),
+                          color: Color(0xffCA9E0D)),
                       labelPadding: EdgeInsets.only(left: 0),
                       labelColor: appPrimaryColor,
                       unselectedLabelColor: appPrimaryColor,
@@ -182,7 +194,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                           child: Padding(
                             padding: const EdgeInsets.all(20.0),
                             child: Container(
-                              color: Color.fromARGB(255, 199, 190, 152),
+                              color: Color.fromARGB(255, 231, 226, 202),
                               height: 556,
                               child: Padding(
                                 padding: EdgeInsets.only(
@@ -328,15 +340,16 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                       ]),
                       ListView(physics: ScrollPhysics(), children: [
                         Container(
-                          decoration: BoxDecoration(
-                            //color: Color.fromARGB(0, 202, 138, 41),
-                            borderRadius: BorderRadius.all(Radius.circular(50)),
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.all(20.0),
-                            child: Container(
-                                color: Color.fromARGB(255, 199, 190, 152),
-                                height: 556,
+                            decoration: BoxDecoration(
+                              //color: Color.fromARGB(0, 202, 138, 41),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(50)),
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Container(
+                                color: Color.fromARGB(255, 231, 226, 202),
+                                height: 800,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
                                     left: 15,
@@ -371,7 +384,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                             padding: const EdgeInsets.symmetric(
                                                 horizontal: 10.0),
                                             child: DropdownButton<String>(
-                                              value: _wallets,
+                                              value: _cards.toString(),
                                               icon: const Icon(
                                                   Remix.arrow_down_s_line),
                                               elevation: 16,
@@ -385,11 +398,10 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                                   Container(), //empty line
                                               onChanged: (String? newValue) {
                                                 setState(() {
-                                                  _wallets = newValue!;
+                                                  _cards = newValue!;
                                                 });
                                               },
-                                              items:
-                                                  wallets.map((String value) {
+                                              items: cards.map((String value) {
                                                 return DropdownMenuItem(
                                                   value: value,
                                                   child: Text(value),
@@ -398,21 +410,21 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                             ),
                                           )),
                                       const SizedBox(height: 20.0),
-                                      const Text("Wallet to be funded",
+                                      const Text("Fill in your card details",
                                           textScaleFactor: 1.2,
                                           style: TextStyle(
                                               //fontSize: 16,
                                               fontWeight: FontWeight.w500)),
-                                      const SizedBox(height: 0.0),
+                                      const SizedBox(height: 15.0),
                                       InputField(
-                                        key: const Key('Trakk wallet'),
+                                        key: const Key('name'),
                                         textController: _walletControler,
                                         node: _amountNode,
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         obscureText: false,
-                                        text: '',
-                                        hintText: 'Trakk wallet',
+                                        text: 'Card holder\'s name',
+                                        hintText: 'Name',
                                         textHeight: 10.0,
                                         borderColor:
                                             appPrimaryColor.withOpacity(0.9),
@@ -428,18 +440,103 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                         //   return "Enter a valid last  name";
                                         // },
                                         onSaved: (value) {
-                                          _wallet = value!.trim();
+                                          _card = value!.trim();
                                           return null;
                                         },
                                       ),
                                       SizedBox(
                                         height: 20,
                                       ),
-                                      Text("Amount",
-                                          textScaleFactor: 1.2,
-                                          style: TextStyle(
-                                              //fontSize: 16,
-                                              fontWeight: FontWeight.w500)),
+                                      InputField(
+                                        key: const Key('Card number'),
+                                        textController: _amountController,
+                                        keyboardType: TextInputType.phone,
+                                        node: _amountNode,
+                                        autovalidateMode:
+                                            AutovalidateMode.onUserInteraction,
+                                        obscureText: false,
+                                        text: 'Card number',
+                                        hintText: '0000-0000-0000-0000',
+                                        textHeight: 10.0,
+                                        borderColor:
+                                            appPrimaryColor.withOpacity(0.9),
+
+                                        // validator: (value) {
+                                        //   if (value!.trim().length == 11) {
+                                        //     return null;
+                                        //   }
+                                        //   return "Enter a valid phone number";
+                                        // },
+                                        onSaved: (value) {
+                                          _cardNumber = value!.trim() as int?;
+                                          return null;
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: InputField(
+                                              key: const Key('Expirydate'),
+                                              // textController: _firstNameController,
+                                              // node: _firstNameNode,
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              obscureText: false,
+                                              text: 'Expiry date',
+                                              hintText: 'mm/yy',
+                                              textHeight: 10.0,
+                                              borderColor: appPrimaryColor
+                                                  .withOpacity(0.9),
+
+                                              validator: (value) {
+                                                if (value!.trim().length > 2) {
+                                                  return null;
+                                                }
+                                                return "Enter a valid first name";
+                                              },
+                                              onSaved: (value) {
+                                                // _firstName = value!.trim();
+                                                return null;
+                                              },
+                                            ),
+                                          ),
+                                          const SizedBox(width: 40.0),
+                                          Expanded(
+                                            child: InputField(
+                                              key: const Key('cvv'),
+                                              // textController: _lastNameController,
+                                              // node: _lastNameNode,
+                                              autovalidateMode: AutovalidateMode
+                                                  .onUserInteraction,
+                                              obscureText: false,
+                                              text: '',
+                                              hintText: 'cvv',
+                                              textHeight: 10.0,
+                                              borderColor: appPrimaryColor
+                                                  .withOpacity(0.9),
+
+                                              validator: (value) {
+                                                if (value!.trim().length > 2) {
+                                                  return null;
+                                                }
+                                                return "Enter a valid last name";
+                                              },
+                                              onSaved: (value) {
+                                                //_lastName = value!.trim();
+                                                return null;
+                                              },
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
                                       InputField(
                                         key: const Key('amount'),
                                         textController: _amountController,
@@ -448,7 +545,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                         autovalidateMode:
                                             AutovalidateMode.onUserInteraction,
                                         obscureText: false,
-                                        text: '',
+                                        text: 'Amount',
                                         hintText: '₦00.00',
                                         textHeight: 10.0,
                                         borderColor:
@@ -471,7 +568,8 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                       Button(
                                           text: "Top Up",
                                           onPress: () {
-                                            Navigator.of(context).pushNamed(Payment.id);
+                                            Navigator.of(context)
+                                                .pushNamed(Payment.id);
                                           },
                                           color: appPrimaryColor,
                                           width: 308,
@@ -480,7 +578,8 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                     ],
                                   ),
                                 ),
-                                ),))
+                              ),
+                            ))
                         //Divider()
                       ]),
                     ]),
