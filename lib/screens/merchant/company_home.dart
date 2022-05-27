@@ -21,12 +21,14 @@ class _CompanyHomeState extends State<CompanyHome> {
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       body: SafeArea(
-          child: SingleChildScrollView(physics: ScrollPhysics(),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20.0),
-                Container(
-                child: Padding(
+          child: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20.0),
+            Container(
+              child: Padding(
                 padding: const EdgeInsets.only(left: 30.0, right: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,44 +38,49 @@ class _CompanyHomeState extends State<CompanyHome> {
                         backgroundImage:
                             AssetImage('assets/images/ladySmiling.png'),
                       ),
-                       Text(
-                      'Admin',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: secondaryColor),
-                    ),
+                      Text(
+                        'Admin',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: secondaryColor),
+                      ),
                     ]),
                     SvgPicture.asset('assets/images/alarm.svg'),
                   ],
                 ),
-                ),
-                ),
-                const SizedBox(
-                height: 25,
-                ),
-                Container(
-                child: Padding(
+              ),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            Container(
+              child: Padding(
                 padding: const EdgeInsets.only(left: 30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                     Text(
+                    Text(
                       'Hello Glover,',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                     ),
                     Text(
                       "Good evening",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
-                ),
-                ),
-                const SizedBox(
-                height: 35,
-                ),
-                //const Expanded(child: Divider(),),
-                Container(
-                //height: 50,
-                decoration: const BoxDecoration(
+              ),
+            ),
+            const SizedBox(
+              height: 35,
+            ),
+            //const Expanded(child: Divider(),),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(50),
@@ -87,22 +94,22 @@ class _CompanyHomeState extends State<CompanyHome> {
                     offset: const Offset(0.0, 1.0),
                   ),
                 ],
-                ),
-                child: Expanded(
+              ),
+              child: Expanded(
                   child: Column(
                 children: [
                   const SizedBox(
                     height: 15,
                   ),
                   Row(
-                    children:  [
+                    children: [
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: InkWell(
                             onTap: () {
                               Navigator.of(context).pushNamed(Vehicles.id);
-                              },
+                            },
                             child: const MerchantContainer(
                               color: green,
                               icon: 'assets/images/vehicle.svg',
@@ -112,7 +119,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                         ),
                       ),
                       //const SizedBox(width: 20,),
-                       Expanded(
+                      Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: InkWell(
@@ -130,13 +137,14 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ],
                   ),
                   Row(
-                    children:  [
+                    children: [
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(DispatchHistory.id);
+                              Navigator.of(context)
+                                  .pushNamed(DispatchHistory.id);
                             },
                             child: const MerchantContainer(
                               color: green,
@@ -164,9 +172,6 @@ class _CompanyHomeState extends State<CompanyHome> {
                       ),
                     ],
                   ),
-                  
-                  
-                  
                   Row(
                     children: const [
                       Expanded(
@@ -193,11 +198,11 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ],
                   ),
                 ],
-                )),
-                ),
-              ],
+              )),
             ),
-          )),
+          ],
+        ),
+      )),
     );
   }
 }

@@ -26,6 +26,8 @@ import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
+import 'package:trakk/screens/merchant/add_rider1.dart';
+import 'package:trakk/screens/merchant/add_rider2.dart';
 import 'package:trakk/screens/merchant/all_vehicle_container.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
@@ -33,7 +35,6 @@ import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/screens/merchant/edit_rider_profile.dart';
-import 'package:trakk/screens/merchant/newfile.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/rejected_rides.dart';
@@ -64,10 +65,7 @@ void main() async {
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
-<<<<<<< HEAD
   await dotenv.load(fileName: ".env");
-=======
->>>>>>> ab88d43 (ft-merchant changes)
   //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
@@ -120,13 +118,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-<<<<<<< HEAD
-=======
-    
-    //print(dotenv.env["PUSHER_TOKEN"]);
-
-    
->>>>>>> ab88d43 (ft-merchant changes)
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
@@ -166,7 +157,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: SplashScreen.id,
+          initialRoute: Home.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -189,12 +180,7 @@ class _MyAppState extends State<MyApp> {
             CartScreen.id: (context) => const CartScreen(),
             PolylineScreen.id: (context) => const PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
-<<<<<<< HEAD
             ProfileMenu.id:(context) => const ProfileMenu(),
-=======
-
-            UserMenu.id:(context) => const UserMenu(),
->>>>>>> ab88d43 (ft-merchant changes)
             EditProfile.id:(context) => const EditProfile(),
             Help.id:(context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
@@ -209,15 +195,10 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
-<<<<<<< HEAD
-            RejectedRides.id:(context) => const RejectedRides(),
-            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-=======
 
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
 
->>>>>>> ab88d43 (ft-merchant changes)
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             ProfileMenu.id: (context) => const ProfileMenu(),
@@ -238,13 +219,10 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id: (context) => const AllVehicleContainer(),
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
-<<<<<<< HEAD
-=======
-
->>>>>>> ab88d43 (ft-merchant changes)
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-            NewFile.id:(context) => const NewFile(),
+            AddRider1.id:(context) => const AddRider1(),
+            AddRider2.id:(context) => const AddRider2(),
 
           },
           // home: const GetStarted(),
