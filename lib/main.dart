@@ -129,10 +129,10 @@ class _MyAppState extends State<MyApp> {
       print("error: ${error != null ? error.message : ""}");
     });
 
-    Channel channel = pusher.subscribe("adelowomi@gmail.com");
-    channel.bind("user", (event) {
-      print(event != null ? event.data : "O ti fail");
-    });
+    // Channel channel = pusher.subscribe("adelowomi@gmail.com");
+    // channel.bind("user", (event) {
+    //   print(event != null ? event.data : "O ti fail");
+    // });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(

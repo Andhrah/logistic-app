@@ -10,12 +10,22 @@ class CancelButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40,
+      padding: EdgeInsets.all(5),
+      height: 32,
+      width: 35,
       decoration: const BoxDecoration(
         color: whiteColor,
         borderRadius: BorderRadius.all(
           Radius.circular(4),
         ),
+        boxShadow: [
+        BoxShadow(
+          color: Color.fromARGB(255, 230, 230, 230),
+          spreadRadius: 1,
+          offset: Offset(2.0, 2.0), //(x,y)
+          blurRadius: 8.0,
+        ),
+      ]
       ),
       child: Center(
         child: SvgPicture.asset(
