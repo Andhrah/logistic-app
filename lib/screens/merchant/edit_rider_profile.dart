@@ -1070,6 +1070,9 @@ class _EditRiderProfile extends State<EditRiderProfile> {
         return getSuspendContainer();
       case Options.Delete:
         return getDeleteContainer();
+      case Options.Null:
+        // TODO: Handle this case.
+        break;
     }
     return cantEditContainer();
   }
