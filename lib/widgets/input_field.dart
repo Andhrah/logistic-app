@@ -21,7 +21,7 @@ class InputField extends StatelessWidget {
     this.onChanged,
     this.autovalidateMode,
     required this.obscureText,
-    this.maxLines,
+    this.maxLines, this.textColor,
   }) : _node = node, super(key: key);
 
   final TextEditingController? textController;
@@ -32,6 +32,7 @@ class InputField extends StatelessWidget {
   final Widget? suffixIcon;
   final double textHeight;
   final Color borderColor;
+  final Color? textColor;
   // final double maxLines;
   final int? area;
   final TextInputType? keyboardType;
@@ -53,8 +54,8 @@ class InputField extends StatelessWidget {
          Text(
           text,
           textScaleFactor: 1.2,
-          style: const TextStyle(
-            color: appPrimaryColor,
+          style:  TextStyle(
+            color: textColor,
             fontWeight: FontWeight.w500,
           ),
         ),

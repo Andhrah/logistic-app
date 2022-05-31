@@ -199,7 +199,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               color: Color.fromARGB(255, 231, 226, 202),
                               height: 556,
                               child: Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                   left: 15,
                                   right: 15,
                                   top: 15,
@@ -208,7 +208,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Select source wallet",
+                                    const Text("Select source wallet",
                                         textScaleFactor: 1.2,
                                         style: TextStyle(
                                             //fontSize: 16,
@@ -583,16 +583,22 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                                     content: SizedBox(
                                                       height: 250.0,
                                                       child: Column(children: [
-                                                        Row(mainAxisAlignment: MainAxisAlignment.end,
-                                                            crossAxisAlignment:
-                                                                CrossAxisAlignment
+                                                        Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
                                                                     .end,
+                                                            crossAxisAlignment: CrossAxisAlignment.end,
                                                             children: const [
                                                               CancelButton()
                                                             ]),
-                                                            SizedBox(height: 10,),
-                                                            Image.asset("assets/images/confirmPayment.png"),
-                                                            SizedBox(height: 10,),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
+                                                        Image.asset(
+                                                            "assets/images/confirmPayment.png"),
+                                                        SizedBox(
+                                                          height: 10,
+                                                        ),
                                                         Container(
                                                           width: 300,
                                                           child: const Text(
@@ -619,7 +625,9 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                                           onPress: () {
                                                             Navigator.of(
                                                                     context)
-                                                                .pushNamed(WalletScreen.id);
+                                                                .pushNamed(
+                                                                    WalletScreen
+                                                                        .id);
                                                           },
                                                           color:
                                                               appPrimaryColor,

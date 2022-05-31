@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/payments.dart';
+import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/icon_container.dart';
@@ -209,7 +210,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           text: 'Transfer', 
                           imgUrl: 'assets/images/transfer01.svg',
                           isText: false,
-                          onPress: (){},
+                          onPress: (){
+                            Navigator.of(context).pushNamed(Transfers.id);
+                          },
                         ),
                       ],
                   ),

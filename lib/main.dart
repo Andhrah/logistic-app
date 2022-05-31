@@ -51,6 +51,7 @@ import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/wallet/payments.dart';
+import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
@@ -228,6 +229,7 @@ class _MyAppState extends State<MyApp> {
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
 
             WalletScreen.id:(context) => const WalletScreen(),
+            Transfers.id:(context) => const Transfers(),
           },
           // home: const GetStarted(),
         ),
