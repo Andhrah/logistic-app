@@ -22,6 +22,7 @@ import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
+import 'package:trakk/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
@@ -163,7 +164,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: Tabs.id,
+          initialRoute: Home.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -230,6 +231,8 @@ class _MyAppState extends State<MyApp> {
 
             WalletScreen.id:(context) => const WalletScreen(),
             Transfers.id:(context) => const Transfers(),
+            Payment.id:(context) => const Payment(),
+            PayWithTransfer.id:(context) => const PayWithTransfer(),
           },
           // home: const GetStarted(),
         ),
