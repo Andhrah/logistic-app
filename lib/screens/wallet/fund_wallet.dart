@@ -650,7 +650,8 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                   ),
                                 ),
                               ),
-                            ))
+                            ),
+                            ),
                         //Divider()
                       ]),
                     ]),

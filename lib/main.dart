@@ -164,7 +164,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: Home.id,
+          initialRoute: Tabs.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),

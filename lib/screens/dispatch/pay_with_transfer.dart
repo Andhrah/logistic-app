@@ -44,8 +44,15 @@ class _PayWithTransferState extends State<PayWithTransfer> {
     super.initState();
     _nameController = TextEditingController();
     _cardNumberController = TextEditingController();
-
+    _makePayment();
     // _confirmPasswordController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+
+    super.dispose();
   }
 
   final List paymentMethods = [
@@ -64,190 +71,210 @@ class _PayWithTransferState extends State<PayWithTransfer> {
     });
   }
 
+  bool _isLoading = true;
+
+  void _makePayment() async {
+    // setState(() {
+    //   _isLoading = true;
+    // });
+    await Future.delayed(
+      const Duration(seconds: 5),
+    );
+    if (mounted) {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
-        body: SingleChildScrollView(
-      child: SafeArea(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const SizedBox(height: 30.0),
-          const Header(
-            text: 'PAY WITH TRANSFER',
-          ),
-          const SizedBox(height: 30.0),
-          Text(
-            "Transfer the sum of ₦20,000 to\nthe account below",
-            textScaleFactor: 1.3,
-            textAlign: TextAlign.center,
-          ),
-          Padding(
-            padding: const EdgeInsets.all(30.0),
-            child: Column(
-              children: [
-                Container(
-                  color: Color(0xffEEEEEE),
-                  height: 270,
-                  child: Padding(
+        body: SafeArea(
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Header(
+              text: 'PAY WITH TRANSFER',
+            ),
+            _isLoading
+                ? Padding(
                     padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 25),
+                        vertical: 80, horizontal: 30),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 30, vertical: 15),
-                          height: mediaQuery.size.height * 0.2,
-                          decoration: const BoxDecoration(
-                            color: Color(0xffCA9E04),
-                            borderRadius: BorderRadius.all(Radius.circular(8)),
-                          ),
+                          decoration: BoxDecoration(
+                              color: Color(0xffEEEEEE),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(8))),
+                          height: 220,
+                          width: 340,
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Text("Zebrra Bank",
-                              textScaleFactor: 1.1,
-                              style: TextStyle(fontWeight: FontWeight.w600),),
-                              const Text("0034587665",
-                              textScaleFactor: 1.3,
-                              style: TextStyle(fontWeight: FontWeight.w700),),
-                              const SizedBox(
+                            children: const [
+                              CircularProgressIndicator(
+                                color: Color(0xffCA9E0D),
+                              ),
+                              SizedBox(
                                 height: 20,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  
-                                  Row(
-                                    children: const [
-                                      Icon(Remix.file_copy_line),
-                                      Text(
-                                        "Copy",
-                                        textScaleFactor: 1,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  Row(
-                                    children: const [
-                                      Icon(Remix.share_line),
-                                      Text(
-                                        "Share",
-                                        textScaleFactor: 1,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                ],
+                              Text(
+                                "Wait for 5 seconds to generate\naccount",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 16),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              Text(
+                                "05",
+                                textScaleFactor: 1.4,
+                                style: TextStyle(fontWeight: FontWeight.w700),
                               ),
                             ],
                           ),
-                        ), const SizedBox(
-                          height: 10,
                         ),
-
-                        Text("This account expires in 30 mins", 
-                        style: TextStyle(fontSize: 15),),
-                       const SizedBox(
-                          height: 20,
-                        ),
-                         const Text("30",
-                              textScaleFactor: 1.3,
-                              style: TextStyle(fontWeight: FontWeight.w700),),
+                        const SizedBox(height: 40.0),
+                        Button(
+                            text: "Cancel",
+                            onPress: () {},
+                            color: whiteColor,
+                            width: 300,
+                            textColor: appPrimaryColor,
+                            isLoading: false)
                       ],
                     ),
-                  ),
-                ),
-                const SizedBox(height: 30.0),
-                Button(
-                  text: 'I have sent the money',
-                  onPress: () => showDialog<String>(
-                      // barrierDismissible: true,
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                            // title: const Text('AlertDialog Title'),
-                            // contentPadding:
-                            //     const EdgeInsets
-                            //             .symmetric(
-                            //         horizontal: 50.0,
-                            //         vertical: 50.0),
-                            content: SizedBox(
-                              height: 400.0,
-                              child: Column(children: [
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Image.asset("assets/images/confirmPayment.png"),
-                                SizedBox(
-                                  height: 10,
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(
+                      children: [
+                        const Text(
+                          "Transfer the sum of ₦20,000 to\nthe account below",
+                          textScaleFactor: 1.3,
+                          textAlign: TextAlign.center,
+                        ),
+                        const SizedBox(height: 30.0),
+                        Container(
+                          color: Color(0xffEEEEEE),
+                          height: 270,
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 30, vertical: 25),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 15),
+                                  height: mediaQuery.size.height * 0.2,
+                                  decoration: const BoxDecoration(
+                                    color: Color(0xffCA9E04),
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(8)),
+                                  ),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Text(
+                                        "Zebrra Bank",
+                                        textScaleFactor: 1.1,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w600),
+                                      ),
+                                      const Text(
+                                        "0034587665",
+                                        textScaleFactor: 1.3,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                      const SizedBox(
+                                        height: 20,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Row(
+                                            children: const [
+                                              Icon(Remix.file_copy_line),
+                                              Text(
+                                                "Copy",
+                                                textScaleFactor: 1,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: const [
+                                              Icon(Remix.share_line),
+                                              Text(
+                                                "Share",
+                                                textScaleFactor: 1,
+                                                style: TextStyle(
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                                 const SizedBox(
-                                  width: 250,
-                                  child: Text(
-                                    "PayWithTransfer successful",
-                                    // maxLines: 2,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color: Color(0xff23710F),
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
+                                  height: 10,
+                                ),
+                                Text(
+                                  "This account expires in 30 mins",
+                                  style: TextStyle(fontSize: 15),
                                 ),
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                const SizedBox(
-                                  height: 14,
+                                const Text(
+                                  "30",
+                                  textScaleFactor: 1.3,
+                                  style: TextStyle(fontWeight: FontWeight.w700),
                                 ),
-                                const SizedBox(height: 10.0),
-                                Button(
-                                  text: 'Track item',
-                                  onPress: () {
-                                    Navigator.of(context)
-                                        .pushNamed(WalletScreen.id);
-                                  },
-                                  color: appPrimaryColor,
-                                  textColor: whiteColor,
-                                  isLoading: false,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.3,
-                                ),
-                                Button(
-                                  text: 'Cancel',
-                                  onPress: () {
-                                    Navigator.pop(context);
-                                  },
-                                  color: whiteColor,
-                                  textColor: appPrimaryColor,
-                                  isLoading: false,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.3,
-                                ),
-                              ]),
+                              ],
                             ),
-                          )),
-                  color: appPrimaryColor,
-                  textColor: whiteColor,
-                  isLoading: false,
-                  width: MediaQuery.of(context).size.width / 1.2,
-                ),
-              const SizedBox(height: 30.0),
-              
-              Button(text: "Cancel", onPress: (){}, color: whiteColor, 
-              width: 340, textColor: appPrimaryColor, isLoading: false)
-              ],
-            ),
-          ),
-          Visibility(visible: false, child: Text("data")),
-          const SizedBox(height: 10.0),
-        ],
-      )),
+                          ),
+                        ),
+                        const SizedBox(height: 30.0),
+                        Button(
+                          text: 'I have sent the money',
+                          onPress: () {
+                            setState(() {
+                              
+                            });
+                          },
+                          color: appPrimaryColor,
+                          textColor: whiteColor,
+                          isLoading: false,
+                          width: MediaQuery.of(context).size.width / 1.2,
+                        ),
+                        const SizedBox(height: 30.0),
+                        Button(
+                            text: "Cancel",
+                            onPress: () {},
+                            color: whiteColor,
+                            width: 340,
+                            textColor: appPrimaryColor,
+                            isLoading: false)
+                      ],
+                    ),
+                  ),
+            const SizedBox(height: 10.0),
+          ],
+        ),
+      ),
     ));
   }
 
