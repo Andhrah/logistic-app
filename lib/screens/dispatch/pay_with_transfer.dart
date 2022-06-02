@@ -161,10 +161,10 @@ class _PayWithTransferState extends State<PayWithTransfer> {
                         const SizedBox(height: 30.0),
                         Container(
                           color: Color(0xffEEEEEE),
-                          height: 270,
+                          height: mediaQuery.size.height*0.4,
                           child: Padding(
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 30, vertical: 25),
+                                horizontal: 30, vertical: 45),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
