@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/wallet/all_cards.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/payments.dart';
 import 'package:trakk/screens/wallet/transfers.dart';
@@ -226,7 +227,9 @@ class _WalletScreenState extends State<WalletScreen> {
                           text: 'All Cards', 
                           imgUrl: 'assets/images/cards.svg',
                           isText: false,
-                          onPress: (){},
+                          onPress: (){
+                            Navigator.of(context).pushNamed(AllCards.id);
+                          },
                         ),
       
                         IconContainer(
