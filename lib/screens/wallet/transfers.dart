@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/screens/wallet/qr_code_payment.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -758,29 +759,207 @@ class _TransfersState extends State<Transfers> {
                                                       child: Button(
                                                         text: 'Continue',
                                                         onPress: () =>
-                                                            showDialog<String>(
-                                                          // barrierDismissible: true,
+                                                           showDialog<
+                                                              String>(
                                                           context: context,
                                                           builder: (BuildContext
                                                                   context) =>
                                                               AlertDialog(
-                                                            contentPadding:
-                                                                const EdgeInsets
-                                                                        .symmetric(
-                                                                    horizontal:
-                                                                        15,
-                                                                    vertical:
-                                                                        20),
-                                                            content: SizedBox(
-                                                              height: mediaQuery.size.height*0.7,
-                                                              width: 350,
-                                                              child: Column(
-                                                                  children: [
-                                                                //add the transaction receipt
-                                                                  ]),
-                                                            ),
-                                                          ),
-                                                        ),
+                                                                content:
+                                                                    SizedBox(
+                                                                  height:
+                                                                      mediaQuery
+                                                                          .size
+                                                                          .height,
+                                                                  //width: mediaQuery.size.width,
+                                                                  child: Column(
+                                                                    // crossAxisAlignment:
+                                                                    //     CrossAxisAlignment
+                                                                    //         .start,
+                                                                    children: [
+                                                                      Row(
+                                                                        crossAxisAlignment:
+                                                                            CrossAxisAlignment.end,
+                                                                        mainAxisAlignment:
+                                                                            MainAxisAlignment.end,
+                                                                        children: [
+                                                                          CancelButton(),
+                                                                        ],
+                                                                      ),
+                                                                      Align(
+                                                                        alignment:
+                                                                            Alignment.center,
+                                                                        child:
+                                                                            Column(
+                                                                          children: [
+                                                                            Image.asset(
+                                                                              "assets/images/confirmPayment.png",
+                                                                              height: 40,
+                                                                              width: 40,
+                                                                            ),
+                                                                            Text("Transaction Successful",
+                                                                                textScaleFactor: 1,
+                                                                                style: TextStyle(color: greenTransaction, fontWeight: FontWeight.w600)),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      Button(
+                                                                          text:
+                                                                              "Transaction Receipt",
+                                                                          onPress:
+                                                                              () {},
+                                                                          color:
+                                                                              appPrimaryColor,
+                                                                          width:
+                                                                              300,
+                                                                          textColor:
+                                                                              whiteColor,
+                                                                          isLoading:
+                                                                              false),
+                                                                      const SizedBox(
+                                                                        height:
+                                                                            10,
+                                                                      ),
+                                                                      const ReceiptContainer(
+                                                                        transactionDate:
+                                                                            '12/06/2022',
+                                                                        transactionType:
+                                                                            'Local Transfer',
+                                                                        sender:
+                                                                            'Malik Johnson',
+                                                                        beneficiary:
+                                                                            'Ijeoma Uduma',
+                                                                        beneficiaryBank:
+                                                                            'Union Bank',
+                                                                        beneficiaryAccount:
+                                                                            '00213456787',
+                                                                        amount:
+                                                                            '₦2000.00',
+                                                                      ),
+                                                                      Container(
+                                                                        padding:
+                                                                            EdgeInsets.symmetric(horizontal: 10),
+                                                                        margin: EdgeInsets.only(
+                                                                            top:
+                                                                                15,
+                                                                            bottom:
+                                                                                20),
+                                                                        height:
+                                                                            80,
+                                                                        width: mediaQuery.size.width *
+                                                                            0.8,
+                                                                        decoration: BoxDecoration(
+                                                                            borderRadius: BorderRadius.all(
+                                                                              Radius.circular(4),
+                                                                            ),
+                                                                            border: Border.all(),
+                                                                            color: appPrimaryColor),
+                                                                        child:
+                                                                            Column(
+                                                                          crossAxisAlignment:
+                                                                              CrossAxisAlignment.center,
+                                                                          mainAxisAlignment:
+                                                                              MainAxisAlignment.center,
+                                                                          children: [
+                                                                            RichText(
+                                                                              textAlign: TextAlign.start,
+                                                                              text: const TextSpan(
+                                                                                text: "For any complaint or assistance\ncontact our",
+                                                                                style: TextStyle(color: whiteColor, fontSize: 12),
+                                                                                children: <TextSpan>[
+                                                                                  TextSpan(
+                                                                                    text: "\" customer support\" ",
+                                                                                    style: TextStyle(
+                                                                                      fontSize: 12,
+                                                                                      color: secondaryColor,
+                                                                                      fontWeight: FontWeight.bold,
+                                                                                    ),
+                                                                                    //recognizer: _longPressRecognizer,
+                                                                                  ),
+
+                                                                                  //recognizer: _longPressRecognizer,
+                                                                                ],
+                                                                              ),
+                                                                            ),
+                                                                          ],
+                                                                        ),
+                                                                      ),
+                                                                      Row(
+                                                                        children: [
+                                                                          Expanded(
+                                                                            child: Button(
+                                                                                text: "Download",
+                                                                                onPress: () => showDialog<String>(
+                                                                                      context: context,
+                                                                                      builder: (BuildContext context) => AlertDialog(
+                                                                                        content: SizedBox(
+                                                                                          height: mediaQuery.size.height * 0.4,
+                                                                                          child: Column(
+                                                                                            children: [
+                                                                                              Row(
+                                                                                                crossAxisAlignment: CrossAxisAlignment.end,
+                                                                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                                                                children: [
+                                                                                                  CancelButton(),
+                                                                                                ],
+                                                                                              ),
+                                                                                              Align(
+                                                                                                alignment: Alignment.center,
+                                                                                                child: Column(
+                                                                                                  children: [
+                                                                                                    Image.asset(
+                                                                                                      "assets/images/confirmPayment.png",
+                                                                                                      height: 40,
+                                                                                                      width: 40,
+                                                                                                    ),
+                                                                                                    const SizedBox(
+                                                                                                      height: 10,
+                                                                                                    ),
+                                                                                                    Text("Receipt saved", textScaleFactor: 1, style: TextStyle(color: greenTransaction, fontWeight: FontWeight.w600)),
+                                                                                                    const SizedBox(
+                                                                                                      height: 30,
+                                                                                                    ),
+                                                                                                    Button(text: "Back to wallet", onPress: () {}, color: appPrimaryColor, width: 121, textColor: whiteColor, isLoading: false),
+                                                                                                  ],
+                                                                                                ),
+                                                                                              ),
+                                                                                              const SizedBox(
+                                                                                                height: 10,
+                                                                                              ),
+                                                                                            ],
+                                                                                          ),
+                                                                                        ),
+                                                                                      ),
+                                                                                    ),
+                                                                                color: appPrimaryColor,
+                                                                                width: 120,
+                                                                                textColor: whiteColor,
+                                                                                isLoading: false),
+                                                                          ),
+                                                                          const SizedBox(
+                                                                            width:
+                                                                                15,
+                                                                          ),
+                                                                          Expanded(
+                                                                            child: Button(
+                                                                                text: "Share",
+                                                                                onPress: () {},
+                                                                                color: whiteColor,
+                                                                                width: 120,
+                                                                                textColor: appPrimaryColor,
+                                                                                isLoading: false),
+                                                                          ),
+                                                                        ],
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ),
+                                                              )),
+                                                        
                                                         color: appPrimaryColor,
                                                         textColor: whiteColor,
                                                         isLoading: false,
@@ -1667,7 +1846,7 @@ class _TransfersState extends State<Transfers> {
                                               ),
                                               // Image.asset(
                                               //     "assets/images/confirmPayment.png"),
-                                              SizedBox(
+                                              const SizedBox(
                                                 height: 10,
                                               ),
                                               //Text(

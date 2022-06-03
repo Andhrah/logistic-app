@@ -49,12 +49,16 @@ import 'package:trakk/screens/support/ride_issues.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/all_cards.dart';
+import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/wallet/payments.dart';
+import 'package:trakk/screens/wallet/qr_code_payment.dart';
+import 'package:trakk/screens/wallet/qr_payment.dart';
 import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -165,7 +169,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: Tabs.id,
+          initialRoute: Home.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -235,6 +239,10 @@ class _MyAppState extends State<MyApp> {
             Payment.id:(context) => const Payment(),
             PayWithTransfer.id:(context) => const PayWithTransfer(),
             AllCards.id: (context)  => AllCards(),
+            BuyAirtime.id:(context) =>  BuyAirtime(),
+            WalletHistory.id:(context) => WalletHistory(),
+            QrPayment.id:(context) => const QrPayment(),
+            QrCodePayment.id:(context) => QrCodePayment(),
           },
           // home: const GetStarted(),
         ),

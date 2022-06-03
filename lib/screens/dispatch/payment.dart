@@ -410,7 +410,7 @@ class _PaymentState extends State<Payment> {
                               //         horizontal: 50.0,
                               //         vertical: 50.0),
                               content: SizedBox(
-                                height: mediaQuery.size.height*0.6,
+                                height: mediaQuery.size.height * 0.6,
                                 child: Column(children: [
                                   SizedBox(
                                     height: 10,
@@ -756,7 +756,7 @@ class _PaymentState extends State<Payment> {
                                     //         horizontal: 50.0,
                                     //         vertical: 50.0),
                                     content: SizedBox(
-                                      height: mediaQuery.size.height*0.6,
+                                      height: mediaQuery.size.height * 0.6,
                                       child: Column(children: [
                                         SizedBox(
                                           height: 10,
@@ -1032,7 +1032,7 @@ class _PaymentState extends State<Payment> {
                                     //         horizontal: 50.0,
                                     //         vertical: 50.0),
                                     content: SizedBox(
-                                      height: mediaQuery.size.height*0.6,
+                                      height: mediaQuery.size.height * 0.6,
                                       child: Column(children: [
                                         SizedBox(
                                           height: 10,

@@ -10,7 +10,7 @@ class BackIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.centerLeft,
-      padding: const EdgeInsets.all(7.0),
+      padding: const EdgeInsets.all(10.0),
       margin: const EdgeInsets.only(left: 25.0, top: 15.0, bottom: 15.0),
       child: InkWell(
         onTap: onPress,
@@ -21,7 +21,7 @@ class BackIcon extends StatelessWidget {
         )
       ),
       decoration: const BoxDecoration(
-        color: secondaryColor,
+        color: whiteColor,
         borderRadius: BorderRadius.all(
           Radius.circular(50.0)
         ),
