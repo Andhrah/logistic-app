@@ -195,7 +195,7 @@ class _RiderProfile extends State<RiderProfile> {
                         Column(
                           children: [
                             Container(
-                              margin: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
                                 top: 30,
                                 bottom: 12,
                               ),
@@ -295,7 +295,7 @@ class _RiderProfile extends State<RiderProfile> {
                                           detailsBox(),
                                           const SizedBox(height: 10,),
                                           detailsBox(),
-                                          const SizedBox(
+                                          SizedBox(
                                         height: 0,
                                       ),
                                         ],
