@@ -1,13 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
+import 'package:trakk/screens/merchant/referred_rides.dart';
+import 'package:trakk/screens/merchant/rejected_rides.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/default_container.dart';
 
 import '../../widgets/back_icon.dart';
 
 class Notifications extends StatefulWidget {
-  static const String id = 'dispatchhistory';
+  static const String id = 'notifications';
 
   const Notifications({Key? key}) : super(key: key);
 
@@ -49,20 +52,35 @@ class _NotificationsState extends State<Notifications> {
             const SizedBox(
               height: 30,
             ),
-            const DefaultContainer(title: 'Completed delivery',
-            num: "(3)",),
+            InkWell(
+              onTap: () {
+                 Navigator.of(context).pushNamed(FulfilledDispatch.id);
+              },
+              child: const DefaultContainer(title: 'Completed delivery ',
+              num: "(3)",),
+            ),
             const SizedBox(
               height: 30,
             ),
-            const DefaultContainer(title: 'Referred dispatch',
-            num: "(0)",),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ReferredRides.id);
+              },
+              child: const DefaultContainer(title: 'Referred dispatch ',
+              num: "(0)",),
+            ),
             const SizedBox(
               height: 30,
             ),
-            const DefaultContainer(title: 'Rejected request',
-            num: "(0)",),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(RejectedRides.id);
+              },
+              child: const DefaultContainer(title: 'Rejected request ',
+              num: "(0)",),
+            ),
           ],
-        )));
+        ),),);
   }
 }
 
