@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
@@ -162,7 +163,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                             onTap: () {
                               Navigator.of(context).pushNamed(ItemDetails.id);
                             },
-                            child: MerchantContainer(
+                            child: const MerchantContainer(
                               color: green,
                               icon: 'assets/images/vehicle.svg',
                               title: 'Request for a\n Rider',
@@ -173,14 +174,19 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ],
                   ),
                   Row(
-                    children: const [
+                    children:  [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: MerchantContainer(
-                            color: secondaryColor,
-                            icon: 'assets/images/customers.svg',
-                            title: 'My Customers',
+                          padding: const EdgeInsets.all(10),
+                          child: InkWell(
+                            onTap: () {
+                               //Navigator.of(context).pushNamed(ItemDetails.id);
+                            },
+                            child: const MerchantContainer(
+                              color: secondaryColor,
+                              icon: 'assets/images/customers.svg',
+                              title: 'My Customers',
+                            ),
                           ),
                         ),
                       ),
@@ -188,10 +194,15 @@ class _CompanyHomeState extends State<CompanyHome> {
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(10),
-                          child: MerchantContainer(
-                            color: green,
-                            icon: 'assets/images/users.svg',
-                            title: 'Deliver to my\n Customer',
+                          child: InkWell(
+                            onTap: () {
+                               Navigator.of(context).pushNamed(PickRide.id);
+                            },
+                            child: MerchantContainer(
+                              color: green,
+                              icon: 'assets/images/users.svg',
+                              title: 'Deliver to my\n Customer',
+                            ),
                           ),
                         ),
                       ),
