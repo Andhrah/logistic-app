@@ -19,14 +19,14 @@ enum ProfileOptions {
   Null,
 }
 
-class BodyWidget extends StatefulWidget {
-  const BodyWidget({Key? key}) : super(key: key);
+class ProfileIdget extends StatefulWidget {
+  const ProfileIdget({Key? key}) : super(key: key);
 
   @override
-  State<BodyWidget> createState() => _BodyWidgetState();
+  State<ProfileIdget> createState() => _ProfileWidgetState();
 }
 
-class _BodyWidgetState extends State<BodyWidget> {
+class _ProfileWidgetState extends State<ProfileIdget> {
   ProfileOptions selectedProfileOptions = ProfileOptions.Edit;
 
   final _formKey = GlobalKey<FormState>();
@@ -264,13 +264,24 @@ class _BodyWidgetState extends State<BodyWidget> {
                   builder: (BuildContext context) => AlertDialog(
                     // title: const Text('AlertDialog Title'),
                     contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 50.0, vertical: 50.0),
+                        horizontal: 20.0, vertical: 15.0),
                     content: SizedBox(
                       height: 220.0,
                       child: Column(children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            InkWell(
+                                onTap: () {
+                                  Navigator.of(context)
+                                      .pushNamed(CompanyHome.id);
+                                },
+                                child: const CancelButton())
+                          ],
+                        ),
                         Container(
                           width: 300,
-                          child: Text(
+                          child: const Text(
                             'You are about to delete Malik\nJohnson from the list of riders',
                             // maxLines: 2,
                             style: TextStyle(
@@ -280,33 +291,52 @@ class _BodyWidgetState extends State<BodyWidget> {
                             textAlign: TextAlign.center,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 14,
                         ),
                         Button(
-                          text: 'Suspend',
+                          text: 'Delete',
                           onPress: () => showDialog<String>(
                             // barrierDismissible: true,
                             context: context,
                             builder: (BuildContext context) => AlertDialog(
                               // title: const Text('AlertDialog Title'),
                               contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 50.0, vertical: 50.0),
+                                  horizontal: 20.0, vertical: 15.0),
                               content: SizedBox(
-                                  height: 220.0,
-                                  child: Container(
-                                    child: const Center(
-                                      child: Text(
-                                        'You have succefully suspended Malik Johnson for 1 month',
-                                        // maxLines: 2,
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.w400,
+                                height: 220.0,
+                                child: Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .pushNamed(CompanyHome.id);
+                                          },
+                                          child: const CancelButton(),
+                                        )
+                                      ],
+                                    ),
+                                    Container(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 30),
+                                      child: const Center(
+                                        child: Text(
+                                          'You have succefully deleted Malik Johnson from the list of riders',
+                                          // maxLines: 2,
+                                          style: TextStyle(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          textAlign: TextAlign.center,
                                         ),
-                                        textAlign: TextAlign.center,
                                       ),
                                     ),
-                                  )),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                           color: redColor,
@@ -316,7 +346,7 @@ class _BodyWidgetState extends State<BodyWidget> {
                         ),
                         const SizedBox(height: 30.0),
                         Button(
-                          text: 'Don\'t suspend',
+                          text: 'Don\'t delete',
                           onPress: () {
                             Navigator.of(context).pop();
                           },
@@ -666,14 +696,24 @@ class _BodyWidgetState extends State<BodyWidget> {
                       builder: (BuildContext context) => AlertDialog(
                         // title: const Text('AlertDialog Title'),
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 50.0, vertical: 50.0),
+                            horizontal: 20.0, vertical: 15.0),
                         content: SizedBox(
                           height: 220.0,
                           child: Column(children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                InkWell(
+                                    onTap: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const CancelButton())
+                              ],
+                            ),
                             Container(
                               width: 300,
-                              child: Text(
-                                'You are about to delete Malik\nJohnson from the list of riders',
+                              child: const Text(
+                                'You are about to suspend Malik\nJohnson for the period of 1 month',
                                 // maxLines: 2,
                                 style: TextStyle(
                                   fontSize: 13,
@@ -693,22 +733,39 @@ class _BodyWidgetState extends State<BodyWidget> {
                                 builder: (BuildContext context) => AlertDialog(
                                   // title: const Text('AlertDialog Title'),
                                   contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 50.0, vertical: 50.0),
+                                      horizontal: 20.0, vertical: 15.0),
                                   content: SizedBox(
                                       height: 220.0,
-                                      child: Container(
-                                        child: const Center(
-                                          child: Text(
-                                            'You have succefully suspended Malik Johnson for 1 month',
-                                            // maxLines: 2,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            textAlign: TextAlign.center,
+                                      child: Column(
+                                        children: [
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              InkWell(
+                                                  onTap: () {
+                                                    Navigator.of(context).pop();
+                                                  },
+                                                  child: const CancelButton(),),
+                                            ],
                                           ),
-                                        ),
-                                      )),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                                vertical: 20.0),
+                                            child: const Center(
+                                              child: Text(
+                                                'You have succefully suspended Malik Johnson for 1 month',
+                                                // maxLines: 2,
+                                                style: TextStyle(
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                                textAlign: TextAlign.center,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),),
                                 ),
                               ),
                               color: redColor,
@@ -862,7 +919,7 @@ class _EditRiderProfile extends State<EditRiderProfile> {
               Padding(
                 padding:
                     const EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                child: BodyWidget(),
+                child: ProfileIdget(),
               ),
             ],
           ),
