@@ -47,7 +47,11 @@ class _CompanyHomeState extends State<CompanyHome> {
                             color: secondaryColor),
                       ),
                     ]),
-                    SvgPicture.asset('assets/images/alarm.svg'),
+                    InkWell(
+                      onTap: () {
+                        
+                      },
+                      child: SvgPicture.asset('assets/images/alarm.svg')),
                   ],
                 ),
               ),
