@@ -110,7 +110,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                               5.0), //border raiuds of dropdown button
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: DropdownButton<String>(
                             value: _listOfVehicles,
                             icon: const Icon(Remix.arrow_down_s_line),

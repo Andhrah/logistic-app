@@ -36,6 +36,7 @@ import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/screens/merchant/edit_rider_profile.dart';
+import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/rejected_rides.dart';
@@ -249,6 +250,7 @@ class _MyAppState extends State<MyApp> {
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
             AddRider1.id:(context) => const AddRider1(),
             AddRider2.id:(context) => const AddRider2(),
+            Notifications.id:(context) => const Notifications(),
 
             WalletScreen.id:(context) => const WalletScreen(),
             Transfers.id:(context) => const Transfers(),

@@ -3,10 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/merchant_container.dart';
+import 'package:badges/badges.dart';
 
 class CompanyHome extends StatefulWidget {
   static const String id = 'companyhome';
@@ -17,8 +19,12 @@ class CompanyHome extends StatefulWidget {
 }
 
 class _CompanyHomeState extends State<CompanyHome> {
+
+  int notificatiobount = 26;
+
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       body: SafeArea(
@@ -29,6 +35,7 @@ class _CompanyHomeState extends State<CompanyHome> {
           children: [
             const SizedBox(height: 20.0),
             Container(
+              
               child: Padding(
                 padding: const EdgeInsets.only(left: 30.0, right: 30),
                 child: Row(
@@ -48,10 +55,16 @@ class _CompanyHomeState extends State<CompanyHome> {
                       ),
                     ]),
                     InkWell(
-                      onTap: () {
-                        
-                      },
-                      child: SvgPicture.asset('assets/images/alarm.svg')),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Notifications.id);
+                        },
+                        child: Badge(
+                          badgeContent: Text("$notificatiobount"),
+                          badgeColor: whiteColor,
+                            child:
+                                SvgPicture.asset('assets/images/alarm.svg'),
+                                ),
+                                ),
                   ],
                 ),
               ),
@@ -60,6 +73,8 @@ class _CompanyHomeState extends State<CompanyHome> {
               height: 25,
             ),
             Container(
+              //width: mediaQuery.size.he,
+              //decoration: BoxDecoration(color: secondaryColor),
               child: Padding(
                 padding: const EdgeInsets.only(left: 30.0),
                 child: Column(
@@ -178,13 +193,13 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ],
                   ),
                   Row(
-                    children:  [
+                    children: [
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: InkWell(
                             onTap: () {
-                               //Navigator.of(context).pushNamed(ItemDetails.id);
+                              //Navigator.of(context).pushNamed(ItemDetails.id);
                             },
                             child: const MerchantContainer(
                               color: secondaryColor,
@@ -200,7 +215,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                           padding: EdgeInsets.all(10),
                           child: InkWell(
                             onTap: () {
-                               Navigator.of(context).pushNamed(PickRide.id);
+                              Navigator.of(context).pushNamed(PickRide.id);
                             },
                             child: MerchantContainer(
                               color: green,
