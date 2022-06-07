@@ -153,9 +153,9 @@ class _MyAppState extends State<MyApp> {
       );
     });
 
-    pusher.onConnectionError((error) {
-      print("error: ${error != null ? error.message : ""}");
-    });
+    // pusher.onConnectionError((error) {
+    //   print("error: ${error != null ? error.message : ""}");
+    // });
 
     Channel channel = pusher.subscribe("adelowomi@gmail.com");
     channel.bind("user", (event) {
