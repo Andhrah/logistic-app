@@ -702,20 +702,14 @@ class _TransfersState extends State<Transfers> {
                                                     textAlign: TextAlign.center,
                                                   ),
                                                 ),
-
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
-                                                Text(
-                                                  "Enter 4-digit PIN",
-                                                  textScaleFactor: 1.1,
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.w600),
-                                                ),
-                                                const SizedBox(
-                                                  height: 10,
-                                                ),
+                                                
+                                                const SizedBox(height: 30,),
+                                                Text("Enter 4-digit PIN",
+                                                textScaleFactor: 1.1,
+                                                 style: TextStyle(
+                                                   fontWeight: FontWeight.w600
+                                                ),),
+                                                const SizedBox(height: 10,),
                                                 PinCodeTextField(
                                                   pinBoxHeight: 50.0,
                                                   pinBoxWidth: 50,
@@ -748,11 +742,10 @@ class _TransfersState extends State<Transfers> {
                                                     // _otpController.verifyOTP(text);
                                                   },
                                                 ),
-
-                                                const SizedBox(
-                                                  height: 30,
-                                                ),
-
+                                                
+                                                const SizedBox(height: 30,),
+                                                
+                                               
                                                 Row(
                                                   children: [
                                                     Expanded(
