@@ -110,7 +110,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
                             5.0), //border raiuds of dropdown button
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 0.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
                         child: DropdownButton<String>(
                           value: _listOfRiders,
                           icon: const Icon(Remix.arrow_down_s_line),
@@ -176,20 +176,20 @@ class _ListOfRidersState extends State<ListOfRiders> {
                       ),
                   itemCount: 5,
                   itemBuilder: (BuildContext context, int index) {
-                    return RiderListContainer();
-                    // if (showAll) {
-                    //   return InkWell(
-                    //       onTap: () {
-                    //         Navigator.of(context).pushNamed(RiderProfile.id);
-                    //       },
-                    //       child: RiderListContainer());
-                    // } else if (isActive) {
-                    //   return ActiveContainer();
-                    // } else if (!isActive) {
-                    //   return InactiveContainer();
-                    // }
-                    // //return AllVehicleContainer();
-                    // return SizedBox();
+                    //return RiderListContainer();
+                    if (showAll) {
+                      return InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(RiderProfile.id);
+                          },
+                          child: RiderListContainer());
+                    } else if (isActive) {
+                      return ActiveContainer();
+                    } else if (!isActive) {
+                      return InactiveContainer();
+                    }
+                    //return AllVehicleContainer();
+                    return SizedBox();
                     //return isActive ? ActiveContainer() : InactiveContainer();
                   }),
             )

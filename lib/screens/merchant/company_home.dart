@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/merchant_container.dart';
+import 'package:badges/badges.dart';
 
 class CompanyHome extends StatefulWidget {
   static const String id = 'companyhome';
@@ -16,17 +19,24 @@ class CompanyHome extends StatefulWidget {
 }
 
 class _CompanyHomeState extends State<CompanyHome> {
+
+  int notificatiobount = 26;
+
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
       body: SafeArea(
-          child: SingleChildScrollView(physics: ScrollPhysics(),
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const SizedBox(height: 20.0),
-                Container(
-                child: Padding(
+          child: SingleChildScrollView(
+        physics: ScrollPhysics(),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(height: 20.0),
+            Container(
+              
+              child: Padding(
                 padding: const EdgeInsets.only(left: 30.0, right: 30),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -36,44 +46,61 @@ class _CompanyHomeState extends State<CompanyHome> {
                         backgroundImage:
                             AssetImage('assets/images/ladySmiling.png'),
                       ),
-                       Text(
-                      'Admin',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: secondaryColor),
-                    ),
+                      Text(
+                        'Admin',
+                        style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: secondaryColor),
+                      ),
                     ]),
-                    SvgPicture.asset('assets/images/alarm.svg'),
+                    InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Notifications.id);
+                        },
+                        child: Badge(
+                          badgeContent: Text("$notificatiobount"),
+                          badgeColor: whiteColor,
+                            child:
+                                SvgPicture.asset('assets/images/alarm.svg'),
+                                ),
+                                ),
                   ],
                 ),
-                ),
-                ),
-                const SizedBox(
-                height: 25,
-                ),
-                Container(
-                child: Padding(
+              ),
+            ),
+            const SizedBox(
+              height: 25,
+            ),
+            Container(
+              //width: mediaQuery.size.he,
+              //decoration: BoxDecoration(color: secondaryColor),
+              child: Padding(
                 padding: const EdgeInsets.only(left: 30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                     Text(
+                    Text(
                       'Hello Glover,',
-                      style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                      style:
+                          TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                     ),
                     Text(
                       "Good evening",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
-                ),
-                ),
-                const SizedBox(
-                height: 35,
-                ),
-                //const Expanded(child: Divider(),),
-                Container(
-                //height: 50,
-                decoration: const BoxDecoration(
+              ),
+            ),
+            const SizedBox(
+              height: 35,
+            ),
+            //const Expanded(child: Divider(),),
+            Container(
+              height: MediaQuery.of(context).size.height,
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(50),
@@ -87,22 +114,22 @@ class _CompanyHomeState extends State<CompanyHome> {
                     offset: const Offset(0.0, 1.0),
                   ),
                 ],
-                ),
-                child: Expanded(
+              ),
+              child: Expanded(
                   child: Column(
                 children: [
                   const SizedBox(
                     height: 15,
                   ),
                   Row(
-                    children:  [
+                    children: [
                       Expanded(
                         child: Padding(
                           padding: const EdgeInsets.all(10),
                           child: InkWell(
                             onTap: () {
                               Navigator.of(context).pushNamed(Vehicles.id);
-                              },
+                            },
                             child: const MerchantContainer(
                               color: green,
                               icon: 'assets/images/vehicle.svg',
@@ -112,7 +139,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                         ),
                       ),
                       //const SizedBox(width: 20,),
-                       Expanded(
+                      Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(10.0),
                           child: InkWell(
@@ -130,13 +157,14 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ],
                   ),
                   Row(
-                    children:  [
+                    children: [
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(10),
                           child: InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(DispatchHistory.id);
+                              Navigator.of(context)
+                                  .pushNamed(DispatchHistory.id);
                             },
                             child: const MerchantContainer(
                               color: green,
@@ -154,7 +182,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                             onTap: () {
                               Navigator.of(context).pushNamed(ItemDetails.id);
                             },
-                            child: MerchantContainer(
+                            child: const MerchantContainer(
                               color: green,
                               icon: 'assets/images/vehicle.svg',
                               title: 'Request for a\n Rider',
@@ -164,18 +192,20 @@ class _CompanyHomeState extends State<CompanyHome> {
                       ),
                     ],
                   ),
-                  
-                  
-                  
                   Row(
-                    children: const [
+                    children: [
                       Expanded(
                         child: Padding(
-                          padding: EdgeInsets.all(10),
-                          child: MerchantContainer(
-                            color: secondaryColor,
-                            icon: 'assets/images/customers.svg',
-                            title: 'My Customers',
+                          padding: const EdgeInsets.all(10),
+                          child: InkWell(
+                            onTap: () {
+                              //Navigator.of(context).pushNamed(ItemDetails.id);
+                            },
+                            child: const MerchantContainer(
+                              color: secondaryColor,
+                              icon: 'assets/images/customers.svg',
+                              title: 'My Customers',
+                            ),
                           ),
                         ),
                       ),
@@ -183,21 +213,26 @@ class _CompanyHomeState extends State<CompanyHome> {
                       Expanded(
                         child: Padding(
                           padding: EdgeInsets.all(10),
-                          child: MerchantContainer(
-                            color: green,
-                            icon: 'assets/images/users.svg',
-                            title: 'Deliver to my\n Customer',
+                          child: InkWell(
+                            onTap: () {
+                              Navigator.of(context).pushNamed(PickRide.id);
+                            },
+                            child: MerchantContainer(
+                              color: green,
+                              icon: 'assets/images/users.svg',
+                              title: 'Deliver to my\n Customer',
+                            ),
                           ),
                         ),
                       ),
                     ],
                   ),
                 ],
-                )),
-                ),
-              ],
+              )),
             ),
-          )),
+          ],
+        ),
+      )),
     );
   }
 }

@@ -25,6 +25,7 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
   final _formKey = GlobalKey<FormState>();
 
   Color color = whiteColor;
+  bool _expanded = false;
   bool _expanded1 = false;
 
   late TextEditingController _pickUpController;
@@ -199,8 +200,8 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                   Container(
                     margin: const EdgeInsets.only(left: 20.0),
                     alignment: Alignment.center,
-                    child: Expanded(
-                      child: const Text(
+                    child: const Expanded(
+                      child: Text(
                         'FULFILLMENT DISPATCH HISTORY',
                         textScaleFactor: 1.2,
                         style: TextStyle(
@@ -302,7 +303,7 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                   ),
                                 ),
                                 const SizedBox(width: 10.0),
-                                Align(
+                                const Align(
                                     alignment: Alignment.center,
                                     child: Text(
                                       'To',
@@ -385,15 +386,15 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                   ],
                 ),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Container(
-                margin: EdgeInsets.only(left: 30, right: 30),
+                margin: const EdgeInsets.only(left: 30, right: 30),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
+                  children: const [
+                    Text(
                       'Today\'s referrred ride',
                       textScaleFactor: 1.2,
                       style: TextStyle(
@@ -459,10 +460,10 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                               ),
                                             ],
                                           ),
-                                          SizedBox(
+                                          const SizedBox(
                                             height: 10,
                                           ),
-                                          Text(
+                                          const Text(
                                             '21/2/2022',
                                             style: TextStyle(
                                                 color: grayColor,
@@ -475,12 +476,12 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                   },
                                   body: Column(
                                     children: [
-                                      Divider(
+                                      const Divider(
                                         thickness: 2,
                                         color: appPrimaryColor,
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             top: 10,
                                             left: 0,
                                             right: 8,
@@ -509,9 +510,9 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                                 ),
                                                 const SizedBox(width: 0.0),
                                                 Column(
-                                                  children: [
+                                                  children: const [
                                                     Text('Pickup Location'),
-                                                    const SizedBox(
+                                                    SizedBox(
                                                         height: 65.0),
                                                     Text(
                                                       'Delivery Location',
@@ -523,15 +524,15 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                                     ),
                                                   ],
                                                 ),
-                                                SizedBox(
+                                                const SizedBox(
                                                   width: 20,
                                                 ),
                                                 Column(
                                                   crossAxisAlignment:
                                                       CrossAxisAlignment.start,
-                                                  children: [
+                                                  children: const [
                                                     Text('Pickup Location'),
-                                                    const SizedBox(
+                                                    SizedBox(
                                                         height: 65.0),
                                                     Text(
                                                       'Delivery ',
@@ -574,10 +575,10 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                                           //mouseCursor: MouseCursor.uncontrolled,
                                                         ),
                                                         Text("Item"),
-                                                        SizedBox(
+                                                        const SizedBox(
                                                           width: 95,
                                                         ),
-                                                        Text(
+                                                        const Text(
                                                           'Black handbag',
                                                           style: TextStyle(
                                                               overflow:
@@ -728,7 +729,7 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                       ),
                                     ],
                                   ),
-                                  isExpanded: _expanded1,
+                                  isExpanded: _expanded,
                                   canTapOnHeader: true,
                                 ),
                               ],
@@ -736,15 +737,15 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                               expansionCallback:
                                   (int panelIndex, bool isExpanded) {
                                 setState(() {
-                                  isExpanded = !_expanded1;
+                                  isExpanded = !_expanded;
                                   !isExpanded ? color : grayColor;
                                 });
-                                _expanded1 = !_expanded1;
-                                if (_expanded1 == true) {
+                                _expanded = !_expanded;
+                                if (_expanded == true) {
                                   setState(() {
                                     color = whiteColor;
                                   });
-                                } else if (_expanded1 == false) {
+                                } else if (_expanded == false) {
                                   setState(() {
                                     color = Color.fromARGB(255, 235, 235, 235);
                                   });
@@ -756,9 +757,9 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                       );
                     }),
               ),
-              SizedBox(height: 20,),
-              Padding(
-                padding: const EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
+              const SizedBox(height: 20,),
+              const Padding(
+                padding: EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
                 child: Text(
                   'Previous referred',
                   textAlign: TextAlign.start,
@@ -837,12 +838,12 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                                   },
                                   body: Column(
                                     children: [
-                                      Divider(
+                                      const Divider(
                                         thickness: 2,
                                         color: appPrimaryColor,
                                       ),
                                       Padding(
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             top: 10,
                                             left: 0,
                                             right: 8,

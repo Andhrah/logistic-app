@@ -59,35 +59,33 @@ class InputField extends StatelessWidget {
           ),
         ),
         SizedBox(height: textHeight),
-        Expanded(
-          child: TextFormField(
-            controller: textController,
-            focusNode: _node,
-            maxLines: maxLines ?? area,
-            keyboardType: keyboardType,
-            validator: validator,
-            onTap: onTap,
-            onSaved: onSaved,
-            onChanged: onChanged,
-            autovalidateMode: autovalidateMode,
-            obscureText: obscureText,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
-              enabledBorder:  OutlineInputBorder(
-                borderSide: BorderSide(color: borderColor, width: 0.0),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: secondaryColor.withOpacity(0.8)),
-              ),
-              errorBorder: OutlineInputBorder(
-                borderSide: BorderSide(color: redColor.withOpacity(0.8)),
-              ),
-              // labelText: labelText,
-              labelStyle: const TextStyle(fontSize: 18.0, color: Color(0xFF8C8C8C), fontWeight: FontWeight.w600),
-              hintText: hintText,
-              hintStyle: const TextStyle(fontSize: 18.0, color: Color(0xFFBDBDBD), fontWeight: FontWeight.w400),
-              suffixIcon: suffixIcon,
+        TextFormField(
+          controller: textController,
+          focusNode: _node,
+          maxLines: maxLines ?? area,
+          keyboardType: keyboardType,
+          validator: validator,
+          onTap: onTap,
+          onSaved: onSaved,
+          onChanged: onChanged,
+          autovalidateMode: autovalidateMode,
+          obscureText: obscureText,
+          decoration: InputDecoration(
+            contentPadding: const EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
+            enabledBorder:  OutlineInputBorder(
+              borderSide: BorderSide(color: borderColor, width: 0.0),
             ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: secondaryColor.withOpacity(0.8)),
+            ),
+            errorBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: redColor.withOpacity(0.8)),
+            ),
+            // labelText: labelText,
+            labelStyle: const TextStyle(fontSize: 18.0, color: Color(0xFF8C8C8C), fontWeight: FontWeight.w600),
+            hintText: hintText,
+            hintStyle: const TextStyle(fontSize: 18.0, color: Color(0xFFBDBDBD), fontWeight: FontWeight.w400),
+            suffixIcon: suffixIcon,
           ),
         )
       ],

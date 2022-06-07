@@ -26,6 +26,8 @@ import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
+import 'package:trakk/screens/merchant/add_rider1.dart';
+import 'package:trakk/screens/merchant/add_rider2.dart';
 import 'package:trakk/screens/merchant/all_vehicle_container.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
@@ -33,6 +35,7 @@ import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/screens/merchant/edit_rider_profile.dart';
+import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/rejected_rides.dart';
@@ -128,10 +131,10 @@ class _MyAppState extends State<MyApp> {
       print("error: ${error != null ? error.message : ""}");
     });
 
-    Channel channel = pusher.subscribe("adelowomi@gmail.com");
-    channel.bind("user", (event) {
-      print(event != null ? event.data : "O ti fail");
-    });
+    // Channel channel = pusher.subscribe("adelowomi@gmail.com");
+    // channel.bind("user", (event) {
+    //   print(event != null ? event.data : "O ti fail");
+    // });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
@@ -156,7 +159,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: SplashScreen.id,
+          initialRoute: Home.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -194,8 +197,10 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
+
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             ProfileMenu.id: (context) => const ProfileMenu(),
@@ -218,6 +223,9 @@ class _MyAppState extends State<MyApp> {
             ListOfRiders.id: (context) => const ListOfRiders(),
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+            AddRider1.id:(context) => const AddRider1(),
+            AddRider2.id:(context) => const AddRider2(),
+            Notifications.id:(context) => const Notifications(),
 
           },
           // home: const GetStarted(),

@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
 import 'package:trakk/screens/merchant/edit_rider_profile.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
@@ -62,7 +63,7 @@ class _RidersState extends State<Riders> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(EditRiderProfile.id);
+                Navigator.of(context).pushNamed(AddRider.id);
               },
               child: const DefaultContainer(title: 'Regster new rider',)),
             const SizedBox(
