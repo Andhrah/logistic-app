@@ -27,6 +27,8 @@ import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
+import 'package:trakk/screens/merchant/add_rider1.dart';
+import 'package:trakk/screens/merchant/add_rider2.dart';
 import 'package:trakk/screens/merchant/all_vehicle_container.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
@@ -34,7 +36,6 @@ import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/screens/merchant/edit_rider_profile.dart';
-import 'package:trakk/screens/merchant/newfile.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
 import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/rejected_rides.dart';
@@ -73,11 +74,15 @@ void main() async {
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
+<<<<<<< HEAD
  // await dotenv.load(fileName: ".env");
 
   await dotenv.load(fileName: ".env");
 
 
+=======
+  await dotenv.load(fileName: ".env");
+>>>>>>> 34a333e (ft-merchant screens)
   //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
@@ -130,10 +135,13 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
+<<<<<<< HEAD
     
     //print(dotenv.env["PUSHER_TOKEN"]);
     
 
+=======
+>>>>>>> 34a333e (ft-merchant screens)
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
@@ -221,8 +229,15 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
+<<<<<<< HEAD
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+=======
+
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+
+>>>>>>> 34a333e (ft-merchant screens)
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             ProfileMenu.id: (context) => const ProfileMenu(),
@@ -245,10 +260,14 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id: (context) => const AllVehicleContainer(),
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
+<<<<<<< HEAD
 
+=======
+>>>>>>> 34a333e (ft-merchant screens)
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-            NewFile.id:(context) => const NewFile(),
+            AddRider1.id:(context) => const AddRider1(),
+            AddRider2.id:(context) => const AddRider2(),
 
             WalletScreen.id:(context) => const WalletScreen(),
             Transfers.id:(context) => const Transfers(),
