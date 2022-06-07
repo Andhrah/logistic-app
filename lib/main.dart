@@ -107,20 +107,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  //static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
+  static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
 
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
   );
 
-  // PusherClient pusher = PusherClient(
-  //   _pusher!,
-  //   PusherOptions(
-  //     encrypted: false,
-  //   ),
-  //   autoConnect: true,
-  // );
+  PusherClient pusher = PusherClient(
+    _pusher!,
+    PusherOptions(
+      encrypted: false,
+    ),
+    autoConnect: true,
+  );
 
   @override
   void dispose() {
@@ -133,7 +133,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
 
     
-    //print(dotenv.env["PUSHER_TOKEN"]);
+    print(dotenv.env["PUSHER_TOKEN"]);
 
     
     SystemChrome.setSystemUIOverlayStyle(
@@ -144,18 +144,9 @@ class _MyAppState extends State<MyApp> {
     });
 
 
-    
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
-    pusher.onConnectionStateChange((state) {
-      print(
-        "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}",
-      );
+    pusher.onConnectionError((error) {
+      print("error: ${error != null ? error.message : ""}");
     });
-
-    // pusher.onConnectionError((error) {
-    //   print("error: ${error != null ? error.message : ""}");
-    // });
 
     Channel channel = pusher.subscribe("adelowomi@gmail.com");
     channel.bind("user", (event) {

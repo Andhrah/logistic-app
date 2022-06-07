@@ -3,13 +3,9 @@ import 'package:trakk/screens/wallet/all_cards.dart';
 import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/payments.dart';
-<<<<<<< HEAD
 import 'package:trakk/screens/wallet/qr_payment.dart';
 import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet_history.dart';
-=======
-import 'package:trakk/screens/wallet/transfers.dart';
->>>>>>> 28ff409 (ft- wallet)
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/icon_container.dart';
@@ -149,114 +145,10 @@ class _WalletScreenState extends State<WalletScreen> {
                           color: Color(0xFFFFFFFF),
                           fontWeight: FontWeight.bold),
                     ),
-<<<<<<< HEAD
                   ],
                 ),
               ],
             ),
-=======
-                  ),
-                )
-              ),
-      
-              Container(
-                margin: const EdgeInsets.only(left: 30.0, right: 30.0, top: 20.0),
-                child: Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconContainer(
-                          text: 'Fund Wallet', 
-                          imgUrl: 'assets/images/fund.svg',
-                          isText: false,
-                          onPress: (){
-                            Navigator.of(context).pushNamed(FundWalletScreen.id);
-                          },
-                        ),
-      
-                        IconContainer(
-                          text: 'Payment', 
-                          imgUrl: 'assets/images/payment.svg',
-                          isText: false,
-                          onPress: (){
-                            Navigator.of(context).pushNamed(Payments.id);
-                          },
-                        ),
-      
-                        IconContainer(
-                          text: 'Transfer', 
-                          imgUrl: 'assets/images/transfer01.svg',
-                          isText: false,
-                          onPress: (){
-                            Navigator.of(context).pushNamed(Transfers.id);
-                          },
-                        ),
-                      ],
-                  ),
-      
-                    const SizedBox(height: 40.0),
-      
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        IconContainer(
-                          text: 'All Cards', 
-                          imgUrl: 'assets/images/cards.svg',
-                          isText: false,
-                          onPress: (){},
-                        ),
-      
-                        IconContainer(
-                          text: 'QR Code',
-                          imgUrl: 'assets/images/qrCode.svg',
-                          isText: false,
-                          onPress: (){},
-                        ),
-      
-                        IconContainer(
-                          text: 'Buy Airtime',
-                          imgUrl: 'assets/images/airtime.svg',
-                          isText: false,
-                          onPress: (){},
-                        ),]),
-                      
-                    
-      
-                    const SizedBox(height: 40.0),
-      
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        // IconContainer(
-                        //   text: 'Cards', 
-                        //   imgUrl:  'assets/images/cards.svg',
-                        //   isText: false,
-                        //   onPress: (){},
-                        // ),
-      
-                        IconContainer(
-                          text: 'Transaction\nHistory',
-                          imgUrl: 'assets/images/transactionHistory.svg',
-                          isText: false,
-                          onPress: (){},
-                        ),
-                        SizedBox(width: MediaQuery.of(context).size.width / 6.3),
-      
-                        IconContainer(
-                          text: 'More',
-                          imgUrl:  '...',
-                          isText: true,
-                          onPress: (){},
-                        ),
-                      ],
-                    ),
-                    
-                  
-                
-            ])
-          )]
->>>>>>> 28ff409 (ft- wallet)
           ),
 
           // Container(
