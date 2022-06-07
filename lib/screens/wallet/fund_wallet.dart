@@ -339,7 +339,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ]),
                       ListView(physics: ScrollPhysics(), children: [
                         Container(
