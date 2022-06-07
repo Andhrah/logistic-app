@@ -201,7 +201,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               color: Color.fromARGB(255, 199, 190, 152),
                               height: 556,
                               child: Padding(
-                                padding: EdgeInsets.only(
+                                padding: const EdgeInsets.only(
                                   left: 15,
                                   right: 15,
                                   top: 15,
@@ -210,7 +210,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text("Select source wallet",
+                                    const Text("Select source wallet",
                                         textScaleFactor: 1.2,
                                         style: TextStyle(
                                             //fontSize: 16,
