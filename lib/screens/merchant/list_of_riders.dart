@@ -176,20 +176,20 @@ class _ListOfRidersState extends State<ListOfRiders> {
                       ),
                   itemCount: 5,
                   itemBuilder: (BuildContext context, int index) {
-                    return RiderListContainer();
-                    // if (showAll) {
-                    //   return InkWell(
-                    //       onTap: () {
-                    //         Navigator.of(context).pushNamed(RiderProfile.id);
-                    //       },
-                    //       child: RiderListContainer());
-                    // } else if (isActive) {
-                    //   return ActiveContainer();
-                    // } else if (!isActive) {
-                    //   return InactiveContainer();
-                    // }
-                    // //return AllVehicleContainer();
-                    // return SizedBox();
+                    //return RiderListContainer();
+                    if (showAll) {
+                      return InkWell(
+                          onTap: () {
+                            Navigator.of(context).pushNamed(RiderProfile.id);
+                          },
+                          child: RiderListContainer());
+                    } else if (isActive) {
+                      return ActiveContainer();
+                    } else if (!isActive) {
+                      return InactiveContainer();
+                    }
+                    //return AllVehicleContainer();
+                    return SizedBox();
                     //return isActive ? ActiveContainer() : InactiveContainer();
                   }),
             )

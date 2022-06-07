@@ -74,15 +74,11 @@ void main() async {
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
-<<<<<<< HEAD
  // await dotenv.load(fileName: ".env");
 
   await dotenv.load(fileName: ".env");
 
 
-=======
-  await dotenv.load(fileName: ".env");
->>>>>>> 34a333e (ft-merchant screens)
   //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
@@ -135,13 +131,6 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-<<<<<<< HEAD
-    
-    //print(dotenv.env["PUSHER_TOKEN"]);
-    
-
-=======
->>>>>>> 34a333e (ft-merchant screens)
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
     pusher.onConnectionStateChange((state) {
@@ -151,22 +140,22 @@ class _MyAppState extends State<MyApp> {
 
 
     
-    // SystemChrome.setSystemUIOverlayStyle(
-    //   const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
-    // pusher.onConnectionStateChange((state) {
-    //   print(
-    //     "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}",
-    //   );
-    // });
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    pusher.onConnectionStateChange((state) {
+      print(
+        "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}",
+      );
+    });
 
-    // pusher.onConnectionError((error) {
-    //   print("error: ${error != null ? error.message : ""}");
-    // });
+    pusher.onConnectionError((error) {
+      print("error: ${error != null ? error.message : ""}");
+    });
 
-    // Channel channel = pusher.subscribe("adelowomi@gmail.com");
-    // channel.bind("user", (event) {
-    //   print(event != null ? event.data : "O ti fail");
-    // });
+    Channel channel = pusher.subscribe("adelowomi@gmail.com");
+    channel.bind("user", (event) {
+      print(event != null ? event.data : "O ti fail");
+    });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
@@ -229,15 +218,10 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
-<<<<<<< HEAD
-            RejectedRides.id:(context) => const RejectedRides(),
-            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-=======
 
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
 
->>>>>>> 34a333e (ft-merchant screens)
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             ProfileMenu.id: (context) => const ProfileMenu(),
@@ -260,10 +244,7 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id: (context) => const AllVehicleContainer(),
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
-<<<<<<< HEAD
 
-=======
->>>>>>> 34a333e (ft-merchant screens)
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
             AddRider1.id:(context) => const AddRider1(),
