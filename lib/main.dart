@@ -107,20 +107,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  //static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
+  static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
 
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
   );
 
-  // PusherClient pusher = PusherClient(
-  //   _pusher!,
-  //   PusherOptions(
-  //     encrypted: false,
-  //   ),
-  //   autoConnect: true,
-  // );
+  PusherClient pusher = PusherClient(
+    _pusher!,
+    PusherOptions(
+      encrypted: false,
+    ),
+    autoConnect: true,
+  );
 
   @override
   void dispose() {
