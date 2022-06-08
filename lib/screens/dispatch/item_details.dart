@@ -247,84 +247,86 @@ class _ItemDetailsState extends State<ItemDetails> {
                           height: 100.0,
                         ),
                         const SizedBox(width: 20.0),
-                        Container(
-                          padding: const EdgeInsets.only(bottom: 15.0),
-                          width: 280.0,
-                          child: Column(
-                            children: [
-                              InputField(
-                                obscureText: false,
-                                text: '',
-                                hintText: 'Pick Up',
-                                node: _pickUpNode,
-                                textController: _pickUpController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textHeight: 0.0,
-                                borderColor: appPrimaryColor.withOpacity(0.5),
-                                validator: (value) {
-                                  if (value!.trim().length > 2) {
-                                    return null;
-                                  }
-                                  return "Enter a valid pick-up location";
-                                },
-                                onSaved: (value) {
-                                  _pickUp = value!.trim() as DetailsResult?;
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  // cancel _debounce if its active and restart it if user type in something again
-                                  if (_debounce?.isActive ?? false)
-                                    _debounce!.cancel();
-                                  // prevent the autoCompleteSearch from search on every little keypress
-                                  _debounce = Timer(
-                                      const Duration(milliseconds: 1000), () {
-                                    if (value!.isNotEmpty) {
-                                      // placces api
-                                      autoCompleteSearch(value);
-                                    } else {
-                                      // clear out result
+                        Expanded(
+                          child: Container(
+                            padding: const EdgeInsets.only(bottom: 15.0),
+                            width: 280.0,
+                            child: Column(
+                              children: [
+                                InputField(
+                                  obscureText: false,
+                                  text: '',
+                                  hintText: 'Pick Up',
+                                  node: _pickUpNode,
+                                  textController: _pickUpController,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  textHeight: 0.0,
+                                  borderColor: appPrimaryColor.withOpacity(0.5),
+                                  validator: (value) {
+                                    if (value!.trim().length > 2) {
+                                      return null;
                                     }
-                                  });
-                                },
-                              ),
-                              InputField(
-                                obscureText: false,
-                                text: '',
-                                hintText: 'Drop Off',
-                                node: _dropOffNode,
-                                textController: _dropOffController,
-                                autovalidateMode:
-                                    AutovalidateMode.onUserInteraction,
-                                textHeight: 0,
-                                borderColor: appPrimaryColor.withOpacity(0.5),
-                                validator: (value) {
-                                  if (value!.trim().length > 2) {
+                                    return "Enter a valid pick-up location";
+                                  },
+                                  onSaved: (value) {
+                                    _pickUp = value!.trim() as DetailsResult?;
                                     return null;
-                                  }
-                                  return "Enter a valid drop-off location";
-                                },
-                                onSaved: (value) {
-                                  _dropOff = value!.trim() as DetailsResult?;
-                                  return null;
-                                },
-                                onChanged: (value) {
-                                  // cancel _debounce if its active and restart it if user type in something again
-                                  if (_debounce?.isActive ?? false)
-                                    _debounce!.cancel();
-                                  // prevent the autoCompleteSearch from search on every little keypress
-                                  _debounce = Timer(
-                                      const Duration(milliseconds: 500), () {
-                                    if (value!.isNotEmpty) {
-                                      // placces api
-                                      autoCompleteSearch(value);
-                                    } else {
-                                      // clear out result
+                                  },
+                                  onChanged: (value) {
+                                    // cancel _debounce if its active and restart it if user type in something again
+                                    if (_debounce?.isActive ?? false)
+                                      _debounce!.cancel();
+                                    // prevent the autoCompleteSearch from search on every little keypress
+                                    _debounce = Timer(
+                                        const Duration(milliseconds: 1000), () {
+                                      if (value!.isNotEmpty) {
+                                        // placces api
+                                        autoCompleteSearch(value);
+                                      } else {
+                                        // clear out result
+                                      }
+                                    });
+                                  },
+                                ),
+                                InputField(
+                                  obscureText: false,
+                                  text: '',
+                                  hintText: 'Drop Off',
+                                  node: _dropOffNode,
+                                  textController: _dropOffController,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  textHeight: 0,
+                                  borderColor: appPrimaryColor.withOpacity(0.5),
+                                  validator: (value) {
+                                    if (value!.trim().length > 2) {
+                                      return null;
                                     }
-                                  });
-                                },
-                              ),
-                            ],
+                                    return "Enter a valid drop-off location";
+                                  },
+                                  onSaved: (value) {
+                                    _dropOff = value!.trim() as DetailsResult?;
+                                    return null;
+                                  },
+                                  onChanged: (value) {
+                                    // cancel _debounce if its active and restart it if user type in something again
+                                    if (_debounce?.isActive ?? false)
+                                      _debounce!.cancel();
+                                    // prevent the autoCompleteSearch from search on every little keypress
+                                    _debounce = Timer(
+                                        const Duration(milliseconds: 500), () {
+                                      if (value!.isNotEmpty) {
+                                        // placces api
+                                        autoCompleteSearch(value);
+                                      } else {
+                                        // clear out result
+                                      }
+                                    });
+                                  },
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],

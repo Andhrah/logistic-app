@@ -22,6 +22,7 @@ import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
+import 'package:trakk/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/home.dart';
@@ -47,12 +48,20 @@ import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/support/help.dart';
+import 'package:trakk/screens/support/ride_issues.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
+import 'package:trakk/screens/wallet/all_cards.dart';
+import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
+import 'package:trakk/screens/wallet/payments.dart';
+import 'package:trakk/screens/wallet/qr_code_payment.dart';
+import 'package:trakk/screens/wallet/qr_payment.dart';
+import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:pusher_client/pusher_client.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -66,7 +75,11 @@ void main() async {
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
+ // await dotenv.load(fileName: ".env");
+
   await dotenv.load(fileName: ".env");
+
+
   //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
@@ -101,13 +114,13 @@ class _MyAppState extends State<MyApp> {
     encrypted: false,
   );
 
-  PusherClient pusher = PusherClient(
-    _pusher!,
-    PusherOptions(
-      encrypted: false,
-    ),
-    autoConnect: true,
-  );
+  // PusherClient pusher = PusherClient(
+  //   _pusher!,
+  //   PusherOptions(
+  //     encrypted: false,
+  //   ),
+  //   autoConnect: true,
+  // );
 
   @override
   void dispose() {
@@ -118,6 +131,18 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+
+    
+    print(dotenv.env["PUSHER_TOKEN"]);
+
+    // SystemChrome.setSystemUIOverlayStyle(
+    //     const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    // pusher.onConnectionStateChange((state) {
+    //   print(
+    //       "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+    // });
+
 
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
@@ -130,6 +155,7 @@ class _MyAppState extends State<MyApp> {
     pusher.onConnectionError((error) {
       print("error: ${error != null ? error.message : ""}");
     });
+
 
     // Channel channel = pusher.subscribe("adelowomi@gmail.com");
     // channel.bind("user", (event) {
@@ -201,13 +227,20 @@ class _MyAppState extends State<MyApp> {
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
 
+
+
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             ProfileMenu.id: (context) => const ProfileMenu(),
             WalletScreen.id:(context) => const WalletScreen(),
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
             Settings.id:(context) =>  const Settings(),
+            Payments.id:(context) =>  const Payments(),
             EditProfile.id: (context) => const EditProfile(),
+            RideIssues.id:(context) =>  const RideIssues(),
             Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id: (context) => const CompanyHome(),
@@ -227,6 +260,15 @@ class _MyAppState extends State<MyApp> {
             AddRider2.id:(context) => const AddRider2(),
             Notifications.id:(context) => const Notifications(),
 
+            WalletScreen.id:(context) => const WalletScreen(),
+            Transfers.id:(context) => const Transfers(),
+            Payment.id:(context) => const Payment(),
+            PayWithTransfer.id:(context) => const PayWithTransfer(),
+            AllCards.id: (context)  => AllCards(),
+            BuyAirtime.id:(context) =>  BuyAirtime(),
+            WalletHistory.id:(context) => WalletHistory(),
+            QrPayment.id:(context) => const QrPayment(),
+            QrCodePayment.id:(context) => QrCodePayment(),
           },
           // home: const GetStarted(),
         ),

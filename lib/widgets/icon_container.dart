@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:trakk/utils/colors.dart';
 
 class IconContainer extends StatelessWidget {
@@ -27,7 +28,7 @@ class IconContainer extends StatelessWidget {
             width: 60,
             margin: const EdgeInsets.only(bottom: 5.0),
             padding: const EdgeInsets.all(18.0),
-            child: isText == false ? Image.asset(
+            child: isText == false ? SvgPicture.asset(
             imgUrl,
               height: 20,
               width: 20,
@@ -43,7 +44,7 @@ class IconContainer extends StatelessWidget {
             decoration: BoxDecoration(
               color: Colors.grey[200]!,
               borderRadius: const BorderRadius.all(
-                Radius.circular(50.0)
+                Radius.circular(50.0),
               ),
             ),
           ),
