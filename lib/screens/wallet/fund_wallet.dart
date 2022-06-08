@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
@@ -200,7 +201,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               color: Color.fromARGB(255, 199, 190, 152),
                               height: 556,
                               child: Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                   left: 15,
                                   right: 15,
                                   top: 15,
@@ -209,7 +210,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    const Text("Select source wallet",
+                                    Text("Select source wallet",
                                         textScaleFactor: 1.2,
                                         style: TextStyle(
                                             //fontSize: 16,
@@ -339,7 +340,7 @@ class _FundWalletScreenState extends State<FundWalletScreen> {
                               ),
                             ),
                           ),
-                        ),
+                        )
                       ]),
                       ListView(physics: ScrollPhysics(), children: [
                         Container(
