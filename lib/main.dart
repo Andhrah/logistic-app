@@ -139,19 +139,6 @@ class _MyAppState extends State<MyApp> {
     });
 
 
-    
-    // SystemChrome.setSystemUIOverlayStyle(
-    //     const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
-    // pusher.onConnectionStateChange((state) {
-    //   print(
-    //       "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
-    // });
-
-
-    // pusher.onConnectionError((error) {
-    //   print("error: ${error != null ? error.message : ""}");
-    // });
-
     // Channel channel = pusher.subscribe("adelowomi@gmail.com");
     // channel.bind("user", (event) {
     //   print(event != null ? event.data : "O ti fail");
