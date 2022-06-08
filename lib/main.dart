@@ -135,12 +135,12 @@ class _MyAppState extends State<MyApp> {
     
     print(dotenv.env["PUSHER_TOKEN"]);
 
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
-    pusher.onConnectionStateChange((state) {
-      print(
-          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
-    });
+    // SystemChrome.setSystemUIOverlayStyle(
+    //     const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    // pusher.onConnectionStateChange((state) {
+    //   print(
+    //       "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+    // });
 
 
     // Channel channel = pusher.subscribe("adelowomi@gmail.com");
