@@ -207,6 +207,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     return SingleChildScrollView(
       child: Column(
         children: [
+
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
@@ -418,6 +419,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
             //physics: NeverScrollableScrollPhysics(),
             //shrinkWrap: true,
             children: [
+
                 Form(
                   key: _formKey,
                   child: Column(
@@ -905,7 +907,9 @@ class _EditRiderProfile extends State<EditRiderProfile> {
                     ),
                     //Text('data'),
                     SizedBox(
+
                       width: mediaQuery.size.width * 0.15,
+
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -923,7 +927,9 @@ class _EditRiderProfile extends State<EditRiderProfile> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image: AssetImage(
+
                                           'assets/images/malik.png'),),),
+
                             ),
                             const Text(
                               'Malik Johnson',
@@ -940,6 +946,7 @@ class _EditRiderProfile extends State<EditRiderProfile> {
               const Padding(
                 padding:
                     EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+
                 child: ProfileIdget(),
               ),
             ],

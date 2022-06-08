@@ -132,6 +132,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
+
     
     print(dotenv.env["PUSHER_TOKEN"]);
 
@@ -141,6 +142,19 @@ class _MyAppState extends State<MyApp> {
     //   print(
     //       "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
     // });
+
+
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    pusher.onConnectionStateChange((state) {
+      print(
+        "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}",
+      );
+    });
+
+    pusher.onConnectionError((error) {
+      print("error: ${error != null ? error.message : ""}");
+    });
 
 
     // Channel channel = pusher.subscribe("adelowomi@gmail.com");
@@ -212,6 +226,7 @@ class _MyAppState extends State<MyApp> {
 
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+
 
 
             RejectedRides.id:(context) => const RejectedRides(),

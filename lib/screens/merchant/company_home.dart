@@ -19,6 +19,7 @@ class CompanyHome extends StatefulWidget {
 }
 
 class _CompanyHomeState extends State<CompanyHome> {
+
   int notificatiobount = 26;
 
   @override
@@ -28,6 +29,7 @@ class _CompanyHomeState extends State<CompanyHome> {
       //backgroundColor: Color(0xffE5E5E5),
       body: SafeArea(
           child: SingleChildScrollView(
+
         physics: const ScrollPhysics(),
         child: Container(
           decoration: BoxDecoration(
@@ -106,6 +108,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                   //const Expanded(child: Divider(),),
                 ],
               ),
+
               Container(
                 height: MediaQuery.of(context).size.height,
                 decoration: const BoxDecoration(
@@ -240,6 +243,7 @@ class _CompanyHomeState extends State<CompanyHome> {
               ),
             ],
           ),
+
         ),
       )),
     );
