@@ -194,7 +194,7 @@ class _MyAppState extends State<MyApp> {
             RegisterNewVehicle.id:(context) => const RegisterNewVehicle(),
             AddRider.id:(context) => const AddRider(),
             ReferredRides.id:(context) => const ReferredRides(),
-            AllVehicleContainer.id:(context) => const AllVehicleContainer(),
+            // AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
 
@@ -218,7 +218,7 @@ class _MyAppState extends State<MyApp> {
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             AddRider.id: (context) => const AddRider(),
             ReferredRides.id: (context) => const ReferredRides(),
-            AllVehicleContainer.id: (context) => const AllVehicleContainer(),
+            // AllVehicleContainer.id: (context) => const AllVehicleContainer(),
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
             RejectedRides.id:(context) => const RejectedRides(),
