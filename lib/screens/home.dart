@@ -84,7 +84,7 @@ class _HomeState extends State<Home> {
               onPress: () {
                 // Provider.of<Auth>(context, listen: false).guestLogin();
                 Navigator.of(context).pushNamed(
-                  WalletScreen.id,
+                  Signup.id,
                   arguments: {
                     "userType": "user",
                   }
@@ -100,7 +100,7 @@ class _HomeState extends State<Home> {
               text: 'Sign Up As A Rider',
               onPress: () {
                 Navigator.of(context).pushNamed(
-                  WalletScreen.id,
+                  Signup.id,
                   arguments: {
                     "userType": "rider",
                   }

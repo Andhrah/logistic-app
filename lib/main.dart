@@ -114,13 +114,13 @@ class _MyAppState extends State<MyApp> {
     encrypted: false,
   );
 
-  PusherClient pusher = PusherClient(
-    _pusher!,
-    PusherOptions(
-      encrypted: false,
-    ),
-    autoConnect: true,
-  );
+  // PusherClient pusher = PusherClient(
+  //   _pusher!,
+  //   PusherOptions(
+  //     encrypted: false,
+  //   ),
+  //   autoConnect: true,
+  // );
 
   @override
   void dispose() {
@@ -136,22 +136,22 @@ class _MyAppState extends State<MyApp> {
     print(dotenv.env["PUSHER_TOKEN"]);
 
     
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
-    pusher.onConnectionStateChange((state) {
-      print(
-          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
-    });
+    // SystemChrome.setSystemUIOverlayStyle(
+    //     const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    // pusher.onConnectionStateChange((state) {
+    //   print(
+    //       "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+    // });
 
 
-    pusher.onConnectionError((error) {
-      print("error: ${error != null ? error.message : ""}");
-    });
+    // pusher.onConnectionError((error) {
+    //   print("error: ${error != null ? error.message : ""}");
+    // });
 
-    Channel channel = pusher.subscribe("adelowomi@gmail.com");
-    channel.bind("user", (event) {
-      print(event != null ? event.data : "O ti fail");
-    });
+    // Channel channel = pusher.subscribe("adelowomi@gmail.com");
+    // channel.bind("user", (event) {
+    //   print(event != null ? event.data : "O ti fail");
+    // });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
