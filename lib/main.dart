@@ -75,11 +75,8 @@ void main() async {
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
- // await dotenv.load(fileName: ".env");
-
   await dotenv.load(fileName: ".env");
-
-
+  //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
 }
@@ -251,7 +248,6 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id: (context) => const AllVehicleContainer(),
             EditRiderProfile.id: (context) => const EditRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),
-
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
             AddRider1.id:(context) => const AddRider1(),
