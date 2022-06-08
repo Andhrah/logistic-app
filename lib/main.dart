@@ -80,7 +80,6 @@ void main() async {
   await dotenv.load(fileName: ".env");
 
 
-  //await dotenv.load(fileName: ".env");
     
   runApp(const MyApp());
 }
@@ -134,6 +133,14 @@ class _MyAppState extends State<MyApp> {
 
     
     print(dotenv.env["PUSHER_TOKEN"]);
+
+    SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+    pusher.onConnectionStateChange((state) {
+      print(
+          "previousState: ${state != null ? state.previousState : ""}, currentState: ${state != null ? state.currentState : ""}");
+    });
+
 
     
     // SystemChrome.setSystemUIOverlayStyle(
@@ -214,6 +221,10 @@ class _MyAppState extends State<MyApp> {
             AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             EditRiderProfile.id:(context) => const EditRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
+
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+
 
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
