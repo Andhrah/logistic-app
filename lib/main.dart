@@ -114,13 +114,13 @@ class _MyAppState extends State<MyApp> {
     encrypted: false,
   );
 
-  PusherClient pusher = PusherClient(
-    _pusher!,
-    PusherOptions(
-      encrypted: false,
-    ),
-    autoConnect: true,
-  );
+  // PusherClient pusher = PusherClient(
+  //   _pusher!,
+  //   PusherOptions(
+  //     encrypted: false,
+  //   ),
+  //   autoConnect: true,
+  // );
 
   @override
   void dispose() {
