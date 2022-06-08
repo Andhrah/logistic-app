@@ -9,19 +9,23 @@ class BackIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 44,
+      width: 44,
       alignment: Alignment.centerLeft,
       padding: const EdgeInsets.all(7.0),
-      margin: const EdgeInsets.only(left: 25.0, top: 15.0, bottom: 15.0),
+      margin: const EdgeInsets.only(left: 25.0, top: 10.0, bottom: 10.0),
       child: InkWell(
         onTap: onPress,
         customBorder: const CircleBorder(),
-        child: const Icon(
-          Icons.arrow_back_ios_new_outlined,color: kTextColor,
-          size: 18.0,
+        child: Center(
+          child: const Icon(
+            Icons.arrow_back_ios_new_outlined,color: whiteColor,
+            size: 24.0,
+          ),
         )
       ),
       decoration: const BoxDecoration(
-        color: secondaryColor,
+        color: appPrimaryColor,
         borderRadius: BorderRadius.all(
           Radius.circular(50.0)
         ),

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
-import 'package:trakk/screens/merchant/edit_rider_profile.dart';
+import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/default_container.dart';
