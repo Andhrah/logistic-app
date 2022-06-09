@@ -7,11 +7,13 @@ class MerchantContainer extends StatelessWidget {
   final Color color;
   final String icon;
   final String ?rides;
+  final Color? iconColor;
 
   const MerchantContainer({
     Key? key,
     required this.color,
     required this.icon,
+     this.iconColor,
     required this.title, 
     this.rides,
   }) : super(key: key);
@@ -23,9 +25,10 @@ class MerchantContainer extends StatelessWidget {
         height: 160,
         width: 160,
         decoration: BoxDecoration(
+          
           boxShadow:  const [
               BoxShadow(
-                color: Color.fromARGB(255, 219, 219, 219),
+                color: Color.fromARGB(248, 248, 245, 245),
                 spreadRadius: 2.0,
                 blurRadius: 5.0,
                 offset: Offset(5, 2), // changes position of shadow
@@ -62,7 +65,7 @@ class MerchantContainer extends StatelessWidget {
                           topLeft: Radius.circular(25),
                           topRight: Radius.circular(5),),
                           ),
-                  child: Center(child: SvgPicture.asset(icon)),
+                  child: Center(child: SvgPicture.asset(icon, color: iconColor,)),
                 ),
               ),
             )

@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/merchant/active_Container.dart';
 import 'package:trakk/screens/merchant/all_vehicle_container.dart';
-import 'package:trakk/screens/merchant/edit_rider_profile.dart';
+import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/inactive_vehicle.dart';
 import 'package:trakk/screens/merchant/rider_list_container.dart';
 import 'package:trakk/utils/colors.dart';
@@ -220,15 +220,16 @@ class AllVehicleContainer extends StatelessWidget {
           const BoxDecoration(color: whiteColor, boxShadow: [
         BoxShadow(
           color: Color.fromARGB(255, 230, 230, 230),
-          spreadRadius: 1,
+          spreadRadius: 2,
           offset: Offset(2.0, 2.0), //(x,y)
           blurRadius: 8.0,
         ),
       ]),
       margin: EdgeInsets.only(left:22, right: 22),
       child: Padding(
-        padding: const EdgeInsets.all(22.0),
-        child: Column(
+        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
+        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -269,9 +270,11 @@ class AllVehicleContainer extends StatelessWidget {
             ),
             Button(
                 text: 'All',
-                onPress: () {},
+                onPress: () {
+                  Navigator.of(context).pushNamed(MerchantRiderProfile.id);
+                },
                 color: appPrimaryColor,
-                width: 290,
+                  width: MediaQuery.of(context).size.width / 1,
                 textColor: whiteColor,
                 isLoading: false)
           ],
@@ -336,7 +339,7 @@ class ActiveContainer extends StatelessWidget {
             Button(
                 text: 'Assigned to Malik Johnson',
                 onPress: () {
-                  Navigator.of(context).pushNamed(EditRiderProfile.id);
+                  Navigator.of(context).pushNamed(MerchantRiderProfile.id);
                 },
                 color: appPrimaryColor,
                 width: 290,

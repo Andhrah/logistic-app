@@ -5,7 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/merchant/active_Container.dart';
 import 'package:trakk/screens/merchant/all_vehicle_container.dart';
-import 'package:trakk/screens/merchant/edit_rider_profile.dart';
+import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/inactive_vehicle.dart';
 import 'package:trakk/screens/merchant/rider_list_container.dart';
 import 'package:trakk/screens/merchant/rider_profile.dart';
@@ -255,7 +255,7 @@ class ActiveContainer extends StatelessWidget {
             Button(
                 text: 'Assigned to Malik Johnson',
                 onPress: () {
-                  Navigator.of(context).pushNamed(EditRiderProfile.id);
+                  Navigator.of(context).pushNamed(MerchantRiderProfile.id);
                 },
                 color: appPrimaryColor,
                 width: 290,

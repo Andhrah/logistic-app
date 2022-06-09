@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:trakk/screens/merchant/edit_rider_profile.dart';
+import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -63,7 +63,7 @@ class ActiveContainer extends StatelessWidget {
             Button(
                 text: 'Assigned to Malik Johnson',
                 onPress: () {
-                  Navigator.of(context).pushNamed(EditRiderProfile.id);
+                  Navigator.of(context).pushNamed(MerchantRiderProfile.id);
                 },
                 color: appPrimaryColor,
                 width: 290,
