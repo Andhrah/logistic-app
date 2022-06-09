@@ -11,7 +11,7 @@ const Color backgroundColor = Color(0XFFF9F9F9);
 const Color darkYellow = Color(0xFFF7941F);
 const Color purple = Color(0xFFAB3882);
 const Color green = Color(0xFF00BA48);
-const Color greenTransaction = Color(0xff23710F);
+const Color deepGreen = Color(0xff23710F);
 
 const Color lightNavi = Color.fromRGBO(9, 66, 125, 0.35);
 const Color teal = Color(0xFF47A08B);
