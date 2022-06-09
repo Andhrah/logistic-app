@@ -55,13 +55,13 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   bool _isActive1 = false;
   bool _isActive2 = false;
 
-  void _handleTap() {
-    setState(() {
-      _isActive = !_isActive;
-      // _isActive1 = !_isActive1;
-      // _isActive2 = !_isActive2;
-    });
-  }
+  // void _handleTap() {
+  //   setState(() {
+  //     _isActive = !_isActive;
+  //     // _isActive1 = !_isActive1;
+  //     // _isActive2 = !_isActive2;
+  //   });
+  // }
 
   String _suspensionDuration = 'Choose duration';
 
@@ -69,14 +69,14 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   late TextEditingController _emailController;
   late TextEditingController _phoneNumberController;
   late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
+  late TextEditingController _homeAddressController;
   late TextEditingController _assignedvehicleController;
 
   FocusNode? _lastNameNode;
   FocusNode? _phoneNumberNode;
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
-  FocusNode? _confirmPasswordNode;
+  FocusNode? _homeAddressNode;
   FocusNode? _assignedvehicleNode;
 
   String? _lastName;
@@ -102,7 +102,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     _emailController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
+    _homeAddressController = TextEditingController();
     _assignedvehicleController = TextEditingController();
   }
 
@@ -130,8 +130,8 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   isConfirmPasswordValid() {
     setState(() {
-      _confirmPasswordIsValid = _confirmPasswordController.text != null &&
-          _confirmPasswordController.text == _passwordController.text;
+      _confirmPasswordIsValid = _homeAddressController.text != null &&
+          _homeAddressController.text == _passwordController.text;
       print(_confirmPasswordIsValid);
     });
   }
@@ -204,7 +204,9 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return SingleChildScrollView(
+      
       child: Column(
         children: [
 
@@ -414,6 +416,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   }
 
   Widget editContainer() {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return _selectedProfile
         ? Column(
             //physics: NeverScrollableScrollPhysics(),
@@ -425,7 +428,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       InputField(
@@ -447,7 +450,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                           if (value!.trim().length > 2) {
                             return null;
                           }
-                          return "Enter a valid first  name";
+                          return "Enter a valid first name";
                         },
                         onSaved: (value) {
                           _firstName = value!.trim();
@@ -458,7 +461,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                       InputField(
                         key: const Key('Last name'),
                         textController: _lastNameController,
-                        node: _firstNameNode,
+                        node: _lastNameNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
                         text: 'Last name',
@@ -474,7 +477,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                           if (value!.trim().length > 2) {
                             return null;
                           }
-                          return "Enter a valid last  name";
+                          return "Enter a valid last name";
                         },
                         onSaved: (value) {
                           _firstName = value!.trim();
@@ -537,11 +540,11 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('Home address'),
-                        textController: _confirmPasswordController,
-                        node: _confirmPasswordNode,
+                        textController: _homeAddressController,
+                        node: _homeAddressNode,
                         maxLines: 1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        obscureText: _hidePassword,
+                        obscureText: false,
                         text: 'Home address',
                         hintText: 'N0. Mcneil Street, Yaba',
                         textHeight: 10.0,
@@ -550,17 +553,17 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('Assigned vehicle'),
-                        textController: _confirmPasswordController,
-                        node: _confirmPasswordNode,
+                        textController: _assignedvehicleController,
+                        node: _assignedvehicleNode,
                         maxLines: 1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        obscureText: _hidePassword,
+                        obscureText: false,
                         text: 'Assigned vehicle',
                         hintText: 'Yamaha 4567658',
                         textHeight: 10.0,
                         borderColor: appPrimaryColor.withOpacity(0.9),
                       ),
-                      const SizedBox(height: 10.0),
+                      const SizedBox(height: 48.0),
                       Align(
                           alignment: Alignment.center,
                           child: Button(
@@ -576,7 +579,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                               color: appPrimaryColor,
                               textColor: whiteColor,
                               isLoading: _loading,
-                              width: 350.0)),
+                              width: mediaQuery.size.width* 1)),
                       const SizedBox(height: 10.0),
                     ],
                   ),
@@ -616,6 +619,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   }
 
   Widget suspendContainer() {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return SingleChildScrollView(
       // crossAxisAlignment: CrossAxisAlignment.start,
       child: Padding(
@@ -625,7 +629,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
           children: [
             SizedBox(height: 0.0),
             const Text(
-              'What issue do you have with ride?',
+              'Reason for suspension',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
             const SizedBox(height: 20.0),
@@ -812,7 +816,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                       ),
                     ),
                 color: Colors.black,
-                width: 300,
+                width: mediaQuery.size.width*1,
                 textColor: Colors.white,
                 isLoading: false),
           ],
@@ -873,16 +877,16 @@ class profillebox extends StatelessWidget {
   }
 }
 
-class EditRiderProfile extends StatefulWidget {
+class MerchantRiderProfile extends StatefulWidget {
   static String id = "mriderprofile";
 
-  const EditRiderProfile({Key? key}) : super(key: key);
+  const MerchantRiderProfile({Key? key}) : super(key: key);
 
   @override
-  State<EditRiderProfile> createState() => _EditRiderProfile();
+  State<MerchantRiderProfile> createState() => _MerchantRiderProfile();
 }
 
-class _EditRiderProfile extends State<EditRiderProfile> {
+class _MerchantRiderProfile extends State<MerchantRiderProfile> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -946,7 +950,6 @@ class _EditRiderProfile extends State<EditRiderProfile> {
               const Padding(
                 padding:
                     EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-
                 child: ProfileIdget(),
               ),
             ],

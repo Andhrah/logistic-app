@@ -792,7 +792,7 @@ class _TransfersState extends State<Transfers> {
                                                                             ),
                                                                             Text("Transaction Successful",
                                                                                 textScaleFactor: 1,
-                                                                                style: TextStyle(color: greenTransaction, fontWeight: FontWeight.w600)),
+                                                                                style: TextStyle(color: deepGreen, fontWeight: FontWeight.w600)),
                                                                           ],
                                                                         ),
                                                                       ),
@@ -912,7 +912,7 @@ class _TransfersState extends State<Transfers> {
                                                                                                     const SizedBox(
                                                                                                       height: 10,
                                                                                                     ),
-                                                                                                    Text("Receipt saved", textScaleFactor: 1, style: TextStyle(color: greenTransaction, fontWeight: FontWeight.w600)),
+                                                                                                    Text("Receipt saved", textScaleFactor: 1, style: TextStyle(color: deepGreen, fontWeight: FontWeight.w600)),
                                                                                                     const SizedBox(
                                                                                                       height: 30,
                                                                                                     ),
