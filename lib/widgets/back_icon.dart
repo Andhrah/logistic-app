@@ -17,15 +17,15 @@ class BackIcon extends StatelessWidget {
       child: InkWell(
         onTap: onPress,
         customBorder: const CircleBorder(),
-        child: Center(
-          child: const Icon(
-            Icons.arrow_back_ios_new_outlined,color: whiteColor,
+        child: const Center(
+          child: Icon(
+            Icons.arrow_back_ios_new_outlined,color: appPrimaryColor,
             size: 24.0,
           ),
         )
       ),
       decoration: const BoxDecoration(
-        color: appPrimaryColor,
+        color: whiteColor,
         borderRadius: BorderRadius.all(
           Radius.circular(50.0)
         ),
