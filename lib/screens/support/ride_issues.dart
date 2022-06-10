@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/models/support/support.dart';
+import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/support/support.dart';
+import 'package:trakk/services/support_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -29,6 +33,7 @@ class _RideIssuesState extends State<RideIssues> {
    String _complaintType = "Choose complaint";
 
   late TextEditingController _emailController;
+  late TextEditingController _messageController;
 
 
   FocusNode? _emailNode;
@@ -38,6 +43,9 @@ class _RideIssuesState extends State<RideIssues> {
   bool _emailIsValid = false;
 
   bool _isButtonPress = false;
+  bool _isLoading = false;
+  
+  SupportService supportService = SupportService();
 
 
   /*
@@ -56,22 +64,34 @@ class _RideIssuesState extends State<RideIssues> {
       //_userPassportUrl.isNotEmpty
       ){
       form.save();
-
-      // var _riderPassport = {
-      //   "name": "userPassport",
-      //   "url": _userPassportUrl,
-      // };
       
+      try{
+       setState(() {
+          _isLoading = true;
+       });
+       var response = await supportService.sendMessage(name: _complaintType, email: _emailController.text,
+        message: _messageController.text);
+        if(response == true){
+          Navigator.pop(context);
+        }
+       print(response.toString());
+      
+      }catch(e){
+        print(e.toString());
+      }finally {
+        setState(() {
+          _isLoading = true;
+       });
+      }
+
+     
       var box = await Hive.openBox('complaintType');
       //var imgBox = await Hive.openBox('imgDocs');
       await box.putAll({
-        "stateOfOrigin": _complaintType,
+        "complaint": _complaintType,
        
       });
       
-      //await imgBox.put('riderDocs', [_riderPassport]);
-      
-      //Navigator.of(context).pushNamed(VehicleData.id);
     }
    
   }
@@ -103,13 +123,12 @@ class _RideIssuesState extends State<RideIssues> {
     //_firstNameController = TextEditingController();
     //_lastNameController = TextEditingController();
     _emailController = TextEditingController();
-    //_phoneNumberController = TextEditingController();
-    //_passwordController = TextEditingController();
-    // _confirmPasswordController = TextEditingController();
+    _messageController= TextEditingController();
   }
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -158,8 +177,8 @@ class _RideIssuesState extends State<RideIssues> {
                       ),
                     ),
                     SizedBox(height: 30.0),
-                    Text('What issue do you have with ride?',
-                    style: const TextStyle(
+                    const Text('What issue do you have with ride?',
+                    style: TextStyle(
                   fontSize: 18, fontWeight: FontWeight.w400),),
 
                   const SizedBox(height: 20.0),
@@ -236,6 +255,7 @@ class _RideIssuesState extends State<RideIssues> {
                   const SizedBox(height: 20.0),
 
                   TextField(
+                    controller: _messageController,
                     maxLines: 7,
                     keyboardType: TextInputType.multiline,
                   decoration: InputDecoration(
@@ -247,7 +267,7 @@ class _RideIssuesState extends State<RideIssues> {
                     const SizedBox(height: 20),
                     Button(text: 'send', 
                     onPress: _onSave, color: Colors.black, 
-                    width: 300, textColor: Colors.white, isLoading: false)
+                    width: mediaQuery.size.width*1, textColor: Colors.white, isLoading: false)
 
 
                       ],

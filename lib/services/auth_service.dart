@@ -109,6 +109,19 @@ class AuthService {
     return await authRequest(body, 'api/User/register');
   }
 
+  Future<dynamic> createComplaint (
+     String name,
+    String email,
+    String message,
+  ) async {
+    var body = {
+      "name": name,
+      "email": email,
+      "message": message
+    };
+    return await authRequest(body, 'api/Complaints/create');
+  }
+
   Future<dynamic> createRider(
     String firstName,
     String lastName,
