@@ -249,9 +249,7 @@ class _MyAppState extends State<MyApp> {
             ListOfRiders.id: (context) => const ListOfRiders(),
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-            AddRider1.id:(context) => const AddRider1(),
-            AddRider2.id:(context) => const AddRider2(),
-            Notifications.id:(context) => const Notifications(),
+            RideIssues.id: (context) => const RideIssues(),
 
             WalletScreen.id:(context) => const WalletScreen(),
             Transfers.id:(context) => const Transfers(),

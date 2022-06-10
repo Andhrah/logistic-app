@@ -217,8 +217,8 @@ class _SettingsState extends State<Settings> {
                           decoration: const BoxDecoration(
                               shape: BoxShape.circle,
                               image: DecorationImage(
-                                  image: AssetImage(
-                                      'assets/images/ladySmiling.png'))),
+                                  image:
+                                      AssetImage('assets/images/malik.png'))),
                         ),
                         Button(
                             text: "Edit profile",
@@ -247,9 +247,6 @@ class _SettingsState extends State<Settings> {
               thickness: 1.0,
               color: Color(0xff909090),
             ),
-            const SizedBox(
-              height: 20,
-            ),
             Container(
               height: 250,
               margin: EdgeInsets.all(30),
@@ -272,44 +269,20 @@ class _SettingsState extends State<Settings> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-
                     Text("Custom Colors and Borders"),
-                SizedBox(height: 10.0),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: <Widget>[
-                    FlutterSwitch(
-                      width: 60.0,
-                      height: 0.0,
-                      toggleSize: 30.0,
-                      value: status,
-                      borderRadius: 30.0,
-                      padding: 2.0,
-                      toggleColor: Color.fromRGBO(225, 225, 225, 1),
-                      switchBorder: Border.all(
-                        color: appPrimaryColor,
-                        width: 6.0,
-                      ),
-                      toggleBorder: Border.all(
-                        color: appPrimaryColor,
-                        width: 5.0,
-                      ),
-                      activeColor: Color.fromARGB(255, 15, 15, 15),
-                      inactiveColor: Color.fromARGB(96, 252, 252, 252),
-                      onToggle: (val) {
-                        setState(() {
-                          status = val;
-                        });
-                      },
+                    SizedBox(height: 10.0),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: <Widget>[
+                        
+                        // Container(
+                        //   alignment: Alignment.centerRight,
+                        //   child: Text(
+                        //     "Value: $status",
+                        //   ),
+                        // ),
+                      ],
                     ),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      child: Text(
-                        "Value: $status",
-                      ),
-                    ),
-                  ],
-                ),
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -328,12 +301,24 @@ class _SettingsState extends State<Settings> {
                           ),
                           Icon(Icons.arrow_forward_ios),
                         ]),
-                    const SettingsRow(
-                      icon: Icon(Icons.arrow_forward_ios),
+                     SettingsRow(
+                      icon: FlutterSwitch(
+                          height: 20.0,
+                          width: 40.0,
+                          padding: 4.0,
+                          toggleSize: 15.0,
+                          borderRadius: 10.0,
+                          activeColor: secondaryColor,
+                          value: status,
+                          onToggle: (value) {
+                            setState(() {
+                              status = value;
+                            });
+                          },
+                        ),
                       statusIcon: Icon(Remix.notification_4_line),
                       title: 'Notifications',
                     ),
-                    
                     Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -357,7 +342,7 @@ class _SettingsState extends State<Settings> {
               ),
             ),
             Container(
-              margin: EdgeInsets.all(30),
+              margin: EdgeInsets.all(10),
               padding: EdgeInsets.only(left: 30),
               height: 48,
               decoration: const BoxDecoration(
