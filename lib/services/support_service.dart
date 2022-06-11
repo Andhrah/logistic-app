@@ -7,6 +7,7 @@ import 'package:trakk/utils/constant.dart';
 
 class SupportService {
   Future<bool?> sendMessage({name, email, message}) async {
+    print("[][][][] NETWORK");
     try {
       var response = await http
           .post(Uri.parse('https://zebrra.itskillscenter.com/api/complaints'),

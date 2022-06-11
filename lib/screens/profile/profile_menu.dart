@@ -137,7 +137,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(Help.id);
+                Navigator.of(context).pushNamed(HelpAndSupport.id);
               },
               child: const ProfileList(
                 icon: Icon(Remix.question_line),

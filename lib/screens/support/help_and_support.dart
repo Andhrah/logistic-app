@@ -60,8 +60,7 @@ class _RideIssuesState extends State<RideIssues> {
     
     if(form!.validate() && 
       _complaintType != "Choose complaint" 
-      //&& _stateOfOrigin != "Choose State" &&
-      //_userPassportUrl.isNotEmpty
+     
       ){
       form.save();
       
