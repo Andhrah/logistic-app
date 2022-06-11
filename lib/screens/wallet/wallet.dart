@@ -191,14 +191,14 @@ class _WalletScreenState extends State<WalletScreen> {
                     //     Navigator.of(context).pushNamed(Payments.id);
                     //   },
                     // ),
-                    IconContainer(
-                      text: 'Buy Airtime',
-                      imgUrl: 'assets/images/airtime.svg',
-                      isText: false,
-                      onPress: () {
-                        Navigator.of(context).pushNamed(BuyAirtime.id);
-                      },
-                    ),
+                   IconContainer(
+                        text: 'All Cards',
+                        imgUrl: 'assets/images/cards.svg',
+                        isText: false,
+                        onPress: () {
+                          Navigator.of(context).pushNamed(AllCards.id);
+                        },
+                      ),
 
                     IconContainer(
                       text: 'Transfer',
@@ -214,14 +214,7 @@ class _WalletScreenState extends State<WalletScreen> {
                 Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      IconContainer(
-                        text: 'All Cards',
-                        imgUrl: 'assets/images/cards.svg',
-                        isText: false,
-                        onPress: () {
-                          Navigator.of(context).pushNamed(AllCards.id);
-                        },
-                      ),
+                      
                       IconContainer(
                         text: 'QR Code',
                         imgUrl: 'assets/images/qrCode.svg',

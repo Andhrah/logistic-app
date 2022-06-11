@@ -18,7 +18,9 @@ class SupportService {
                   "message": message
                 }
               }),
-              headers: {'Content-Type': 'application/json'});
+              headers: {'Content-Type': 'application/json',
+              //'Authorization': "Bearer $token"
+              });
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
         return true;
