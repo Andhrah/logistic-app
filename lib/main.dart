@@ -48,7 +48,7 @@ import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/support/help.dart';
-import 'package:trakk/screens/support/ride_issues.dart';
+import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/all_cards.dart';
@@ -203,7 +203,7 @@ class _MyAppState extends State<MyApp> {
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
-            Help.id:(context) => const Help(),
+            HelpAndSupport.id:(context) => const HelpAndSupport(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id:(context) => const CompanyHome(),
             Vehicles.id:(context) => const Vehicles(),
@@ -234,7 +234,6 @@ class _MyAppState extends State<MyApp> {
             Payments.id:(context) =>  const Payments(),
             EditProfile.id: (context) => const EditProfile(),
             RideIssues.id:(context) =>  const RideIssues(),
-            Help.id: (context) => const Help(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id: (context) => const CompanyHome(),
             Vehicles.id: (context) => const Vehicles(),
@@ -249,9 +248,7 @@ class _MyAppState extends State<MyApp> {
             ListOfRiders.id: (context) => const ListOfRiders(),
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-            AddRider1.id:(context) => const AddRider1(),
-            AddRider2.id:(context) => const AddRider2(),
-            Notifications.id:(context) => const Notifications(),
+            RideIssues.id: (context) => const RideIssues(),
 
             WalletScreen.id:(context) => const WalletScreen(),
             Transfers.id:(context) => const Transfers(),

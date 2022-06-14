@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 const Color appPrimaryColor = Color(0xFF000000);
-const Color secondaryColor = Color(0xFFE5AA20);
+const Color secondaryColor = Color(0xFFFDC70C);
 const Color paymentContainerColor = Color(0xffCA9E0D); 
 const Color grayColor = Color(0xFFC4C4C4);
 const Color darkPink = Color(0xFFAE207C);
