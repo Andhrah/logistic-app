@@ -108,7 +108,7 @@ class _EditProfileState extends State<EditProfile> {
     setState(() {
       _loading = true;
     });
-
+    print(" saves called");
     try {
       var response = await updateProfileService.updateProfile(firstName: _firstNameController.text, 
       lastName: _lastNameController.text, phoneNumber: _phoneNumberController.text,
