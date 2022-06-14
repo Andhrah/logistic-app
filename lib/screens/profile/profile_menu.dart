@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
@@ -277,7 +278,14 @@ class MenuContainer extends StatelessWidget {
                   ),
                   Button(
                       text: 'Edit profile',
-                      onPress: () {
+                      onPress: ()  {
+                        var box =  Hive.box('userData');
+                        String name = box.get('token');
+                        dynamic id = box.get('id');
+                        
+                        print("This is the token " + name);
+                        print("This is the user id " + id.toString());
+                        
                         Navigator.of(context).pushNamed(EditProfile.id);
                       },
                       color: Colors.black,
