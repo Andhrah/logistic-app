@@ -290,14 +290,14 @@ class MenuContainer extends StatelessWidget {
                   ),
                   Button(
                       text: 'Edit profile',
-                      onPress: ()  {
-                        var box =  Hive.box('userData');
-                        String name = box.get('token');
-                        dynamic id = box.get('id');
-                        
-                        print("This is the token " + name);
-                        print("This is the user id " + id.toString());
-                        
+                      onPress: () {
+                        // var box =  Hive.box('userData');
+                        // String name = box.get('token');
+                        // dynamic id = box.get('id');
+
+                        // print("This is the token " + name);
+                        // print("This is the user id " + id.toString());
+
                         Navigator.of(context).pushNamed(EditProfile.id);
                       },
                       color: Colors.black,
