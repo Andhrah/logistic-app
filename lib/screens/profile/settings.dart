@@ -165,224 +165,256 @@ class _SettingsState extends State<Settings> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        elevation: 2.0,
-        backgroundColor: Colors.white,
-        leading: BackIcon(
-          onPress: () {
-            Navigator.pop(context);
-          },
-        ),
-        title: Container(
-          // margin: const EdgeInsets.only(left: 0.0),
-          alignment: Alignment.center,
-          child: InkWell(
-            onTap: () {},
-            customBorder: const CircleBorder(),
-            child: const Text(
-              'SETTINGS',
-              textScaleFactor: 1.0,
-              style: TextStyle(
-                color: appPrimaryColor,
-                fontWeight: FontWeight.bold,
-                // decoration: TextDecoration.underline,
-              ),
-            ),
-          ),
-        ),
-      ),
+      // appBar: AppBar(
+      //   elevation: 2.0,
+      //   backgroundColor: Colors.white,
+      //   leading: BackIcon(
+      //     onPress: () {
+      //       Navigator.pop(context);
+      //     },
+      //   ),
+      //   title: Container(
+      //     // margin: const EdgeInsets.only(left: 0.0),
+      //     alignment: Alignment.center,
+      //     child: InkWell(
+      //       onTap: () {},
+      //       customBorder: const CircleBorder(),
+      //       child: const Text(
+      //         'SETTINGS',
+      //         textScaleFactor: 1.0,
+      //         style: TextStyle(
+      //           color: appPrimaryColor,
+      //           fontWeight: FontWeight.bold,
+      //           // decoration: TextDecoration.underline,
+      //         ),
+      //       ),
+      //     ),
+      //   ),
+      // ),
       backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-          child: SafeArea(
+      body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(
-              child: Padding(
-                padding:
-                    const EdgeInsets.only(left: 30.0, right: 30, bottom: 17),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(
-                            top: 8,
-                            bottom: 12,
-                          ),
-                          height: 80,
-                          width: 80,
-                          decoration: const BoxDecoration(
-                              shape: BoxShape.circle,
-                              image: DecorationImage(
-                                  image:
-                                      AssetImage('assets/images/malik.png'))),
-                        ),
-                        Button(
-                            text: "Edit profile",
-                            onPress: () {},
-                            color: whiteColor,
-                            width: 100,
-                            textColor: grayColor,
-                            isLoading: false)
-                      ],
-                    ),
-                    const Text(
-                      'Malik Johnson',
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-                    ),
-                    const Text('+234816559234'),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text('malhohn11@gmail.com'),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(
-              thickness: 1.0,
-              color: Color(0xff909090),
-            ),
-            Container(
-              height: 250,
-              margin: EdgeInsets.all(30),
-              decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(10),
+            Row(
+                children: [
+                  BackIcon(
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Color.fromARGB(255, 230, 230, 230),
-                      spreadRadius: 1,
-                      offset: Offset(2.0, 2.0), //(x,y)
-                      blurRadius: 8.0,
-                    ),
-                  ],
-                  color: whiteColor),
-              child: Padding(
-                padding: const EdgeInsets.all(20),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Custom Colors and Borders"),
-                    SizedBox(height: 10.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: <Widget>[
-                        
-                        // Container(
-                        //   alignment: Alignment.centerRight,
-                        //   child: Text(
-                        //     "Value: $status",
-                        //   ),
-                        // ),
-                      ],
-                    ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: const [
-                              Icon(Remix.user_2_line),
-                              SizedBox(
-                                width: 25,
-                              ),
-                              Text(
-                                "Account",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios),
-                        ]),
-                     SettingsRow(
-                      icon: FlutterSwitch(
-                          height: 20.0,
-                          width: 40.0,
-                          padding: 4.0,
-                          toggleSize: 15.0,
-                          borderRadius: 10.0,
-                          activeColor: secondaryColor,
-                          value: status,
-                          onToggle: (value) {
-                            setState(() {
-                              status = value;
-                            });
-                          },
+                  Container(
+                    margin: const EdgeInsets.only(left: 60.0),
+                    alignment: Alignment.center,
+                    child: InkWell(
+                      onTap: () {},
+                      customBorder: const CircleBorder(),
+                      child: const Text(
+                        'SETTINGS',
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                          // decoration: TextDecoration.underline,
                         ),
-                      statusIcon: Icon(Remix.notification_4_line),
-                      title: 'Notifications',
+                      ),
                     ),
-                    Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: const [
-                              Icon(Remix.user_2_line),
-                              SizedBox(
-                                width: 25,
-                              ),
-                              Text(
-                                "Privacy & Security",
-                                style: TextStyle(
-                                    fontSize: 16, fontWeight: FontWeight.w400),
-                              ),
-                            ],
-                          ),
-                          Icon(Icons.arrow_forward_ios),
-                        ]),
-                  ],
-                ),
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.all(10),
-              padding: EdgeInsets.only(left: 30),
-              height: 48,
-              decoration: const BoxDecoration(
-                color: whiteColor,
-                boxShadow: [
-                  BoxShadow(
-                    spreadRadius: 2,
-                    color: Color.fromARGB(255, 224, 224, 224),
-                    offset: Offset(2.0, 2.0), //(x,y)
-                    blurRadius: 16,
                   ),
                 ],
               ),
-              child: Align(
-                  alignment: Alignment.center,
-                  child: Row(
+            Expanded(
+              child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset(
-                        'assets/images/Logout.svg',
-                        color: redColor,
-                      ),
-                      const SizedBox(
-                        width: 22,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: const Text(
-                          "Log out",
-                          style: TextStyle(
-                              color: redColor,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400),
+                      SizedBox(
+                        child: Padding(
+                          padding:
+                              const EdgeInsets.only(left: 30.0, right: 30, bottom: 17),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                    margin: const EdgeInsets.only(
+                                      top: 8,
+                                      bottom: 12,
+                                    ),
+                                    height: 80,
+                                    width: 80,
+                                    decoration: const BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                            image:
+                                                AssetImage('assets/images/malik.png'))),
+                                  ),
+                                  Button(
+                                      text: "Edit profile",
+                                      onPress: () {},
+                                      color: whiteColor,
+                                      width: 100,
+                                      textColor: grayColor,
+                                      isLoading: false)
+                                ],
+                              ),
+                              const Text(
+                                'Malik Johnson',
+                                style:
+                                    TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+                              ),
+                              const Text('+234816559234'),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Text('malhohn11@gmail.com'),
+                            ],
+                          ),
                         ),
+                      ),
+                      const Divider(
+                        thickness: 1.0,
+                        color: Color(0xff909090),
+                      ),
+                      Container(
+                        height: 250,
+                        margin: EdgeInsets.all(30),
+                        decoration: const BoxDecoration(
+                            borderRadius: BorderRadius.all(
+                              Radius.circular(10),
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 230, 230, 230),
+                                spreadRadius: 1,
+                                offset: Offset(2.0, 2.0), //(x,y)
+                                blurRadius: 8.0,
+                              ),
+                            ],
+                            color: whiteColor),
+                        child: Padding(
+                          padding: const EdgeInsets.all(20),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text("Custom Colors and Borders"),
+                              SizedBox(height: 10.0),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: <Widget>[
+                                  
+                                  // Container(
+                                  //   alignment: Alignment.centerRight,
+                                  //   child: Text(
+                                  //     "Value: $status",
+                                  //   ),
+                                  // ),
+                                ],
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: const [
+                                        Icon(Remix.user_2_line),
+                                        SizedBox(
+                                          width: 25,
+                                        ),
+                                        Text(
+                                          "Account",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(Icons.arrow_forward_ios),
+                                  ]),
+                               SettingsRow(
+                                icon: FlutterSwitch(
+                                    height: 20.0,
+                                    width: 40.0,
+                                    padding: 4.0,
+                                    toggleSize: 15.0,
+                                    borderRadius: 10.0,
+                                    activeColor: secondaryColor,
+                                    value: status,
+                                    onToggle: (value) {
+                                      setState(() {
+                                        status = value;
+                                      });
+                                    },
+                                  ),
+                                statusIcon: Icon(Remix.notification_4_line),
+                                title: 'Notifications',
+                              ),
+                              Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
+                                      children: const [
+                                        Icon(Remix.user_2_line),
+                                        SizedBox(
+                                          width: 25,
+                                        ),
+                                        Text(
+                                          "Privacy & Security",
+                                          style: TextStyle(
+                                              fontSize: 16, fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    ),
+                                    Icon(Icons.arrow_forward_ios),
+                                  ]),
+                            ],
+                          ),
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        padding: EdgeInsets.only(left: 30),
+                        height: 48,
+                        decoration: const BoxDecoration(
+                          color: whiteColor,
+                          boxShadow: [
+                            BoxShadow(
+                              spreadRadius: 2,
+                              color: Color.fromARGB(255, 224, 224, 224),
+                              offset: Offset(2.0, 2.0), //(x,y)
+                              blurRadius: 16,
+                            ),
+                          ],
+                        ),
+                        child: Align(
+                            alignment: Alignment.center,
+                            child: Row(
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/images/Logout.svg',
+                                  color: redColor,
+                                ),
+                                const SizedBox(
+                                  width: 22,
+                                ),
+                                InkWell(
+                                  onTap: () {},
+                                  child: const Text(
+                                    "Log out",
+                                    style: TextStyle(
+                                        color: redColor,
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                              ],
+                            )),
                       ),
                     ],
                   )),
             ),
           ],
         ),
-      )),
+      ),
     );
   }
 }
