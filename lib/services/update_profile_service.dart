@@ -11,9 +11,9 @@ class UpdateProfileService {
   Future<bool?> updateProfile({required String firstName, required String lastName,required String phoneNumber,
    required String  email,required String address}) async {
     print("[][][][] NETWORK");
-    var box = await Hive.openBox('userData');
-    String token = box.get('token');
-    print("This is the token >>>>>>>" + token);
+    // var box = await Hive.openBox('userData');
+    // String token = box.get('token');
+    // print("This is the token >>>>>>>" + token);
     try {
       Data data = Data(firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, 
       email: email, address: address);
@@ -30,7 +30,7 @@ class UpdateProfileService {
               //   }
               // }),
               headers: {'Content-Type': 'application/json',
-              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NDkwMTk3NSwiZXhwIjoxNjU0OTg4Mzc1fQ.wUfVM8hTrWV-Na6tpdMLEB9_FL-a52OiUt1MsJwFMe4"
+              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTIwNzE5NiwiZXhwIjoxNjU1MjkzNTk2fQ.DZ1xwwhd4yh7uAecaofs1fNuyjCstR6fR3c2OaTJt3w"
               });
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
