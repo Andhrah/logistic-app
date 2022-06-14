@@ -37,7 +37,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                   },
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40.0),
+                  margin: const EdgeInsets.only(left: 60.0),
                   alignment: Alignment.center,
                   child: InkWell(
                     onTap: () {},
@@ -72,11 +72,11 @@ class _ProfileMenuState extends State<ProfileMenu> {
               padding: EdgeInsets.only(left: 20),
               height: 87,
               decoration: const BoxDecoration(
-                color: whiteColor,
+                color: secondaryColor,
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 2,
-                    color: Color.fromARGB(255, 224, 224, 224),
+                    color: Color.fromARGB(255, 233, 233, 233),
                     offset: Offset(2.0, 4.0), //(x,y)
                     blurRadius: 10,
                   ),
@@ -89,7 +89,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                     'Share App with your Trakk\ncode and get ₦500 bonus in\nyour wallet',
                     textAlign: TextAlign.justify,
                   ),
-                  trailing: Icon(Icons.share),
+                  trailing: Icon(Remix.share_line, color: appPrimaryColor,),
                 ),
               ),
             ),
@@ -100,7 +100,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: () {
                 Navigator.of(context).pushNamed(WalletScreen.id);
               },
-              child:  ProfileList(
+              child:  const ProfileList(
                 icon: Icon(Remix.wallet_3_line),
                 //svg: 'assets/images/wallet.svg',
                 title: 'Wallet',
@@ -113,7 +113,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: () {
                 Navigator.of(context).pushNamed(UserDispatchHistory.id);
               },
-              child:  ProfileList(
+              child:  const ProfileList(
                 icon: Icon(Remix.history_line),
                 //svg: 'assets/images/history.svg',
                 title: 'Dispatch History',
@@ -126,7 +126,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
               onTap: () {
                 Navigator.of(context).pushNamed(Settings.id);
               },
-              child:  ProfileList(
+              child:  const ProfileList(
                 icon: Icon(Remix.settings_2_line),
                 //svg: 'assets/images/settings.svg',
                 title: 'Settings',
@@ -137,7 +137,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(Help.id);
+                Navigator.of(context).pushNamed(HelpAndSupport.id);
               },
               child: const ProfileList(
                 icon: Icon(Remix.question_line),
@@ -169,14 +169,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
               height: 50,
             ),
             Container(
-              padding: EdgeInsets.only(left: 30),
+              padding: const EdgeInsets.only(left: 30),
               height: 48,
               decoration: const BoxDecoration(
                 color: whiteColor,
                 boxShadow: [
                   BoxShadow(
                     spreadRadius: 2,
-                    color: Color.fromARGB(255, 231, 231, 231),
+                    color: Color.fromARGB(255, 235, 235, 235),
                     offset: Offset(2.0, 2.0), //(x,y)
                     blurRadius: 16,
                   ),
@@ -245,14 +245,15 @@ class MenuContainer extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Expanded(
-                child: CircleAvatar(
-                  child: Image(
-                    image: AssetImage('assets/images/malik.png'),
-                    height: 80,
-                  ),
-                ),
-              ),
+               Expanded(
+                 child: Container(
+                   height: 78,
+                   width: 80,
+                   alignment: Alignment.centerLeft,
+                   decoration: const BoxDecoration(image: 
+                 DecorationImage(image: AssetImage('assets/images/ladySmiling.png'), fit: BoxFit.contain),
+                 shape: BoxShape.circle),),
+               ),
               const SizedBox(height: 8),
               const Text(
                 'Malik Johnson',

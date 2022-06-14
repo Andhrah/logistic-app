@@ -54,7 +54,7 @@ class _VehiclesState extends State<Vehicles> {
              InkWell(onTap: () {
                Navigator.of(context).pushNamed(ListOfVehicles.id);
              },
-               child: const DefaultContainer(title: 'View all vehicles',)),
+               child: const DefaultContainer(title: 'View all vehicles',),),
             const SizedBox(
               height: 30,
             ),
@@ -62,7 +62,7 @@ class _VehiclesState extends State<Vehicles> {
               onTap: () {
                 Navigator.of(context).pushNamed(RegisterNewVehicle.id);
               },
-              child: const DefaultContainer(title: 'Regster new vehicle',)),
+              child: const DefaultContainer(title: 'Register new vehicle',),),
             const SizedBox(
               height: 30,
             ),
@@ -71,7 +71,7 @@ class _VehiclesState extends State<Vehicles> {
                  Navigator.of(context).pushNamed(ListOfVehicles.id);
 
               },
-              child: const DefaultContainer(title: 'Remove vehicle from list',)),
+              child: const DefaultContainer(title: 'Remove vehicle from list',),),
           ],
         )));
   }

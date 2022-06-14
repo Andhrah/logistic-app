@@ -5,14 +5,14 @@ import 'package:trakk/screens/support/about_trakk.dart';
 import 'package:trakk/screens/support/account_data.dart';
 import 'package:trakk/screens/support/app_features.dart';
 import 'package:trakk/screens/support/payment_issues.dart';
-import 'package:trakk/screens/support/ride_issues.dart';
+import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 
-class Help extends StatelessWidget {
+class HelpAndSupport extends StatelessWidget {
   static const String id = 'help';
 
-  const Help({Key? key}) : super(key: key);
+  const HelpAndSupport({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -75,46 +75,46 @@ class Help extends StatelessWidget {
                     const SizedBox(
                       height: 34,
                     ),
-                    InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(PaymentIssues.id);
-                        },
-                        child: const SupportContainer(
-                          title: 'Payment',
-                        )),
-                    const SizedBox(
-                      height: 34,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(AccountDataIssues.id);
-                      },
-                      child: const SupportContainer(
-                        title: 'Account and Data',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 34,
-                    ),
-                    InkWell(
-                      onTap:  () {
-                        Navigator.of(context).pushNamed(AppFeatures.id);
-                      },
-                      child: const SupportContainer(
-                        title: 'APP Features',
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 34,
-                    ),
-                    InkWell(
-                      onTap: () {
-                        Navigator.of(context).pushNamed(AboutTrakk.id);
-                      },
-                      child: const SupportContainer(
-                        title: 'About Trakk',
-                      ),
-                    ),
+                    // InkWell(
+                    //     onTap: () {
+                    //       Navigator.of(context).pushNamed(PaymentIssues.id);
+                    //     },
+                    //     child: const SupportContainer(
+                    //       title: 'Payment',
+                    //     )),
+                    // const SizedBox(
+                    //   height: 34,
+                    // ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.of(context).pushNamed(AccountDataIssues.id);
+                    //   },
+                    //   child: const SupportContainer(
+                    //     title: 'Account and Data',
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 34,
+                    // ),
+                    // InkWell(
+                    //   onTap:  () {
+                    //     Navigator.of(context).pushNamed(AppFeatures.id);
+                    //   },
+                    //   child: const SupportContainer(
+                    //     title: 'APP Features',
+                    //   ),
+                    // ),
+                    // const SizedBox(
+                    //   height: 34,
+                    // ),
+                    // InkWell(
+                    //   onTap: () {
+                    //     Navigator.of(context).pushNamed(AboutTrakk.id);
+                    //   },
+                    //   child: const SupportContainer(
+                    //     title: 'About Trakk',
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

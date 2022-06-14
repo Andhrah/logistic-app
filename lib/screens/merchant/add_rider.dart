@@ -7,6 +7,7 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
+import 'package:trakk/screens/merchant/add_rider1.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -185,7 +186,7 @@ class _AddRiderState extends State<AddRider> {
   Widget build(BuildContext context) {
 
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    userType = arg["userType"];
+    //userType = arg["userType"];
 
     print('================================');
     print(userType);
@@ -210,7 +211,7 @@ class _AddRiderState extends State<AddRider> {
                       onTap: () {},
                       customBorder: const CircleBorder(),
                       child: const Text(
-                        'CREATE AN ACCOUNT',
+                        'ADD RIDER',
                         textScaleFactor: 1.2,
                         style: TextStyle(
                           color: appPrimaryColor,
@@ -233,123 +234,61 @@ class _AddRiderState extends State<AddRider> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // InputField(
-                      //   key: const Key('firstName'),
-                      //   textController: _firstNameController,
-                      //   node: _firstNameNode,
-                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //   obscureText: false,
-                      //   text: 'First Name',
-                      //   hintText: 'Jane Doe',
-                      //   textHeight: 5.0,
-                      //   borderColor: appPrimaryColor.withOpacity(0.9),
-                      //   suffixIcon: const Icon(
-                      //     Remix.user_line,
-                      //     size: 18.0,
-                      //     color: Color(0xFF909090),
-                      //   ),
-                      //   validator: (value) {
-                      //     if (value!.trim().length > 2) {
-                      //       return null;
-                      //     }
-                      //     return "Enter a valid first name";
-                      //   },
-                      //   onSaved: (value){
-                      //     _firstName = value!.trim();
-                      //     return null;
-                      //   },
-                      // ),
+                      
+                      InputField(
+                        key: const Key('firstName'),
+                        textController: _firstNameController,
+                        node: _firstNameNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'First Name',
+                        hintText: 'Jane',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.user_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length > 2) {
+                            return null;
+                          }
+                          return "Enter a valid first name";
+                        },
+                        onSaved: (value){
+                          _firstName = value!.trim();
+                          return null;
+                        },
+                      ),
 
-                      // const SizedBox(height: 30.0),
-                      // InputField(
-                      //   key: const Key('lastName'),
-                      //   textController: _lastNameController,
-                      //   node: _lastNameNode,
-                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //   obscureText: false,
-                      //   text: 'Last Name',
-                      //   hintText: 'Doe',
-                      //   textHeight: 5.0,
-                      //   borderColor: appPrimaryColor.withOpacity(0.9),
-                      //   suffixIcon: const Icon(
-                      //     Remix.user_line,
-                      //     size: 18.0,
-                      //     color: Color(0xFF909090),
-                      //   ),
-                      //   validator: (value) {
-                      //     if (value!.trim().length > 2) {
-                      //       return null;
-                      //     }
-                      //     return "Enter a valid last name";
-                      //   },
-                      //   onSaved: (value) {
-                      //     _lastName = value!.trim();
-                      //     return null;
-                      //   },
-                      // ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Expanded(
-                            child: InputField(
-                              key: const Key('firstName'),
-                              textController: _firstNameController,
-                              node: _firstNameNode,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              obscureText: false,
-                              text: 'First Name',
-                              hintText: 'Jane',
-                              textHeight: 10.0,
-                              borderColor: appPrimaryColor.withOpacity(0.9),
-                              suffixIcon: const Icon(
-                                Remix.user_line,
-                                size: 18.0,
-                                color: Color(0xFF909090),
-                              ),
-                              validator: (value) {
-                                if (value!.trim().length > 2) {
-                                  return null;
-                                }
-                                return "Enter a valid first name";
-                              },
-                              onSaved: (value){
-                                _firstName = value!.trim();
-                                return null;
-                              },
-                            ),
-                          ),
+                      const SizedBox(height: 20.0),
 
-                          const SizedBox(width: 8.0),
-
-                          Expanded(
-                            child: InputField(
-                              key: const Key('lastName'),
-                              textController: _lastNameController,
-                              node: _lastNameNode,
-                              autovalidateMode: AutovalidateMode.onUserInteraction,
-                              obscureText: false,
-                              text: 'Last Name',
-                              hintText: 'Doe',
-                              textHeight: 10.0,
-                              borderColor: appPrimaryColor.withOpacity(0.9),
-                              suffixIcon: const Icon(
-                                Remix.user_line,
-                                size: 18.0,
-                                color: Color(0xFF909090),
-                              ),
-                              validator: (value) {
-                                if (value!.trim().length > 2) {
-                                  return null;
-                                }
-                                return "Enter a valid last name";
-                              },
-                              onSaved: (value) {
-                                _lastName = value!.trim();
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
+                      InputField(
+                        key: const Key('lastName'),
+                        textController: _lastNameController,
+                        node: _lastNameNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Last Name',
+                        hintText: 'Doe',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.user_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length > 2) {
+                            return null;
+                          }
+                          return "Enter a valid last name";
+                        },
+                        onSaved: (value) {
+                          _lastName = value!.trim();
+                          return null;
+                        },
                       ),
                     
                       const SizedBox(height: 30.0),
@@ -442,52 +381,15 @@ class _AddRiderState extends State<AddRider> {
                         },
                       ),
 
-                      // const SizedBox(height: 30.0),
-                      // InputField(
-                      //   key: const Key('confirmPassword'),
-                      //   textController: _confirmPasswordController,
-                      //   node: _confirmPasswordNode,
-                      //   maxLines: 1,
-                      //   autovalidateMode: AutovalidateMode.onUserInteraction,
-                      //   obscureText: _hidePassword,
-                      //   text: 'Confirm Password',
-                      //   hintText: 'password',
-                      //   textHeight: 10.0,
-                      //   borderColor: appPrimaryColor.withOpacity(0.9),
-                      //   suffixIcon: IconButton(
-                      //     icon: Icon(
-                      //       _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
-                      //       size: 18.0,
-                      //       color: const Color(0xFF909090),
-                      //     ),
-                      //     onPressed: () {
-                      //       setState(() {
-                      //         _hidePassword = !_hidePassword;
-                      //       });
-                      //     },
-                      //   ),
-                      //   validator: (value) {
-                      //     if(_confirmPasswordController.text != _passwordController.text){
-                      //       return "Password does not match";
-                      //     }
-                      //     return null;
-                      //   },
-                      //   onSaved: (value) {
-                      //     _password = value!.trim();
-                      //     return null;
-                      //   },
-                      // ),
-                     
-
                     const SizedBox(height: 40.0),
                     Align(
                       alignment: Alignment.center,
                       child: Button(
-                        text: userType == "rider" ? "Next" : 'Create an account',
-                        onPress: _onSubmit,
-                        // onPress: () {
-                        //   Navigator.of(context).pushNamed(PersonalData.id);
-                        // }, 
+                        text: "Next",
+                        //onPress: _onSubmit,
+                        onPress: () {
+                          Navigator.of(context).pushNamed(AddRider1.id);
+                        }, 
                         color: appPrimaryColor, 
                         textColor: whiteColor, 
                         isLoading: _loading,

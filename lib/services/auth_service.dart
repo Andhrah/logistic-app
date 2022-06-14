@@ -20,11 +20,8 @@ class AuthService {
   Future<dynamic> authRequest(Map body, String url) async {
     print('body is $body');
     print('Encoded body ${json.encode(body)}');
-    var response = await http.post(
-      uriConverter(url),
-      headers: kHeaders(''),
-      body: json.encode(body)
-    );
+    var response = await http.post(uriConverter(url),
+        headers: kHeaders(''), body: json.encode(body));
     print(response.body);
     var decoded = jsonDecode(response.body);
     if (response.statusCode.toString().startsWith('2')) {
@@ -48,11 +45,8 @@ class AuthService {
   Future<dynamic> loginRequest(Map body, String url) async {
     print('body is $body');
     print('Encoded body ${json.encode(body)}');
-    var response = await http.post(
-      ssoUriConverter(url),
-      headers: kHeaders(""),
-      body: json.encode(body)
-    );
+    var response = await http.post(ssoUriConverter(url),
+        headers: kHeaders(""), body: json.encode(body));
     // print(response.body);
     var decoded = jsonDecode(response.body);
     print(decoded);
@@ -60,8 +54,11 @@ class AuthService {
       print('data here for reset: $decoded');
       return decoded;
     } else {
-      print('reason is ${response.reasonPhrase} message is ${decoded['status']}');
-      throw ApiFailureException(decoded["message"] ?? response.reasonPhrase ?? 'Internal server error');
+      print(
+          'reason is ${response.reasonPhrase} message is ${decoded['status']}');
+      throw ApiFailureException(decoded["message"] ??
+          response.reasonPhrase ??
+          'Internal server error');
     }
   }
 
@@ -112,6 +109,19 @@ class AuthService {
     return await authRequest(body, 'api/User/register');
   }
 
+  Future<dynamic> createComplaint (
+     String name,
+    String email,
+    String message,
+  ) async {
+    var body = {
+      "name": name,
+      "email": email,
+      "message": message
+    };
+    return await authRequest(body, 'api/Complaints/create');
+  }
+
   Future<dynamic> createRider(
     String firstName,
     String lastName,
@@ -137,7 +147,7 @@ class AuthService {
     String kinAddress,
     String kinPhoneNumber,
     String kinRelationship,
-    ) async {
+  ) async {
     var body = {
       "user": {
         "firstName": firstName,
@@ -220,8 +230,13 @@ class AuthService {
   }
 
   // updateProfile
-  Future<dynamic> updateProfile(String firstName, String lastName,
-      int phoneNumber, String email, String address,) async {
+  Future<dynamic> updateProfile(
+    String firstName,
+    String lastName,
+    int phoneNumber,
+    String email,
+    String address,
+  ) async {
     var body = {
       "firstName": firstName,
       "lastName": lastName,
