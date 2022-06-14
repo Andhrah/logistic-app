@@ -76,10 +76,10 @@ class _RideIssuesState extends State<RideIssues> {
        print(response.toString());
       
       }catch(e){
-        print(e.toString());
+        print("this is the error response " + e.toString());
       }finally {
         setState(() {
-          _isLoading = true;
+          _isLoading = false;
        });
       }
 
@@ -266,7 +266,7 @@ class _RideIssuesState extends State<RideIssues> {
                     const SizedBox(height: 20),
                     Button(text: 'send', 
                     onPress: _onSave, color: Colors.black, 
-                    width: mediaQuery.size.width*1, textColor: Colors.white, isLoading: false)
+                    width: mediaQuery.size.width*1, textColor: Colors.white, isLoading: _isLoading)
 
 
                       ],
