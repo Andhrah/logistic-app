@@ -210,12 +210,11 @@ class _ProfileWidgetState extends State<ProfileIdget> {
       child: Column(
         children: [
 
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Expanded(
+                child: Container(
                   height: 59,
                   width: 100,
                   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
@@ -242,7 +241,10 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                     ),
                   ),
                 ),
-                Container(
+              ),
+              const SizedBox(width: 10,),
+              Expanded(
+                child: Container(
                   height: 59,
                   width: 100,
                   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
@@ -268,7 +270,10 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                     ),
                   ),
                 ),
-                Container(
+              ),
+              const SizedBox(width: 10,),
+              Expanded(
+                child: Container(
                   height: 59,
                   width: 100,
                   decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
@@ -390,8 +395,8 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           getCustomContainer(),
         ],
@@ -893,12 +898,9 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          //physics: NeverScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
+        child: Column(
+          children: [
+            Padding(
                 padding:
                     const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
                 child: Row(
@@ -947,13 +949,23 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                   ],
                 ),
               ),
-              const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                child: ProfileIdget(),
+            Expanded(
+              child: SingleChildScrollView(
+                //physics: NeverScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                      child: ProfileIdget(),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

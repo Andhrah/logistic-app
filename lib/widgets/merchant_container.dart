@@ -20,9 +20,10 @@ class MerchantContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return Container(
       margin: const EdgeInsets.only(left: 7, right: 7),
-        height: 160,
+        height: mediaQuery.size.height * 0.2,
         width: 160,
         decoration: BoxDecoration(
           
