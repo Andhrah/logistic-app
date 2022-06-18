@@ -21,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   late AnimationController controller;
   late Animation animation;
 
-  final HiveRepository _hiveRepository = HiveRepository();
+  // final HiveRepository _hiveRepository = HiveRepository();
   // FirstTimeUser? firstTimeUser;
 
   @override
@@ -36,7 +36,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // add listner to animation status and
     // navigate to getStarted screen if animation status is completed
     controller.addStatusListener((status) { 
-      print('status:$status');
       if (status == AnimationStatus.completed){
         _prepareAppState();
       }
@@ -87,13 +86,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     return Container(
       height: MediaQuery.of(context).size.height,
       color: appPrimaryColor,
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(0.0, 0.0, 90.0, 110.0),
-        child:  Center(
-          child: Image.asset(
-            "assets/images/trakk_logo.png",
-            height: 250.0,
-          ),
+      child: Center(
+        child: Image.asset(
+          "assets/images/trakk_logo.png",
+          height:MediaQuery.of(context).size.height / 8,
+          width: MediaQuery.of(context).size.width / 3,
         ),
       ),
     );
