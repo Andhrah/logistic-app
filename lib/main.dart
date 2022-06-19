@@ -25,7 +25,6 @@ import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
-import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
@@ -38,6 +37,7 @@ import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/rejected_rides.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
+import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
@@ -103,20 +103,10 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  static final String?  _pusher = dotenv.env["PUSHER_TOKEN"];
-
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
   );
-
-  // PusherClient pusher = PusherClient(
-  //   _pusher!,
-  //   PusherOptions(
-  //     encrypted: false,
-  //   ),
-  //   autoConnect: true,
-  // );
 
   @override
   void dispose() {
@@ -128,23 +118,9 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
 
-
-    
-    print(dotenv.env["PUSHER_TOKEN"]);
-
-
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
 
-    // pusher.onConnectionError((error) {
-    //   print("error: ${error != null ? error.message : ""}");
-    // });
-
-
-    // Channel channel = pusher.subscribe("adelowomi@gmail.com");
-    // channel.bind("user", (event) {
-    //   print(event != null ? event.data : "O ti fail");
-    // });
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
@@ -174,7 +150,7 @@ class _MyAppState extends State<MyApp> {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
             Tabs.id: (context) => const Tabs(),
-            Home.id: (context) => const Home(),
+            GetStarted.id: (context) => const GetStarted(),
             Signup.id: (context) => const Signup(),
             ItemDetails.id: (context) => const ItemDetails(),
             PickRide.id: (context) => const PickRide(),

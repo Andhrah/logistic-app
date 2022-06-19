@@ -5,13 +5,10 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/rider/personal_data.dart';
-import 'package:trakk/screens/home.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/elevated_container.dart';
 import 'package:trakk/widgets/input_field.dart';
 
 class SignupMerchant extends StatefulWidget {

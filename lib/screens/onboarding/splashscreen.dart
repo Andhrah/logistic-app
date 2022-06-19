@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:trakk/repository/hive_repository.dart';
-import 'package:trakk/screens/home.dart';
+import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
@@ -59,13 +59,14 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
           Onboarding.id, (route) => false
         );
       } else if(token != null){
-         Navigator.of(context).pushNamedAndRemoveUntil(
+        Navigator.of(context).pushNamedAndRemoveUntil(
           Tabs.id, (route) => false
         );
       }
       else {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          Home.id, (route) => false
+          // GetStarted.id, (route) => false
+          Onboarding.id, (route) => false
         );
       }
       // firstTimeUser = _hiveRepository.get<FirstTimeUser>(key: 'firstTimeUser', name: kFirstTimeUser);
