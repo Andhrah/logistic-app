@@ -24,7 +24,7 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
 
   _fetchUser() async {
-    var box = await Hive.openBox('userData');
+    var box = await Hive.openBox('appState');
     setState(() {
       userType = box.get("userType");
     });

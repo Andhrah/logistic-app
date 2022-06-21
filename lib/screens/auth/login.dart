@@ -1,10 +1,11 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/auth/login_provider.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/screens/tab.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -78,7 +79,7 @@ class _LoginState extends State<Login> {
       form.save();
       
       try {
-        var response = await Auth.authProvider(context).login(
+        var response = await LoginProvider.authProvider(context).loginUser(
           _email.toString(), 
           _password.toString(), 
         );
@@ -86,44 +87,24 @@ class _LoginState extends State<Login> {
           _loading = false;
         });
         
-        if (response["status"] == true) {
-          form.reset();
-          await Flushbar(
-            messageText: const Text(
-              'Login Successful',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                color: whiteColor,
-                fontSize: 18,
-              ),
-            ),
-            backgroundColor: green,
-            maxWidth: MediaQuery.of(context).size.width/1.4,
-            flushbarPosition: FlushbarPosition.TOP,
-            borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 3),
-          ).show(context);
+        if (response["status"] == "success" && response["data"]["user"]["confirmed"] == false) {
+          await appToast(context,  'Login Successful, please verify your account', green);
+          Navigator.of(context).pushNamed(
+            VerifiyAccountScreen.id,
+            arguments: {
+              "email": _email,
+              "phoneNumber": ""
+            }
+          );
+        } else {
+          await appToast(context,  'Login Successful', green);
           Navigator.of(context).pushNamed(Tabs.id);
         }
       } catch(err){
         setState(() {
           _loading = false;
         });
-        await Flushbar(
-          messageText: Text(
-            err.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: whiteColor,
-              fontSize: 18,
-            ),
-          ),
-          backgroundColor: redColor,
-          maxWidth: MediaQuery.of(context).size.width/1.2,
-          flushbarPosition: FlushbarPosition.TOP,
-          borderRadius: BorderRadius.circular(10),
-          duration: const Duration(seconds: 5),
-        ).show(context);
+        await appToast(context, err.toString(), redColor);
         rethrow;
       }
     }
@@ -140,7 +121,7 @@ class _LoginState extends State<Login> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 10.0),
+              kSizeBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

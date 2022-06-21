@@ -192,7 +192,7 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
                           text: "Enter the code sent to ",
                           children: [
                             TextSpan(
-                              text: _email! + ' or ' + _phoneNumber!,
+                              text: _email! + ' or your phone number ' + _phoneNumber!,
                               style: const TextStyle(
                                 color: appPrimaryColor,
                                 fontWeight: FontWeight.bold,
