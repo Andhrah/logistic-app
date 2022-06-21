@@ -30,13 +30,13 @@ class _PolylineScreenState extends State<PolylineScreen> {
   Set<Marker> markers = {}; //markers for google map
   Map<PolylineId, Polyline> polylines = {}; //polylines to show direction
 
-  // LatLng startLocation = LatLng(
-  //     box.get("pickupLongitude") ?? "", box.get("pickupLongitude") ?? "");
-  // LatLng endLocation = LatLng(box.get("destinationLatitude") ?? "",
-  //     box.get("destinationLongitude") ?? "");
+  LatLng startLocation = LatLng(
+      double.parse(box.get("pickupLongitude")), double.parse(box.get("pickupLatitude")));
+  LatLng endLocation = LatLng(double.parse(box.get("destinationLatitude")),
+      double.parse(box.get("destinationLongitude")));
 
-  LatLng startLocation = LatLng(27.6683619, 85.3101895);
-  LatLng endLocation = LatLng(20.6875436, 80.2751138);
+  // LatLng startLocation = LatLng(27.6683619, 85.3101895);
+  // LatLng endLocation = LatLng(20.6875436, 80.2751138);
 
   double distance = 0.0;
 
@@ -45,6 +45,7 @@ class _PolylineScreenState extends State<PolylineScreen> {
     markers.add(Marker(
       //add start location marker
       markerId: MarkerId(startLocation.toString()),
+     
       position: startLocation, //position of marker
       infoWindow: const InfoWindow(
         //popup info
@@ -69,6 +70,7 @@ class _PolylineScreenState extends State<PolylineScreen> {
     getDirections(); //fetch direction polylines from Google API
 
     super.initState();
+     print("${box.get(["destinationLongitude"].toString())} >>>>>>>>>long lat");
   }
 
   getDirections() async {
@@ -159,7 +161,7 @@ class _PolylineScreenState extends State<PolylineScreen> {
           child: Container(
             child: Card(
               child: Container(
-                padding: EdgeInsets.all(20),
+                padding: const EdgeInsets.all(20),
                 child: Text(
                   "Total Distance: " + distance.toStringAsFixed(2) + " KM",
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
