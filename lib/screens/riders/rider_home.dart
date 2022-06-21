@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:provider/provider.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
@@ -37,7 +38,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
  //double pickupLongitude = box.get('pickupLongitude');
 
    LatLng startLocation = LatLng(
-      double.parse(box.get("pickupLongitude")), double.parse(box.get("pickupLatitude") ));
+      double.parse(box.get("pickupLongitude")), double.parse(box.get("pickupLatitude")));
   LatLng endLocation = LatLng(double.parse(box.get("destinationLatitude")),
       double.parse(box.get("destinationLongitude")));
 
@@ -110,9 +111,11 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     }
     print(totalDistance);
 
-    setState(() {
+    if (mounted) {
+      setState(() {
       distance = totalDistance;
     });
+    }
     addPolyLine(polylineCoordinates);
   }
 
@@ -125,7 +128,10 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       width: 8,
     );
     polylines[id] = polyline;
-    setState(() {});
+    if(mounted){
+      setState(() {});
+    }
+    
   }
 
   //it will return distance in KM
@@ -153,20 +159,28 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     });
     socket.connect();
     socket.onConnect((data) => print(" the sever is connected"));
-    //listenToRequest();
+    listenToRequest();
     print("this is the socket response " + socket.connected.toString());
     //ride request with the rider id, so we will retrieve the rider's id and use it here
 
     //socket.emit("message", "Test for riders");
   }
+  
+  void dispose(){
+    //...
+    super.dispose();
+    listenToRequest();
+    connect();
+
+}
 
   Future<void> listenToRequest() async {
     print('just to test>>>>');
     //await Future.delayed(const Duration(milliseconds: 3000));
 
-    socket.on("rider_request_${box.get('riderId')}", (data) {
+    socket.on("rider_request_${box.get('riderId')}", (data) async {
       print("value of data >>>" + data.toString());
-      box.putAll({
+     await box.putAll({
         "pickupLongitude": data["order"]["pickupLongitude"],
         "pickupLatitude": data["order"]["pickupLatitude"],
         "destinationLatitude": data["order"]["destinationLatitude"],
@@ -177,10 +191,11 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       var id = data["order"]["id"];
       var pickup = data["order"]["pickup"];
       var destination = data["order"]["destination"];
-      double pickupLongitude = data["order"]["pickupLongitude"];
-      double pickupLatitude = data["order"]["pickupLatitude"];
-      double destinationLatitude = data["order"]["destinationLatitude"];
-      double destinationLongitude = data["order"]["destinationLongitude"];
+       var pickupLongitude = data["order"]["pickupLongitude"];
+      // var pickupLatitude = data["order"]["pickupLatitude"];
+      // var destinationLatitude = data["order"]["destinationLatitude"];
+      // var destinationLongitude = data["order"]["destinationLongitude"];
+      print("${box.get(["destinationLongitude"].toString())} >>>>>>>>>long lat");
       
       showOrder(context, id, pickup, destination);
       print(data["order"]["id"]);
@@ -294,7 +309,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   }
   
 
-  Future<dynamic> showOrder(BuildContext context, var id, pickup, String destination ) {
+  Future<dynamic> showOrder(BuildContext context, var id, pickup, String destination, ) {
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -451,7 +466,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                             ),
                             const SizedBox(height: 5.0),
                             Text(
-                              '29.2km',
+                              distance.toStringAsFixed(2) + "KM",
                               textScaleFactor: 1.0,
                               style: TextStyle(
                                 color: appPrimaryColor.withOpacity(0.3),
