@@ -79,7 +79,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       icon: BitmapDescriptor.defaultMarker, //Icon for Marker
     ));
 
-    getDirections();
+    //getDirections();
   }
 
   getDirections() async {
