@@ -12,12 +12,12 @@ import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/forgot_password_pin.dart';
 import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/otp.dart';
 import 'package:trakk/screens/auth/reset_password.dart';
 import 'package:trakk/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
 import 'package:trakk/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
@@ -200,7 +200,7 @@ class _MyAppState extends State<MyApp> {
             WalletHistory.id:(context) => const WalletHistory(),
             QrPayment.id:(context) => const QrPayment(),
             QrCodePayment.id:(context) => const QrCodePayment(),
-            OtpScreen.id: (context) => const OtpScreen(),
+            VerifiyAccountScreen.id: (context) => const VerifiyAccountScreen(),
           },
           // home: const GetStarted(),
         ),

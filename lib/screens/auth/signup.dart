@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/otp.dart';
+import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -112,7 +112,7 @@ class _SignupState extends State<Signup> {
           green,
         );
         Navigator.of(context).pushNamed(
-          OtpScreen.id,
+          VerifiyAccountScreen.id,
           arguments: {
             "email": _email,
             "phoneNumber": _phoneNumber

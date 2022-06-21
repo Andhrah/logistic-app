@@ -27,7 +27,8 @@ class SignupService {
       // print('reason is ...${response.reasonPhrase} message is ${decoded['error']}');
       throw ApiFailureException(decoded['error']["message"] ?? response.reasonPhrase);
     } else {
-      throw ApiFailureException(decoded['error']['message'] ?? response.reasonPhrase);
+      throw ApiFailureException('An error occurred, please try again');
+      // throw ApiFailureException(decoded['error']['message'] ?? response.reasonPhrase);
     }
   }
 }

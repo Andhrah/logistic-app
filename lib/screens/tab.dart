@@ -28,14 +28,12 @@ class _TabsState extends State<Tabs> {
     setState(() {
       userType = box.get("userType");
     });
-    print("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>");
-    print(userType);
   }
 
   
   
   int _selectedIndex = 0;
-  String userType =  "user";
+  String userType =  "customer";
 
   String currentTitle = 'Home';
 
@@ -55,7 +53,7 @@ class _TabsState extends State<Tabs> {
         return const WalletScreen();
       default:
         currentTitle = 'Profile';
-        return const Payment();
+        return const ProfileMenu();
     }
   }
 
@@ -99,8 +97,8 @@ class _TabsState extends State<Tabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: userType == "user" ? _currentUserPage(_selectedIndex) : _currentRiderPage(_selectedIndex),
-      bottomNavigationBar: userType == "user" ? BottomNavigationBar(
+      body: userType == "customer" ? _currentUserPage(_selectedIndex) : _currentRiderPage(_selectedIndex),
+      bottomNavigationBar: userType == "customer" ? BottomNavigationBar(
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: <BottomNavigationBarItem>[

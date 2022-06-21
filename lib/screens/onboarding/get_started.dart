@@ -18,10 +18,8 @@ class GetStarted extends StatefulWidget {
 class _GetStartedState extends State<GetStarted> {
 
   _isFirstTimeUser() async {
-   var box = await Hive.openBox('userData');
-    box.putAll({
-      "firstTimeUser": true,
-    });
+   var box = await Hive.openBox('appState');
+    box.put("firstTimeUser", true);
   }
 
   @override

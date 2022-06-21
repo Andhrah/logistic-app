@@ -1,25 +1,24 @@
 import 'dart:async';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
-import 'package:trakk/screens/auth/reset_password.dart';
+import 'package:trakk/provider/auth/verify_account_provider.dart';
+import 'package:trakk/screens/tab.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 
-class OtpScreen extends StatefulWidget {
+class VerifiyAccountScreen extends StatefulWidget {
   static const String id = 'otp';
 
-  const OtpScreen({Key? key}) : super(key: key);
+  const VerifiyAccountScreen({Key? key}) : super(key: key);
 
   @override
-  _OtpScreenState createState() => _OtpScreenState();
+  _VerifiyAccountScreenState createState() => _VerifiyAccountScreenState();
 }
 
-class _OtpScreenState extends State<OtpScreen> {
+class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
 
   final _formKey = GlobalKey<FormState>();
 
@@ -31,9 +30,12 @@ class _OtpScreenState extends State<OtpScreen> {
   bool hasError = false;
   bool _loading = false;
 
-  String code = "";
+  String _code = "";
   String? _email;
   String? _phoneNumber;
+  String currentText = "";
+
+  Color inactiveColor = appPrimaryColor;
 
   @override
   void initState() {
@@ -59,6 +61,29 @@ class _OtpScreenState extends State<OtpScreen> {
     );
   }
 
+  /// this method validates user's input
+  _handleUserInput() {
+    print('mmy curretTexxt length is => $_code');
+    print(currentText);
+    _formKey.currentState!.validate();
+      // conditions for validating
+      if (_code.length != 6) {
+        errorController!.add(ErrorAnimationType.shake); // Triggering error shake animation
+        setState(() => {
+          inactiveColor = redColor,
+          hasError = true,
+        });
+      } else {
+        setState(
+          () {
+            hasError = false;
+            // snackBar("OTP Verified!!");
+          },
+        );
+        _onSubmit();
+      }
+  }
+
   _onSubmit() async {
     setState(() {
       _loading = true;
@@ -69,69 +94,26 @@ class _OtpScreenState extends State<OtpScreen> {
 
       form.save();
 
-      var box = await Hive.openBox('userData');
       try {
-        var response = await Auth.authProvider(context).forgetPassword(
+        var response = await VerifyAccountProvider.authProvider(context).verifyAccount(
+          _code.toString(),
           _email.toString(), 
         );
         setState(() {
           _loading = false;
         });
-        if (response["statusCode"] == "OK") {
-          form.reset();
-          await Flushbar(
-            messageText: Text(
-              response["message"],
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 18,
-              ),
-            ),
-            backgroundColor: green,
-            maxWidth: MediaQuery.of(context).size.width/1.2,
-            flushbarPosition: FlushbarPosition.TOP,
-            borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 2),
-          ).show(context);
-          // Navigator.of(context).pushNamed(OtpScreen.id);
-        } else {
-          await Flushbar(
-            messageText: Text(
-              response["message"],
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 18,
-              ),
-            ),
-            backgroundColor: redColor,
-            maxWidth: MediaQuery.of(context).size.width/1.2,
-            flushbarPosition: FlushbarPosition.TOP,
-            borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 5),
-          ).show(context);
-        }
-        // Auth.authProvider(context)
+        form.reset();
+        await appToast(
+          context, 
+          response["data"]["message"], 
+          green,
+        );
+        Navigator.of(context).pushNamed(Tabs.id);
       } catch(err){
         setState(() {
           _loading = false;
         });
-        await Flushbar(
-          messageText: Text(
-            err.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: whiteColor,
-              fontSize: 18,
-            ),
-          ),
-          backgroundColor: redColor,
-          maxWidth: MediaQuery.of(context).size.width/1.2,
-          flushbarPosition: FlushbarPosition.TOP,
-          borderRadius: BorderRadius.circular(10),
-          duration: const Duration(seconds: 5),
-        ).show(context);
+        await appToast(context, err.toString(), redColor);
         rethrow;
       }
     }
@@ -210,7 +192,6 @@ class _OtpScreenState extends State<OtpScreen> {
                           text: "Enter the code sent to ",
                           children: [
                             TextSpan(
-                              // text: "your email address",
                               text: _email! + ' or ' + _phoneNumber!,
                               style: const TextStyle(
                                 color: appPrimaryColor,
@@ -219,13 +200,9 @@ class _OtpScreenState extends State<OtpScreen> {
                               )
                             ),
 
-                            TextSpan(
-                              // text: "your email address",
+                            const TextSpan(
                               text: " to verify your account",
-                              style: const TextStyle(
-                                // color: Colors.black,
-                                // fontWeight: FontWeight.bold,
-                                // fontSize: 15
+                              style: TextStyle(
                               )
                             ),
                           ],
@@ -251,6 +228,7 @@ class _OtpScreenState extends State<OtpScreen> {
                           obscureText: true,
                           blinkWhenObscuring: true,
                           animationType: AnimationType.fade,
+                          keyboardType: TextInputType.phone,
                           // validator: (v) {
                           //   if (v! == int) {
                           //     return "I'm from validator";
@@ -269,34 +247,22 @@ class _OtpScreenState extends State<OtpScreen> {
                             inactiveFillColor: whiteColor,
                             activeFillColor: whiteColor,
                             selectedFillColor: whiteColor,
-                            errorBorderColor: appPrimaryColor,
+                            errorBorderColor: redColor,
                           ),
                           cursorColor: Colors.black,
                           animationDuration: const Duration(milliseconds: 300),
                           enableActiveFill: true,
                           errorAnimationController: errorController,
                           controller: textEditingController,
-                          keyboardType: TextInputType.emailAddress,
                           onCompleted: (v) {
                             debugPrint("Completed");
-                            // snackBar(
-                            //   "Code Verified!!",
-                            //   green,
-                            // );
-                            Navigator.of(context).pushNamed(
-                              ResetPassword.id,
-                              arguments: {
-                                "code": code,
-                              }
-                            );
                           },
-                          // onTap: () {
-                          //   print("Pressed");
-                          // },
+                          onTap: () {},
                           onChanged: (value) {
                             debugPrint(value);
                             setState(() {
-                              code = value;
+                              _code = value;
+                              hasError = false;
                             });
                           },
                           beforeTextPaste: (text) {
@@ -310,12 +276,12 @@ class _OtpScreenState extends State<OtpScreen> {
                     ),
 
                     Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 30.0),
+                      padding: const EdgeInsets.symmetric(horizontal: 0.0),
                       child: Text(
-                        hasError ? "*Please fill up all the cells properly" : "",
+                        hasError ? "* Please, enter the code sent to you." : "",
                         style: const TextStyle(
                           color: Colors.red,
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w400
                         ),
                       ),
@@ -326,7 +292,7 @@ class _OtpScreenState extends State<OtpScreen> {
                       alignment: Alignment.center,
                       child: Button(
                         text: 'Verify account', 
-                        onPress: _onSubmit, 
+                        onPress: _handleUserInput, 
                         color: appPrimaryColor, 
                         textColor: whiteColor, 
                         isLoading: _loading,
@@ -366,8 +332,6 @@ class _OtpScreenState extends State<OtpScreen> {
                         )
                       ],
                     ),
-
-                    
                   ],
                 ),
               ),

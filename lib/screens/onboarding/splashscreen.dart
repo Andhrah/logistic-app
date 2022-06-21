@@ -21,9 +21,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   late AnimationController controller;
   late Animation animation;
 
-  // final HiveRepository _hiveRepository = HiveRepository();
-  // FirstTimeUser? firstTimeUser;
-
   @override
   void initState() {
     super.initState();
@@ -46,13 +43,13 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     await HiveRepository.openHives([
       kFirstTimeUser,
     ]);
-    // FirstTimeUser? firstTimeUser;
     bool? firstTimeUser;
     String? token;
 
     try {
-      var box = await Hive.openBox('userData');
-      token = box.get("token");
+      var box = await Hive.openBox('appState');
+      token = await box.get("token");
+      firstTimeUser = await box.get("firstTimeUser");
       firstTimeUser = box.get("firstTimeUser");
       if(firstTimeUser == null) {
         Navigator.of(context).pushNamedAndRemoveUntil(
@@ -65,12 +62,10 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       }
       else {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          // GetStarted.id, (route) => false
-          Onboarding.id, (route) => false
+          GetStarted.id, (route) => false
+          // Onboarding.id, (route) => false
         );
       }
-      // firstTimeUser = _hiveRepository.get<FirstTimeUser>(key: 'firstTimeUser', name: kFirstTimeUser);
-      // Auth.authProvider(context).setFirstTimerUser(firstTimeUser);
     } catch(err) {
       rethrow;
     }
