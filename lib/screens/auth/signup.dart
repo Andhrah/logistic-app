@@ -348,7 +348,7 @@ class _SignupState extends State<Signup> {
                       Align(
                         alignment: Alignment.center,
                         child: Button(
-                          text: userType == "rider" ? "Next" : 'Create an account',
+                          text: 'Create an account',
                           onPress: _onSubmit,
                           // onPress: () {
                           //   Navigator.of(context).pushNamed(PersonalData.id);

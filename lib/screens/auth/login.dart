@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/login_provider.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
@@ -75,7 +76,6 @@ class _LoginState extends State<Login> {
     
     final FormState? form = _formKey.currentState;
     if(form!.validate()){
-
       form.save();
       
       try {
@@ -89,11 +89,12 @@ class _LoginState extends State<Login> {
         
         if (response["status"] == "success" && response["data"]["user"]["confirmed"] == false) {
           await appToast(context,  'Login Successful, please verify your account', green);
+          var box = await Hive.openBox('appState');
           Navigator.of(context).pushNamed(
             VerifiyAccountScreen.id,
             arguments: {
               "email": _email,
-              "phoneNumber": ""
+              "phoneNumber": box.get("phoneNumber")
             }
           );
         } else {

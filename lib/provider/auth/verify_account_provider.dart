@@ -21,4 +21,16 @@ class VerifyAccountProvider extends ChangeNotifier {
       throw ApiFailureException(err);
     }
   }
+
+  Future resendOtp(String email, String phoneNumber) async {
+    try {
+      var response = await _api.resendOtp(
+        email,
+        phoneNumber,
+      );
+      return response;
+    } catch(err) {
+      throw ApiFailureException(err);
+    }
+  }
 }

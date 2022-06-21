@@ -29,6 +29,7 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
 
   bool hasError = false;
   bool _loading = false;
+  bool _resendOtpLoading = false;
 
   String _code = "";
   String? _email;
@@ -63,8 +64,6 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
 
   /// this method validates user's input
   _handleUserInput() {
-    print('mmy curretTexxt length is => $_code');
-    print(currentText);
     _formKey.currentState!.validate();
       // conditions for validating
       if (_code.length != 6) {
@@ -83,7 +82,8 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
         _onSubmit();
       }
   }
-
+ 
+  /// This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   _onSubmit() async {
     setState(() {
       _loading = true;
@@ -120,6 +120,34 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
     setState(() {
       _loading = false;
     });
+  }
+
+  /// This method handles the resend otp event and sends data to the API
+  _resendOtp() async {
+    setState(() {
+      _resendOtpLoading = true;
+    });
+
+    try {
+      var response = await VerifyAccountProvider.authProvider(context).resendOtp(
+        _email.toString(),
+        _phoneNumber.toString(),
+      );
+      setState(() {
+        _resendOtpLoading = false;
+      });
+      await appToast(
+        context, 
+        response["data"]["message"], 
+        green,
+      );
+    } catch(err) {
+      setState(() {
+        _resendOtpLoading = false;
+      });
+      await appToast(context, err.toString(), redColor);
+      rethrow;
+    }
   }
 
   @override
@@ -192,7 +220,7 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
                           text: "Enter the code sent to ",
                           children: [
                             TextSpan(
-                              text: _email! + ' or your phone number ' + _phoneNumber!,
+                              text: _email! + ' or ' + _phoneNumber!,
                               style: const TextStyle(
                                 color: appPrimaryColor,
                                 fontWeight: FontWeight.bold,
@@ -313,8 +341,8 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
                           textScaleFactor: 1.0,
                         ),
                         TextButton(
-                          onPressed: _onSubmit,
-                          child: _loading ? const Text(
+                          onPressed: _resendOtp,
+                          child: _resendOtpLoading ? const Text(
                             "RESENDING...",
                             style: TextStyle(
                               color: secondaryColor,
