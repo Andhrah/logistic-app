@@ -4,7 +4,8 @@
    <application
         android:label="trakk"
         android:name="${applicationName}"
-        android:icon="@mipmap/trakk_logo">
+        android:icon="@mipmap/trakk_logo"
+        android:usesCleartextTraffic="true">
         <meta-data 
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U"/>

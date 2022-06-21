@@ -19,13 +19,13 @@ class BackIcon extends StatelessWidget {
         customBorder: const CircleBorder(),
         child: const Center(
           child: Icon(
-            Icons.arrow_back_ios_new_outlined,color: appPrimaryColor,
+            Icons.arrow_back_ios_new_outlined,color: whiteColor,
             size: 24.0,
           ),
         )
       ),
       decoration: const BoxDecoration(
-        color: whiteColor,
+        color: appPrimaryColor,
         borderRadius: BorderRadius.all(
           Radius.circular(50.0)
         ),

@@ -47,6 +47,8 @@ import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
+import 'package:trakk/screens/riders/rider_home.dart';
+import 'package:trakk/screens/riders/rider_order.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/screens/tab.dart';
@@ -178,7 +180,7 @@ class _MyAppState extends State<MyApp> {
           ),
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
-          initialRoute: Home.id,
+          initialRoute: Tabs.id,
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -199,7 +201,7 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             CartScreen.id: (context) => const CartScreen(),
-            PolylineScreen.id: (context) => const PolylineScreen(),
+            PolylineScreen.id: (context) =>  PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
@@ -216,12 +218,11 @@ class _MyAppState extends State<MyApp> {
             // AllVehicleContainer.id:(context) => const AllVehicleContainer(),
             MerchantRiderProfile.id:(context) => const MerchantRiderProfile(),
             ListOfRiders.id:(context) => const ListOfRiders(),
-
+            RiderOrderScreen.id:(context) => const RiderHomeScreen(),
+            PickUpScreen.id: (context) => const PickUpScreen(),
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-
-
-
+            RiderHomeScreen.id:(context) => const RiderHomeScreen(),
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
 

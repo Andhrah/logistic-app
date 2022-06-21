@@ -28,6 +28,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box('userData');
+    
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -95,14 +96,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                  Row(
                                    children: [
                                      Text(
-                                      box.get('firstName'),
+                                      box.get('firstName') ?? "",
                                       style: const TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(width: 5,),
                                      Text(
-                                      box.get('lastName'),
+                                      box.get('lastName') ?? "",
                                       style: const TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
@@ -124,7 +125,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                         const SizedBox(
                                           height: 8,
                                         ),
-                                        Text(box.get('email'),),
+                                        Text(box.get('email') ?? "",),
                                       ],
                                     ),
                                     Button(

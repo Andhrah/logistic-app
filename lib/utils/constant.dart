@@ -12,5 +12,9 @@ const String baseUrl = 'trakk-server.herokuapp.com';
 const kHeaders = _headers;
 const ssoUrl = "zebrrasso.herokuapp.com";
 
-var box =  Hive.box('userData');
+
+openHive() {
+
+}
+ var box =  Hive.box('userData');
 

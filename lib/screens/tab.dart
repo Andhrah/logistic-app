@@ -65,16 +65,13 @@ class _TabsState extends State<Tabs> {
         currentTitle = 'Home';
         return const RiderHomeScreen();
       case 1 :
-        currentTitle = 'Order';
-        return const RiderOrderScreen();
-      case 2 :
         currentTitle = 'Wallet';
-        return Container();
-      case 3 :
-        currentTitle = 'Histroy';
-        return Container();
+        return const WalletScreen();
+      case 2 :
+        currentTitle = 'Cart';
+        return const CartScreen();
       default:
-        currentTitle = 'Profile';
+        currentTitle = 'More';
         return const ProfileMenu();
     }
   }
@@ -163,17 +160,12 @@ class _TabsState extends State<Tabs> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Remix.file_list_fill,
+              Remix.wallet_2_line,
               color: _selectedIndex != 1 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Order',
+            label: 'Wallet',
           ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/images/search_icon.svg",
-              color: _selectedIndex != 2 ? appPrimaryColor : secondaryColor
-            ),
-            label: 'Search',
-          ),
+         
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/cart_icon.svg",
               color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
@@ -184,7 +176,7 @@ class _TabsState extends State<Tabs> {
             icon: SvgPicture.asset("assets/images/profile_icon.svg",
               color: _selectedIndex != 4 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Profile',
+            label: 'More',
           ),
         ],
         currentIndex: _selectedIndex,
