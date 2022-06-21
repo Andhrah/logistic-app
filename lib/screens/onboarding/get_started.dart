@@ -82,7 +82,7 @@ class _GetStartedState extends State<GetStarted> {
                         Navigator.of(context).pushNamed(
                           Signup.id,
                           arguments: {
-                            "userType": "user",
+                            "userType": "customer",
                           }
                         );
                       },

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/utils/colors.dart';
@@ -109,7 +110,7 @@ class _SettingsState extends State<Settings> {
       form.save();
 
       try {
-        var response = await Auth.authProvider(context).createUser(
+        var response = await SignupProvider.authProvider(context).createUser(
             _firstName.toString(),
             _lastName.toString(),
             _email.toString(),

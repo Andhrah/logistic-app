@@ -7,40 +7,6 @@ import 'package:trakk/Exceptions/api_failure_exception.dart';
 import 'package:trakk/utils/constant.dart';
 
 class AuthService {
-  uriConverter(String url) {
-    print('$baseUrl/$url');
-    return Uri.https(baseUrl, '/$url');
-  }
-
-  ssoUriConverter(String url) {
-    print('$ssoUrl/$url');
-    return Uri.https(ssoUrl, '/$url');
-  }
-
-  Future<dynamic> authRequest(Map body, String url) async {
-    print('body is $body');
-    print('Encoded body ${json.encode(body)}');
-    var response = await http.post(uriConverter(url),
-        headers: kHeaders(''), body: json.encode(body));
-    print(response.body);
-    var decoded = jsonDecode(response.body);
-    if (response.statusCode.toString().startsWith('2')) {
-      print('data: $decoded');
-      return decoded;
-    } else if (decoded['data']) {
-      print(
-          'reason is ...${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(
-          decoded['data'][0]["message"] ?? response.reasonPhrase);
-    } else {
-      // if(decoded['data'] && decoded['data'][0]){
-      //   throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
-      // }
-      print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(
-          decoded['data'][0]["message"] ?? response.reasonPhrase);
-    }
-  }
 
   Future<dynamic> loginRequest(Map body, String url) async {
     print('body is $body');
@@ -96,118 +62,118 @@ class AuthService {
     }
   }
 
-  Future<dynamic> createUser(String firstName, String lastName, String email,
-      String password, String phoneNumber, String userType) async {
-    var body = {
-      "firstName": firstName,
-      "lastName": lastName,
-      "email": email,
-      "phoneNumber": phoneNumber,
-      "password": password,
-      "userType": userType,
-    };
-    return await authRequest(body, 'api/User/register');
-  }
+  // Future<dynamic> createUser(String firstName, String lastName, String email,
+  //     String password, String phoneNumber, String userType) async {
+  //   var body = {
+  //     "firstName": firstName,
+  //     "lastName": lastName,
+  //     "email": email,
+  //     "phoneNumber": phoneNumber,
+  //     "password": password,
+  //     "userType": userType,
+  //   };
+  //   return await authRequest(body, 'api/user/register');
+  // }
 
-  Future<dynamic> createComplaint (
-     String name,
-    String email,
-    String message,
-  ) async {
-    var body = {
-      "name": name,
-      "email": email,
-      "message": message
-    };
-    return await authRequest(body, 'api/Complaints/create');
-  }
+  // Future<dynamic> createComplaint (
+  //    String name,
+  //   String email,
+  //   String message,
+  // ) async {
+  //   var body = {
+  //     "name": name,
+  //     "email": email,
+  //     "message": message
+  //   };
+  //   return await authRequest(body, 'api/Complaints/create');
+  // }
 
-  Future<dynamic> createRider(
-    String firstName,
-    String lastName,
-    String email,
-    String password,
-    String phoneNumber,
-    String userType,
-    String stateOfOrigin,
-    String stateOfResidence,
-    String residentialAddress,
-    String userPassport,
-    String vehicleName,
-    String vehicleColor,
-    String vehicleNumber,
-    String vehicleCapacity,
-    String vehicleParticulars,
-    String vehicleImage,
-    String vehicleModel,
-    int vehicleTypeId,
-    String kinFirstName,
-    String kinLastName,
-    String kinEmail,
-    String kinAddress,
-    String kinPhoneNumber,
-    String kinRelationship,
-  ) async {
-    var body = {
-      "user": {
-        "firstName": firstName,
-        "lastName": lastName,
-        "email": email,
-        "phoneNumber": phoneNumber,
-        "password": password,
-        "userType": userType,
-        "nextOfKin": {
-          "firstName": kinFirstName,
-          "lastName": kinLastName,
-          "phoneNumber": kinPhoneNumber,
-          "email": kinEmail,
-          "address": kinAddress,
-          "relationship": kinRelationship,
-        },
-        "residentialAddress": residentialAddress,
-        "stateOfOrigin": stateOfOrigin,
-        "stateOfResidence": stateOfResidence,
-      },
-      "vehicle": {
-        "color": vehicleColor,
-        "name": vehicleName,
-        "number": vehicleNumber,
-        "capacity": vehicleCapacity,
-        "model": vehicleModel,
-        "vehicleTypeId": vehicleTypeId,
-        // "documents": [
-        //   {
-        //     "name": "string",
-        //     "url": "string"
-        //   }
-        // ],
-      },
-      // "firstName": firstName,
-      // "lastName": lastName,
-      // "email": email,
-      // "phoneNumber": phoneNumber,
-      // "password": password,
-      // "userType": userType,
+  // Future<dynamic> createRider(
+  //   String firstName,
+  //   String lastName,
+  //   String email,
+  //   String password,
+  //   String phoneNumber,
+  //   String userType,
+  //   String stateOfOrigin,
+  //   String stateOfResidence,
+  //   String residentialAddress,
+  //   String userPassport,
+  //   String vehicleName,
+  //   String vehicleColor,
+  //   String vehicleNumber,
+  //   String vehicleCapacity,
+  //   String vehicleParticulars,
+  //   String vehicleImage,
+  //   String vehicleModel,
+  //   int vehicleTypeId,
+  //   String kinFirstName,
+  //   String kinLastName,
+  //   String kinEmail,
+  //   String kinAddress,
+  //   String kinPhoneNumber,
+  //   String kinRelationship,
+  // ) async {
+  //   var body = {
+  //     "user": {
+  //       "firstName": firstName,
+  //       "lastName": lastName,
+  //       "email": email,
+  //       "phoneNumber": phoneNumber,
+  //       "password": password,
+  //       "userType": userType,
+  //       "nextOfKin": {
+  //         "firstName": kinFirstName,
+  //         "lastName": kinLastName,
+  //         "phoneNumber": kinPhoneNumber,
+  //         "email": kinEmail,
+  //         "address": kinAddress,
+  //         "relationship": kinRelationship,
+  //       },
+  //       "residentialAddress": residentialAddress,
+  //       "stateOfOrigin": stateOfOrigin,
+  //       "stateOfResidence": stateOfResidence,
+  //     },
+  //     "vehicle": {
+  //       "color": vehicleColor,
+  //       "name": vehicleName,
+  //       "number": vehicleNumber,
+  //       "capacity": vehicleCapacity,
+  //       "model": vehicleModel,
+  //       "vehicleTypeId": vehicleTypeId,
+  //       // "documents": [
+  //       //   {
+  //       //     "name": "string",
+  //       //     "url": "string"
+  //       //   }
+  //       // ],
+  //     },
+  //     // "firstName": firstName,
+  //     // "lastName": lastName,
+  //     // "email": email,
+  //     // "phoneNumber": phoneNumber,
+  //     // "password": password,
+  //     "userType": userType,
 
-      "stateOfOrigin": stateOfOrigin,
-      "stateOfResidence": stateOfResidence,
-      "residentialAddress": residentialAddress,
-      "avatar": userPassport,
+  //     "stateOfOrigin": stateOfOrigin,
+  //     "stateOfResidence": stateOfResidence,
+  //     "residentialAddress": residentialAddress,
+  //     "avatar": userPassport,
 
-      "vehicleName": vehicleName,
-      "vehicleColor": vehicleColor,
-      "vehicleNumber": vehicleNumber,
-      "vehicleCapacity": vehicleCapacity,
-      "vehicleImage": vehicleImage,
-      "vehicleParticulars": vehicleParticulars,
+  //     "vehicleName": vehicleName,
+  //     "vehicleColor": vehicleColor,
+  //     "vehicleNumber": vehicleNumber,
+  //     "vehicleCapacity": vehicleCapacity,
+  //     "vehicleImage": vehicleImage,
+  //     "vehicleParticulars": vehicleParticulars,
 
-      // "nOKFullName": kinFullName,
-      "nOKEmail": kinEmail,
-      "nOKAddress": kinAddress,
-      "nOKPhoneNumber": kinPhoneNumber,
-    };
-    return await authRequest(body, 'api/v1/auth/signup');
-  }
+  //     // "nOKFullName": kinFullName,
+  //     "nOKEmail": kinEmail,
+  //     "nOKAddress": kinAddress,
+  //     "nOKPhoneNumber": kinPhoneNumber,
+  //   };
+  //   return await authRequest(body, 'api/v1/auth/signup');
+  // }
 
   Future<dynamic> login(String email, String password) async {
     var body = {
@@ -230,21 +196,21 @@ class AuthService {
   }
 
   // updateProfile
-  Future<dynamic> updateProfile(
-    String firstName,
-    String lastName,
-    int phoneNumber,
-    String email,
-    String address,
-  ) async {
-    var body = {
-      "firstName": firstName,
-      "lastName": lastName,
-      "phoneNumber": phoneNumber,
-      "email": email,
-      "address": address,
-    };
-    // create your http function
-    return await authRequest(body, 'api/User/update');
-  }
+  // Future<dynamic> updateProfile(
+  //   String firstName,
+  //   String lastName,
+  //   int phoneNumber,
+  //   String email,
+  //   String address,
+  // ) async {
+  //   var body = {
+  //     "firstName": firstName,
+  //     "lastName": lastName,
+  //     "phoneNumber": phoneNumber,
+  //     "email": email,
+  //     "address": address,
+  //   };
+  //   // create your http function
+  //   return await authRequest(body, 'api/User/update');
+  // }
 }

@@ -48,117 +48,96 @@ class Auth extends ChangeNotifier {
   }
 
   // update profile
-  Future updateProfile(
-    String firstName,
-    String lastName,
-    int phoneNumber,
-    String email,
-    String address,
-  ) async {
-    try {
-      var response = await _authApi.updateProfile(
-        firstName,
-        lastName,
-        phoneNumber,
-        email,
-        address,
+  // Future updateProfile(
+  //   String firstName,
+  //   String lastName,
+  //   int phoneNumber,
+  //   String email,
+  //   String address,
+  // ) async {
+  //   try {
+  //     var response = await _authApi.updateProfile(
+  //       firstName,
+  //       lastName,
+  //       phoneNumber,
+  //       email,
+  //       address,
         
-      );
-      return response;
-    } catch(err) {
-      throw ApiFailureException(err);
-    }
+  //     );
+  //     return response;
+  //   } catch(err) {
+  //     throw ApiFailureException(err);
+  //   }
 
-  }
+  // }
 
 
   // create a user
-  Future createUser(
-    String firstName,
-    String lastName,
-    String email,
-    String password,
-    String phoneNumber,
-    String userType) async {
-    try {
-      var response = await _authApi.createUser(
-        firstName,
-        lastName,
-        email,
-        password,
-        phoneNumber,
-        userType,
-      );
-      return response;
-    } catch(err) {
-      throw ApiFailureException(err);
-    }
-  }
 
-  Future createRider(
-    String firstName,
-    String lastName,
-    String email,
-    String password,
-    String phoneNumber,
-    String userType,
+  // Future createRider(
+  //   String firstName,
+  //   String lastName,
+  //   String email,
+  //   String password,
+  //   String phoneNumber,
+  //   String userType,
 
-    String stateOfOrigin,
-    String stateOfResidence,
-    String residentialAddress,
-    String userPassport,
+  //   String stateOfOrigin,
+  //   String stateOfResidence,
+  //   String residentialAddress,
+  //   String userPassport,
 
-    String vehicleName,
-    String vehicleColor,
-    String vehicleNumber,
-    String vehicleCapacity,
-    String vehicleParticulars,
-    String vehicleImage,
-    String vehicleModel,
-    int vehicleTypeId,
+  //   String vehicleName,
+  //   String vehicleColor,
+  //   String vehicleNumber,
+  //   String vehicleCapacity,
+  //   String vehicleParticulars,
+  //   String vehicleImage,
+  //   String vehicleModel,
+  //   int vehicleTypeId,
 
-    String kinFirstName,
-    String kinLastName,
-    // String kinFullName,
-    String kinEmail,
-    String kinAddress,
-    String kinPhoneNumber,
-    String kinRelationship,
-    ) async {
-    try {
-      var response = await _authApi.createRider(
-        firstName,
-        lastName,
-        email,
-        password,
-        phoneNumber,
-        userType,
-        stateOfOrigin,
-        stateOfResidence,
-        residentialAddress,
-        userPassport,
-        vehicleName,
-        vehicleColor,
-        vehicleNumber,
-        vehicleCapacity,
-        vehicleParticulars,
-        vehicleImage,
-        vehicleModel,
-        vehicleTypeId,
-        kinFirstName,
-        kinLastName,
-        kinEmail,
-        kinAddress,
-        kinPhoneNumber,
-        kinRelationship,
-      );
-      print('[][][][][][][][][][] REGISTER [][][][][][][][][][][][]');
-      print('user is a ${response}');
-      return response;
-    } catch(err) {
-      throw ApiFailureException(err);
-    }
-  }
+  //   String kinFirstName,
+  //   String kinLastName,
+  //   // String kinFullName,
+  //   String kinEmail,
+  //   String kinAddress,
+  //   String kinPhoneNumber,
+  //   String kinRelationship,
+  //   ) async {
+  //   try {
+  //     var response = await _authApi.createRider(
+  //       firstName,
+  //       lastName,
+  //       email,
+  //       password,
+  //       phoneNumber,
+  //       userType,
+  //       stateOfOrigin,
+  //       stateOfResidence,
+  //       residentialAddress,
+  //       userPassport,
+  //       vehicleName,
+  //       vehicleColor,
+  //       vehicleNumber,
+  //       vehicleCapacity,
+  //       vehicleParticulars,
+  //       vehicleImage,
+  //       vehicleModel,
+  //       vehicleTypeId,
+  //       kinFirstName,
+  //       kinLastName,
+  //       kinEmail,
+  //       kinAddress,
+  //       kinPhoneNumber,
+  //       kinRelationship,
+  //     );
+  //     print('[][][][][][][][][][] REGISTER [][][][][][][][][][][][]');
+  //     print('user is a ${response}');
+  //     return response;
+  //   } catch(err) {
+  //     throw ApiFailureException(err);
+  //   }
+  // }
 
   // login a user
   Future login(String email, String password) async {
