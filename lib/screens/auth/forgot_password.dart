@@ -1,9 +1,8 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
-import 'package:trakk/screens/auth/forgot_password_pin.dart';
+import 'package:trakk/provider/auth/forgot_password_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -52,72 +51,63 @@ class _ForgetPasswordState extends State<ForgetPassword> {
       form.save();
       
       try {
-        var response = await Auth.authProvider(context).forgetPassword(
+        var response = await ForgotPasswordProvider.authProvider(context).forgetPassword(
           _email.toString(), 
         );
         setState(() {
           _loading = false;
         });
-        if (response["statusCode"] == "OK") {
-          form.reset();
-          await Flushbar(
-            messageText: Text(
-              response["message"],
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 18,
-              ),
-            ),
-            backgroundColor: green,
-            maxWidth: MediaQuery.of(context).size.width/1.2,
-            flushbarPosition: FlushbarPosition.TOP,
-            borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 4),
-          ).show(context);
-          Navigator.of(context).pushNamed(
-            ForgetPasswordPin.id,
-            arguments: {
-              "email": _email,
-            }
-          );
-        } else {
-          await Flushbar(
-            messageText: Text(
-              response["message"],
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 18,
-              ),
-            ),
-            backgroundColor: redColor,
-            maxWidth: MediaQuery.of(context).size.width/1.2,
-            flushbarPosition: FlushbarPosition.TOP,
-            borderRadius: BorderRadius.circular(10),
-            duration: const Duration(seconds: 5),
-          ).show(context);
-        }
+        await appToast(
+          context, 
+          response["data"]["message"], 
+          green,
+        );
+        // if (response["statusCode"] == "OK") {
+        //   form.reset();
+        //   await Flushbar(
+        //     messageText: Text(
+        //       response["message"],
+        //       textAlign: TextAlign.center,
+        //       style: const TextStyle(
+        //         color: whiteColor,
+        //         fontSize: 18,
+        //       ),
+        //     ),
+        //     backgroundColor: green,
+        //     maxWidth: MediaQuery.of(context).size.width/1.2,
+        //     flushbarPosition: FlushbarPosition.TOP,
+        //     borderRadius: BorderRadius.circular(10),
+        //     duration: const Duration(seconds: 4),
+        //   ).show(context);
+        //   Navigator.of(context).pushNamed(
+        //     ForgetPasswordPin.id,
+        //     arguments: {
+        //       "email": _email,
+        //     }
+        //   );
+        // } else {
+        //   await Flushbar(
+        //     messageText: Text(
+        //       response["message"],
+        //       textAlign: TextAlign.center,
+        //       style: const TextStyle(
+        //         color: whiteColor,
+        //         fontSize: 18,
+        //       ),
+        //     ),
+        //     backgroundColor: redColor,
+        //     maxWidth: MediaQuery.of(context).size.width/1.2,
+        //     flushbarPosition: FlushbarPosition.TOP,
+        //     borderRadius: BorderRadius.circular(10),
+        //     duration: const Duration(seconds: 5),
+        //   ).show(context);
+        // }
         // Auth.authProvider(context)
       } catch(err){
         setState(() {
           _loading = false;
         });
-        await Flushbar(
-          messageText: Text(
-            err.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: whiteColor,
-              fontSize: 18,
-            ),
-          ),
-          backgroundColor: redColor,
-          maxWidth: MediaQuery.of(context).size.width/1.2,
-          flushbarPosition: FlushbarPosition.TOP,
-          borderRadius: BorderRadius.circular(10),
-          duration: const Duration(seconds: 5),
-        ).show(context);
+        await appToast(context, err.toString(), redColor);
         rethrow;
       }
     }
@@ -155,7 +145,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 10.0),
+              kSizeBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -195,11 +185,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Please enter the email address associated\nwith your trakk account, we will send a\nreset link to you',
+                      Text(
+                        'Please enter the email address associated\nwith your trakk account, we will send a\nreset code to you',
                         textScaleFactor: 1.2,
                           style: TextStyle(
-                            color: appPrimaryColor,
+                            color: appPrimaryColor.withOpacity(0.5),
                             // fontWeight: FontWeight.bold,
                           ),
                       ),
@@ -249,7 +239,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         },
                         child: Align(
                           child: RichText(
-                            textScaleFactor: 0.9,
+                            textScaleFactor: 1,
                             text: const TextSpan(
                               text: 'Don’t have an account? ',
                               style: TextStyle(
