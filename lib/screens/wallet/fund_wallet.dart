@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
@@ -92,14 +93,36 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
 
   String _wallets = 'Select wallet';
   int geee = 2;
-  String _cards = "XXXX-XXXX-2356";
+   String _cards = "XXXX-XXXX-2356";
 
-  var cards = [
-    "XXXX-XXXX-2356",
-    "XXXX-XXXX-0863",
-    "XXXX-XXXX-7552",
-    "XXXX-XXXX-2535",
-    "Add new card",
+ List<Map> cards = [
+    {
+      "id": 0,
+      "cardNumber": "XXXX-XXXX-2356",
+      "image": "assets/images/master_card.svg",
+    },
+    {
+      "id": 1,
+      "cardNumber": "XXXX-XXXX-0863",
+      "image": "assets/images/visaCard.svg",
+      },
+      {
+        "id": 2,
+      "cardNumber": "XXXX-XXXX-7552",
+      "image": "assets/images/verve_card.svg",
+      },
+      {
+        "id": 3,
+      "cardNumber": "Add new card",
+      "image": "assets/images/verve_card.svg",
+      },
+      // {
+      //   "id": 4,
+      // "cardNumber":  "Add new card",
+      //  "image": "assets/images/mastercard_Logo.svg",
+      // },
+    
+   
   ];
 
   var wallets = [
@@ -617,6 +640,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                   SizedBox(
                     height: 15,
                   ),
+                
                   DecoratedBox(
                       decoration: BoxDecoration(
                         color: whiteColor,
@@ -628,27 +652,38 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                       ),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: DropdownButton<String>(
-                          value: _cards,
-                          icon: const Icon(Remix.arrow_down_s_line),
-                          elevation: 16,
-                          isExpanded: true,
-                          style: TextStyle(
-                            color: appPrimaryColor.withOpacity(0.8),
-                            fontSize: 18.0,
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton<String>(
+                            hint: const Text("Add new card"),
+                            value: _cards,
+                            icon: const Icon(Remix.arrow_down_s_line),
+                            elevation: 16,
+                            isExpanded: true,
+                            style: TextStyle(
+                              color: appPrimaryColor.withOpacity(0.8),
+                              fontSize: 18.0,
+                            ),
+                            underline: Container(), //empty line
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _cards = newValue!;
+                              });
+                              print(_cards);
+                            },
+                            items: cards.map((Map map) {
+                              return DropdownMenuItem<String>(
+                                value: map["cardNumber"].toString(),
+                                child: Row(
+                                  children: <Widget> [
+                                     Container(margin: const EdgeInsets.only(right: 10),
+                                   child: Text(map["cardNumber"]),),
+                                    SvgPicture.asset(map["image"], height: 30 ,),
+                                  
+                                  ],
+                                ),
+                              );
+                            }).toList(),
                           ),
-                          underline: Container(), //empty line
-                          onChanged: (String? newValue) {
-                            setState(() {
-                              _cards = newValue!;
-                            });
-                          },
-                          items: cards.map((String value) {
-                            return DropdownMenuItem(
-                              value: value,
-                              child: Text(value),
-                            );
-                          }).toList(),
                         ),
                       )),
                   const SizedBox(height: 20.0),

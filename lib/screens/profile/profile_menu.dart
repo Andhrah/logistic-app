@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:trakk/provider/update_profile/update_profile.dart';
+import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/constant.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/profile/settings.dart';
@@ -25,9 +27,34 @@ class ProfileMenu extends StatefulWidget {
 class _ProfileMenuState extends State<ProfileMenu> {
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
+
+@override
+  void initState() {
+    super.initState();
+    GetUserData.getUser();
+    //fetchUserData();
+  }
+
+  fetchUserData() async {
+    var response = await UpdateUserProvider.updateUserProvider(context).updateUserProfile();
+    print(
+        "responseData=> ${response["data"]}");
+  }
+
+  // fetchRiderHistory() async {
+  //   var response = await RiderHistoryProvider.riderHistoryProvider(context)
+  //       .getRidersHistory();
+  //   print(
+  //       "responseData=> ${response["data"]["attributes"]["orders"]["data"][0]["attributes"]}");
+
+  //   responseHolder =
+  //       response["data"]["attributes"]["orders"]["data"][0]["attributes"];
+  // }
   @override
   Widget build(BuildContext context) {
     var box = Hive.box('userData');
+       print("${box.get('lastName')} second call>>>");
+
     
     return Scaffold(
       backgroundColor: whiteColor,
@@ -131,10 +158,10 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                     Button(
                                         text: 'Edit profile',
                                         onPress: () {
-                                         var id = box.get('id');
-                                          //print("This is the token " + name);
-                                          print("This is the user id " +
-                                              id.toString());
+                                        //  var id = box.get('id');
+                                        //   //print("This is the token " + name);
+                                        //   print("This is the user id " +
+                                        //       id.toString());
 
                                           Navigator.of(context)
                                               .pushNamed(EditProfile.id);

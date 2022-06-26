@@ -7,14 +7,14 @@ import 'package:hive_flutter/hive_flutter.dart';
 class GetUserData{
   // a new instance of hive can be created with new box 
   
-  static void getUser() async {
+  static Future getUser() async {
     
   var box = await Hive.box('userData');
   // get user id and token from the values stored in hive after login
   var id = box.get('id');
   var token = box.get('token');
   try{
-    var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/19?populate=*'), headers: {
+    var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/55?populate=*'), headers: {
       'Content-type': 'application/json',
       //'Authorization': 'Bearer '
     });
@@ -30,13 +30,9 @@ class GetUserData{
         "phoneNumber": decoded['data']['phoneNumber'],
         "address": decoded['data']['address'],
         "id": decoded['data']['id'],
-        "riderId": decoded['data']['rider']['id']
+        // "riderId": decoded['data']['rider']['id']
       });
-    // box.putAll({
-    //     "lastName": decoded['data']['lastName'],
-    //     //"lastName": decoded['data']['lastName'],
-    //   });
-   print("${box.get('riderId')} >>>>");
+   print("${box.get('lastName')} >>>>");
     
     // this will be done for all details to be stored locally
     } else {

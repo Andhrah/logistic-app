@@ -32,7 +32,8 @@ class _PolylineScreenState extends State<PolylineScreen> {
 
   LatLng startLocation = LatLng(
       double.parse(box.get("pickupLongitude")), double.parse(box.get("pickupLatitude")));
-  LatLng endLocation = LatLng(double.parse(box.get("destinationLatitude")),
+  LatLng endLocation = LatLng(double.parse(box.get("destinationLatitude")), 
+  // vaaa
       double.parse(box.get("destinationLongitude")));
 
   // LatLng startLocation = LatLng(27.6683619, 85.3101895);

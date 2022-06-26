@@ -37,10 +37,10 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   //var box = Hive.box('userData');
  //double pickupLongitude = box.get('pickupLongitude');
 
-   LatLng startLocation = LatLng(
-      double.parse(box.get("pickupLongitude")), double.parse(box.get("pickupLatitude")));
-  LatLng endLocation = LatLng(double.parse(box.get("destinationLatitude")),
-      double.parse(box.get("destinationLongitude")));
+  //  LatLng startLocation = LatLng(
+  //     double.parse(box.get("pickupLongitude")), double.parse(box.get("pickupLatitude")));
+  // LatLng endLocation = LatLng(double.parse(box.get("destinationLatitude")),
+  //     double.parse(box.get("destinationLongitude")));
 
   double distance = 0.0;
 
@@ -48,7 +48,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    // TODO: implement initState 
     super.initState();
     GetUserData.getUser();
     print("connect called");
@@ -56,29 +56,29 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
     print("${box.get('riderId')} hollow");
     listenToRequest();
 
-    markers.add(Marker(
-      //add start location marker
-      markerId: MarkerId(startLocation.toString()),
-      position: startLocation, //position of marker
-      infoWindow: const InfoWindow(
-        //popup info
-        title: 'Starting Point ',
-        snippet: 'Start Marker',
-      ),
-      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-    ));
+    // markers.add(Marker(
+    //   //add start location marker
+    //   markerId: MarkerId(startLocation.toString()),
+    //   position: startLocation, //position of marker
+    //   infoWindow: const InfoWindow(
+    //     //popup info
+    //     title: 'Starting Point ',
+    //     snippet: 'Start Marker',
+    //   ),
+    //   icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+    // ));
 
-    markers.add(Marker(
-      //add distination location marker
-      markerId: MarkerId(endLocation.toString()),
-      position: endLocation, //position of marker
-      infoWindow: const InfoWindow(
-        //popup info
-        title: 'Destination Point ',
-        snippet: 'Destination Marker',
-      ),
-      icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-    ));
+    // markers.add(Marker(
+    //   //add distination location marker
+    //   markerId: MarkerId(endLocation.toString()),
+    //   position: endLocation, //position of marker
+    //   infoWindow: const InfoWindow(
+    //     //popup info
+    //     title: 'Destination Point ',
+    //     snippet: 'Destination Marker',
+    //   ),
+    //   icon: BitmapDescriptor.defaultMarker, //Icon for Marker
+    // ));
 
     //getDirections();
   }
@@ -86,20 +86,20 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   getDirections() async {
     List<LatLng> polylineCoordinates = [];
 
-    PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-      googleAPiKey,
-      PointLatLng(startLocation.latitude, startLocation.longitude),
-      PointLatLng(endLocation.latitude, endLocation.longitude),
-      travelMode: TravelMode.driving,
-    );
+    // PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
+    //   googleAPiKey,
+    //   PointLatLng(startLocation.latitude, startLocation.longitude),
+    //   PointLatLng(endLocation.latitude, endLocation.longitude),
+    //   travelMode: TravelMode.driving,
+    // );
 
-    if (result.points.isNotEmpty) {
-      result.points.forEach((PointLatLng point) {
-        polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-      });
-    } else {
-      print(result.errorMessage);
-    }
+    // if (result.points.isNotEmpty) {
+    //   result.points.forEach((PointLatLng point) {
+    //     polylineCoordinates.add(LatLng(point.latitude, point.longitude));
+    //   });
+    // } else {
+    //   print(result.errorMessage);
+    // }
     //polulineCoordinates is the List of longitute and latidtude.
     double totalDistance = 0;
     for (var i = 0; i < polylineCoordinates.length - 1; i++) {

@@ -55,7 +55,7 @@ class _TabsState extends State<Tabs> {
         return const WalletScreen();
       default:
         currentTitle = 'Profile';
-        return const Payment();
+        return const ProfileMenu();
     }
   }
 
