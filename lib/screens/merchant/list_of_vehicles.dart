@@ -67,7 +67,8 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
     return Scaffold(
         backgroundColor: whiteColor,
         body: SafeArea(
-            child: SingleChildScrollView(physics: ScrollPhysics(),
+            child: SingleChildScrollView(
+          physics: ScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(height: 10.0),
@@ -108,11 +109,12 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                               color: appPrimaryColor.withOpacity(0.9),
                               width: 0.3), //border of dropdown button
                           borderRadius: BorderRadius.circular(
-                              5.0), //border raiuds of dropdown button
+                              8.0), //border raiuds of dropdown button
                         ),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 15.0),
                           child: DropdownButton<String>(
+                            borderRadius: BorderRadius.circular(8),
                             value: _listOfVehicles,
                             icon: const Icon(Remix.arrow_down_s_line),
                             elevation: 16,
@@ -125,32 +127,34 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 _listOfVehicles = newValue!;
-                                if(newValue.contains("All vahicles")){
+                                if (newValue.contains("All vahicles")) {
                                   showAll = showAll;
                                   isActive = false;
-                                } else if(newValue.contains("Active vehicles")){
+                                } else if (newValue
+                                    .contains("Active vehicles")) {
                                   isActive = true;
                                   showAll = false;
-                                }else if(newValue.contains("Inactive vehicles")){
+                                } else if (newValue
+                                    .contains("Inactive vehicles")) {
                                   isActive = false;
                                   showAll = false;
-                                  
-                                }else if(newValue.contains("search")){
+                                } else if (newValue.contains("search")) {
                                   showAll = showAll;
                                   isActive = false;
-                                  
-                                };
+                                }
+                                ;
                               });
-                              
+
                               print(newValue);
                             },
                             items: vehicles.map((String value) {
-                              return DropdownMenuItem(onTap: () {
-                                setState(() {
-                                  showAll = showAll;
-                                          isActive = false;
-                                });
-                              },
+                              return DropdownMenuItem(
+                                onTap: () {
+                                  setState(() {
+                                    showAll = showAll;
+                                    isActive = false;
+                                  });
+                                },
                                 value: value,
                                 child: Text(value),
                               );
@@ -168,8 +172,6 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                             ),
                           )
                         : Container(),
-
-                    
                   ],
                 ),
               ),
@@ -195,9 +197,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                       //return AllVehicleContainer();
                       return SizedBox();
                       //return isActive ? ActiveContainer() : InactiveContainer();
-                    }
-                    
-                    ),
+                    }),
               )
             ],
           ),
@@ -206,7 +206,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
 }
 
 class AllVehicleContainer extends StatelessWidget {
-    static const String id = 'allvehiclecontainer';
+  static const String id = 'allvehiclecontainer';
 
   const AllVehicleContainer({
     Key? key,
@@ -215,9 +215,9 @@ class AllVehicleContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.all(8),
       height: 200,
-      decoration:
-          const BoxDecoration(color: whiteColor, boxShadow: [
+      decoration: const BoxDecoration(color: whiteColor, boxShadow: [
         BoxShadow(
           color: Color.fromARGB(255, 230, 230, 230),
           spreadRadius: 2,
@@ -225,59 +225,71 @@ class AllVehicleContainer extends StatelessWidget {
           blurRadius: 8.0,
         ),
       ]),
-      margin: EdgeInsets.only(left:22, right: 22),
+      margin: EdgeInsets.only(left: 22, right: 22),
       child: Padding(
-        padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
-        child: Column(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
-                  onTap: () {
-                    Navigator.of(context).pop();
+        padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
+        child: Expanded(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Container(
+                        height: 44,
+                        width: 44,
+                        decoration: const BoxDecoration(
+                            color: whiteColor,
+                            borderRadius: BorderRadius.all(Radius.circular(8)),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color.fromARGB(255, 230, 230, 230),
+                                spreadRadius: 1,
+                                offset: Offset(2.0, 2.0), //(x,y)
+                                blurRadius: 8.0,
+                              ),
+                            ]),
+                        child: const Icon(Remix.delete_bin_5_line)),
+                  )
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Image.asset('assets/images/bike.png'),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: const [
+                      Text(
+                        'Suzuki',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                      Text(
+                        'Vehicle no. 887',
+                        style: TextStyle(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  )
+                ],
+              ),
+              Button(
+                  text: 'All',
+                  onPress: () {
+                    Navigator.of(context).pushNamed(MerchantRiderProfile.id);
                   },
-                  child: SvgPicture.asset(
-                    'assets/images/cancel.svg',
-                    color: Colors.black,
-                  ),
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/bike.png'),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Suzuki',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      'Vehicle no. 887',
-                      style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Button(
-                text: 'All',
-                onPress: () {
-                  Navigator.of(context).pushNamed(MerchantRiderProfile.id);
-                },
-                color: appPrimaryColor,
+                  color: appPrimaryColor,
                   width: MediaQuery.of(context).size.width / 1,
-                textColor: whiteColor,
-                isLoading: false)
-          ],
+                  textColor: whiteColor,
+                  isLoading: false)
+            ],
+          ),
         ),
       ),
     );
