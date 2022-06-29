@@ -24,6 +24,7 @@ class LoginProvider extends ChangeNotifier {
       await box.put("token", response["data"]["jwt"]);
       await box.put("userType", response["data"]["user"]["userType"]);
       await box.put("phoneNumber", response["data"]["user"]["phoneNumber"]);
+      await box.put("firstName", response["data"]["user"]["firstName"]);
       return response;
     } catch(err) {
       throw ApiFailureException(err);

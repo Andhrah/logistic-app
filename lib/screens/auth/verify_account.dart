@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:trakk/provider/auth/verify_account_provider.dart';
+import 'package:trakk/screens/auth/merchant/company_data.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
@@ -95,6 +97,9 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
       form.save();
 
       try {
+        var box = await Hive.openBox('appState');
+        var userType = (box.get('userType'));
+        print(box.get('userType'));
         var response = await VerifyAccountProvider.authProvider(context).verifyAccount(
           _code.toString(),
           _email.toString(), 
@@ -108,7 +113,7 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
           response["data"]["message"], 
           green,
         );
-        Navigator.of(context).pushNamed(Tabs.id);
+        userType != "merchant" ? Navigator.of(context).pushNamed(Tabs.id) : Navigator.of(context).pushNamed(CompanyData.id);
       } catch(err){
         setState(() {
           _loading = false;

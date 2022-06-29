@@ -22,8 +22,8 @@ class MerchantContainer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.only(left: 7, right: 7),
-        height: 160,
-        width: 160,
+        height: 120,
+        width: 120,
         decoration: BoxDecoration(
           
           boxShadow:  const [
@@ -48,7 +48,7 @@ class MerchantContainer extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ),
-            Text(rides?? '', style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600), )
+            Text(rides?? '', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600), )
                   ],
                 )),
             Align(

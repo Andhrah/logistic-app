@@ -67,7 +67,7 @@ class _GetStartedState extends State<GetStarted> {
                 ),
               ),
 
-              const SizedBox(height: 70.0),
+              const SizedBox(height: 40.0),
 
               SizedBox(
                 height: MediaQuery.of(context).size.height / 1.4,
@@ -114,6 +114,12 @@ class _GetStartedState extends State<GetStarted> {
                       text: 'Sign up as a Company',
                       onPress: () {
                         // Navigator.of(context).pushNamed(CompanyGetStarted.id);
+                        Navigator.of(context).pushNamed(
+                          Signup.id,
+                          arguments: {
+                            "userType": "merchant",
+                          }
+                        );
                       },
                       color: whiteColor,
                       isLoading: false,
@@ -121,7 +127,7 @@ class _GetStartedState extends State<GetStarted> {
                       width: 300,
                     ),
 
-                    const SizedBox(height: 15.0),
+                    const SizedBox(height: 25.0),
 
                     InkWell(
                       onTap: (){

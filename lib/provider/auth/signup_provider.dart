@@ -29,6 +29,8 @@ class SignupProvider extends ChangeNotifier {
       );
       var box = await Hive.openBox('appState');
       await box.put("token", response["data"]["jwt"]);
+      await box.put("userType", response["data"]["user"]["userType"]);
+      await box.put("firstName", response["data"]["user"]["firstName"]);
       return response;
     } catch(err) {
       throw ApiFailureException(err);

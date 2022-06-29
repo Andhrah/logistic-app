@@ -5,6 +5,7 @@ import 'package:trakk/provider/auth/forgot_password_provider.dart';
 import 'package:trakk/provider/auth/login_provider.dart';
 import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/provider/auth/verify_account_provider.dart';
+import 'package:trakk/provider/merchant/add_company_data_provider.dart';
 import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/provider/rider/rider.dart';
 import 'package:trakk/provider/support/support.dart';
@@ -18,6 +19,7 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<VerifyAccountProvider>(create: (_) => VerifyAccountProvider()),
   ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
   ChangeNotifierProvider<ForgotPasswordProvider>(create: (_) => ForgotPasswordProvider()),
+  ChangeNotifierProvider<AddCompanyDataProvider>(create: (_) => AddCompanyDataProvider()),
   ChangeNotifierProvider<Order>(create: (_) => Order()),
   ChangeNotifierProvider<RiderAuth>(create: (_) => RiderAuth()),
   ChangeNotifierProvider<SupportProvider>(create: (_) => SupportProvider()),

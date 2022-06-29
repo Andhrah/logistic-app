@@ -12,6 +12,7 @@ import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/forgot_password_pin.dart';
 import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/auth/merchant/company_data.dart';
 import 'package:trakk/screens/auth/reset_password.dart';
 import 'package:trakk/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
@@ -201,6 +202,7 @@ class _MyAppState extends State<MyApp> {
             QrPayment.id:(context) => const QrPayment(),
             QrCodePayment.id:(context) => const QrCodePayment(),
             VerifiyAccountScreen.id: (context) => const VerifiyAccountScreen(),
+            CompanyData.id: (context) => const CompanyData(),
           },
           // home: const GetStarted(),
         ),

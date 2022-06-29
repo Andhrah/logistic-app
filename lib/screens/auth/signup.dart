@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/auth/merchant/company_data.dart';
 import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
@@ -332,7 +333,7 @@ class _SignupState extends State<Signup> {
                             regex = RegExp(strongRegex);
                               _passwordIsValid = regex.hasMatch(value);
                             if(_passwordIsValid == false){
-                            return "Password should be 8 characters or more, contain at least \na number, \na lowercase, \na capital letter and a special character";
+                            return "Password should be 8 characters or more,\ncontain at least a number, \na lowercase, \na capital letter and a special character";
                             }
                           }
                           return null;
@@ -383,7 +384,8 @@ class _SignupState extends State<Signup> {
                       ),
 
                       const SizedBox(height: 25.0),
-                      Row(
+
+                      userType != "merchant" ? Row(
                         children: const [
                           Expanded(
                             child: Divider(
@@ -409,9 +411,9 @@ class _SignupState extends State<Signup> {
                             ),
                           ),
                         ],
-                      ),
+                      ) : Container(),
 
-                      Row(
+                      userType != "merchant" ? Row(
                         children: [
                           Expanded(
                             child: ElevatedContainer(
@@ -462,7 +464,7 @@ class _SignupState extends State<Signup> {
                           kSizeBox,
 
                         ],
-                      ),
+                      ) : Container(),
                     ],
                   ),
                 ),

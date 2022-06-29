@@ -58,6 +58,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       } else if(token != null){
         Navigator.of(context).pushNamedAndRemoveUntil(
           Tabs.id, (route) => false
+          // GetStarted.id, (route) => false
         );
       }
       else {
