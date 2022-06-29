@@ -4,7 +4,12 @@
    <application
         android:label="Trakk"
         android:name="${applicationName}"
+<<<<<<< HEAD
         android:icon="@drawable/trakk_icon">
+=======
+        android:icon="@mipmap/trakk_logo"
+        android:usesCleartextTraffic="true">
+>>>>>>> refs/remotes/origin/ft-rider
         <meta-data 
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U"/>
