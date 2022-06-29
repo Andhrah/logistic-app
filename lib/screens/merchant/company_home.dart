@@ -59,6 +59,8 @@ class _CompanyHomeState extends State<CompanyHome> {
    _fetchTime();
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
