@@ -45,6 +45,8 @@ import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
+import 'package:trakk/screens/riders/rider_home.dart';
+import 'package:trakk/screens/riders/rider_order.dart';
 import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/screens/tab.dart';
@@ -168,7 +170,7 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             CartScreen.id: (context) => const CartScreen(),
-            PolylineScreen.id: (context) => const PolylineScreen(),
+            PolylineScreen.id: (context) =>  PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
@@ -186,6 +188,17 @@ class _MyAppState extends State<MyApp> {
             ListOfRiders.id:(context) => const ListOfRiders(),
             RejectedRides.id:(context) => const RejectedRides(),
             FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+            RiderOrderScreen.id:(context) => const RiderHomeScreen(),
+            PickUpScreen.id: (context) => const PickUpScreen(),
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+            RiderHomeScreen.id:(context) => const RiderHomeScreen(),
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+
+            // MyDatePicker.id: (context) => MyDatePicker(),
+            // Country.id: (context) => const Country(),
+            ProfileMenu.id: (context) => const ProfileMenu(),
             WalletScreen.id:(context) => const WalletScreen(),
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
             Settings.id:(context) =>  const Settings(),

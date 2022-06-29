@@ -55,14 +55,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   bool _isActive1 = false;
   bool _isActive2 = false;
 
-  // void _handleTap() {
-  //   setState(() {
-  //     _isActive = !_isActive;
-  //     // _isActive1 = !_isActive1;
-  //     // _isActive2 = !_isActive2;
-  //   });
-  // }
-
   String _suspensionDuration = 'Choose duration';
 
   late TextEditingController _lastNameController;
@@ -530,27 +522,27 @@ class _ProfileWidgetState extends State<ProfileIdget> {
               SizedBox(
                 height: 20,
               ),
-              profillebox(
+              Profillebox(
                 title: 'First name',
                 detail: 'Malik',
               ),
-              profillebox(
+              Profillebox(
                 title: 'Last name',
                 detail: 'Johnson',
               ),
-              profillebox(
+              Profillebox(
                 title: 'Phone',
                 detail: '0806-333-2255',
               ),
-              profillebox(
+              Profillebox(
                 title: 'Email address',
                 detail: 'malikjohn11@gmail.com',
               ),
-              profillebox(
+              Profillebox(
                 title: 'Home address',
                 detail: 'N0. Mcneil Street, Yaba',
               ),
-              profillebox(
+              Profillebox(
                 title: 'Assigned vehicle',
                 detail: 'Yamaha 4567658',
               ),
@@ -773,11 +765,11 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   }
 }
 
-class profillebox extends StatelessWidget {
+class Profillebox extends StatelessWidget {
   final String title;
   final String detail;
 
-  const profillebox({
+  const Profillebox({
     Key? key,
     required this.title,
     required this.detail,

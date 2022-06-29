@@ -9,14 +9,14 @@ class GetUserData{
   
   static void getUser() async {
     
-  var box = Hive.box('userData');
+  var box = await Hive.box('userData');
   // get user id and token from the values stored in hive after login
   var id = box.get('id');
   var token = box.get('token');
   try{
-    var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/53'), headers: {
+    var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/19?populate=*'), headers: {
       'Content-type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTM3MTAyMiwiZXhwIjoxNjU1NDU3NDIyfQ.oi4bFAF81PkXUC1GRyqMjbUAz1GgjRp7GQW0D9y-ETk'
+      //'Authorization': 'Bearer '
     });
     var decoded = json.decode(response.body);
     print('This is the get user data response' + response.body);
@@ -30,12 +30,13 @@ class GetUserData{
         "phoneNumber": decoded['data']['phoneNumber'],
         "address": decoded['data']['address'],
         "id": decoded['data']['id'],
+        "riderId": decoded['data']['rider']['id']
       });
     // box.putAll({
     //     "lastName": decoded['data']['lastName'],
     //     //"lastName": decoded['data']['lastName'],
     //   });
-   
+   print("${box.get('riderId')} >>>>");
     
     // this will be done for all details to be stored locally
     } else {
