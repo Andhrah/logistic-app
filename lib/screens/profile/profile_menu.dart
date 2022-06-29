@@ -3,12 +3,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:trakk/provider/update_profile/update_profile.dart';
+import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/constant.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
-import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
@@ -32,13 +32,13 @@ class _ProfileMenuState extends State<ProfileMenu> {
   void initState() {
     super.initState();
     GetUserData.getUser();
-    //fetchUserData();
+    fetchUserData();
   }
 
   fetchUserData() async {
     var response = await UpdateUserProvider.updateUserProvider(context).updateUserProfile();
     print(
-        "responseData=> ${response["data"]}");
+        "responseData=> ${response}");
   }
 
   // fetchRiderHistory() async {
@@ -92,8 +92,6 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // const SizedBox(height: 10.0),
-
                       const Divider(
                         thickness: 1,
                       ),
@@ -211,19 +209,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                           ),
                         ),
                       ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(WalletScreen.id);
-                        },
-                        child: const ProfileList(
-                          icon: Icon(Remix.wallet_3_line),
-                          //svg: 'assets/images/wallet.svg',
-                          title: 'Wallet',
-                        ),
-                      ),
+                     
                       const SizedBox(
                         height: 18,
                       ),

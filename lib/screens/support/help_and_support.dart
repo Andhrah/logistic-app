@@ -10,16 +10,16 @@ import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/input_field.dart';
 
-class RideIssues extends StatefulWidget {
+class HelpAndSupport extends StatefulWidget {
   static const String id = 'rideissue';
 
-  const RideIssues({Key? key}) : super(key: key);
+  const HelpAndSupport({Key? key}) : super(key: key);
 
   @override
-  State<RideIssues> createState() => _RideIssuesState();
+  State<HelpAndSupport> createState() => _HelpAndSupportState();
 }
 
-class _RideIssuesState extends State<RideIssues> {
+class _HelpAndSupportState extends State<HelpAndSupport> {
   var complaints = [
     "Choose complaint",
     "Delivery issues",
@@ -216,7 +216,7 @@ class _RideIssuesState extends State<RideIssues> {
                           color: Colors.red,
                         ),
                       ) : Container(),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 30.0),
                   DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -251,7 +251,7 @@ class _RideIssuesState extends State<RideIssues> {
                           ),
                         )
                       ),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 30.0),
 
                   TextField(
                     controller: _messageController,
@@ -263,7 +263,7 @@ class _RideIssuesState extends State<RideIssues> {
                     )
                   ),),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 50),
                     Button(text: 'send', 
                     onPress: _onSave, color: Colors.black, 
                     width: mediaQuery.size.width*1, textColor: Colors.white, isLoading: _isLoading)

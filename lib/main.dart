@@ -47,7 +47,6 @@ import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
-import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
@@ -205,8 +204,18 @@ class _MyAppState extends State<MyApp> {
             Payments.id:(context) =>  const Payments(),
             EditProfile.id: (context) => const EditProfile(),
             RideIssues.id:(context) =>  const RideIssues(),
+            FundWalletScreen.id: (context) => const FundWalletScreen(),
+            CompanyHome.id: (context) => const CompanyHome(),
+            Vehicles.id: (context) => const Vehicles(),
+            Riders.id: (context) => const Riders(),
+            DispatchHistory.id: (context) => const DispatchHistory(),
+            ListOfVehicles.id: (context) => const ListOfVehicles(),
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
+            ListOfRiders.id: (context) => const ListOfRiders(),
+            RejectedRides.id:(context) => const RejectedRides(),
+            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
+            WalletScreen.id:(context) => const WalletScreen(),
             Transfers.id:(context) => const Transfers(),
             PayWithTransfer.id:(context) => const PayWithTransfer(),
             AllCards.id: (context)  => const AllCards(),
