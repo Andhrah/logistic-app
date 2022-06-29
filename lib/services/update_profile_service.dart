@@ -11,9 +11,9 @@ class UpdateProfileService {
   Future<bool?> updateProfile({required String firstName, required String lastName,required String phoneNumber,
    required String  email,required String address}) async {
     print("[][][][] NETWORK");
-    // var box = await Hive.openBox('userData');
-    // String token = box.get('token');
-    // print("This is the token >>>>>>>" + token);
+    var box = await Hive.openBox('userData');
+    String token = box.get('token');
+    print("This is the token >>>>>>>" + token);
     try {
       Data data = Data(firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, 
       email: email, address: address);
