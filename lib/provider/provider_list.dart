@@ -9,6 +9,7 @@ import 'package:trakk/provider/merchant/add_company_data_provider.dart';
 import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/provider/rider/rider.dart';
 import 'package:trakk/provider/support/support.dart';
+import 'package:trakk/provider/update_profile/update_profile.dart';
 
 List<SingleChildWidget> appProviders = [
   // ChangeNotifierProvider notifies the UI/Widget to update its
@@ -23,4 +24,5 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<Order>(create: (_) => Order()),
   ChangeNotifierProvider<RiderAuth>(create: (_) => RiderAuth()),
   ChangeNotifierProvider<SupportProvider>(create: (_) => SupportProvider()),
+  ChangeNotifierProvider<UpdateUserProvider>(create: (_) => UpdateUserProvider()),
 ];

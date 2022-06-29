@@ -1,9 +1,13 @@
+import 'package:carousel_slider/carousel_controller.dart';
+import 'package:carousel_slider/carousel_options.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/my_color.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';
@@ -19,7 +23,59 @@ class AllCards extends StatefulWidget {
   _AllCardsState createState() => _AllCardsState();
 }
 
+class IndicatorCircle extends StatelessWidget {
+  final bool active;
+
+  IndicatorCircle(this.active);
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedContainer(
+        margin: const EdgeInsets.only(top: 10, bottom: 5, left: 2, right: 2),
+        height: 5,
+        width: active ? 17 : 8,
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(active ? 4 : 3),
+            color: active
+                ? appPrimaryColor
+                : appPrimaryColor.withOpacity(.3)),
+        duration: const Duration(milliseconds: 500),
+        curve: Curves.fastOutSlowIn);
+  }
+}
+
 class _AllCardsState extends State<AllCards> {
+  CarouselController buttonCarouselController = CarouselController();
+  int currentScreen = 1;
+  double _widget_opacity = 1;
+  Curve _animation_curve = Curves.fastLinearToSlowEaseIn;
+
+  List<Map> cardStates = [
+    {
+      'image': 'assets/images/zebrraCard.png',
+    },
+    {
+      'image': 'assets/images/zebrraCard.png',
+    },
+    {
+      'image': 'assets/images/zebrraCard.png',
+    },
+  ];
+
+  handleCarouselPageChange(int index, reason) {
+    setState(() {
+      currentScreen = index + 1;
+    });
+  }
+
+  String reason = '';
+
+  onPageChange(int index, CarouselPageChangedReason changeReason) {
+    setState(() {
+      reason = changeReason.toString();
+    });
+  }
+
   String _wallets = 'Select wallet';
   int geee = 2;
   String _cards = "XXXX-XXXX-2356";
@@ -60,6 +116,8 @@ class _AllCardsState extends State<AllCards> {
 
   @override
   Widget build(BuildContext context) {
+    int currentScreenIndex = currentScreen - 1;
+
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       backgroundColor: Color(0xffE5E5E5),
@@ -75,10 +133,10 @@ class _AllCardsState extends State<AllCards> {
                   },
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40.0),
+                  margin: EdgeInsets.only(left: mediaQuery.size.width / 5),
                   alignment: Alignment.center,
                   child: const Text(
-                    'PAYMENTS',
+                    'ALL CARDS',
                     style: TextStyle(
                         color: appPrimaryColor,
                         fontSize: 20.0,
@@ -102,8 +160,8 @@ class _AllCardsState extends State<AllCards> {
             Expanded(
               child: Container(
                 width: mediaQuery.size.width,
-                margin: EdgeInsets.only(top: 50),
-                padding: EdgeInsets.symmetric(vertical: 30, horizontal: 30),
+                margin: EdgeInsets.only(top: 100),
+                padding: EdgeInsets.symmetric(vertical: 50, horizontal: 30),
                 //left: 30, right: 30, top: 30, bottom: 10
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.only(
@@ -119,24 +177,79 @@ class _AllCardsState extends State<AllCards> {
                       ),
                     ]),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 8.0),
-                      child: Text("My Debit Card",
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                              //fontSize: 16,
-                              fontWeight: FontWeight.w500)),
+                    Padding(
+                      padding: EdgeInsets.only(
+                        left: 8.0,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text("My Debit Card",
+                              textScaleFactor: 1.2,
+                              style: TextStyle(
+                                  //fontSize: 16,
+                                  fontWeight: FontWeight.w500),),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                  child: CarouselSlider(
+                                    carouselController:
+                                        buttonCarouselController,
+                                    options: CarouselOptions(
+                                      // aspectRatio: MediaQuery.of(context)
+                                      //     .size.aspectRatio,
+                                      viewportFraction: 1.2,
+                                      initialPage: 0,
+                                      enableInfiniteScroll: true,
+                                      reverse: false,
+                                      autoPlay: false,
+                                      autoPlayInterval:
+                                          const Duration(seconds: 5),
+                                      autoPlayAnimationDuration:
+                                          const Duration(milliseconds: 800),
+                                      autoPlayCurve: Curves.fastOutSlowIn,
+                                      enlargeCenterPage: false,
+                                      onPageChanged: handleCarouselPageChange,
+                                      scrollDirection: Axis.horizontal,
+                                    ),
+                                    items: cardStates.map((cardState) {
+                                      return Container(
+                                        alignment: Alignment.bottomCenter,
+                                        child: Image(width: mediaQuery.size.width /1.4,
+                                          image:
+                                              AssetImage(cardState['image']),
+                                          fit: BoxFit.fill,
+                                        ),
+                                      );
+                                    }).toList(),
+                                  ),
+                                  key: const Key('image-container')),
+                            ],
+                          ),
+                          Container(
+                            margin:
+                                const EdgeInsets.only(top: 20, bottom: 30.0),
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                IndicatorCircle(currentScreen == 1),
+                                IndicatorCircle(currentScreen == 2),
+                                IndicatorCircle(currentScreen == 3),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     const SizedBox(
-                      height: 10,
-                    ),
-                    Image.asset(
-                      'assets/images/zebrraCard.png',
-                    ),
-                    const SizedBox(
-                      height: 30,
+                      height: 0,
                     ),
                     Padding(
                       padding: const EdgeInsets.only(left: 7.0, right: 7),

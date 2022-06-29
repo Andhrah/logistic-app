@@ -16,12 +16,11 @@ class UpdateProfileService {
     // String token = box.get('token');
     // print("This is the token >>>>>>>" + token);
     try {
-      Data data = Data(firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, 
-      email: email, address: address);
-      UpdateProfile updateProfile = UpdateProfile(data: data);
+      UpdateProfileModel updateProfileModel = UpdateProfileModel(firstName: firstName, lastName: lastName,
+      phoneNumber: phoneNumber, address: address);
       var response = await http
-          .put(Uri.parse('https://zebrra.itskillscenter.com/api/users/53'),
-            body: updateProfileToJson(updateProfile),
+          .put(Uri.parse('https://zebrra.itskillscenter.com/api/users/55'),
+            body: updateProfileModelToJson(updateProfileModel),
             
               // body: json.encode({
               //   "data": {
@@ -31,11 +30,22 @@ class UpdateProfileService {
               //   }
               // }),
               headers: {'Content-Type': 'application/json',
-              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTM3MTAyMiwiZXhwIjoxNjU1NDU3NDIyfQ.oi4bFAF81PkXUC1GRyqMjbUAz1GgjRp7GQW0D9y-ETk"
+              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTUsImlhdCI6MTY1NjAxOTY0OSwiZXhwIjoxNjU2MTA2MDQ5fQ.5OX8fs5LDpdmeQ8LULyjZn2fRj2slCk6kgpwhX1U0Z0"
               });
       if (response.statusCode == 200 || response.statusCode == 201) {
+        var decoded = jsonDecode(response.body);
         print(response.body);
-        GetUserData.getUser();
+        box.putAll({
+        "firstName": decoded['data']['firstName'],
+        "lastName": decoded['data']['lastName'],
+        "email": decoded['data']['email'],
+        "phoneNumber": decoded['data']['phoneNumber'],
+        "address": decoded['data']['address'],
+        "id": decoded['data']['id'],
+        
+      });
+        print(">>>>>>>>>>>>>>>>");
+       await GetUserData.getUser();
         return true;
       } else {
         print('error ********');
@@ -71,6 +81,8 @@ class UpdateProfileService {
       return null;
     }
   }
+
+  updateUserProfile() {}
 
   // Future<dynamic> createComplaint(
   //   String name,
