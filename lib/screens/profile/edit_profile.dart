@@ -1,11 +1,13 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/models/update_profile/update_profile.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/services/update_profile_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -25,6 +27,8 @@ class _EditProfileState extends State<EditProfile> {
 
   final _formKey = GlobalKey<FormState>();
 
+  UpdateProfileService updateProfileService = UpdateProfileService();
+
   // this controller keeps track of what the user is typing in th textField
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -32,13 +36,14 @@ class _EditProfileState extends State<EditProfile> {
   late TextEditingController _phoneNumberController;
   late TextEditingController _passwordController;
   late TextEditingController _confirmPasswordController;
+  late TextEditingController _addressController;
 
   FocusNode? _firstNameNode;
   FocusNode? _lastNameNode;
   FocusNode? _phoneNumberNode;
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
-  FocusNode? _homeAddress;
+  FocusNode? _addressNode;
 
   String? _firstName;
   String? _lastName;
@@ -64,6 +69,7 @@ class _EditProfileState extends State<EditProfile> {
     _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
     _confirmPasswordController = TextEditingController();
+    _addressController = TextEditingController();
   }
 
   _validateEmail() {
@@ -104,62 +110,23 @@ class _EditProfileState extends State<EditProfile> {
       _loading = true;
     });
 
-    final FormState? form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-
-      try {
-        var response = await SignupProvider.authProvider(context).createUser(
-            _firstName.toString(),
-            _lastName.toString(),
-            _email.toString(),
-            _password.toString(),
-            _phoneNumber.toString(),
-            userType);
-        setState(() {
-          _loading = false;
-        });
-        if (response["code"] == 201) {
-          form.reset();
-          await Flushbar(
-            messageText: Text(
-              response["message"] + ' Please login',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 18,
-              ),
-            ),
-            backgroundColor: green,
-            flushbarPosition: FlushbarPosition.TOP,
-            duration: const Duration(seconds: 2),
-          ).show(context);
-          Navigator.of(context).pushNamed(Login.id);
-        }
-        // Auth.authProvider(context)
-      } catch (err) {
-        setState(() {
-          _loading = false;
-        });
-        await Flushbar(
-          messageText: Text(
-            err.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: whiteColor,
-              fontSize: 18,
-            ),
-          ),
-          backgroundColor: redColor,
-          flushbarPosition: FlushbarPosition.TOP,
-          duration: const Duration(seconds: 5),
-        ).show(context);
-        rethrow;
-      }
+    try {
+      var response = await updateProfileService.updateProfile(firstName: _firstNameController.text, 
+      lastName: _lastNameController.text, phoneNumber: _phoneNumberController.text,
+       email: _emailController.text, address: _addressController.text);
+       if(response == true) {
+         print(response.toString());
+         Navigator.of(context).pop();
+       }
+    } catch(err) {
+      print(err.toString());
+    } finally {
+      setState(() {
+        _loading = false;
+      });
     }
-    setState(() {
-      _loading = false;
-    });
+
+    
   }
   @override
   Widget build(BuildContext context) {
@@ -318,10 +285,10 @@ class _EditProfileState extends State<EditProfile> {
                       InputField(
                         key: const Key('Home address'),
                         textController: _confirmPasswordController,
-                        node: _homeAddress,
+                        node: _addressNode,
                         maxLines: 1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
-                        obscureText: _hidePassword,
+                        obscureText: false,
                         text: 'Home address',
                         hintText: 'Address',
                         textHeight: 10.0,
@@ -336,13 +303,7 @@ class _EditProfileState extends State<EditProfile> {
                           child: Button(
                               text: 'Save',
                               //onPress:// _onSubmit,
-                              onPress: () {
-                                //firstName = _firstNameController.text;
-                                setState(() {
-                                  firstName = _firstNameController.text;
-                                });
-                                Navigator.of(context).pop();
-                              },
+                              onPress: _onSubmit,
                               color: appPrimaryColor,
                               textColor: whiteColor,
                               isLoading: _loading,

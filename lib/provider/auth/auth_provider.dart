@@ -150,6 +150,11 @@ class Auth extends ChangeNotifier {
       box.putAll({
         "token": response['data']['token'],
       });
+      box.putAll({
+        "id": response['data']['id'],
+      });
+      
+      
       
       // User user = User.fromJson(response);
       print('[][][][][][][][][] THERER [][][][][][][][][][][][][]');
@@ -161,7 +166,7 @@ class Auth extends ChangeNotifier {
       throw ApiFailureException(err);
     }
   }
-
+  
   // forget password
   Future forgetPassword(String email) async {
     try {
