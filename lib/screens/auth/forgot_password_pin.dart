@@ -29,6 +29,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
 
   bool hasError = false;
   bool _loading = false;
+  bool _resendOtpLoading = false;
 
   String code = "";
   String? _email;
@@ -152,7 +153,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin> {
         child: SafeArea(
           child: Column(
             children: [
-              const SizedBox(height: 10.0),
+              kSizeBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [

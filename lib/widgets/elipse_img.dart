@@ -12,10 +12,11 @@ class ElispeImg extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.only(right: 30.0),
         width:  MediaQuery.of(context).size.width / 2,
-        height: 180.0,
+        height: 150.0,
         decoration: const BoxDecoration(
+          // color: Colors.purple,
           image: DecorationImage(
-            image: AssetImage('assets/images/onboarding_ellipse_img.png'),
+            image: AssetImage('assets/images/ellipse.png'),
             fit: BoxFit.fill,
             scale: 3.0,
           ),

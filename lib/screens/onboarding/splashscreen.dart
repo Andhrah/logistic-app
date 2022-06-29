@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:trakk/repository/hive_repository.dart';
-import 'package:trakk/screens/home.dart';
+import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/colors.dart';
@@ -21,9 +21,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   late AnimationController controller;
   late Animation animation;
 
-  final HiveRepository _hiveRepository = HiveRepository();
-  // FirstTimeUser? firstTimeUser;
-
   @override
   void initState() {
     super.initState();
@@ -36,7 +33,6 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     // add listner to animation status and
     // navigate to getStarted screen if animation status is completed
     controller.addStatusListener((status) { 
-      print('status:$status');
       if (status == AnimationStatus.completed){
         _prepareAppState();
       }
@@ -47,30 +43,30 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     await HiveRepository.openHives([
       kFirstTimeUser,
     ]);
-    // FirstTimeUser? firstTimeUser;
     bool? firstTimeUser;
     String? token;
 
     try {
-      var box = await Hive.openBox('userData');
-      token = box.get("token");
+      var box = await Hive.openBox('appState');
+      token = await box.get("token");
+      firstTimeUser = await box.get("firstTimeUser");
       firstTimeUser = box.get("firstTimeUser");
       if(firstTimeUser == null) {
         Navigator.of(context).pushNamedAndRemoveUntil(
           Onboarding.id, (route) => false
         );
       } else if(token != null){
-         Navigator.of(context).pushNamedAndRemoveUntil(
+        Navigator.of(context).pushNamedAndRemoveUntil(
           Tabs.id, (route) => false
+          // GetStarted.id, (route) => false
         );
       }
       else {
         Navigator.of(context).pushNamedAndRemoveUntil(
-          Home.id, (route) => false
+          GetStarted.id, (route) => false
+          // Onboarding.id, (route) => false
         );
       }
-      // firstTimeUser = _hiveRepository.get<FirstTimeUser>(key: 'firstTimeUser', name: kFirstTimeUser);
-      // Auth.authProvider(context).setFirstTimerUser(firstTimeUser);
     } catch(err) {
       rethrow;
     }
@@ -87,13 +83,11 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
     return Container(
       height: MediaQuery.of(context).size.height,
       color: appPrimaryColor,
-      child: Container(
-        margin: const EdgeInsets.fromLTRB(0.0, 0.0, 90.0, 110.0),
-        child:  Center(
-          child: Image.asset(
-            "assets/images/trakk_logo.png",
-            height: 250.0,
-          ),
+      child: Center(
+        child: Image.asset(
+          "assets/images/trakk_logo.png",
+          height:MediaQuery.of(context).size.height / 8,
+          width: MediaQuery.of(context).size.width / 3,
         ),
       ),
     );

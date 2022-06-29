@@ -5,7 +5,7 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
-import 'package:trakk/screens/dispatch/payment.dart';
+import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
@@ -24,18 +24,16 @@ class Tabs extends StatefulWidget {
 class _TabsState extends State<Tabs> {
 
   _fetchUser() async {
-    var box = await Hive.openBox('userData');
+    var box = await Hive.openBox('appState');
     setState(() {
       userType = box.get("userType");
     });
-    print("<<<<<<<<<<<<<<>>>>>>>>>>>>>>>>>>>");
-    print(userType);
   }
 
   
   
   int _selectedIndex = 0;
-  String userType =  "user";
+  String userType =  "customer";
 
   String currentTitle = 'Home';
 
@@ -55,29 +53,49 @@ class _TabsState extends State<Tabs> {
         return const WalletScreen();
       default:
         currentTitle = 'Profile';
-        return const Payment();
+        return const ProfileMenu();
     }
   }
 
-  Widget _currentRiderPage (_selectedIndex){
+  Widget _currentOtherUserPage (_selectedIndex){
     switch (_selectedIndex){
       case 0 :
         currentTitle = 'Home';
-        return const RiderHomeScreen();
+        return userType == "rider" ? const RiderHomeScreen() : const CompanyHome();
       case 1 :
         currentTitle = 'Order';
         return const RiderOrderScreen();
       case 2 :
         currentTitle = 'Wallet';
-        return Container();
-      case 3 :
-        currentTitle = 'Histroy';
-        return Container();
+        return const WalletScreen();
+      // case 3 :
+      //   currentTitle = 'Histroy';
+      //   return Container();
       default:
         currentTitle = 'Profile';
         return const ProfileMenu();
     }
   }
+
+  // Widget _currentMerchantPage (_selectedIndex){
+  //   switch (_selectedIndex){
+  //     case 0 :
+  //       currentTitle = 'Home';
+  //       return const CompanyData();
+  //     case 1 :
+  //       currentTitle = 'Wallet';
+  //       return const WalletScreen();
+  //     case 2 :
+  //       currentTitle = 'Wallet';
+  //       return Container();
+  //     case 3 :
+  //       currentTitle = 'Histroy';
+  //       return Container();
+  //     default:
+  //       currentTitle = 'Profile';
+  //       return const ProfileMenu();
+  //   }
+  // }
 
   void _onItemTapped(int index) {
     setState(() {
@@ -99,8 +117,8 @@ class _TabsState extends State<Tabs> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: userType == "user" ? _currentUserPage(_selectedIndex) : _currentRiderPage(_selectedIndex),
-      bottomNavigationBar: userType == "user" ? BottomNavigationBar(
+      body: userType == "customer" ? _currentUserPage(_selectedIndex) : _currentOtherUserPage(_selectedIndex),
+      bottomNavigationBar: userType == "customer" ? BottomNavigationBar(
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: <BottomNavigationBarItem>[
@@ -169,20 +187,14 @@ class _TabsState extends State<Tabs> {
             label: 'Order',
           ),
           BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/images/search_icon.svg",
+            icon: SvgPicture.asset("assets/images/cart_icon.svg",
               color: _selectedIndex != 2 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: SvgPicture.asset("assets/images/cart_icon.svg",
-              color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
-            ),
-            label: 'Cart',
+            label: 'Wallet',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/profile_icon.svg",
-              color: _selectedIndex != 4 ? appPrimaryColor : secondaryColor
+              color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
             ),
             label: 'Profile',
           ),

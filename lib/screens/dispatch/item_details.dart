@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:trakk/models/order/order.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/provider/order/order.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
@@ -31,7 +32,7 @@ class _ItemDetailsState extends State<ItemDetails> {
   late TextEditingController _dropOffController;
   late TextEditingController _itemController;
   late TextEditingController _itemDescriptionController;
-   TextEditingController? _receiverNameController;
+  TextEditingController? _receiverNameController;
   late TextEditingController _senderNameController;
   late TextEditingController _receiverPhoneNumberController;
   late TextEditingController _senderPhoneNumberController;
@@ -64,10 +65,13 @@ class _ItemDetailsState extends State<ItemDetails> {
 
   Timer? _debounce;
 
-  DetailsResult? _pickUp;
-  DetailsResult? _dropOff;
+  String? _pickUp;
+  String? _dropOff;
 
   bool _isItemImage = false;
+  String _pickItem = "Food";
+
+  var itemsCategory = ["Food", "Cloth", "Electronics", "others (specify)"];
 
   void autoCompleteSearch(String value) async {
     var result = await googlePlace.autocomplete.get(value);
@@ -151,8 +155,39 @@ class _ItemDetailsState extends State<ItemDetails> {
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
   _onAddItemPress(BuildContext cxt) async {
+    
     final FormState? form = _formKey.currentState;
-    Order _orderProvider = Provider.of<Order>(cxt, listen: false);
+    // print(_itemDescription);
+    // Order _orderProvider = Provider.of<Order>(cxt, listen: false);
+    // _orderProvider.setOrder(OrderModel(
+    //     pickUpLocation: OrderLocation(
+    //       address: _pickUp.toString(),
+    //       latitude: 19,
+    //       longitude: 10,
+    //       isPickUp: false,
+    //       isDelivery: false,
+    //     ),
+    //     deliveryLocation: OrderLocation(
+    //       address: _pickUp.toString(),
+    //       latitude: 19,
+    //       longitude: 10,
+    //       isPickUp: false,
+    //       isDelivery: false,
+    //     ),
+    //     orderItem: OrderItem(
+    //         orderItemTypeId: 1,
+    //         description: _itemDescription,
+    //         imageReference: _itemImage,
+    //         weight: "none"),
+    //     notes: "Hello"));
+    if (form!.validate()) {
+      form.save();
+
+      print('&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&');
+      print(_itemDescription);
+      print(_pickUp.toString());
+      print(_dropOff);
+      Order _orderProvider = Provider.of<Order>(cxt, listen: false);
       _orderProvider.setOrder(OrderModel(
         pickUpLocation: OrderLocation(
           address: _pickUp.toString(),
@@ -174,29 +209,22 @@ class _ItemDetailsState extends State<ItemDetails> {
           imageReference: _itemImage,
           weight: "none"
         ),
-        notes: "Hello"
-      ));
-    // if (form!.validate()) {
-    //   form.save();
-    //   // Provider.of(context)
-    //   Order _orderProvider = Provider.of<Order>(cxt);
-    //   _orderProvider.setOrder(OrderModel( 
-    //     notes: "Hello"
-    //   ));
-    //   // var box = await Hive.openBox('userOrder');
-    //   // box.putAll({
-    //   //   "pickUp": _pickUp,
-    //   //   "dropOff": _dropOff,
-    //   //   "receiverName": _receiverName,
-    //   //   "receiverPhoneNumber": _receiverPhoneNumber,
-    //   //   "item": _item,
-    //   //   "itemDescription": _itemDescription,
-    //   //   "pickUpDate": _pickUpDate,
-    //   //   "dropOffDate": _dropOffDate,
-    //   //   "itemImage": _itemImage,
-    //   // });
-    //   // Navigator.of(context).pushNamed( NextOfKin.id);
-    // }
+        notes: "Hello")
+        );
+      // var box = await Hive.openBox('userOrder');
+      // box.putAll({
+      //   "pickUp": _pickUp,
+      //   "dropOff": _dropOff,
+      //   "receiverName": _receiverName,
+      //   "receiverPhoneNumber": _receiverPhoneNumber,
+      //   "item": _item,
+      //   "itemDescription": _itemDescription,
+      //   "pickUpDate": _pickUpDate,
+      //   "dropOffDate": _dropOffDate,
+      //   "itemImage": _itemImage,
+      // });
+      // Navigator.of(context).pushNamed( NextOfKin.id);
+    }
   }
 
   _saveEdittedItem() async {
@@ -205,6 +233,253 @@ class _ItemDetailsState extends State<ItemDetails> {
       _previousRoute = box.delete('previousRoute');
     });
     Navigator.pop(context);
+  }
+
+  _onButtonPress() async {
+    // Navigator.of(context).pushNamed(PickRide.id);
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(30.0),
+          topRight: Radius.circular(30.0)
+        )
+      ),
+      builder: (context) {
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // TweenAnimationBuilder(
+            //   tween: Tween(begin: const Duration(minutes: 2), end: Duration.zero),
+            //   duration: const Duration(minutes: 3),
+            //   builder: (BuildContext context, Duration value, Widget? child) {
+            //     final minutes = value.inMinutes;
+            //     final seconds = value.inSeconds % 60;
+            //     return Container(
+            //       height: 150.0,
+            //       width: 150.0,
+            //       decoration: const BoxDecoration(
+            //         shape: BoxShape.circle,
+            //         color: appPrimaryColor,
+            //       ),
+            //       child: Column(
+            //         mainAxisAlignment: MainAxisAlignment.center,
+            //         children: [
+            //           Text(
+            //             '$minutes:$seconds',
+            //             textAlign: TextAlign.center,
+            //             style: const TextStyle(
+            //               color: secondaryColor,
+            //               fontWeight: FontWeight.bold,
+            //               fontSize: 30
+            //             )
+            //           )
+            //         ],
+            //       )
+            //     );
+            //   }
+            // ),
+
+            const SizedBox(height: 80.0),
+            Container(
+              padding: const EdgeInsetsDirectional.only(top: 20.0),
+              decoration: const BoxDecoration(
+                color: whiteColor,
+                // color: Colors.amber,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30.0),
+                  topRight: Radius.circular(30.0),
+                ),
+              ),
+                child: Column(
+                children: [
+                    ListTile(
+                    leading: Container(
+                      height: 50.0,
+                      width: 50.0,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: Colors.grey.shade200
+                      ),
+                      child: const Icon(
+                        Remix.user_3_fill,
+                        size: 30.0,
+                        color: appPrimaryColor,
+                      ),
+                    ),
+                    title: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Order ID',
+                          textScaleFactor: 1.2,
+                          style: TextStyle(
+                            color: appPrimaryColor,
+                            fontWeight: FontWeight.bold
+                          ),
+                        ),
+
+                        const SizedBox(height: 10.0),
+                        Text(
+                          '#234516',
+                          textScaleFactor: 1.0,
+                          style: TextStyle(
+                            color: appPrimaryColor.withOpacity(0.5),
+                          ),
+                        ),
+                      ],
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  Divider(
+                    color: appPrimaryColor.withOpacity(0.4),
+                  ),
+
+                  const SizedBox(height: 20.0),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      const SizedBox(width: 20.0),
+                      Column(
+                        children: [
+                          Text(
+                            '6\nmin',
+                            textScaleFactor: 1.0,
+                            style: TextStyle(
+                              color: appPrimaryColor.withOpacity(0.3),
+                            ),
+                          ),
+
+                          const SizedBox(height: 20.0),
+                            Text(
+                            '28\nmin',
+                            textScaleFactor: 1.0,
+                            style: TextStyle(
+                              color: appPrimaryColor.withOpacity(0.3),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Image.asset(
+                        'assets/images/order_highlighter.png',
+                        height: 160,
+                        width: 30,
+                      ),
+
+                      const SizedBox(width: 20.0),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text(
+                            'My location',
+                            textScaleFactor: 1.2,
+                            style: TextStyle(
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            '1.2km',
+                            textScaleFactor: 1.0,
+                            style: TextStyle(
+                              color: appPrimaryColor.withOpacity(0.3),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            color: appPrimaryColor.withOpacity(0.2),
+                            height: 1.0,
+                            width: MediaQuery.of(context).size.width/1.3,
+                          ),
+
+                          const Text(
+                            '50b, Tapa street, yaba',
+                            textScaleFactor: 1.1,
+                            style: TextStyle(
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          const SizedBox(height: 5.0),
+                          Text(
+                            '29.2km',
+                            textScaleFactor: 1.0,
+                            style: TextStyle(
+                              color: appPrimaryColor.withOpacity(0.3),
+                            ),
+                          ),
+                          Container(
+                            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
+                            color: appPrimaryColor.withOpacity(0.2),
+                            height: 1.0,
+                            width: MediaQuery.of(context).size.width/1.3,
+                          ),
+
+                          const Text(
+                            '1 Aminu street, mende maryland',
+                            textScaleFactor: 1.2,
+                            style: TextStyle(
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 30.0),
+                    Row(
+                    children: [
+                      const SizedBox(width: 40.0),
+                      Expanded(
+                        child: Button(
+                          text: 'Accept', 
+                          onPress: () {
+                            // Navigator.of(context).pushNamed(id);
+                            Navigator.pop(context);
+                          }, 
+                          color: secondaryColor, 
+                          textColor: appPrimaryColor, 
+                          isLoading: false,
+                          width: 60.0,
+                          // width: MediaQuery.of(context).size.width/6
+                        ),
+                      ),
+
+                      const SizedBox(width: 20.0),
+
+                      Expanded(
+                        child: Button(
+                          text: 'Decline', 
+                          onPress: () {
+                            // Navigator.of(context).pushNamed(id);
+                            Navigator.pop(context);
+                          }, 
+                          color: appPrimaryColor, 
+                          textColor: whiteColor, 
+                          isLoading: false,
+                          width: MediaQuery.of(context).size.width/7
+                        ),
+                      ),
+                      const SizedBox(width: 40.0),
+                    ],
+                  ),
+                  const SizedBox(height: 30.0),
+                ]
+              )
+            ),
+          ],
+        );
+      }
+    );
   }
 
   @override
@@ -222,14 +497,14 @@ class _ItemDetailsState extends State<ItemDetails> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            const SizedBox(height: 10.0),
+            kSizeBox,
             const Header(
               text: 'DISPATCH ITEM',
             ),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               decoration: const BoxDecoration(
-                  image: DecorationImage(
+                image: DecorationImage(
                 image: AssetImage("assets/images/empty_map.png"),
                 fit: BoxFit.fill,
               )),
@@ -259,8 +534,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   hintText: 'Pick Up',
                                   node: _pickUpNode,
                                   textController: _pickUpController,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textHeight: 0.0,
                                   borderColor: appPrimaryColor.withOpacity(0.5),
                                   validator: (value) {
@@ -269,10 +543,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     }
                                     return "Enter a valid pick-up location";
                                   },
-                                  onSaved: (value) {
-                                    _pickUp = value!.trim() as DetailsResult?;
-                                    return null;
-                                  },
+                                  // onSaved: (value) {
+                                  //   _pickUp = value!.trim() as DetailsResult?;
+                                  //   return null;
+                                  // },
                                   onChanged: (value) {
                                     // cancel _debounce if its active and restart it if user type in something again
                                     if (_debounce?.isActive ?? false)
@@ -295,8 +569,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   hintText: 'Drop Off',
                                   node: _dropOffNode,
                                   textController: _dropOffController,
-                                  autovalidateMode:
-                                      AutovalidateMode.onUserInteraction,
+                                  autovalidateMode: AutovalidateMode.onUserInteraction,
                                   textHeight: 0,
                                   borderColor: appPrimaryColor.withOpacity(0.5),
                                   validator: (value) {
@@ -305,10 +578,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                                     }
                                     return "Enter a valid drop-off location";
                                   },
-                                  onSaved: (value) {
-                                    _dropOff = value!.trim() as DetailsResult?;
-                                    return null;
-                                  },
+                                  // onSaved: (value) {
+                                  //   _dropOff = value!.trim() as DetailsResult;
+                                  //   return null;
+                                  // },
                                   onChanged: (value) {
                                     // cancel _debounce if its active and restart it if user type in something again
                                     if (_debounce?.isActive ?? false)
@@ -334,47 +607,44 @@ class _ItemDetailsState extends State<ItemDetails> {
                   ),
 
                   ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: predictions.length,
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: const CircleAvatar(
-                            backgroundColor: appPrimaryColor,
-                            child: Icon(
-                              Remix.pin_distance_fill,
-                              color: secondaryColor,
-                            ),
+                    shrinkWrap: true,
+                    itemCount: predictions.length,
+                    itemBuilder: (context, index) {
+                      return ListTile(
+                        leading: const CircleAvatar(
+                          backgroundColor: appPrimaryColor,
+                          child: Icon(
+                            Remix.pin_distance_fill,
+                            color: secondaryColor,
                           ),
-                          title:
-                              Text(predictions[index].description.toString()),
-                          onTap: () async {
-                            final placeId = predictions[index].placeId!;
-                            final details =
-                                await googlePlace.details.get(placeId);
-                            if (details != null &&
-                                details.result != null &&
-                                mounted) {
-                              print("+++++++++++++++++++++++++++++");
-                              print(details.result!.addressComponents);
-                              if (_pickUpNode!.hasFocus) {
-                                setState(() {
-                                  _pickUp = details.result;
-                                  _pickUpController.text =
-                                      details.result!.name!;
-                                  predictions = [];
-                                });
-                              } else {
-                                setState(() {
-                                  _dropOff = details.result;
-                                  _dropOffController.text =
-                                      details.result!.name!;
-                                  predictions = [];
-                                });
-                              }
+                        ),
+                        title: Text(predictions[index].description.toString()),
+                        onTap: () async {
+                          final placeId = predictions[index].placeId!;
+                          final details = await googlePlace.details.get(placeId);
+                          if (details != null && details.result != null && mounted) {
+                            print("+++++++++++++++++++++++++++++");
+                            print(details.result!.addressComponents);
+                            if (_pickUpNode!.hasFocus) {
+                              setState(() {
+                                _pickUp =  details.result!.name!;
+                                print('******************************');
+                                print(_pickUp.runtimeType);
+                                _pickUpController.text = details.result!.name!;
+                                predictions = [];
+                              });
+                            } else {
+                              setState(() {
+                                _dropOff = details.result!.name!;
+                                _dropOffController.text = details.result!.name!;
+                                predictions = [];
+                              });
                             }
-                          },
-                        );
-                      }),
+                          }
+                        },
+                      );
+                    }
+                  ),
 
                   InputField(
                     obscureText: false,
@@ -395,6 +665,34 @@ class _ItemDetailsState extends State<ItemDetails> {
                       _item = value!.trim();
                       return null;
                     },
+                    suffixIcon: DropdownButton<String>(
+                      // value: _pickItem,
+                      hint: Text(
+                        " choose category of item",
+                        style: TextStyle(
+                          color: appPrimaryColor.withOpacity(0.3)
+                        ),
+                      ),
+                      icon: const Icon(Remix.arrow_down_s_line),
+                      elevation: 16,
+                      isExpanded: true, 
+                      style: TextStyle(
+                        color: appPrimaryColor.withOpacity(0.8),
+                        fontSize: 18.0,
+                      ),
+                      underline: Container(), //empty line
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _pickItem = newValue!;
+                        });
+                      },
+                      items: itemsCategory.map((String value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value),
+                        );
+                      }).toList(),
+                    ),
                   ),
 
                   InputField(
@@ -408,7 +706,7 @@ class _ItemDetailsState extends State<ItemDetails> {
                     borderColor: appPrimaryColor.withOpacity(0.5),
                     area: null,
                     validator: (value) {
-                      if (value!.trim().length > 2) {
+                      if (value!.trim().length > 1) {
                         return null;
                       }
                       return "Enter a valid item description";
@@ -471,10 +769,17 @@ class _ItemDetailsState extends State<ItemDetails> {
                                   currentTime: DateTime.now(),
                                   locale: LocaleType.en);
                             },
-                            icon: const Icon(
-                              Remix.calendar_2_fill,
-                              size: 22.0,
-                              color: secondaryColor,
+                            icon: Container(
+                              padding: const EdgeInsets.all(5.0),
+                              decoration: BoxDecoration(
+                                 color: secondaryColor.withOpacity(0.2),
+                                borderRadius: const BorderRadius.all(Radius.circular(50))
+                              ),
+                              child: const Icon(
+                                Remix.calendar_2_fill,
+                                size: 18.0,
+                                color: secondaryColor,
+                              ),
                             ),
                           ),
                           validator: (value) {
@@ -504,42 +809,50 @@ class _ItemDetailsState extends State<ItemDetails> {
                           suffixIcon: IconButton(
                             onPressed: () {
                               DatePicker.showDatePicker(context,
-                                  showTitleActions: true,
-                                  minTime: DateTime(2022, 3, 5),
-                                  maxTime: DateTime(2100, 6, 7),
-                                  theme: const DatePickerTheme(
-                                    headerColor: appPrimaryColor,
-                                    backgroundColor: whiteColor,
-                                    itemStyle: TextStyle(
-                                      color: appPrimaryColor,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18,
-                                    ),
-                                    doneStyle: TextStyle(
-                                      color: secondaryColor,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                    cancelStyle: TextStyle(
-                                      color: secondaryColor,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ), onChanged: (date) {
-                                print('change $date in time zone ' +
-                                    date.timeZoneOffset.inHours.toString());
-                              }, onConfirm: (date) {
-                                print('confirm $date');
-                                _dropOffDateController.text =
-                                    _parseDate(date.toString());
-                              },
-                                  currentTime: DateTime.now(),
-                                  locale: LocaleType.en);
+                                showTitleActions: true,
+                                minTime: DateTime(2022, 3, 5),
+                                maxTime: DateTime(2100, 6, 7),
+                                theme: const DatePickerTheme(
+                                  headerColor: appPrimaryColor,
+                                  backgroundColor: whiteColor,
+                                  itemStyle: TextStyle(
+                                    color: appPrimaryColor,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18,
+                                  ),
+                                  doneStyle: TextStyle(
+                                    color: secondaryColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  cancelStyle: TextStyle(
+                                    color: secondaryColor,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ), 
+                                onChanged: (date) {
+                                  print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
+                                }, 
+                                onConfirm: (date) {
+                                  print('confirm $date');
+                                _dropOffDateController.text = _parseDate(date.toString());
+                                },
+                                currentTime: DateTime.now(),
+                                locale: LocaleType.en
+                              );
                             },
-                            icon: const Icon(
-                              Remix.calendar_2_fill,
-                              size: 22.0,
-                              color: secondaryColor,
+                            icon: Container(
+                              padding: const EdgeInsets.all(5.0),
+                              decoration: BoxDecoration(
+                                 color: secondaryColor.withOpacity(0.2),
+                                borderRadius: const BorderRadius.all(Radius.circular(50))
+                              ),
+                              child: const Icon(
+                                Remix.calendar_2_fill,
+                                size: 18.0,
+                                color: secondaryColor,
+                              ),
                             ),
                           ),
                           validator: (value) {
@@ -561,9 +874,9 @@ class _ItemDetailsState extends State<ItemDetails> {
 
                   _authProvider.user == null && _authProvider.token != null
                       ? Container(
-                        child: Column(
-                          children: [
-                            const Text(
+                          child: Column(
+                            children: [
+                              const Text(
                                 'Sender’s Info',
                                 textScaleFactor: 1.2,
                                 style: TextStyle(
@@ -572,66 +885,67 @@ class _ItemDetailsState extends State<ItemDetails> {
                                 ),
                               ),
                               InputField(
-                    key: const Key('senderName'),
-                    textController: _senderNameController,
-                    node: _senderNameNode,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    obscureText: false,
-                    text: '',
-                    hintText: 'Name',
-                    textHeight: 0.0,
-                    borderColor: appPrimaryColor.withOpacity(0.9),
-                    suffixIcon: const Icon(
-                      Remix.user_line,
-                      size: 18.0,
-                      color: Color(0xFF909090),
-                    ),
-                    validator: (value) {
-                      if (value!.trim().length > 2) {
-                        return null;
-                      }
-                      return "Enter a valid name";
-                    },
-                    onSaved: (value) {
-                      _receiverName = value!.trim();
-                      return null;
-                    },
-                  ),
+                                key: const Key('senderName'),
+                                textController: _senderNameController,
+                                node: _senderNameNode,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                obscureText: false,
+                                text: '',
+                                hintText: 'Name',
+                                textHeight: 0.0,
+                                borderColor: appPrimaryColor.withOpacity(0.9),
+                                suffixIcon: const Icon(
+                                  Remix.user_line,
+                                  size: 18.0,
+                                  color: Color(0xFF909090),
+                                ),
+                                validator: (value) {
+                                  if (value!.trim().length > 2) {
+                                    return null;
+                                  }
+                                  return "Enter a valid name";
+                                },
+                                onSaved: (value) {
+                                  _receiverName = value!.trim();
+                                  return null;
+                                },
+                              ),
 
-                  // const SizedBox(height: 30.0),
-                  InputField(
-                    key: const Key('senderPhoneNumber'),
-                    textController: _senderPhoneNumberController,
-                    node: _senderphoneNumberNode,
-                    keyboardType: TextInputType.phone,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    obscureText: false,
-                    text: '',
-                    hintText: 'Phone number',
-                    textHeight: 0.0,
-                    borderColor: appPrimaryColor.withOpacity(0.9),
-                    suffixIcon: const Icon(
-                      Remix.phone_line,
-                      size: 18.0,
-                      color: Color(0xFF909090),
-                    ),
-                    validator: (value) {
-                      if (value!.trim().length == 11) {
-                        return null;
-                      }
-                      return "Enter a valid phone number";
-                    },
-                    onSaved: (value) {
-                      _receiverPhoneNumber = value!.trim();
-                      return null;
-                    },
-                  ),
+                              // const SizedBox(height: 30.0),
+                              InputField(
+                                key: const Key('senderPhoneNumber'),
+                                textController: _senderPhoneNumberController,
+                                node: _senderphoneNumberNode,
+                                keyboardType: TextInputType.phone,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
+                                obscureText: false,
+                                text: '',
+                                hintText: 'Phone number',
+                                textHeight: 0.0,
+                                borderColor: appPrimaryColor.withOpacity(0.9),
+                                suffixIcon: const Icon(
+                                  Remix.phone_line,
+                                  size: 18.0,
+                                  color: Color(0xFF909090),
+                                ),
+                                validator: (value) {
+                                  if (value!.trim().length == 11) {
+                                    return null;
+                                  }
+                                  return "Enter a valid phone number";
+                                },
+                                onSaved: (value) {
+                                  _receiverPhoneNumber = value!.trim();
+                                  return null;
+                                },
+                              ),
 
-                  const SizedBox(height: 20.0),
-                          ],
-                        ),
-                      )
-                        
+                              const SizedBox(height: 20.0),
+                            ],
+                          ),
+                        )
                       : Container(),
                   const Text(
                     'Receiver’s Info',
@@ -740,10 +1054,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                   const SizedBox(height: 30.0),
 
                   Button(
-                    text: _buttonText.length < 1 ? 'Add Item' : _buttonText,
-                    onPress: _buttonText.length < 1
-                        ? () => _onAddItemPress(context)
-                        : () => _saveEdittedItem,
+                    // text: _buttonText.length < 1 ? 'Add Item' : _buttonText,
+                    text: 'Proceed',
+                    onPress: _onButtonPress,
+                    // onPress: _buttonText.length < 1 ? () => _onAddItemPress(context) : () => _saveEdittedItem,
                     color: appPrimaryColor,
                     textColor: whiteColor,
                     isLoading: false,

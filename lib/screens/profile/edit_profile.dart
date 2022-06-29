@@ -2,6 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
@@ -108,7 +109,7 @@ class _EditProfileState extends State<EditProfile> {
       form.save();
 
       try {
-        var response = await Auth.authProvider(context).createUser(
+        var response = await SignupProvider.authProvider(context).createUser(
             _firstName.toString(),
             _lastName.toString(),
             _email.toString(),

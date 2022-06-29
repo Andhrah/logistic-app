@@ -1,7 +1,11 @@
-import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/auth/forgot_password_provider.dart';
+import 'package:trakk/provider/auth/login_provider.dart';
+import 'package:trakk/provider/auth/signup_provider.dart';
+import 'package:trakk/provider/auth/verify_account_provider.dart';
+import 'package:trakk/provider/merchant/add_company_data_provider.dart';
 import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/provider/rider/rider.dart';
 import 'package:trakk/provider/support/support.dart';
@@ -11,6 +15,11 @@ List<SingleChildWidget> appProviders = [
   // content to the latest data whenever there is any notification
   // about the change of data.
   ChangeNotifierProvider<Auth>(create: (_) => Auth()),
+  ChangeNotifierProvider<SignupProvider>(create: (_) => SignupProvider()),
+  ChangeNotifierProvider<VerifyAccountProvider>(create: (_) => VerifyAccountProvider()),
+  ChangeNotifierProvider<LoginProvider>(create: (_) => LoginProvider()),
+  ChangeNotifierProvider<ForgotPasswordProvider>(create: (_) => ForgotPasswordProvider()),
+  ChangeNotifierProvider<AddCompanyDataProvider>(create: (_) => AddCompanyDataProvider()),
   ChangeNotifierProvider<Order>(create: (_) => Order()),
   ChangeNotifierProvider<RiderAuth>(create: (_) => RiderAuth()),
   ChangeNotifierProvider<SupportProvider>(create: (_) => SupportProvider()),

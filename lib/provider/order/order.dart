@@ -14,7 +14,7 @@ class Order extends ChangeNotifier {
   setOrder(OrderModel order){
     _orders.add(order);
     print("{}{}{}{}{}{}{}{}{}{}{}{}}{}{}{}}");
-    print('order: ${_orders.map((e) => e.notes)}');
+    print('order: ${_orders.map((e) => e.orderItem!.description)}');
     // send notification to the provider
     notifyListeners();
   }
