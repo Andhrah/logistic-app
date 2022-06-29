@@ -7,7 +7,7 @@ import 'package:hive_flutter/hive_flutter.dart';
 class GetUserData{
   // a new instance of hive can be created with new box 
   
-  static void getUser()async{
+  static void getUser() async {
     
   var box = Hive.box('userData');
   // get user id and token from the values stored in hive after login
@@ -16,13 +16,32 @@ class GetUserData{
   try{
     var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/53'), headers: {
       'Content-type': 'application/json',
-      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTIwNzE5NiwiZXhwIjoxNjU1MjkzNTk2fQ.DZ1xwwhd4yh7uAecaofs1fNuyjCstR6fR3c2OaTJt3w'
+      'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTM3MTAyMiwiZXhwIjoxNjU1NDU3NDIyfQ.oi4bFAF81PkXUC1GRyqMjbUAz1GgjRp7GQW0D9y-ETk'
     });
     var decoded = json.decode(response.body);
-    // open hive
-    box.put('firstname', 'firstname');
-    box.put('lastname', 'lastname');
+    print('This is the get user data response' + response.body);
+    if(response.statusCode == 200) {
+     
+      // set returned value hive
+    box.putAll({
+        "firstName": decoded['data']['firstName'],
+        "lastName": decoded['data']['lastName'],
+        "email": decoded['data']['email'],
+        "phoneNumber": decoded['data']['phoneNumber'],
+        "address": decoded['data']['address'],
+        "id": decoded['data']['id'],
+      });
+    // box.putAll({
+    //     "lastName": decoded['data']['lastName'],
+    //     //"lastName": decoded['data']['lastName'],
+    //   });
+   
+    
     // this will be done for all details to be stored locally
+    } else {
+      throw('unable to get user data');
+    }
+    
   } catch (err) {
     print(err.toString());
   }
@@ -41,7 +60,7 @@ class GetUserData{
 //   GetUserData.getUser();
 // }
 
-// // or this, but not necessary if the mehtod is static
+// or this, but not necessary if the mehtod is static
 // GetUserData getUserData = GetUserData();
 // initState(){
 //   //super ...
