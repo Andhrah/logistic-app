@@ -15,11 +15,13 @@ class GetVehiclesListService {
     // print('body is $body');
     //print('Encoded body ${json.encode(body)}');
     var response = await http.get(
-      
+
+                //this merchant ID is hard-coded, but should be gotten from the service when the merchant logs in
         Uri.parse('https://zebrra.itskillscenter.com/api/vehicles?populate[riderId][populate][0]=merchantId&filters[riderId][merchantId][id][\$eq]=17'),
         headers: {
           'Content-type': 'application/json',
-          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NjEsImlhdCI6MTY1NjQwNzQzMSwiZXhwIjoxNjU2NDkzODMxfQ.SBo-24aVkVKcSP72YG57sxnVXYFRM4VBzvthKYM6Ijw'
+          //this token are hard-coded, but should be gotten from the service when the merchant logs in
+          'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODYsImlhdCI6MTY1NjQ5ODcwNywiZXhwIjoxNjU2NTg1MTA3fQ.tfQqMvoN_S0bDwX0WHY7OBbyPs9DAjtcwryI6oThXQ8'
         });
 
     //headers: kHeaders(''), body: json.encode(body));
@@ -28,7 +30,7 @@ class GetVehiclesListService {
     if (response.statusCode.toString().startsWith('2')) {
       print('JJdata: $decoded');
       return decoded;
-    } else if (decoded['data']) {
+    } else if (decoded['data'] ) {
       print(
           'reason is ...${response.reasonPhrase} message is ${decoded['data']}');
       throw ApiFailureException(

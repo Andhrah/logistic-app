@@ -2,11 +2,13 @@ import 'dart:ui';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/provider/merchant/rider_profile_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/services/merchant/rider_profile_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -32,7 +34,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   final _formKey = GlobalKey<FormState>();
 
-
   bool _selectedProfile = false;
 
   FocusNode? _firstNameNode;
@@ -50,15 +51,15 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     "add",
   ];
 
+  var box = Hive.box("riderData");
   bool _isButtonPress = false;
   bool _isActive = false;
   bool _isActive1 = false;
   bool _isActive2 = false;
 
-
   String _suspensionDuration = 'Choose duration';
 
-   late TextEditingController _firstNameController;
+  late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneNumberController;
@@ -89,32 +90,36 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   @override
   void initState() {
-    fetchVehicleList().whenComplete((){
-          setState(() {});
-       });
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneNumberController = TextEditingController();
+    RiderProfileService.getRiderProfile();
+    fetchVehicleList().whenComplete(() {
+      setState(() {});
+    });
+    _firstNameController =
+        TextEditingController(text: box.get('firstName') ?? "");
+    _lastNameController = TextEditingController(text: box.get('lastName') ?? "");
+    _emailController = TextEditingController(text: box.get('email') ?? "");
+    _phoneNumberController = TextEditingController(text: box.get('phoneNumber') ?? "");
     _passwordController = TextEditingController();
-    _homeAddressController = TextEditingController();
-    _assignedvehicleController = TextEditingController(text: responseHolder?["number"] ?? "");
+    _homeAddressController = TextEditingController(text: box.get('address') ?? "");
+    _assignedvehicleController =
+        TextEditingController(text: "${box.get('bikeName') ?? ""} " "${box.get('bikeNumber') ?? ""}" );
     super.initState();
   }
 
-    Map<String, dynamic>? responseHolder ;
-  dynamic? itemCount;
+  Map<String, dynamic>? responseHolder;
+  Map<String, dynamic>? rider;
   Map<String, dynamic>? responseKey;
 
-    fetchVehicleList() async {
-    var response =
-        await RiderProfileProvider.riderProfileProvider(context).getRiderProfile();
-    print("responseData=> ${response["data"][0]["attributes"]}");
-    print("))))))overdose=> ${response["meta"]["pagination"]["total"]}");
+  fetchVehicleList() async {
+    var response = await RiderProfileProvider.riderProfileProvider(context)
+        .getRiderProfile();
+    print("merchant rider profile response=> ${response["data"][0]}");
+    print(
+        "merchant rider profile response 2222 ${response["data"][0]["rider"]["vehicles"][0]["name"]}");
 
-    responseHolder = await response["data"][0]["attributes"];
+    responseHolder = await response["data"][0];
 
-    itemCount = response["meta"]["pagination"]["total"];
+    rider = response["data"][0]["rider"]["vehicles"][0];
   }
 
   _validateEmail() {
@@ -217,17 +222,25 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return SingleChildScrollView(
-      
       child: Column(
         children: [
+          Text(
+            "${responseHolder?["firstName"] ?? ""} " "${responseHolder?["lastName"] ?? ""} " ,
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+          ),
+          SizedBox(height: 20,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Container(
                 height: 59,
                 width: 100,
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10),),border: 
-                Border.all(color: grayColor),),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  border: Border.all(color: grayColor),
+                ),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
@@ -251,10 +264,14 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                 ),
               ),
               Container(
-                 height: 59,
+                height: 59,
                 width: 100,
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10),),border: 
-                Border.all(color: grayColor),),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  border: Border.all(color: grayColor),
+                ),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
@@ -270,17 +287,22 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                   child: Text(
                     "Suspend",
                     style: TextStyle(
-                        color: (selectedProfileOptions == ProfileOptions.Suspend)
-                            ? whiteColor
-                            : appPrimaryColor),
+                        color:
+                            (selectedProfileOptions == ProfileOptions.Suspend)
+                                ? whiteColor
+                                : appPrimaryColor),
                   ),
                 ),
               ),
               Container(
-                 height: 59,
+                height: 59,
                 width: 100,
-                decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(10),),border: 
-                Border.all(color: grayColor),),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  border: Border.all(color: grayColor),
+                ),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     backgroundColor:
@@ -338,7 +360,8 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                                   child: Column(
                                     children: [
                                       Row(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
                                         children: [
                                           InkWell(
                                             onTap: () {
@@ -425,8 +448,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   Widget editContainer() {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return _selectedProfile
-        ? 
-        Column(
+        ? Column(
             //physics: NeverScrollableScrollPhysics(),
             //shrinkWrap: true,
             children: [
@@ -586,40 +608,40 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                               color: appPrimaryColor,
                               textColor: whiteColor,
                               isLoading: _loading,
-                              width: mediaQuery.size.width* 1)),
+                              width: mediaQuery.size.width * 1)),
                       const SizedBox(height: 10.0),
                     ],
                   ),
                 ),
               ])
         : Column(
-            children:  [
+            children: [
               SizedBox(
                 height: 20,
               ),
               profillebox(
                 title: 'First name',
-                detail: 'Malik',
+                detail: responseHolder?["firstName"] ?? "",
               ),
               profillebox(
                 title: 'Last name',
-                detail: 'Johnson',
+                detail: responseHolder?["lastName"] ?? "",
               ),
               profillebox(
                 title: 'Phone',
-                detail: '0806-333-2255',
+                detail: responseHolder?["phoneNumber"] ?? "",
               ),
               profillebox(
                 title: 'Email address',
-                detail: 'malikjohn11@gmail.com',
+                detail: responseHolder?["email"] ?? "",
               ),
               profillebox(
                 title: 'Home address',
-                detail: 'N0. Mcneil Street, Yaba',
+                detail: responseHolder?["address"] ?? "",
               ),
               profillebox(
                 title: 'Assigned vehicle',
-                detail: responseHolder?["number"] ?? "",
+                detail: "${rider?["name"] ?? ""} " "${rider?["number"] ?? ""}",
               ),
             ],
           );
@@ -769,37 +791,39 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 15.0),
                                   content: SizedBox(
-                                      height: 220.0,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const CancelButton(),),
-                                            ],
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 20.0),
-                                            child: const Center(
-                                              child: Text(
-                                                'You have succefully suspended Malik Johnson for 1 month',
-                                                // maxLines: 2,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                textAlign: TextAlign.center,
+                                    height: 220.0,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const CancelButton(),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20.0),
+                                          child: const Center(
+                                            child: Text(
+                                              'You have succefully suspended Malik Johnson for 1 month',
+                                              // maxLines: 2,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400,
                                               ),
+                                              textAlign: TextAlign.center,
                                             ),
                                           ),
-                                        ],
-                                      ),),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                               color: redColor,
@@ -823,7 +847,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                       ),
                     ),
                 color: Colors.black,
-                width: mediaQuery.size.width*1,
+                width: mediaQuery.size.width * 1,
                 textColor: Colors.white,
                 isLoading: false),
           ],
@@ -897,6 +921,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
+    var VresponseHolder;
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -907,7 +932,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
             children: [
               Padding(
                 padding:
-                    const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
+                    const EdgeInsets.only(left: 0.0, right: 30, bottom: 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -918,7 +943,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                     ),
                     //Text('data'),
                     SizedBox(
-                      width: mediaQuery.size.width * 0.08,
+                      width: mediaQuery.size.width / 4,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -928,7 +953,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                             Container(
                               margin: const EdgeInsets.only(
                                 top: 30,
-                                bottom: 12,
+                                bottom: 0,
                               ),
                               height: 80,
                               width: 80,
@@ -938,11 +963,6 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                                       image: AssetImage(
                                           'assets/images/malik.png'))),
                             ),
-                            const Text(
-                              'Malik Johnson',
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w600),
-                            ),
                           ],
                         ),
                       ],
@@ -951,8 +971,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                 ),
               ),
               const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
                 child: ProfileIdget(),
               ),
             ],
