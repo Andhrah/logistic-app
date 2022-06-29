@@ -3,21 +3,24 @@ import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:trakk/Exceptions/api_failure_exception.dart';
-import 'package:trakk/models/support/support.dart';
+
+import 'package:trakk/models/update_profile/update_profile.dart';
 import 'package:trakk/utils/constant.dart';
 
-class SupportService {
-  Future<bool?> sendMessage({required String name, required String  email,required String  message,}) async {
+class UpdateProfileService {
+  Future<bool?> updateProfile({required String firstName, required String lastName,required String phoneNumber,
+   required String  email,required String address}) async {
     print("[][][][] NETWORK");
-    // var box = await Hive.openBox('userData');
-    // String token = box.get('token');
-    // print("This is the token >>>>>>>" + token);
+    var box = await Hive.openBox('userData');
+    String token = box.get('token');
+    print("This is the token >>>>>>>" + token);
     try {
-      Data data = Data(name: name, email: email, message: message,);
-      Support support = Support(data: data);
+      Data data = Data(firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, 
+      email: email, address: address);
+      UpdateProfile updateProfile = UpdateProfile(data: data);
       var response = await http
-          .post(Uri.parse('https://zebrra.itskillscenter.com/api/complaints'),
-            body: supportToJson(support),
+          .put(Uri.parse('https://zebrra.itskillscenter.com/api/users/53'),
+            body: updateProfileToJson(updateProfile),
             
               // body: json.encode({
               //   "data": {
@@ -27,7 +30,7 @@ class SupportService {
               //   }
               // }),
               headers: {'Content-Type': 'application/json',
-              //'Authorization': "Bearer $token"
+              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NDkwMTk3NSwiZXhwIjoxNjU0OTg4Mzc1fQ.wUfVM8hTrWV-Na6tpdMLEB9_FL-a52OiUt1MsJwFMe4"
               });
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
@@ -67,12 +70,12 @@ class SupportService {
     }
   }
 
-  Future<dynamic> createComplaint(
-    String name,
-    String email,
-    String message,
-  ) async {
-    var body = {"name": name, "email": email, "message": message};
-    return await authRequest(body, 'api/Complaints/create');
-  }
+  // Future<dynamic> createComplaint(
+  //   String name,
+  //   String email,
+  //   String message,
+  // ) async {
+  //   var body = {"name": name, "email": email, "message": message};
+  //   return await authRequest(body, 'api/Complaints/create');
+  // }
 }
