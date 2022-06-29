@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
@@ -8,6 +9,7 @@ import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
+import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/merchant_container.dart';
 import 'package:badges/badges.dart';
@@ -57,10 +59,10 @@ class _CompanyHomeState extends State<CompanyHome> {
    _fetchTime();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      //backgroundColor: Color(0xffE5E5E5),
       body: SafeArea(
         child: Stack(
           children: [

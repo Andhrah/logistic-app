@@ -1027,10 +1027,10 @@ class _ItemDetailsState extends State<ItemDetails> {
                               height: MediaQuery.of(context).size.height / 8.7,
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Remix.upload_2_line),
-                                    const SizedBox(height: 5.0),
-                                    const Text('Upload item image',
+                                  children: const [
+                                    Icon(Remix.upload_2_line),
+                                    SizedBox(height: 5.0),
+                                    Text('Upload item image',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: 18.0,

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
@@ -21,8 +23,11 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu> {
+// var box = Hive.box('userData');
+//    String firstName = box.get('firstName');
   @override
   Widget build(BuildContext context) {
+    var box = Hive.box('userData');
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -59,13 +64,91 @@ class _ProfileMenuState extends State<ProfileMenu> {
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     // const SizedBox(height: 10.0),
-            
-                      
+                      // const SizedBox(height: 10.0),
+
                       const Divider(
                         thickness: 1,
                       ),
-                      const MenuContainer(),
+                      SizedBox(
+                        height: 160,
+                        child: Padding(
+                          padding: const EdgeInsets.only(
+                              left: 35.0, right: 35.0, top: 0, bottom: 0),
+                          child: Stack(children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Expanded(
+                                  child: Container(
+                                    height: 78,
+                                    width: 80,
+                                    alignment: Alignment.centerLeft,
+                                    decoration: const BoxDecoration(
+                                        image: DecorationImage(
+                                            image: AssetImage(
+                                                'assets/images/ladySmiling.png'),
+                                            fit: BoxFit.contain),
+                                        shape: BoxShape.circle),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                 Row(
+                                   children: [
+                                     Text(
+                                      box.get('firstName'),
+                                      style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600),
+                                ),
+                                const SizedBox(width: 5,),
+                                     Text(
+                                      box.get('lastName'),
+                                      style: const TextStyle(
+                                          fontSize: 24,
+                                          fontWeight: FontWeight.w600),
+                                ),
+                                   ],
+                                 ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(box.get('phoneNumber').toString()),
+                                        const SizedBox(
+                                          height: 8,
+                                        ),
+                                        Text(box.get('email'),),
+                                      ],
+                                    ),
+                                    Button(
+                                        text: 'Edit profile',
+                                        onPress: () {
+                                         var id = box.get('id');
+                                          //print("This is the token " + name);
+                                          print("This is the user id " +
+                                              id.toString());
+
+                                          Navigator.of(context)
+                                              .pushNamed(EditProfile.id);
+                                        },
+                                        color: Colors.black,
+                                        width: 80.0,
+                                        textColor: whiteColor,
+                                        isLoading: false),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ]),
+                        ),
+                      ),
                       const Divider(
                         thickness: 1,
                       ),
@@ -118,7 +201,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed(UserDispatchHistory.id);
+                          Navigator.of(context)
+                              .pushNamed(UserDispatchHistory.id);
                         },
                         child: const ProfileList(
                           icon: Icon(Remix.history_line),

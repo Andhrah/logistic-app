@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:trakk/Exceptions/api_failure_exception.dart';
 
 import 'package:trakk/models/update_profile/update_profile.dart';
+import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/constant.dart';
 
 class UpdateProfileService {
@@ -30,10 +31,11 @@ class UpdateProfileService {
               //   }
               // }),
               headers: {'Content-Type': 'application/json',
-              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTIwNzE5NiwiZXhwIjoxNjU1MjkzNTk2fQ.DZ1xwwhd4yh7uAecaofs1fNuyjCstR6fR3c2OaTJt3w"
+              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTM3MTAyMiwiZXhwIjoxNjU1NDU3NDIyfQ.oi4bFAF81PkXUC1GRyqMjbUAz1GgjRp7GQW0D9y-ETk"
               });
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
+        GetUserData.getUser();
         return true;
       } else {
         print('error ********');
