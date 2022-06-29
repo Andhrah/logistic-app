@@ -122,7 +122,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                    children: [
                                      Text(
                                       box.get('firstName') ?? "",
-                                      style: const TextStyle(
+                                      style:  TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
                                 ),
