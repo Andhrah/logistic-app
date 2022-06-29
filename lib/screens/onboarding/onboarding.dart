@@ -94,14 +94,14 @@ class _OnboardingState extends State<Onboarding> {
   @override
   void initState() {
     super.initState();
-    firstTimeUser = Auth.authProvider(context)
-        .myFirst(FirstTimeUser.fromJson({"bool": true}));
-    print('first: $firstTimeUser');
-    _hiveRepository.add(
-      item: firstTimeUser,
-      key: 'firstTimeUser',
-      name: kFirstTimeUser,
-    );
+    // firstTimeUser = Auth.authProvider(context)
+    //     .myFirst(FirstTimeUser.fromJson({"bool": true}));
+    // print('first: $firstTimeUser');
+    // _hiveRepository.add(
+    //   item: firstTimeUser,
+    //   key: 'firstTimeUser',
+    //   name: kFirstTimeUser,
+    // );
   }
 
   @override

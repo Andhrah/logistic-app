@@ -26,5 +26,5 @@ var box =  Hive.box('userData');
 openHive() {
 
 }
- var box =  Hive.box('userData');
+
 
