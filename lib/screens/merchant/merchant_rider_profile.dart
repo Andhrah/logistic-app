@@ -4,6 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/merchant/rider_profile_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/utils/colors.dart';
@@ -31,7 +32,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _firstNameController;
 
   bool _selectedProfile = false;
 
@@ -55,16 +55,10 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   bool _isActive1 = false;
   bool _isActive2 = false;
 
-  // void _handleTap() {
-  //   setState(() {
-  //     _isActive = !_isActive;
-  //     // _isActive1 = !_isActive1;
-  //     // _isActive2 = !_isActive2;
-  //   });
-  // }
 
   String _suspensionDuration = 'Choose duration';
 
+   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneNumberController;
@@ -95,15 +89,32 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   @override
   void initState() {
-    super.initState();
-    _firstNameController = TextEditingController();
+    fetchVehicleList().whenComplete((){
+          setState(() {});
+       });
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
     _emailController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
     _homeAddressController = TextEditingController();
-    _assignedvehicleController = TextEditingController();
+    _assignedvehicleController = TextEditingController(text: responseHolder?["number"] ?? "");
+    super.initState();
+  }
+
+    Map<String, dynamic>? responseHolder ;
+  dynamic? itemCount;
+  Map<String, dynamic>? responseKey;
+
+    fetchVehicleList() async {
+    var response =
+        await RiderProfileProvider.riderProfileProvider(context).getRiderProfile();
+    print("responseData=> ${response["data"][0]["attributes"]}");
+    print("))))))overdose=> ${response["meta"]["pagination"]["total"]}");
+
+    responseHolder = await response["data"][0]["attributes"];
+
+    itemCount = response["meta"]["pagination"]["total"];
   }
 
   _validateEmail() {
@@ -414,7 +425,8 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   Widget editContainer() {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return _selectedProfile
-        ? Column(
+        ? 
+        Column(
             //physics: NeverScrollableScrollPhysics(),
             //shrinkWrap: true,
             children: [
@@ -581,7 +593,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                 ),
               ])
         : Column(
-            children: const [
+            children:  [
               SizedBox(
                 height: 20,
               ),
@@ -607,7 +619,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
               ),
               profillebox(
                 title: 'Assigned vehicle',
-                detail: 'Yamaha 4567658',
+                detail: responseHolder?["number"] ?? "",
               ),
             ],
           );
