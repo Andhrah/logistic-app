@@ -11,6 +11,7 @@ import 'package:trakk/screens/merchant/rider_list_container.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
+import '../../provider/merchant/vehicles_provider.dart';
 import '../../widgets/back_icon.dart';
 
 class Item {
@@ -46,14 +47,46 @@ class ListOfVehicles extends StatefulWidget {
 class _ListOfVehiclesState extends State<ListOfVehicles> {
   bool _isButtonPress = false;
 
+    Map<String, dynamic>? responseHolder ;
+  dynamic? itemCount;
+  Map<String, dynamic>? responseKey;
+
+  @override
+  void initState() {
+    fetchVehicleList().whenComplete((){
+          setState(() {});
+       });
+    //  fetchVehicleList();
+    super.initState();
+  }
+
+  fetchVehicleList() async {
+    var response =
+        await VehiclesProvider.vehiclesProvider(context).getVehiclesList();
+    print("responseData=> ${response["data"][0]["attributes"]}");
+    print("))))))overdose=> ${response["meta"]["pagination"]["total"]}");
+
+    responseHolder = await response["data"][0]["attributes"];
+
+    itemCount = response["meta"]["pagination"]["total"];
+  }
+
+  // fetchVehicleList() async {
+  //   var response = await VehiclesProvider.vehiclesProvider(context)
+  //       .getVehiclesList();
+  //   print(
+  //       "responseData=> ${response}");
+
+  //   // responseHolder =
+  //   //     response["data"]["attributes"]["orders"]["data"][0]["attributes"];
+  // }
+
   var vehicles = [
-    "All vehicles (120)",
-    "Active vehicles (98)",
-    "Inactive vehicles (22)",
+    "All vehicles",
     "Search",
   ];
 
-  String _listOfVehicles = 'All vehicles (120)';
+  String _listOfVehicles = 'All vehicles';
 
   double _width = 160;
   final List<Item> _data = generateItems(1);
@@ -127,22 +160,24 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                             onChanged: (String? newValue) {
                               setState(() {
                                 _listOfVehicles = newValue!;
-                                if (newValue.contains("All vahicles")) {
-                                  showAll = showAll;
-                                  isActive = false;
-                                } else if (newValue
-                                    .contains("Active vehicles")) {
-                                  isActive = true;
-                                  showAll = false;
-                                } else if (newValue
-                                    .contains("Inactive vehicles")) {
-                                  isActive = false;
-                                  showAll = false;
-                                } else if (newValue.contains("search")) {
-                                  showAll = showAll;
-                                  isActive = false;
-                                }
-                                ;
+                                // if (newValue.contains("All vahicles")) {
+                                //   showAll = showAll;
+                                //   isActive = false;
+                                // } else if (newValue
+                                //     .contains("Active vehicles")) {
+                                //   isActive = true;
+                                //   showAll = false;
+                                // } else if (newValue
+                                //     .contains("Inactive vehicles")) {
+                                //   isActive = false;
+                                //   showAll = false;
+                                // } else if (newValue.contains("search")) {
+                                //   showAll = showAll;
+                                //   isActive = false;
+                                // }
+                                isActive
+                                    ? AllVehicleContainer()
+                                    : InactiveContainer();
                               });
 
                               print(newValue);
@@ -162,7 +197,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                           ),
                         )),
                     const SizedBox(height: 5.0),
-                    _isButtonPress && _listOfVehicles == "All vehicles (120)"
+                    _isButtonPress && _listOfVehicles == "All vehicles"
                         ? const Text(
                             " Choose vehicle",
                             textScaleFactor: 0.9,
@@ -184,19 +219,113 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                     separatorBuilder: (context, index) => const SizedBox(
                           height: 24,
                         ),
-                    itemCount: 5,
+                    itemCount: itemCount ?? 0,
                     itemBuilder: (BuildContext context, int index) {
                       //return RiderListContainer();
-                      if (showAll) {
-                        return AllVehicleContainer();
-                      } else if (isActive) {
-                        return ActiveContainer();
-                      } else if (!isActive) {
-                        return InactiveContainer();
-                      }
-                      //return AllVehicleContainer();
-                      return SizedBox();
-                      //return isActive ? ActiveContainer() : InactiveContainer();
+                      // if (showAll) {
+                      //   return AllVehicleContainer();
+                      // } else if (isActive) {
+                      //   return ActiveContainer();
+                      // } else if (!isActive) {
+                      //   return InactiveContainer();
+                      // }
+                      // //return AllVehicleContainer();
+                      // return SizedBox();
+                      return Container(
+                        padding: const EdgeInsets.all(8),
+                        height: 200,
+                        decoration:
+                            const BoxDecoration(color: whiteColor, boxShadow: [
+                          BoxShadow(
+                            color: Color.fromARGB(255, 230, 230, 230),
+                            spreadRadius: 2,
+                            offset: Offset(2.0, 2.0), //(x,y)
+                            blurRadius: 8.0,
+                          ),
+                        ]),
+                        margin: EdgeInsets.only(left: 22, right: 22),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              vertical: 0, horizontal: 24),
+                          child: Expanded(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Container(
+                                          height: 44,
+                                          width: 44,
+                                          decoration: const BoxDecoration(
+                                              color: whiteColor,
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(8)),
+                                              boxShadow: [
+                                                BoxShadow(
+                                                  color: Color.fromARGB(
+                                                      255, 230, 230, 230),
+                                                  spreadRadius: 1,
+                                                  offset:
+                                                      Offset(2.0, 2.0), //(x,y)
+                                                  blurRadius: 8.0,
+                                                ),
+                                              ]),
+                                          child: const Icon(
+                                              Remix.delete_bin_5_line)),
+                                    )
+                                  ],
+                                ),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Image.asset('assets/images/bike.png'),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          responseHolder?["name"]
+                                                   ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                        SizedBox(height: 5,),
+                                        Text(
+                                          
+                                             responseHolder?["number"]
+                                                   ?? "",
+                                          style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600),
+                                        ),
+                                      ],
+                                    )
+                                  ],
+                                ),
+                                Button(
+                                    text: 'Assigned to',
+                                    onPress: () {
+                                      Navigator.of(context)
+                                          .pushNamed(MerchantRiderProfile.id);
+                                    },
+                                    color: appPrimaryColor,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1,
+                                    textColor: whiteColor,
+                                    isLoading: false)
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
                     }),
               )
             ],
@@ -271,7 +400,7 @@ class AllVehicleContainer extends StatelessWidget {
                             fontSize: 18, fontWeight: FontWeight.w600),
                       ),
                       Text(
-                        'Vehicle no. 887',
+                        'Vehicle no. ',
                         style: TextStyle(
                             fontSize: 18, fontWeight: FontWeight.w600),
                       ),

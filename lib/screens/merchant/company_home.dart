@@ -8,9 +8,12 @@ import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
+import 'package:trakk/services/merchant/vehicle_list_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/merchant_container.dart';
 import 'package:badges/badges.dart';
+
+import '../../provider/merchant/vehicles_provider.dart';
 
 class CompanyHome extends StatefulWidget {
   static const String id = 'companyhome';
@@ -52,10 +55,15 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   @override
   void initState() {
+    print(">>>>>>>>>");
+     GetVehiclesListService.getVehiclesList();
     super.initState();
    _fetchUserName();
    _fetchTime();
+   
   }
+
+
 
   @override
   Widget build(BuildContext context) {
