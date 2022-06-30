@@ -14,6 +14,8 @@ import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/profile_list.dart';
 
+import '../support/help_and_support.dart';
+
 class ProfileMenu extends StatefulWidget {
   static const String id = "ProfileMenu";
   const ProfileMenu({Key? key}) : super(key: key);
@@ -23,11 +25,21 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu> {
-// var box = Hive.box('userData');
+var box = Hive.box('appState');
 //    String firstName = box.get('firstName');
+
+
+ @override
+  void initState() {
+    super.initState();
+  print(box.get("lastName"));
+  print(box.get("id").runtimeType);
+  print(box.get("token"));
+  }
+  
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box('userData');
+    var box = Hive.box('appState');
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -95,14 +107,14 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                  Row(
                                    children: [
                                      Text(
-                                      box.get('firstName'),
+                                      box.get('firstName') ?? "",
                                       style: const TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
                                 ),
                                 const SizedBox(width: 5,),
                                      Text(
-                                      box.get('lastName'),
+                                      box.get('lastName') ?? "",
                                       style: const TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
@@ -120,11 +132,13 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(box.get('phoneNumber').toString()),
+                                        Text(
+                                          box.get('phoneNumber') ?? ""
+                                          ),
                                         const SizedBox(
                                           height: 8,
                                         ),
-                                        Text(box.get('email'),),
+                                        Text(box.get('email') ?? "",),
                                       ],
                                     ),
                                     Button(
@@ -228,7 +242,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed(HelpAndSupport.id);
+                          Navigator.of(context).pushNamed(RideIssues.id);
                         },
                         child: const ProfileList(
                           icon: Icon(Remix.question_line),

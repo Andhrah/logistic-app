@@ -25,6 +25,9 @@ class LoginProvider extends ChangeNotifier {
       await box.put("userType", response["data"]["user"]["userType"]);
       await box.put("phoneNumber", response["data"]["user"]["phoneNumber"]);
       await box.put("firstName", response["data"]["user"]["firstName"]);
+      await box.put("lastName", response["data"]["user"]["lastName"]);
+      await box.put("email", response["data"]["user"]["email"]);
+      await box.put("id", response["data"]["user"]["id"]);
       return response;
     } catch(err) {
       throw ApiFailureException(err);

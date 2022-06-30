@@ -9,32 +9,36 @@ import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/constant.dart';
 
 class UpdateProfileService {
-  Future<bool?> updateProfile({required String firstName, required String lastName,required String phoneNumber,
-   required String  email,required String address}) async {
+  var box = Hive.box('appState');
+  Future<bool?> updateProfile(
+      {required String firstName,
+      required String lastName,
+      required String phoneNumber,
+      required String email,
+      required String address}) async {
     print("[][][][] NETWORK");
-    // var box = await Hive.openBox('userData');
-    // String token = box.get('token');
-    // print("This is the token >>>>>>>" + token);
+    //String token = box.get("appState");
+    String token = box.get("token");
+    var ID = box.get("id");
     try {
-      Data data = Data(firstName: firstName, lastName: lastName, phoneNumber: phoneNumber, 
-      email: email, address: address);
+      Data data = Data(
+          firstName: firstName,
+          lastName: lastName,
+          phoneNumber: phoneNumber,
+          email: email,
+          address: address);
       UpdateProfile updateProfile = UpdateProfile(data: data);
-      var response = await http
-          .put(Uri.parse('https://zebrra.itskillscenter.com/api/users/53'),
-            body: updateProfileToJson(updateProfile),
-            
-              // body: json.encode({
-              //   "data": {
-              //     "name": name,
-              //     "email": email,
-              //     "message": message
-              //   }
-              // }),
-              headers: {'Content-Type': 'application/json',
-              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTM3MTAyMiwiZXhwIjoxNjU1NDU3NDIyfQ.oi4bFAF81PkXUC1GRyqMjbUAz1GgjRp7GQW0D9y-ETk"
-              });
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        print(response.body);
+      var putResponses = await http.put(
+        putUriConverter("api/users", ID),
+        headers: kHeaders(token),
+        body: updateProfileToJson(updateProfile),
+      );
+      // var putResponse = await http.put(putUriConverter("api/users/", ID),
+      // headers: kHeaders(token), body: updateProfileToJson(updateProfile),
+      // );
+      print(">>>>>>>>> ${putResponses.body}");
+      if (putResponses.statusCode == 200 || putResponses.statusCode == 201) {
+        print(putResponses.body);
         GetUserData.getUser();
         return true;
       } else {

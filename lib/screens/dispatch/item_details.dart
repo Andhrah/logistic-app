@@ -11,6 +11,7 @@ import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
 import 'package:trakk/widgets/input_field.dart';
@@ -70,7 +71,7 @@ class _ItemDetailsState extends State<ItemDetails> {
 
   bool _isItemImage = false;
   String _pickItem = "Food";
-
+var box =  Hive.box('appState');
   var itemsCategory = ["Food", "Cloth", "Electronics", "others (specify)"];
 
   void autoCompleteSearch(String value) async {
@@ -93,6 +94,7 @@ class _ItemDetailsState extends State<ItemDetails> {
   @override
   void initState() {
     super.initState();
+    print(">>>>>>${box.get("firstName")}");
     String apiKey = "AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U";
     googlePlace = GooglePlace(apiKey);
 

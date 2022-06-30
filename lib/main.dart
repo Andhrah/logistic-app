@@ -45,7 +45,6 @@ import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
-import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
@@ -172,7 +171,6 @@ class _MyAppState extends State<MyApp> {
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
-            HelpAndSupport.id:(context) => const HelpAndSupport(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id:(context) => const CompanyHome(),
             Vehicles.id:(context) => const Vehicles(),
@@ -190,8 +188,8 @@ class _MyAppState extends State<MyApp> {
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
             Settings.id:(context) =>  const Settings(),
             Payments.id:(context) =>  const Payments(),
+            RideIssues.id:(context) => const RideIssues(),
             EditProfile.id: (context) => const EditProfile(),
-            RideIssues.id:(context) =>  const RideIssues(),
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             Transfers.id:(context) => const Transfers(),

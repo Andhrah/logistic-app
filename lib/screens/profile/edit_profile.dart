@@ -61,7 +61,7 @@ class _EditProfileState extends State<EditProfile> {
   bool _emailIsValid = false;
    bool _isItemImage = false;
 
-  var box =  Hive.box('userData');
+  var box =  Hive.box('appState');
 
   @override
   void initState() {
@@ -141,7 +141,7 @@ class _EditProfileState extends State<EditProfile> {
   }
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box('userData');
+    var box = Hive.box('appState');
     return Scaffold(
       
       backgroundColor: whiteColor,
@@ -205,15 +205,15 @@ class _EditProfileState extends State<EditProfile> {
                           ),
                         ),
                        Text(
-                         box.get('firstName'),
+                         box.get('firstName') ?? "",
                         style:
                             TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                       ),
-                       Text( box.get('phoneNumber'),),
+                       Text( box.get('phoneNumber') ?? "",),
                       const SizedBox(
                         height: 8,
                       ),
-                      Text( box.get('email'),),
+                      Text( box.get('email') ?? "",),
                     ],
                   ),
               ),

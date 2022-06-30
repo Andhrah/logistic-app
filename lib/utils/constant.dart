@@ -17,9 +17,17 @@ uriConverter(String url) {
   return Uri.https(baseUrl, '/$url');
 }
 
+paramsUriConverter(String url, Map<String, dynamic>? params) {
+  print('$baseUrl/$url');
+  return Uri.https(baseUrl, '/$url', params);
+}
+putUriConverter(String url, int id) {
+  print('$baseUrl/$url');
+  return Uri.https(baseUrl, '/$url/$id', );
+}
+
 ssoUriConverter(String url) {
   print('$ssoUrl/$url');
   return Uri.https(ssoUrl, '/$url');
-}
-var box =  Hive.box('userData');
+}var box =  Hive.box('userData');
 
