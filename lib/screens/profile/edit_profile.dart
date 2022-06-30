@@ -9,8 +9,7 @@ import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/services/get_user_service.dart';
-import 'package:trakk/services/update_profile_service.dart';
+
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -377,6 +376,10 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+}
+
+class UpdateProfileService {
+  //wrong class
 }
 
 class EditProfileContainer extends StatelessWidget {

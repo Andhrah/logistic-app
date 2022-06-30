@@ -896,9 +896,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image: AssetImage(
-
-                                          'assets/images/malik.png'),),),
-
+                                          'assets/images/malik.png'))),
                             ),
                           ],
                         ),

@@ -11,6 +11,8 @@ import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/profile_list.dart';
 
+import '../support/help_and_support.dart';
+
 class ProfileMenu extends StatefulWidget {
   static const String id = "ProfileMenu";
   const ProfileMenu({Key? key}) : super(key: key);

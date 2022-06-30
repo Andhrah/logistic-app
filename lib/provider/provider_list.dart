@@ -13,6 +13,8 @@ import 'package:trakk/provider/support/support.dart';
 
 import 'merchant/vehicles_provider.dart';
 
+import 'merchant/vehicles_provider.dart';
+
 List<SingleChildWidget> appProviders = [
   // ChangeNotifierProvider notifies the UI/Widget to update its
   // content to the latest data whenever there is any notification
