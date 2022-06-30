@@ -190,7 +190,6 @@ class _MyAppState extends State<MyApp> {
             Settings.id:(context) =>  const Settings(),
             Payments.id:(context) =>  const Payments(),
             EditProfile.id: (context) => const EditProfile(),
-            RideIssues.id:(context) =>  const RideIssues(),
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             Transfers.id:(context) => const Transfers(),

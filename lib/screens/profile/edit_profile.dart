@@ -379,6 +379,8 @@ class _EditProfileState extends State<EditProfile> {
 }
 
 class UpdateProfileService {
+  //Wrong method need to pull the correct one
+  updateProfile({String? firstName, String? lastName, String? phoneNumber, String? email, String? address}) {}
   //wrong class
 }
 
