@@ -180,7 +180,7 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             CartScreen.id: (context) => const CartScreen(),
-            PolylineScreen.id: (context) => const PolylineScreen(),
+            PolylineScreen.id: (context) =>  PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
