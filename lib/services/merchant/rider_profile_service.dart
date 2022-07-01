@@ -10,21 +10,24 @@ import '../../utils/constant.dart';
 
 class RiderProfileService {
   static Future<dynamic> getRiderProfile() async {
-       var box = await Hive.openBox('riderData');
+       var boxR = await Hive.openBox('riderData');
+       var box =  Hive.box('appState');
        print("riderData ox opend>>>>>>>>");
 
+       var merchantId = boxR.get('merchantId');
+       String token = box.get('token');
        // get user id and token from the values stored in hive after login
   // var id = box.get('id');
   // var token = box.get('token');
     var response = await http.get(
         //this merchant ID is hard-coded, but should be gotten from the service when the merchant logs in
         Uri.parse(
-            'https://zebrra.itskillscenter.com/api/users?populate[0]=rider&populate[1]=rider.vehicles&filters[rider][id][\$eq]=202'),
+            'https://zebrra.itskillscenter.com/api/users?populate[0]=rider&populate[1]=rider.vehicles&filters[rider][id][\$eq]=17'),
         headers: {
           'Content-type': 'application/json',
           //this token are hard-coded, but should be gotten from the service when the merchant logs in
           'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAyLCJpYXQiOjE2NTY2MDUyNTYsImV4cCI6MTY1NjY5MTY1Nn0.gxbpIDtIWsq1R_oMZPC-OjuA2Uegi6iY7o84OHkPMTE'
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6ODYsImlhdCI6MTY1NjY2NTkyMiwiZXhwIjoxNjU2NzUyMzIyfQ.LwCkXw7EENxOwrzlLUKVmjffB_MAIo8PNhGA2c9Fj1c'
         });
 
     //headers: kHeaders(''), body: json.encode(body));
@@ -34,7 +37,7 @@ class RiderProfileService {
       print('profile test: $decoded');
          
       // set returned value hive
-    box.putAll({
+    boxR.putAll({
         "firstName": decoded['data'][0]['firstName'],
         "lastName": decoded['data'][0]['lastName'],
         "email": decoded['data'][0]['email'],
@@ -45,7 +48,7 @@ class RiderProfileService {
         //"id": decoded['data']['id'],
         // "riderId": decoded['data']['rider']['id']
       });
-   print("see >>>. ${box.get('bikeName')} ~~~~~~~???????>>>>");
+   print("see >>>. ${boxR.get('bikeName')} ~~~~~~~???????>>>>");
       return decoded;
     } else if (decoded['data']) {
       print(

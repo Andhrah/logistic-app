@@ -13,11 +13,12 @@ class CancelButton extends StatelessWidget {
       padding: EdgeInsets.all(5),
       height: 32,
       width: 35,
-      decoration: const BoxDecoration(
-        color: whiteColor,
-        borderRadius: BorderRadius.all(
-          Radius.circular(4),
-        ),
+      decoration:  BoxDecoration(
+        shape: BoxShape.circle,
+        color: appPrimaryColor,
+        // borderRadius: BorderRadius.all(
+        //   Radius.circular(4),
+        // ),
         boxShadow: [
         BoxShadow(
           color: Color.fromARGB(255, 230, 230, 230),
@@ -30,7 +31,7 @@ class CancelButton extends StatelessWidget {
       child: Center(
         child: SvgPicture.asset(
           'assets/images/cancel.svg',
-          color: Colors.black,
+          color: whiteColor,
         ),
       ),
     );

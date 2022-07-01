@@ -12,6 +12,8 @@ import 'package:trakk/widgets/button.dart';
 
 import '../../provider/merchant/vehicles_provider.dart';
 import '../../widgets/back_icon.dart';
+import '../../widgets/cancel_button.dart';
+import 'company_home.dart';
 
 class Item {
   Item({
@@ -48,14 +50,14 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
 
     Map<String, dynamic>? responseHolder ;
   dynamic? itemCount;
-  Map<String, dynamic>? responseKey;
+  dynamic? responseKey;
 
   @override
   void initState() {
-    // fetchVehicleList().whenComplete((){
-    //       setState(() {});
-    //    });
-    //  fetchVehicleList();
+    fetchVehicleList().whenComplete((){
+          setState(() {});
+       });
+     fetchVehicleList();
     
     super.initState();
   }
@@ -64,12 +66,17 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
      var box = await Hive.openBox('riderData');
     var response =
         await VehiclesProvider.vehiclesProvider(context).getVehiclesList();
-    print("responseData=> ${response["data"][0]["attributes"]}");
-    print("))))))overdose=> ${response["meta"]["pagination"]["total"]}");
+        print("get vehicle list response>>> $response");
+    //print("responseData=> ${response["data"][0]["attributes"]}");
+    //print("))))))overdose=> ${response["meta"]["pagination"]["total"]}");
 
     responseHolder = await response["data"][0]["attributes"];
 
     itemCount = response["meta"]["pagination"]["total"];
+    responseKey = await response["data"][0]["attributes"]["riderId"]["data"]["attributes"]["merchantId"]["data"]["id"];
+    print("responseKey >>>>>>. ${responseKey}");
+    await box.put("merchantId", response["data"][0]["attributes"]["riderId"]["data"]["attributes"]["merchantId"]["data"]["id"]);
+
   }
 
   // fetchVehicleList() async {
@@ -102,7 +109,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
         backgroundColor: whiteColor,
         body: SafeArea(
             child: SingleChildScrollView(
-          physics: ScrollPhysics(),
+          physics: const ScrollPhysics(),
           child: Column(
             children: [
               const SizedBox(height: 10.0),
@@ -177,8 +184,8 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                                 //   isActive = false;
                                 // }
                                 isActive
-                                    ? AllVehicleContainer()
-                                    : InactiveContainer();
+                                    ? const AllVehicleContainer()
+                                    : const InactiveContainer();
                               });
 
                               print(newValue);
@@ -244,7 +251,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                             blurRadius: 8.0,
                           ),
                         ]),
-                        margin: EdgeInsets.only(left: 22, right: 22),
+                        margin: const EdgeInsets.only(left: 22, right: 22),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
                               vertical: 0, horizontal: 20),
@@ -257,9 +264,121 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
                                     InkWell(
-                                      onTap: () {
-                                        Navigator.of(context).pop();
-                                      },
+                                      onTap: () => showDialog<String>(
+                    // barrierDismissible: true,
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      // title: const Text('AlertDialog Title'),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 15.0),
+                      content: SizedBox(
+                        height: mediaQuery.size.height * 0.3,
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(CompanyHome.id);
+                                  },
+                                  child: const CancelButton())
+                            ],
+                          ),
+                          const SizedBox(height: 15,),
+                          Container(
+                            width: 300,
+                            child: const Text(
+                              'You are about to remove Suzuki\nVeh.No. 889 from the list of \nvehicles',
+                              // maxLines: 2,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                          const SizedBox(
+                            height: 14,
+                          ),
+                          Button(
+                            text: 'Delete',
+                            onPress: () => showDialog<String>(
+                              // barrierDismissible: true,
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                // title: const Text('AlertDialog Title'),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 15.0),
+                                content: SizedBox(
+                                  height: 220.0,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context)
+                                                  .pushNamed(CompanyHome.id);
+                                            },
+                                            child: const CancelButton(),
+                                          )
+                                        ],
+                                      ),
+                                      Container(
+                                        padding:
+                                            const EdgeInsets.symmetric(vertical: 30),
+                                        child: Column(
+                                          children: const [
+                                            Center(
+                                              child: Text(
+                                                '  You have succefully removed\nSuzuki Veh.No889 from the list \nof riders',
+                                                // maxLines: 2,
+                                                textAlign: TextAlign.center,
+                                                style: TextStyle(
+                                                  
+                                                  fontSize: 15,
+                                                  fontWeight: FontWeight.w400,
+                                                ),
+                                              ),
+                                            ),
+                                            SizedBox(height: 10),
+                                            Icon(Remix.delete_bin_6_line),
+                                          ],
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ),
+                            color: redColor,
+                            textColor: whiteColor,
+                            isLoading: false,
+                            width: MediaQuery.of(context).size.width / 1.6,
+                          ),
+                          const SizedBox(height: 30.0),
+                          Button(
+                            text: 'Don\'t delete',
+                            onPress: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: appPrimaryColor,
+                            textColor: whiteColor,
+                            isLoading: false,
+                            width: MediaQuery.of(context).size.width / 1.6,
+                          )
+                        ]),
+                      ),
+                    ),
+                  )
+                                      
+                                      
+                                      
+                                      
+                                      ,
                                       child: Container(
                                           height: 44,
                                           width: 44,
@@ -298,7 +417,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        SizedBox(height: 5,),
+                                        const SizedBox(height: 5,),
                                         Text(
                                           
                                              responseHolder?["number"]
@@ -345,7 +464,7 @@ class AllVehicleContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       height: 200,
       decoration: const BoxDecoration(color: whiteColor, boxShadow: [
         BoxShadow(
@@ -355,7 +474,7 @@ class AllVehicleContainer extends StatelessWidget {
           blurRadius: 8.0,
         ),
       ]),
-      margin: EdgeInsets.only(left: 22, right: 22),
+      margin: const EdgeInsets.only(left: 22, right: 22),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 24),
         child: Expanded(
@@ -443,7 +562,7 @@ class ActiveContainer extends StatelessWidget {
           blurRadius: 8.0,
         ),
       ]),
-      margin: EdgeInsets.only(left: 22, right: 22),
+      margin: const EdgeInsets.only(left: 22, right: 22),
       child: Padding(
         padding: const EdgeInsets.all(22.0),
         child: Column(

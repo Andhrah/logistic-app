@@ -94,21 +94,68 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     fetchVehicleList().whenComplete(() {
       setState(() {});
     });
-    _firstNameController =
-        TextEditingController();
+    _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
     _emailController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
     _homeAddressController = TextEditingController();
-    _assignedvehicleController =
-        TextEditingController();
+    _assignedvehicleController = TextEditingController();
     super.initState();
   }
 
   Map<String, dynamic>? responseHolder;
   Map<String, dynamic>? rider;
   Map<String, dynamic>? responseKey;
+
+
+  /*
+   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
+  */
+  // _onSave() async {
+  //   setState(() {
+  //     _isButtonPress = true;
+  //   });
+    
+  //   final FormState? form = _formKey.currentState;
+    
+  //   if(form!.validate() && 
+  //     _suspensionDuration != "Choose duration" 
+     
+  //     ){
+  //     form.save();
+      
+  //     try{
+  //      setState(() {
+  //         _loading = true;
+  //      });
+  //      var response = await supportService.sendMessage(name: _complaintType, email: _emailController.text,
+  //       message: _messageController.text);
+  //       if(response == true){
+  //         Navigator.pop(context);
+  //       }
+  //      print(response.toString());
+      
+  //     }catch(e){
+  //       print(e.toString());
+  //     }finally {
+  //       setState(() {
+  //         _isLoading = true;
+  //      });
+  //     }
+
+     
+  //     var box = await Hive.openBox('complaintType');
+  //     //var imgBox = await Hive.openBox('imgDocs');
+  //     await box.putAll({
+  //       "complaint": _complaintType,
+       
+  //     });
+      
+  //   }
+   
+  // }
+
 
   fetchVehicleList() async {
     var response = await RiderProfileProvider.riderProfileProvider(context)
@@ -152,7 +199,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -160,10 +206,13 @@ class _ProfileWidgetState extends State<ProfileIdget> {
       child: Column(
         children: [
           Text(
-            "${responseHolder?["firstName"] ?? ""} " "${responseHolder?["lastName"] ?? ""} " ,
+            "${responseHolder?["firstName"] ?? ""} "
+            "${responseHolder?["lastName"] ?? ""} ",
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
           ),
-          SizedBox(height: 20,),
+          SizedBox(
+            height: 20,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -320,43 +369,43 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                                             ),
                                           ),
                                         ),
-                                  )],
-                                    ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
-                              color: redColor,
-                              textColor: whiteColor,
-                              isLoading: false,
-                              width: MediaQuery.of(context).size.width / 1.6,
                             ),
-                            const SizedBox(height: 30.0),
-                            Button(
-                              text: 'Don\'t delete',
-                              onPress: () {
-                                Navigator.of(context).pop();
-                              },
-                              color: appPrimaryColor,
-                              textColor: whiteColor,
-                              isLoading: false,
-                              width: MediaQuery.of(context).size.width / 1.6,
-                            )
-                          ]),
-                        ),
+                            color: redColor,
+                            textColor: whiteColor,
+                            isLoading: false,
+                            width: MediaQuery.of(context).size.width / 1.6,
+                          ),
+                          const SizedBox(height: 30.0),
+                          Button(
+                            text: 'Don\'t delete',
+                            onPress: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: appPrimaryColor,
+                            textColor: whiteColor,
+                            isLoading: false,
+                            width: MediaQuery.of(context).size.width / 1.6,
+                          )
+                        ]),
                       ),
                     ),
-                    child: Text(
-                      "Delete",
-                      style: TextStyle(
-                          color: (selectedProfileOptions == ProfileOptions.Delete)
-                              ? whiteColor
-                              : appPrimaryColor),
-                    ),
+                  ),
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                        color: (selectedProfileOptions == ProfileOptions.Delete)
+                            ? whiteColor
+                            : appPrimaryColor),
                   ),
                 ),
-              ],
-            ),
-          
+              ),
+            ],
+          ),
           getCustomContainer(),
         ],
       ),
@@ -386,7 +435,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
             //physics: NeverScrollableScrollPhysics(),
             //shrinkWrap: true,
             children: [
-
                 Form(
                   key: _formKey,
                   child: Column(
@@ -865,8 +913,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Padding(
-                padding:
-                    const EdgeInsets.only(left: 0.0, right: 30, bottom: 5),
+                padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
