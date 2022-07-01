@@ -4,7 +4,6 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
-import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
@@ -14,7 +13,6 @@ import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/merchant_container.dart';
 import 'package:badges/badges.dart';
 
-import '../../provider/merchant/vehicles_provider.dart';
 import '../../services/merchant/rider_profile_service.dart';
 
 class CompanyHome extends StatefulWidget {
@@ -29,7 +27,7 @@ class _CompanyHomeState extends State<CompanyHome> {
   int notificatiobount = 26;
   String? firstName;
   String _greeting = "";
-
+  
   _fetchUserName() async {
     var box = await Hive.openBox('appState');
     setState(() {
@@ -53,18 +51,18 @@ class _CompanyHomeState extends State<CompanyHome> {
         _greeting = "Good Evening";
       });
     }
-    @override
-  void initState() {
-    print(">>>>>>>>>");
-     GetVehiclesListService.getVehiclesList();
-     RiderProfileService.getRiderProfile();
-  //  VehiclesProvider.vehiclesProvider(context);
-    super.initState();
-    _fetchUserName();
-   _fetchTime();
   }
 
-
+  @override
+  void initState() {
+    print(">>>>>>${box.get("token")}");
+     //GetVehiclesListService.getVehiclesList();
+     //RiderProfileService.getRiderProfile();
+    super.initState();
+   _fetchUserName();
+   _fetchTime();
+  }
+var box =  Hive.box('appState');
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -312,12 +310,5 @@ class _CompanyHomeState extends State<CompanyHome> {
         )
       ),
     );
-  }
-}
-
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
   }
 }

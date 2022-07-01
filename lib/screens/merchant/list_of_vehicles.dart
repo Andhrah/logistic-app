@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/merchant/active_Container.dart';
 import 'package:trakk/screens/merchant/all_vehicle_container.dart';
@@ -51,14 +52,16 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
 
   @override
   void initState() {
-    fetchVehicleList().whenComplete((){
-          setState(() {});
-       });
+    // fetchVehicleList().whenComplete((){
+    //       setState(() {});
+    //    });
     //  fetchVehicleList();
+    
     super.initState();
   }
 
   fetchVehicleList() async {
+     var box = await Hive.openBox('riderData');
     var response =
         await VehiclesProvider.vehiclesProvider(context).getVehiclesList();
     print("responseData=> ${response["data"][0]["attributes"]}");
@@ -217,7 +220,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                     separatorBuilder: (context, index) => const SizedBox(
                           height: 24,
                         ),
-                    itemCount: itemCount ?? 0,
+                    itemCount: itemCount ?? 2,
                     itemBuilder: (BuildContext context, int index) {
                       //return RiderListContainer();
                       // if (showAll) {
@@ -244,7 +247,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                         margin: EdgeInsets.only(left: 22, right: 22),
                         child: Padding(
                           padding: const EdgeInsets.symmetric(
-                              vertical: 0, horizontal: 24),
+                              vertical: 0, horizontal: 20),
                           child: Expanded(
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,

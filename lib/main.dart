@@ -79,7 +79,7 @@ void main() async {
 
 
   //await dotenv.load(fileName: ".env");
-    
+    await Hive.openBox('riderData');
   runApp(const MyApp());
 }
 

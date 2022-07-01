@@ -11,6 +11,7 @@ import '../../utils/constant.dart';
 class RiderProfileService {
   static Future<dynamic> getRiderProfile() async {
        var box = await Hive.openBox('riderData');
+       print("riderData ox opend>>>>>>>>");
 
        // get user id and token from the values stored in hive after login
   // var id = box.get('id');
@@ -18,12 +19,12 @@ class RiderProfileService {
     var response = await http.get(
         //this merchant ID is hard-coded, but should be gotten from the service when the merchant logs in
         Uri.parse(
-            'https://zebrra.itskillscenter.com/api/users?populate[0]=rider&populate[1]=rider.vehicles&filters[rider][id][\$eq]=47'),
+            'https://zebrra.itskillscenter.com/api/users?populate[0]=rider&populate[1]=rider.vehicles&filters[rider][id][\$eq]=202'),
         headers: {
           'Content-type': 'application/json',
           //this token are hard-coded, but should be gotten from the service when the merchant logs in
           'Authorization':
-              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTYsImlhdCI6MTY1NjUwMDAyNiwiZXhwIjoxNjU2NTg2NDI2fQ.dQPABiFaMIKVLcMwEuAdp7wQ8ZApEITMT06FkkN5mKU'
+              'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjAyLCJpYXQiOjE2NTY2MDUyNTYsImV4cCI6MTY1NjY5MTY1Nn0.gxbpIDtIWsq1R_oMZPC-OjuA2Uegi6iY7o84OHkPMTE'
         });
 
     //headers: kHeaders(''), body: json.encode(body));

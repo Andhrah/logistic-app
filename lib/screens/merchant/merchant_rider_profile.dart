@@ -95,14 +95,14 @@ class _ProfileWidgetState extends State<ProfileIdget> {
       setState(() {});
     });
     _firstNameController =
-        TextEditingController(text: box.get('firstName') ?? "");
-    _lastNameController = TextEditingController(text: box.get('lastName') ?? "");
-    _emailController = TextEditingController(text: box.get('email') ?? "");
-    _phoneNumberController = TextEditingController(text: box.get('phoneNumber') ?? "");
+        TextEditingController();
+    _lastNameController = TextEditingController();
+    _emailController = TextEditingController();
+    _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
-    _homeAddressController = TextEditingController(text: box.get('address') ?? "");
+    _homeAddressController = TextEditingController();
     _assignedvehicleController =
-        TextEditingController(text: "${box.get('bikeName') ?? ""} " "${box.get('bikeNumber') ?? ""}" );
+        TextEditingController();
     super.initState();
   }
 
@@ -856,7 +856,6 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
-    var VresponseHolder;
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
