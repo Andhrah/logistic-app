@@ -13,10 +13,11 @@ class LoginService {
     };
     var response = await http.post(
       uriConverter('api/user/login'),
-      headers: kHeaders(''), body: json.encode(body)
+      headers: kHeaders(''), body: json.encode(body),
     );
     var decoded = jsonDecode(response.body);
     if (response.statusCode.toString().startsWith('2')) {
+      print(">data response >>${decoded}");
       return decoded;
     } else if (response.statusCode.toString().startsWith('4')) {
       throw ApiFailureException(decoded['error']["message"] ?? response.reasonPhrase);

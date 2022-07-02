@@ -221,8 +221,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                 width: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(10),
-                  ),
+                    Radius.circular(10),                  ),
                   border: Border.all(color: grayColor),
                 ),
                 child: ElevatedButton(

@@ -4,6 +4,10 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 
+
+    
+  //var box = Hive.box('appState');
+
 class GetUserData{
   // a new instance of hive can be created with new box 
   
@@ -23,6 +27,7 @@ class GetUserData{
     if(response.statusCode == 200) {
      
       // set returned value hive
+
     box.putAll({
         "firstName": decoded['data']['firstName'],
         "lastName": decoded['data']['lastName'],

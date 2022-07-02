@@ -104,10 +104,10 @@ class _HomeState extends State<Home> {
               text: 'Sign Up As A Rider',
               onPress: () {
                 Navigator.of(context).pushNamed(
-                  RiderHomeScreen.id,
-                  // arguments: {
-                  //   "userType": "rider",
-                  // }
+                  Signup.id,
+                  arguments: {
+                    "userType": "rider",
+                  }
                 );
               },
               color: whiteColor,

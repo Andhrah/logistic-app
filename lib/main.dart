@@ -47,6 +47,7 @@ import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_home.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
+
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
@@ -205,6 +206,7 @@ class _MyAppState extends State<MyApp> {
             UserDispatchHistory.id:(context) => const UserDispatchHistory(),
             Settings.id:(context) =>  const Settings(),
             Payments.id:(context) =>  const Payments(),
+            RideIssues.id:(context) => const RideIssues(),
             EditProfile.id: (context) => const EditProfile(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id: (context) => const CompanyHome(),
@@ -212,6 +214,7 @@ class _MyAppState extends State<MyApp> {
             Riders.id: (context) => const Riders(),
             DispatchHistory.id: (context) => const DispatchHistory(),
             ListOfVehicles.id: (context) => const ListOfVehicles(),
+
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),

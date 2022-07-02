@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:trakk/provider/update_profile/update_profile.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/services/get_user_service.dart';
@@ -27,6 +28,7 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu> {
+
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
 
@@ -57,8 +59,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
     var box = Hive.box('userData');
        print("${box.get('lastName')} second call>>>");
 
-    
-    return Scaffold(
+        return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
         child: Column(
@@ -213,10 +214,12 @@ class _ProfileMenuState extends State<ProfileMenu> {
                       ),
                      
                       const SizedBox(
+
                         height: 18,
                       ),
                       InkWell(
                         onTap: () {
+
                           Navigator.of(context)
                               .pushNamed(UserDispatchHistory.id);
                         },

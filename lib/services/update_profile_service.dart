@@ -9,43 +9,38 @@ import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/constant.dart';
 
 class UpdateProfileService {
-  Future<bool?> updateProfile({required String firstName, required String lastName,required String phoneNumber,
-   required String  email,required String address}) async {
+  var box = Hive.box('appState');
+  Future<bool?> updateProfile(
+      {required String firstName,
+      required String lastName,
+      required String phoneNumber,
+      required String email,
+      required String address}) async {
     print("[][][][] NETWORK");
-    // var box = await Hive.openBox('userData');
-    // String token = box.get('token');
-    // print("This is the token >>>>>>>" + token);
+    //String token = box.get("appState");
+    String token = box.get("token");
+    var ID = box.get("id");
     try {
-      UpdateProfileModel updateProfileModel = UpdateProfileModel(firstName: firstName, lastName: lastName,
-      phoneNumber: phoneNumber, address: address);
-      var response = await http
-          .put(Uri.parse('https://zebrra.itskillscenter.com/api/users/55'),
-            body: updateProfileModelToJson(updateProfileModel),
-            
-              // body: json.encode({
-              //   "data": {
-              //     "name": name,
-              //     "email": email,
-              //     "message": message
-              //   }
-              // }),
-              headers: {'Content-Type': 'application/json',
-              'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTUsImlhdCI6MTY1NjAxOTY0OSwiZXhwIjoxNjU2MTA2MDQ5fQ.5OX8fs5LDpdmeQ8LULyjZn2fRj2slCk6kgpwhX1U0Z0"
-              });
-      if (response.statusCode == 200 || response.statusCode == 201) {
-        var decoded = jsonDecode(response.body);
-        print(response.body);
-        box.putAll({
-        "firstName": decoded['data']['firstName'],
-        "lastName": decoded['data']['lastName'],
-        "email": decoded['data']['email'],
-        "phoneNumber": decoded['data']['phoneNumber'],
-        "address": decoded['data']['address'],
-        "id": decoded['data']['id'],
-        
-      });
-        print(">>>>>>>>>>>>>>>>");
-       await GetUserData.getUser();
+      Data data = Data(
+          firstName: firstName,
+          lastName: lastName,
+          phoneNumber: phoneNumber,
+          email: email,
+          address: address);
+      UpdateProfile updateProfile = UpdateProfile(data: data);
+      var putResponses = await http.put(
+        putUriConverter("api/users", ID),
+        headers: kHeaders(token),
+        body: updateProfileToJson(updateProfile),
+      );
+      // var putResponse = await http.put(putUriConverter("api/users/", ID),
+      // headers: kHeaders(token), body: updateProfileToJson(updateProfile),
+      // );
+      print(">>>>>>>>> ${putResponses.body}");
+      if (putResponses.statusCode == 200 || putResponses.statusCode == 201) {
+        print(putResponses.body);
+        GetUserData.getUser();
+
         return true;
       } else {
         print('error ********');
@@ -82,7 +77,9 @@ class UpdateProfileService {
     }
   }
 
+
   updateUserProfile() {}
+
 
   // Future<dynamic> createComplaint(
   //   String name,

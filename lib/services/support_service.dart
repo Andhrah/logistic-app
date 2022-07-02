@@ -8,26 +8,26 @@ import 'package:trakk/utils/constant.dart';
 class SupportService {
   Future<bool?> sendMessage({required String name, required String  email,required String  message,}) async {
     print("[][][][] NETWORK");
-    // var box = await Hive.openBox('userData');
-    // String token = box.get('token');
-    // print("This is the token >>>>>>>" + token);
+ String token = box.get("token");
     try {
       Data data = Data(name: name, email: email, message: message,);
       Support support = Support(data: data);
-      var response = await http
-          .post(Uri.parse('https://zebrra.itskillscenter.com/api/complaints'),
-            body: supportToJson(support),
-            
-              // body: json.encode({
-              //   "data": {
-              //     "name": name,
-              //     "email": email,
-              //     "message": message
-              //   }
-              // }),
-              headers: {'Content-Type': 'application/json',
-              //'Authorization': "Bearer $token"
-              });
+      // var response = await http
+      //     .post(Uri.parse('https://zebrra.itskillscenter.com/api/complaints'),
+      //       body: supportToJson(support),
+      //         headers: {'Content-Type': 'application/json',
+      //         //'Authorization': "Bearer $token"
+      //         });
+              var response = await http.post(Uri.parse("https://zebrra.itskillscenter.com/api/complaints"),
+        //headers: kHeaders(token),
+        body: supportToJson(support),
+      );
+              var responses = await http.post(
+        uriConverter("api/complaints"),
+        //headers: kHeaders(token),
+        body: supportToJson(support),
+      );
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
         return true;

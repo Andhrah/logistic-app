@@ -112,41 +112,37 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
     return Scaffold(
         backgroundColor: whiteColor,
         body: SafeArea(
-            child: SingleChildScrollView(
-          physics: const ScrollPhysics(),
-          child: Column(
-            children: [
-              const SizedBox(height: 10.0),
-              Row(
-                children: [
-                  BackIcon(
-                    onPress: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'LIST OF VEHICLES',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
+            child: Column(
+              children: [
+                  const SizedBox(height: 10.0),
+                  Row(
+                    children: [
+                      BackIcon(
+                        onPress: () {
+                          Navigator.pop(context);
+                        },
+
                       ),
-                    ),
+                      Container(
+                        margin: const EdgeInsets.only(left: 40.0),
+                        alignment: Alignment.center,
+                        child: const Text(
+                          'LIST OF VEHICLES',
+                          textScaleFactor: 1.2,
+                          style: TextStyle(
+                            color: appPrimaryColor,
+                            fontWeight: FontWeight.bold,
+                            // decoration: TextDecoration.underline,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 22),
-                child: Column(
+                Expanded(
+                  child: SingleChildScrollView(physics: ScrollPhysics(),
+                          child: Column(
                   children: [
+
                     const SizedBox(height: 5.0),
                     DecoratedBox(
                         decoration: BoxDecoration(
@@ -220,17 +216,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                           )
                         : Container(),
                   ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              SizedBox(
-                height: mediaQuery.size.height,
-                child: ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(
-                          height: 24,
+                          ),
                         ),
+
                     itemCount: itemCount ?? 2,
                     itemBuilder: (BuildContext context, int index) {
                       //return RiderListContainer();

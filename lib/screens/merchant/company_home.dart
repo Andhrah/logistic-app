@@ -64,9 +64,14 @@ class _CompanyHomeState extends State<CompanyHome> {
    _fetchUserName();
    _fetchTime();
   }
+
 var box =  Hive.box('appState');
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    var box = Hive.box('userData');
+    // String firstName = box.get('firstName');
+
     return Scaffold(
       body: SafeArea(
         child: Stack(
