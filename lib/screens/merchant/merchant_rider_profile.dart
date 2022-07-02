@@ -2,10 +2,13 @@ import 'dart:ui';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
+import 'package:trakk/provider/merchant/rider_profile_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/services/merchant/rider_profile_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -31,8 +34,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _firstNameController;
-
   bool _selectedProfile = false;
 
   FocusNode? _firstNameNode;
@@ -50,6 +51,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     "add",
   ];
 
+  var box = Hive.box("riderData");
   bool _isButtonPress = false;
   bool _isActive = false;
   bool _isActive1 = false;
@@ -57,6 +59,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   String _suspensionDuration = 'Choose duration';
 
+  late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneNumberController;
@@ -87,8 +90,10 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   @override
   void initState() {
-    super.initState();
-    _firstNameController = TextEditingController();
+    RiderProfileService.getRiderProfile();
+    fetchVehicleList().whenComplete(() {
+      setState(() {});
+    });
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
     _emailController = TextEditingController();
@@ -96,6 +101,72 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     _passwordController = TextEditingController();
     _homeAddressController = TextEditingController();
     _assignedvehicleController = TextEditingController();
+    super.initState();
+  }
+
+  Map<String, dynamic>? responseHolder;
+  Map<String, dynamic>? rider;
+  Map<String, dynamic>? responseKey;
+
+
+  /*
+   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
+  */
+  // _onSave() async {
+  //   setState(() {
+  //     _isButtonPress = true;
+  //   });
+    
+  //   final FormState? form = _formKey.currentState;
+    
+  //   if(form!.validate() && 
+  //     _suspensionDuration != "Choose duration" 
+     
+  //     ){
+  //     form.save();
+      
+  //     try{
+  //      setState(() {
+  //         _loading = true;
+  //      });
+  //      var response = await supportService.sendMessage(name: _complaintType, email: _emailController.text,
+  //       message: _messageController.text);
+  //       if(response == true){
+  //         Navigator.pop(context);
+  //       }
+  //      print(response.toString());
+      
+  //     }catch(e){
+  //       print(e.toString());
+  //     }finally {
+  //       setState(() {
+  //         _isLoading = true;
+  //      });
+  //     }
+
+     
+  //     var box = await Hive.openBox('complaintType');
+  //     //var imgBox = await Hive.openBox('imgDocs');
+  //     await box.putAll({
+  //       "complaint": _complaintType,
+       
+  //     });
+      
+  //   }
+   
+  // }
+
+
+  fetchVehicleList() async {
+    var response = await RiderProfileProvider.riderProfileProvider(context)
+        .getRiderProfile();
+    print("merchant rider profile response=> ${response["data"][0]}");
+    print(
+        "merchant rider profile response 2222 ${response["data"][0]["rider"]["vehicles"][0]["name"]}");
+
+    responseHolder = await response["data"][0];
+
+    rider = response["data"][0]["rider"]["vehicles"][0];
   }
 
   _validateEmail() {
@@ -128,198 +199,208 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return SingleChildScrollView(
-      
       child: Column(
         children: [
-
+          Text(
+            "${responseHolder?["firstName"] ?? ""} "
+            "${responseHolder?["lastName"] ?? ""} ",
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: 20,
+          ),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Expanded(
-                child: Container(
-                  height: 59,
-                  width: 100,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
-                  border: Border.all(style: BorderStyle.solid,color: grayColor),),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          (selectedProfileOptions == ProfileOptions.Edit)
-                              ? MaterialStateProperty.all(appPrimaryColor)
-                              : MaterialStateProperty.all(whiteColor),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedProfileOptions = ProfileOptions.Edit;
-                        _selectedProfile = true;
-                      });
-                    },
-                    child: Text(
-                      "Edit",
-                      style: TextStyle(
-                          color: (selectedProfileOptions == ProfileOptions.Edit)
-                              ? whiteColor
-                              : appPrimaryColor),
-                    ),
+              Container(
+                height: 59,
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  border: Border.all(color: grayColor),
+                ),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        (selectedProfileOptions == ProfileOptions.Edit)
+                            ? MaterialStateProperty.all(appPrimaryColor)
+                            : MaterialStateProperty.all(whiteColor),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedProfileOptions = ProfileOptions.Edit;
+                      _selectedProfile = true;
+                    });
+                  },
+                  child: Text(
+                    "Edit",
+                    style: TextStyle(
+                        color: (selectedProfileOptions == ProfileOptions.Edit)
+                            ? whiteColor
+                            : appPrimaryColor),
                   ),
                 ),
               ),
-              const SizedBox(width: 10,),
-              Expanded(
-                child: Container(
-                  height: 59,
-                  width: 100,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
-                  border: Border.all(style: BorderStyle.solid,color: grayColor),),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          (selectedProfileOptions == ProfileOptions.Suspend)
-                              ? MaterialStateProperty.all(appPrimaryColor)
-                              : MaterialStateProperty.all(whiteColor),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedProfileOptions = ProfileOptions.Suspend;
-                      });
-                    },
-                    child: Text(
-                      "Suspend",
-                      style: TextStyle(
-                          color: (selectedProfileOptions == ProfileOptions.Suspend)
-                              ? whiteColor
-                              : appPrimaryColor),
-                    ),
+              Container(
+                height: 59,
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  border: Border.all(color: grayColor),
+                ),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        (selectedProfileOptions == ProfileOptions.Suspend)
+                            ? MaterialStateProperty.all(appPrimaryColor)
+                            : MaterialStateProperty.all(whiteColor),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectedProfileOptions = ProfileOptions.Suspend;
+                    });
+                  },
+                  child: Text(
+                    "Suspend",
+                    style: TextStyle(
+                        color:
+                            (selectedProfileOptions == ProfileOptions.Suspend)
+                                ? whiteColor
+                                : appPrimaryColor),
                   ),
                 ),
               ),
-              const SizedBox(width: 10,),
-              Expanded(
-                child: Container(
-                  height: 59,
-                  width: 100,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
-                  border: Border.all(style: BorderStyle.solid,color: grayColor),),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          (selectedProfileOptions == ProfileOptions.Delete)
-                              ? MaterialStateProperty.all(appPrimaryColor)
-                              : MaterialStateProperty.all(whiteColor),
-                    ),
-                    onPressed: () => showDialog<String>(
-                      // barrierDismissible: true,
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        // title: const Text('AlertDialog Title'),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 15.0),
-                        content: SizedBox(
-                          height: 220.0,
-                          child: Column(children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .pushNamed(CompanyHome.id);
-                                    },
-                                    child: const CancelButton())
-                              ],
-                            ),
-                            Container(
-                              width: 300,
-                              child: const Text(
-                                'You are about to delete Malik\nJohnson from the list of riders',
-                                // maxLines: 2,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                textAlign: TextAlign.center,
+              Container(
+                height: 59,
+                width: 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(10),
+                  ),
+                  border: Border.all(color: grayColor),
+                ),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor:
+                        (selectedProfileOptions == ProfileOptions.Delete)
+                            ? MaterialStateProperty.all(appPrimaryColor)
+                            : MaterialStateProperty.all(whiteColor),
+                  ),
+                  onPressed: () => showDialog<String>(
+                    // barrierDismissible: true,
+                    context: context,
+                    builder: (BuildContext context) => AlertDialog(
+                      // title: const Text('AlertDialog Title'),
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20.0, vertical: 15.0),
+                      content: SizedBox(
+                        height: 220.0,
+                        child: Column(children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              InkWell(
+                                  onTap: () {
+                                    Navigator.of(context)
+                                        .pushNamed(CompanyHome.id);
+                                  },
+                                  child: const CancelButton())
+                            ],
+                          ),
+                          Container(
+                            width: 300,
+                            child: const Text(
+                              'You are about to delete Malik\nJohnson from the list of riders',
+                              // maxLines: 2,
+                              style: TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w400,
                               ),
+                              textAlign: TextAlign.center,
                             ),
-                            const SizedBox(
-                              height: 14,
-                            ),
-                            Button(
-                              text: 'Delete',
-                              onPress: () => showDialog<String>(
-                                // barrierDismissible: true,
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  // title: const Text('AlertDialog Title'),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 15.0),
-                                  content: SizedBox(
-                                    height: 220.0,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.of(context)
-                                                    .pushNamed(CompanyHome.id);
-                                              },
-                                              child: const CancelButton(),
-                                            )
-                                          ],
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 30),
-                                          child: const Center(
-                                            child: Text(
-                                              'You have succefully deleted Malik Johnson from the list of riders',
-                                              // maxLines: 2,
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                              textAlign: TextAlign.center,
+                          ),
+                          const SizedBox(
+                            height: 14,
+                          ),
+                          Button(
+                            text: 'Delete',
+                            onPress: () => showDialog<String>(
+                              // barrierDismissible: true,
+                              context: context,
+                              builder: (BuildContext context) => AlertDialog(
+                                // title: const Text('AlertDialog Title'),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0, vertical: 15.0),
+                                content: SizedBox(
+                                  height: 220.0,
+                                  child: Column(
+                                    children: [
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context)
+                                                  .pushNamed(CompanyHome.id);
+                                            },
+                                            child: const CancelButton(),
+                                          )
+                                        ],
+                                      ),
+                                      Container(
+                                        padding:
+                                            EdgeInsets.symmetric(vertical: 30),
+                                        child: const Center(
+                                          child: Text(
+                                            'You have succefully deleted Malik Johnson from the list of riders',
+                                            // maxLines: 2,
+                                            style: TextStyle(
+                                              fontSize: 15,
+                                              fontWeight: FontWeight.w400,
                                             ),
                                           ),
                                         ),
-                                      ],
-                                    ),
+                                      )
+                                    ],
                                   ),
                                 ),
                               ),
-                              color: redColor,
-                              textColor: whiteColor,
-                              isLoading: false,
-                              width: MediaQuery.of(context).size.width / 1.6,
                             ),
-                            const SizedBox(height: 30.0),
-                            Button(
-                              text: 'Don\'t delete',
-                              onPress: () {
-                                Navigator.of(context).pop();
-                              },
-                              color: appPrimaryColor,
-                              textColor: whiteColor,
-                              isLoading: false,
-                              width: MediaQuery.of(context).size.width / 1.6,
-                            )
-                          ]),
-                        ),
+                            color: redColor,
+                            textColor: whiteColor,
+                            isLoading: false,
+                            width: MediaQuery.of(context).size.width / 1.6,
+                          ),
+                          const SizedBox(height: 30.0),
+                          Button(
+                            text: 'Don\'t delete',
+                            onPress: () {
+                              Navigator.of(context).pop();
+                            },
+                            color: appPrimaryColor,
+                            textColor: whiteColor,
+                            isLoading: false,
+                            width: MediaQuery.of(context).size.width / 1.6,
+                          )
+                        ]),
                       ),
                     ),
-                    child: Text(
-                      "Delete",
-                      style: TextStyle(
-                          color: (selectedProfileOptions == ProfileOptions.Delete)
-                              ? whiteColor
-                              : appPrimaryColor),
-                    ),
+                  ),
+                  child: Text(
+                    "Delete",
+                    style: TextStyle(
+                        color: (selectedProfileOptions == ProfileOptions.Delete)
+                            ? whiteColor
+                            : appPrimaryColor),
                   ),
                 ),
               ),
@@ -354,7 +435,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
             //physics: NeverScrollableScrollPhysics(),
             //shrinkWrap: true,
             children: [
-
                 Form(
                   key: _formKey,
                   child: Column(
@@ -511,40 +591,40 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                               color: appPrimaryColor,
                               textColor: whiteColor,
                               isLoading: _loading,
-                              width: mediaQuery.size.width* 1)),
+                              width: mediaQuery.size.width * 1)),
                       const SizedBox(height: 10.0),
                     ],
                   ),
                 ),
               ])
         : Column(
-            children: const [
+            children: [
               SizedBox(
                 height: 20,
               ),
               Profillebox(
                 title: 'First name',
-                detail: 'Malik',
+                detail: responseHolder?["firstName"] ?? "",
               ),
               Profillebox(
                 title: 'Last name',
-                detail: 'Johnson',
+                detail: responseHolder?["lastName"] ?? "",
               ),
               Profillebox(
                 title: 'Phone',
-                detail: '0806-333-2255',
+                detail: responseHolder?["phoneNumber"] ?? "",
               ),
               Profillebox(
                 title: 'Email address',
-                detail: 'malikjohn11@gmail.com',
+                detail: responseHolder?["email"] ?? "",
               ),
               Profillebox(
                 title: 'Home address',
-                detail: 'N0. Mcneil Street, Yaba',
+                detail: responseHolder?["address"] ?? "",
               ),
               Profillebox(
                 title: 'Assigned vehicle',
-                detail: 'Yamaha 4567658',
+                detail: "${rider?["name"] ?? ""} " "${rider?["number"] ?? ""}",
               ),
             ],
           );
@@ -694,37 +774,39 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 15.0),
                                   content: SizedBox(
-                                      height: 220.0,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const CancelButton(),),
-                                            ],
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 20.0),
-                                            child: const Center(
-                                              child: Text(
-                                                'You have succefully suspended Malik Johnson for 1 month',
-                                                // maxLines: 2,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                textAlign: TextAlign.center,
+                                    height: 220.0,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const CancelButton(),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20.0),
+                                          child: const Center(
+                                            child: Text(
+                                              'You have succefully suspended Malik Johnson for 1 month',
+                                              // maxLines: 2,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400,
                                               ),
+                                              textAlign: TextAlign.center,
                                             ),
                                           ),
-                                        ],
-                                      ),),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                               color: redColor,
@@ -748,7 +830,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                       ),
                     ),
                 color: Colors.black,
-                width: mediaQuery.size.width*1,
+                width: mediaQuery.size.width * 1,
                 textColor: Colors.white,
                 isLoading: false),
           ],
@@ -840,9 +922,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                     ),
                     //Text('data'),
                     SizedBox(
-
-                      width: mediaQuery.size.width * 0.15,
-
+                      width: mediaQuery.size.width / 4,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -852,7 +932,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                             Container(
                               margin: const EdgeInsets.only(
                                 top: 30,
-                                bottom: 12,
+                                bottom: 0,
                               ),
                               height: 80,
                               width: 80,
@@ -860,14 +940,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                       image: AssetImage(
-
-                                          'assets/images/malik.png'),),),
-
-                            ),
-                            const Text(
-                              'Malik Johnson',
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w600),
+                                          'assets/images/malik.png'))),
                             ),
                           ],
                         ),

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/models/support/support.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/provider/support/support.dart';
 import 'package:trakk/services/support_service.dart';

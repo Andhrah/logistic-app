@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:trakk/Exceptions/api_failure_exception.dart';
-import 'package:trakk/models/support/support.dart';
 import 'package:trakk/utils/constant.dart';
 
 class SupportService {

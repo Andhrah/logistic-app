@@ -6,10 +6,15 @@ import 'package:trakk/provider/auth/login_provider.dart';
 import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/provider/auth/verify_account_provider.dart';
 import 'package:trakk/provider/merchant/add_company_data_provider.dart';
+import 'package:trakk/provider/merchant/rider_profile_provider.dart';
 import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/provider/rider/rider.dart';
 import 'package:trakk/provider/support/support.dart';
 import 'package:trakk/provider/update_profile/update_profile.dart';
+
+import 'merchant/vehicles_provider.dart';
+
+import 'merchant/vehicles_provider.dart';
 
 List<SingleChildWidget> appProviders = [
   // ChangeNotifierProvider notifies the UI/Widget to update its
@@ -25,4 +30,6 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<RiderAuth>(create: (_) => RiderAuth()),
   ChangeNotifierProvider<SupportProvider>(create: (_) => SupportProvider()),
   ChangeNotifierProvider<UpdateUserProvider>(create: (_) => UpdateUserProvider()),
+  ChangeNotifierProvider<RiderProfileProvider>(create: (_) => RiderProfileProvider()),
+  ChangeNotifierProvider<VehiclesProvider>(create: (_) => VehiclesProvider()),
 ];

@@ -3,14 +3,6 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/models/update_profile/update_profile.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
-import 'package:trakk/provider/auth/signup_provider.dart';
-import 'package:trakk/provider/provider_list.dart';
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/services/get_user_service.dart';
-import 'package:trakk/services/update_profile_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -377,6 +369,12 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+}
+
+class UpdateProfileService {
+  //Wrong method need to pull the correct one
+  updateProfile({String? firstName, String? lastName, String? phoneNumber, String? email, String? address}) {}
+  //wrong class
 }
 
 class EditProfileContainer extends StatelessWidget {

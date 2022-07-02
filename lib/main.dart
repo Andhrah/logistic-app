@@ -80,7 +80,7 @@ void main() async {
 
 
   //await dotenv.load(fileName: ".env");
-    
+    await Hive.openBox('riderData');
   runApp(const MyApp());
 }
 
@@ -173,7 +173,6 @@ class _MyAppState extends State<MyApp> {
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
-            HelpAndSupport.id:(context) => const HelpAndSupport(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id:(context) => const CompanyHome(),
             Vehicles.id:(context) => const Vehicles(),
