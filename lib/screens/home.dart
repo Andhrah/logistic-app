@@ -8,6 +8,8 @@ import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/signup_merchant.dart';
+import 'package:trakk/screens/riders/rider_home.dart';
+import 'package:trakk/screens/riders/rider_order.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/colors.dart';

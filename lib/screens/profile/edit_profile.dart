@@ -11,6 +11,7 @@ import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/services/update_profile_service.dart';
+
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -62,6 +63,7 @@ class _EditProfileState extends State<EditProfile> {
    bool _isItemImage = false;
 
   var box =  Hive.box('appState');
+
 
   @override
   void initState() {
@@ -142,6 +144,7 @@ class _EditProfileState extends State<EditProfile> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box('appState');
+
     return Scaffold(
       
       backgroundColor: whiteColor,
@@ -214,6 +217,7 @@ class _EditProfileState extends State<EditProfile> {
                         height: 8,
                       ),
                       Text( box.get('email') ?? "",),
+
                     ],
                   ),
               ),
@@ -377,6 +381,12 @@ class _EditProfileState extends State<EditProfile> {
       ),
     );
   }
+}
+
+class UpdateProfileService {
+  //Wrong method need to pull the correct one
+  updateProfile({String? firstName, String? lastName, String? phoneNumber, String? email, String? address}) {}
+  //wrong class
 }
 
 class EditProfileContainer extends StatelessWidget {

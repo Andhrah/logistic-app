@@ -10,9 +10,12 @@ import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/services/get_user_service.dart';
+import 'package:trakk/services/merchant/vehicle_list_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/merchant_container.dart';
 import 'package:badges/badges.dart';
+
+import '../../services/merchant/rider_profile_service.dart';
 
 class CompanyHome extends StatefulWidget {
   static const String id = 'companyhome';
@@ -26,7 +29,7 @@ class _CompanyHomeState extends State<CompanyHome> {
   int notificatiobount = 26;
   String? firstName;
   String _greeting = "";
-
+  
   _fetchUserName() async {
     var box = await Hive.openBox('appState');
     setState(() {
@@ -54,13 +57,15 @@ class _CompanyHomeState extends State<CompanyHome> {
 
   @override
   void initState() {
+    print(">>>>>>${box.get("token")}");
+     //GetVehiclesListService.getVehiclesList();
+     //RiderProfileService.getRiderProfile();
     super.initState();
    _fetchUserName();
    _fetchTime();
   }
 
-
-
+var box =  Hive.box('appState');
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);

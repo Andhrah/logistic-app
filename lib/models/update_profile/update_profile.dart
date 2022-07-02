@@ -2,6 +2,7 @@
 //
 //     final updateProfile = updateProfileFromJson(jsonString);
 
+
 import 'package:meta/meta.dart';
 import 'dart:convert';
 
@@ -45,6 +46,7 @@ class Data {
         lastName: json["lastName"],
         phoneNumber: json["phoneNumber"],
         email: json["email"],
+
         address: json["address"],
     );
 
@@ -56,3 +58,4 @@ class Data {
         "address": address,
     };
 }
+

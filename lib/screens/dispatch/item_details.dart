@@ -86,9 +86,9 @@ var box =  Hive.box('appState');
 
   _getPreviousRoute() async {
     var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.get('previousRoute');
-    });
+    // setState(() {
+    //   _previousRoute = box.get('previousRoute');
+    // });
   }
 
   @override

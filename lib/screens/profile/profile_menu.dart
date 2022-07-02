@@ -2,11 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import 'package:trakk/provider/update_profile/update_profile.dart';
+import 'package:trakk/screens/support/help_and_support.dart';
+import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/constant.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
-import 'package:trakk/screens/support/help.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
@@ -25,22 +28,38 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu> {
-var box = Hive.box('appState');
+
+// var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
 
-
- @override
+@override
   void initState() {
     super.initState();
-  print(box.get("lastName"));
-  print(box.get("id").runtimeType);
-  print(box.get("token"));
+    GetUserData.getUser();
+    fetchUserData();
   }
-  
+
+  fetchUserData() async {
+    var response = await UpdateUserProvider.updateUserProvider(context).updateUserProfile();
+    print(
+        "responseData=> ${response}");
+  }
+
+  // fetchRiderHistory() async {
+  //   var response = await RiderHistoryProvider.riderHistoryProvider(context)
+  //       .getRidersHistory();
+  //   print(
+  //       "responseData=> ${response["data"]["attributes"]["orders"]["data"][0]["attributes"]}");
+
+  //   responseHolder =
+  //       response["data"]["attributes"]["orders"]["data"][0]["attributes"];
+  // }
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box('appState');
-    return Scaffold(
+    var box = Hive.box('userData');
+       print("${box.get('lastName')} second call>>>");
+
+        return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
         child: Column(
@@ -76,8 +95,6 @@ var box = Hive.box('appState');
                 child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // const SizedBox(height: 10.0),
-
                       const Divider(
                         thickness: 1,
                       ),
@@ -108,7 +125,7 @@ var box = Hive.box('appState');
                                    children: [
                                      Text(
                                       box.get('firstName') ?? "",
-                                      style: const TextStyle(
+                                      style:  TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
                                 ),
@@ -132,9 +149,7 @@ var box = Hive.box('appState');
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          box.get('phoneNumber') ?? ""
-                                          ),
+                                        Text(box.get('phoneNumber').toString()),
                                         const SizedBox(
                                           height: 8,
                                         ),
@@ -144,10 +159,10 @@ var box = Hive.box('appState');
                                     Button(
                                         text: 'Edit profile',
                                         onPress: () {
-                                         var id = box.get('id');
-                                          //print("This is the token " + name);
-                                          print("This is the user id " +
-                                              id.toString());
+                                        //  var id = box.get('id');
+                                        //   //print("This is the token " + name);
+                                        //   print("This is the user id " +
+                                        //       id.toString());
 
                                           Navigator.of(context)
                                               .pushNamed(EditProfile.id);
@@ -197,24 +212,14 @@ var box = Hive.box('appState');
                           ),
                         ),
                       ),
+                     
                       const SizedBox(
+
                         height: 18,
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed(WalletScreen.id);
-                        },
-                        child: const ProfileList(
-                          icon: Icon(Remix.wallet_3_line),
-                          //svg: 'assets/images/wallet.svg',
-                          title: 'Wallet',
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      InkWell(
-                        onTap: () {
+
                           Navigator.of(context)
                               .pushNamed(UserDispatchHistory.id);
                         },
@@ -242,7 +247,7 @@ var box = Hive.box('appState');
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed(RideIssues.id);
+                          Navigator.of(context).pushNamed(HelpAndSupport.id);
                         },
                         child: const ProfileList(
                           icon: Icon(Remix.question_line),

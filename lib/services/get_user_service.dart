@@ -4,40 +4,40 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:hive_flutter/hive_flutter.dart';
 
-import '../utils/constant.dart';
+
+    
+  //var box = Hive.box('appState');
 
 class GetUserData{
   // a new instance of hive can be created with new box 
   
-  static void getUser() async {
+  static Future getUser() async {
     
-  var box = Hive.box('appState');
+  var box = await Hive.box('userData');
   // get user id and token from the values stored in hive after login
   var id = box.get('id');
   var token = box.get('token');
   try{
-    // var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/53'), headers: {
-    //   'Content-type': 'application/json',
-    //   'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NTMsImlhdCI6MTY1NTM3MTAyMiwiZXhwIjoxNjU1NDU3NDIyfQ.oi4bFAF81PkXUC1GRyqMjbUAz1GgjRp7GQW0D9y-ETk'
-    // });
-
-    var response = await http.get(Uri.parse("https://zebrra.itskillscenter.com/api/users/202"),
-              headers: kHeaders(token),
-              );
+    var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/55?populate=*'), headers: {
+      'Content-type': 'application/json',
+      //'Authorization': 'Bearer '
+    });
     var decoded = json.decode(response.body);
     print('This is the get user data response' + response.body);
     if(response.statusCode == 200) {
      
       // set returned value hive
-      await box.put("phoneNumber", decoded["data"]["phoneNumber"]);
-      await box.put("firstName", decoded["data"]["firstName"]);
-      await box.put("lastName", decoded["data"]["lastName"]);
-      await box.put("email", decoded["data"]["email"]);
-    // box.putAll({
-    //     "lastName": decoded['data']['lastName'],
-    //     //"lastName": decoded['data']['lastName'],
-    //   });
-   
+
+    box.putAll({
+        "firstName": decoded['data']['firstName'],
+        "lastName": decoded['data']['lastName'],
+        "email": decoded['data']['email'],
+        "phoneNumber": decoded['data']['phoneNumber'],
+        "address": decoded['data']['address'],
+        "id": decoded['data']['id'],
+        // "riderId": decoded['data']['rider']['id']
+      });
+   print("${box.get('lastName')} >>>>");
     
     // this will be done for all details to be stored locally
     } else {

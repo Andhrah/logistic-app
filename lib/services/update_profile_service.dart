@@ -40,6 +40,7 @@ class UpdateProfileService {
       if (putResponses.statusCode == 200 || putResponses.statusCode == 201) {
         print(putResponses.body);
         GetUserData.getUser();
+
         return true;
       } else {
         print('error ********');
@@ -75,6 +76,10 @@ class UpdateProfileService {
       return null;
     }
   }
+
+
+  updateUserProfile() {}
+
 
   // Future<dynamic> createComplaint(
   //   String name,
