@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/models/support/support.dart';
 import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/provider/support/support.dart';
 import 'package:trakk/services/support_service.dart';
@@ -10,16 +9,16 @@ import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/input_field.dart';
 
-class RideIssues extends StatefulWidget {
+class HelpAndSupport extends StatefulWidget {
   static const String id = 'rideissue';
 
-  const RideIssues({Key? key}) : super(key: key);
+  const HelpAndSupport({Key? key}) : super(key: key);
 
   @override
-  State<RideIssues> createState() => _RideIssuesState();
+  State<HelpAndSupport> createState() => _HelpAndSupportState();
 }
 
-class _RideIssuesState extends State<RideIssues> {
+class _HelpAndSupportState extends State<HelpAndSupport> {
   var complaints = [
     "Choose complaint",
     "Delivery issues",

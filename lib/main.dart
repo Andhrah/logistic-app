@@ -79,7 +79,7 @@ void main() async {
 
 
   //await dotenv.load(fileName: ".env");
-    
+    await Hive.openBox('riderData');
   runApp(const MyApp());
 }
 
@@ -168,11 +168,10 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             CartScreen.id: (context) => const CartScreen(),
-            PolylineScreen.id: (context) => const PolylineScreen(),
+            PolylineScreen.id: (context) =>  PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id:(context) => const ProfileMenu(),
             EditProfile.id:(context) => const EditProfile(),
-            HelpAndSupport.id:(context) => const HelpAndSupport(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
             CompanyHome.id:(context) => const CompanyHome(),
             Vehicles.id:(context) => const Vehicles(),
@@ -191,7 +190,6 @@ class _MyAppState extends State<MyApp> {
             Settings.id:(context) =>  const Settings(),
             Payments.id:(context) =>  const Payments(),
             EditProfile.id: (context) => const EditProfile(),
-            RideIssues.id:(context) =>  const RideIssues(),
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             Transfers.id:(context) => const Transfers(),
