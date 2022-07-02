@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/wallet/all_cards.dart';
 import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
@@ -72,16 +73,16 @@ class _WalletScreenState extends State<WalletScreen> {
                   children: [
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           'My Trakk Balance',
                           textScaleFactor: 1.3,
                           style: TextStyle(
                               color: Color(0xFFFFFFFF),
                               fontWeight: FontWeight.w400),
                         ),
-                        const SizedBox(height: 10.0),
-                        const Text(
+                        SizedBox(height: 10.0),
+                        Text(
                           '₦30,000.00',
                           textScaleFactor: 1.9,
                           style: TextStyle(
@@ -215,14 +216,14 @@ class _WalletScreenState extends State<WalletScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       
-                      IconContainer(
-                        text: 'QR Code',
-                        imgUrl: 'assets/images/qrCode.svg',
-                        isText: false,
-                        onPress: () {
-                          Navigator.of(context).pushNamed(QrPayment.id);
-                        },
-                      ),
+                      // IconContainer(
+                      //   text: 'QR Code',
+                      //   imgUrl: 'assets/images/qrCode.svg',
+                      //   isText: false,
+                      //   onPress: () {
+                      //     Navigator.of(context).pushNamed(QrPayment.id);
+                      //   },
+                      // ),
                       IconContainer(
                         text: 'Transaction\nHistory',
                         imgUrl: 'assets/images/transactionHistory.svg',

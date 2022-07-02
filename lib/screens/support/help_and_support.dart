@@ -75,10 +75,10 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
        print(response.toString());
       
       }catch(e){
-        print(e.toString());
+        print("this is the error response " + e.toString());
       }finally {
         setState(() {
-          _isLoading = true;
+          _isLoading = false;
        });
       }
 
@@ -215,7 +215,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                           color: Colors.red,
                         ),
                       ) : Container(),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 30.0),
                   DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -250,7 +250,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                           ),
                         )
                       ),
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 30.0),
 
                   TextField(
                     controller: _messageController,
@@ -262,10 +262,10 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                     )
                   ),),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 50),
                     Button(text: 'send', 
                     onPress: _onSave, color: Colors.black, 
-                    width: mediaQuery.size.width*1, textColor: Colors.white, isLoading: false)
+                    width: mediaQuery.size.width*1, textColor: Colors.white, isLoading: _isLoading)
 
 
                       ],

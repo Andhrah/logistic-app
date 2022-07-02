@@ -602,27 +602,27 @@ class _ProfileWidgetState extends State<ProfileIdget> {
               SizedBox(
                 height: 20,
               ),
-              profillebox(
+              Profillebox(
                 title: 'First name',
                 detail: responseHolder?["firstName"] ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Last name',
                 detail: responseHolder?["lastName"] ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Phone',
                 detail: responseHolder?["phoneNumber"] ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Email address',
                 detail: responseHolder?["email"] ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Home address',
                 detail: responseHolder?["address"] ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Assigned vehicle',
                 detail: "${rider?["name"] ?? ""} " "${rider?["number"] ?? ""}",
               ),
@@ -847,11 +847,11 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   }
 }
 
-class profillebox extends StatelessWidget {
+class Profillebox extends StatelessWidget {
   final String title;
   final String detail;
 
-  const profillebox({
+  const Profillebox({
     Key? key,
     required this.title,
     required this.detail,
@@ -907,13 +907,11 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          //physics: NeverScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 5),
+        child: Column(
+          children: [
+            Padding(
+                padding:
+                    const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -951,12 +949,23 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
                   ],
                 ),
               ),
-              const Padding(
-                padding: EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                child: ProfileIdget(),
+            Expanded(
+              child: SingleChildScrollView(
+                //physics: NeverScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                      child: ProfileIdget(),
+                    ),
+                  ],
+                ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

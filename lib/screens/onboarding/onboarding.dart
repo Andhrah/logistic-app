@@ -11,7 +11,7 @@ import 'package:trakk/widgets/skip_button.dart';
 class Onboarding extends StatefulWidget {
   static String id = 'onboarding';
 
-  const Onboarding({ Key? key }) : super(key: key);
+  const Onboarding({Key? key}) : super(key: key);
 
   @override
   _OnboardingState createState() => _OnboardingState();
@@ -70,7 +70,7 @@ class _OnboardingState extends State<Onboarding> {
     },
     {
       'image': 'assets/images/onboarding_img4.png',
-      'pageText':  [
+      'pageText': [
         'Recieve your item',
         'Receive your delivery and notify that your item has been recieved',
       ]
@@ -94,6 +94,14 @@ class _OnboardingState extends State<Onboarding> {
   @override
   void initState() {
     super.initState();
+    // firstTimeUser = Auth.authProvider(context)
+    //     .myFirst(FirstTimeUser.fromJson({"bool": true}));
+    // print('first: $firstTimeUser');
+    // _hiveRepository.add(
+    //   item: firstTimeUser,
+    //   key: 'firstTimeUser',
+    //   name: kFirstTimeUser,
+    // );
   }
 
   @override
@@ -101,7 +109,9 @@ class _OnboardingState extends State<Onboarding> {
     int currentScreenIndex = currentScreen - 1;
 
     return Scaffold(
-      body: Column(
+        body: Column(children: [
+      Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Expanded(
             flex: 2,
@@ -255,6 +265,6 @@ class _OnboardingState extends State<Onboarding> {
           ),
         ]
       )
-    );
+    ]));
   }
 }

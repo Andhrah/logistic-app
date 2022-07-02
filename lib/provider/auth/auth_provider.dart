@@ -5,6 +5,7 @@ import 'package:trakk/Exceptions/api_failure_exception.dart';
 import 'package:trakk/models/auth/first_time_user.dart';
 import 'package:trakk/models/auth/user.dart';
 import 'package:trakk/services/auth_service.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/helper_utils.dart';
 
 class Auth extends ChangeNotifier {
@@ -146,10 +147,15 @@ class Auth extends ChangeNotifier {
       // _setInitialData(response);
       print('[][][][][][][][][][][][][][][][][][][][][][]');
       print('user is a ${response['data']['token']}');
-      var box = await Hive.openBox('userData');
+      //var box = await Hive.openBox('userData');
       box.putAll({
         "token": response['data']['token'],
       });
+      box.putAll({
+        "id": response['data']['id'],
+      });
+      
+      
       
       // User user = User.fromJson(response);
       print('[][][][][][][][][] THERER [][][][][][][][][][][][][]');
@@ -161,7 +167,7 @@ class Auth extends ChangeNotifier {
       throw ApiFailureException(err);
     }
   }
-
+  
   // forget password
   Future forgetPassword(String email) async {
     try {
@@ -183,4 +189,6 @@ class Auth extends ChangeNotifier {
       throw ApiFailureException(err);
     }
   }
+
+  createUser(String string, String string2, String string3, String string4, String string5, String userType) {}
 }

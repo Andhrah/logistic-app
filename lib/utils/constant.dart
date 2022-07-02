@@ -1,3 +1,5 @@
+import 'package:hive_flutter/hive_flutter.dart';
+
 Map<String, String> _headers(String token) {
   return {
     'Content-type': 'application/json',
@@ -24,3 +26,10 @@ ssoUriConverter(String url) {
   print('$ssoUrl/$url');
   return Uri.https(ssoUrl, '/$url');
 }
+var box =  Hive.box('userData');
+
+openHive() {
+
+}
+
+

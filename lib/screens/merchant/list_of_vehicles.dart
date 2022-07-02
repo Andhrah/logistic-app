@@ -49,8 +49,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
   bool _isButtonPress = false;
 
     Map<String, dynamic>? responseHolder ;
-  dynamic? itemCount;
-  dynamic? responseKey;
+  dynamic itemCount;
+  dynamic responseKey;
+  dynamic responseId;
 
   @override
   void initState() {
@@ -74,8 +75,11 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
 
     itemCount = response["meta"]["pagination"]["total"];
     responseKey = await response["data"][0]["attributes"]["riderId"]["data"]["attributes"]["merchantId"]["data"]["id"];
+    responseId = await response["data"][0]["attributes"]["riderId"]["data"]["id"];
     print("responseKey >>>>>>. ${responseKey}");
+    print("response to riderId >>>>>>. ${responseId}");
     await box.put("merchantId", response["data"][0]["attributes"]["riderId"]["data"]["attributes"]["merchantId"]["data"]["id"]);
+    await box.put("riderId", response["data"][0]["attributes"]["riderId"]["data"]["id"]);
 
   }
 

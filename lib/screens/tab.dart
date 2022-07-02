@@ -63,16 +63,13 @@ class _TabsState extends State<Tabs> {
         currentTitle = 'Home';
         return userType == "rider" ? const RiderHomeScreen() : const CompanyHome();
       case 1 :
-        currentTitle = 'Order';
-        return const RiderOrderScreen();
-      case 2 :
         currentTitle = 'Wallet';
         return const WalletScreen();
-      // case 3 :
-      //   currentTitle = 'Histroy';
-      //   return Container();
+      case 2 :
+        currentTitle = 'Cart';
+        return const CartScreen();
       default:
-        currentTitle = 'Profile';
+        currentTitle = 'More';
         return const ProfileMenu();
     }
   }
@@ -181,22 +178,23 @@ class _TabsState extends State<Tabs> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Remix.file_list_fill,
+              Remix.wallet_2_line,
               color: _selectedIndex != 1 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Order',
+            label: 'Wallet',
           ),
+         
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/cart_icon.svg",
-              color: _selectedIndex != 2 ? appPrimaryColor : secondaryColor
+              color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Wallet',
+            label: 'Cart',
           ),
           BottomNavigationBarItem(
             icon: SvgPicture.asset("assets/images/profile_icon.svg",
               color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
             ),
-            label: 'Profile',
+            label: 'More',
           ),
         ],
         currentIndex: _selectedIndex,
