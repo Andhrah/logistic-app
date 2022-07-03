@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/merchant/active_Container.dart';
-import 'package:trakk/screens/merchant/all_vehicle_container.dart';
-import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/inactive_vehicle.dart';
-import 'package:trakk/screens/merchant/rider_list_container.dart';
+import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -48,39 +45,45 @@ class ListOfVehicles extends StatefulWidget {
 class _ListOfVehiclesState extends State<ListOfVehicles> {
   bool _isButtonPress = false;
 
-    Map<String, dynamic>? responseHolder ;
+  Map<String, dynamic>? responseHolder;
+
   dynamic itemCount;
   dynamic responseKey;
   dynamic responseId;
 
   @override
   void initState() {
-    fetchVehicleList().whenComplete((){
-          setState(() {});
-       });
-     fetchVehicleList();
-    
+    fetchVehicleList().whenComplete(() {
+      setState(() {});
+    });
+    fetchVehicleList();
+
     super.initState();
   }
 
   fetchVehicleList() async {
-     var box = await Hive.openBox('riderData');
+    var box = await Hive.openBox('riderData');
     var response =
         await VehiclesProvider.vehiclesProvider(context).getVehiclesList();
-        print("get vehicle list response>>> $response");
+    print("get vehicle list response>>> $response");
     //print("responseData=> ${response["data"][0]["attributes"]}");
     //print("))))))overdose=> ${response["meta"]["pagination"]["total"]}");
 
     responseHolder = await response["data"][0]["attributes"];
 
     itemCount = response["meta"]["pagination"]["total"];
-    responseKey = await response["data"][0]["attributes"]["riderId"]["data"]["attributes"]["merchantId"]["data"]["id"];
-    responseId = await response["data"][0]["attributes"]["riderId"]["data"]["id"];
+    responseKey = await response["data"][0]["attributes"]["riderId"]["data"]
+        ["attributes"]["merchantId"]["data"]["id"];
+    responseId =
+        await response["data"][0]["attributes"]["riderId"]["data"]["id"];
     print("responseKey >>>>>>. ${responseKey}");
     print("response to riderId >>>>>>. ${responseId}");
-    await box.put("merchantId", response["data"][0]["attributes"]["riderId"]["data"]["attributes"]["merchantId"]["data"]["id"]);
-    await box.put("riderId", response["data"][0]["attributes"]["riderId"]["data"]["id"]);
-
+    await box.put(
+        "merchantId",
+        response["data"][0]["attributes"]["riderId"]["data"]["attributes"]
+            ["merchantId"]["data"]["id"]);
+    await box.put(
+        "riderId", response["data"][0]["attributes"]["riderId"]["data"]["id"]);
   }
 
   // fetchVehicleList() async {
@@ -112,113 +115,111 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
     return Scaffold(
         backgroundColor: whiteColor,
         body: SafeArea(
+            child: Column(children: [
+          const SizedBox(height: 10.0),
+          Row(
+            children: [
+              BackIcon(
+                onPress: () {
+                  Navigator.pop(context);
+                },
+              ),
+              Container(
+                margin: const EdgeInsets.only(left: 40.0),
+                alignment: Alignment.center,
+                child: const Text(
+                  'LIST OF VEHICLES',
+                  textScaleFactor: 1.2,
+                  style: TextStyle(
+                    color: appPrimaryColor,
+                    fontWeight: FontWeight.bold,
+                    // decoration: TextDecoration.underline,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          Expanded(
+              child: SingleChildScrollView(
+            physics: ScrollPhysics(),
             child: Column(
               children: [
-                  const SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      BackIcon(
-                        onPress: () {
-                          Navigator.pop(context);
+                const SizedBox(height: 5.0),
+                DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: appPrimaryColor.withOpacity(0.9),
+                          width: 0.3), //border of dropdown button
+                      borderRadius: BorderRadius.circular(
+                          8.0), //border raiuds of dropdown button
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                      child: DropdownButton<String>(
+                        borderRadius: BorderRadius.circular(8),
+                        value: _listOfVehicles,
+                        icon: const Icon(Remix.arrow_down_s_line),
+                        elevation: 16,
+                        isExpanded: true,
+                        style: TextStyle(
+                          color: appPrimaryColor.withOpacity(0.8),
+                          fontSize: 18.0,
+                        ),
+                        underline: Container(),
+                        //empty line
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _listOfVehicles = newValue!;
+                            // if (newValue.contains("All vahicles")) {
+                            //   showAll = showAll;
+                            //   isActive = false;
+                            // } else if (newValue
+                            //     .contains("Active vehicles")) {
+                            //   isActive = true;
+                            //   showAll = false;
+                            // } else if (newValue
+                            //     .contains("Inactive vehicles")) {
+                            //   isActive = false;
+                            //   showAll = false;
+                            // } else if (newValue.contains("search")) {
+                            //   showAll = showAll;
+                            //   isActive = false;
+                            // }
+                            isActive
+                                ? const AllVehicleContainer()
+                                : const InactiveContainer();
+                          });
+
+                          print(newValue);
                         },
-
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 40.0),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'LIST OF VEHICLES',
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                            color: appPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                            // decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                Expanded(
-                  child: SingleChildScrollView(physics: ScrollPhysics(),
-                          child: Column(
-                  children: [
-
-                    const SizedBox(height: 5.0),
-                    DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                              color: appPrimaryColor.withOpacity(0.9),
-                              width: 0.3), //border of dropdown button
-                          borderRadius: BorderRadius.circular(
-                              8.0), //border raiuds of dropdown button
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                          child: DropdownButton<String>(
-                            borderRadius: BorderRadius.circular(8),
-                            value: _listOfVehicles,
-                            icon: const Icon(Remix.arrow_down_s_line),
-                            elevation: 16,
-                            isExpanded: true,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.8),
-                              fontSize: 18.0,
-                            ),
-                            underline: Container(), //empty line
-                            onChanged: (String? newValue) {
+                        items: vehicles.map((String value) {
+                          return DropdownMenuItem(
+                            onTap: () {
                               setState(() {
-                                _listOfVehicles = newValue!;
-                                // if (newValue.contains("All vahicles")) {
-                                //   showAll = showAll;
-                                //   isActive = false;
-                                // } else if (newValue
-                                //     .contains("Active vehicles")) {
-                                //   isActive = true;
-                                //   showAll = false;
-                                // } else if (newValue
-                                //     .contains("Inactive vehicles")) {
-                                //   isActive = false;
-                                //   showAll = false;
-                                // } else if (newValue.contains("search")) {
-                                //   showAll = showAll;
-                                //   isActive = false;
-                                // }
-                                isActive
-                                    ? const AllVehicleContainer()
-                                    : const InactiveContainer();
+                                showAll = showAll;
+                                isActive = false;
                               });
-
-                              print(newValue);
                             },
-                            items: vehicles.map((String value) {
-                              return DropdownMenuItem(
-                                onTap: () {
-                                  setState(() {
-                                    showAll = showAll;
-                                    isActive = false;
-                                  });
-                                },
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                        )),
-                    const SizedBox(height: 5.0),
-                    _isButtonPress && _listOfVehicles == "All vehicles"
-                        ? const Text(
-                            " Choose vehicle",
-                            textScaleFactor: 0.9,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          )
-                        : Container(),
-                  ],
-                          ),
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    )),
+                const SizedBox(height: 5.0),
+                _isButtonPress && _listOfVehicles == "All vehicles"
+                    ? const Text(
+                        " Choose vehicle",
+                        textScaleFactor: 0.9,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.red,
                         ),
-
+                      )
+                    : Container(),
+                ListView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
                     itemCount: itemCount ?? 2,
                     itemBuilder: (BuildContext context, int index) {
                       //return RiderListContainer();
@@ -257,120 +258,151 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                                   children: [
                                     InkWell(
                                       onTap: () => showDialog<String>(
-                    // barrierDismissible: true,
-                    context: context,
-                    builder: (BuildContext context) => AlertDialog(
-                      // title: const Text('AlertDialog Title'),
-                      contentPadding: const EdgeInsets.symmetric(
-                          horizontal: 20.0, vertical: 15.0),
-                      content: SizedBox(
-                        height: mediaQuery.size.height * 0.3,
-                        child: Column(children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              InkWell(
-                                  onTap: () {
-                                    Navigator.of(context)
-                                        .pushNamed(CompanyHome.id);
-                                  },
-                                  child: const CancelButton())
-                            ],
-                          ),
-                          const SizedBox(height: 15,),
-                          Container(
-                            width: 300,
-                            child: const Text(
-                              'You are about to remove Suzuki\nVeh.No. 889 from the list of \nvehicles',
-                              // maxLines: 2,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.w400,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 14,
-                          ),
-                          Button(
-                            text: 'Delete',
-                            onPress: () => showDialog<String>(
-                              // barrierDismissible: true,
-                              context: context,
-                              builder: (BuildContext context) => AlertDialog(
-                                // title: const Text('AlertDialog Title'),
-                                contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0, vertical: 15.0),
-                                content: SizedBox(
-                                  height: 220.0,
-                                  child: Column(
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.end,
-                                        children: [
-                                          InkWell(
-                                            onTap: () {
-                                              Navigator.of(context)
-                                                  .pushNamed(CompanyHome.id);
-                                            },
-                                            child: const CancelButton(),
-                                          )
-                                        ],
-                                      ),
-                                      Container(
-                                        padding:
-                                            const EdgeInsets.symmetric(vertical: 30),
-                                        child: Column(
-                                          children: const [
-                                            Center(
-                                              child: Text(
-                                                '  You have succefully removed\nSuzuki Veh.No889 from the list \nof riders',
-                                                // maxLines: 2,
-                                                textAlign: TextAlign.center,
-                                                style: TextStyle(
-                                                  
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w400,
+                                        // barrierDismissible: true,
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          // title: const Text('AlertDialog Title'),
+                                          contentPadding:
+                                              const EdgeInsets.symmetric(
+                                                  horizontal: 20.0,
+                                                  vertical: 15.0),
+                                          content: SizedBox(
+                                            height:
+                                                mediaQuery.size.height * 0.3,
+                                            child: Column(children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  InkWell(
+                                                      onTap: () {
+                                                        Navigator.of(context)
+                                                            .pushNamed(
+                                                                CompanyHome.id);
+                                                      },
+                                                      child:
+                                                          const CancelButton())
+                                                ],
+                                              ),
+                                              const SizedBox(
+                                                height: 15,
+                                              ),
+                                              Container(
+                                                width: 300,
+                                                child: const Text(
+                                                  'You are about to remove Suzuki\nVeh.No. 889 from the list of \nvehicles',
+                                                  // maxLines: 2,
+                                                  style: TextStyle(
+                                                    fontSize: 13,
+                                                    fontWeight: FontWeight.w400,
+                                                  ),
+                                                  textAlign: TextAlign.center,
                                                 ),
                                               ),
-                                            ),
-                                            SizedBox(height: 10),
-                                            Icon(Remix.delete_bin_6_line),
-                                          ],
+                                              const SizedBox(
+                                                height: 14,
+                                              ),
+                                              Button(
+                                                text: 'Delete',
+                                                onPress: () =>
+                                                    showDialog<String>(
+                                                  // barrierDismissible: true,
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) =>
+                                                          AlertDialog(
+                                                    // title: const Text('AlertDialog Title'),
+                                                    contentPadding:
+                                                        const EdgeInsets
+                                                                .symmetric(
+                                                            horizontal: 20.0,
+                                                            vertical: 15.0),
+                                                    content: SizedBox(
+                                                      height: 220.0,
+                                                      child: Column(
+                                                        children: [
+                                                          Row(
+                                                            mainAxisAlignment:
+                                                                MainAxisAlignment
+                                                                    .end,
+                                                            children: [
+                                                              InkWell(
+                                                                onTap: () {
+                                                                  Navigator.of(
+                                                                          context)
+                                                                      .pushNamed(
+                                                                          CompanyHome
+                                                                              .id);
+                                                                },
+                                                                child:
+                                                                    const CancelButton(),
+                                                              )
+                                                            ],
+                                                          ),
+                                                          Container(
+                                                            padding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    vertical:
+                                                                        30),
+                                                            child: Column(
+                                                              children: const [
+                                                                Center(
+                                                                  child: Text(
+                                                                    '  You have succefully removed\nSuzuki Veh.No889 from the list \nof riders',
+                                                                    // maxLines: 2,
+                                                                    textAlign:
+                                                                        TextAlign
+                                                                            .center,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontSize:
+                                                                          15,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .w400,
+                                                                    ),
+                                                                  ),
+                                                                ),
+                                                                SizedBox(
+                                                                    height: 10),
+                                                                Icon(Remix
+                                                                    .delete_bin_6_line),
+                                                              ],
+                                                            ),
+                                                          )
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ),
+                                                color: redColor,
+                                                textColor: whiteColor,
+                                                isLoading: false,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    1.6,
+                                              ),
+                                              const SizedBox(height: 30.0),
+                                              Button(
+                                                text: 'Don\'t delete',
+                                                onPress: () {
+                                                  Navigator.of(context).pop();
+                                                },
+                                                color: appPrimaryColor,
+                                                textColor: whiteColor,
+                                                isLoading: false,
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    1.6,
+                                              )
+                                            ]),
+                                          ),
                                         ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              ),
-                            ),
-                            color: redColor,
-                            textColor: whiteColor,
-                            isLoading: false,
-                            width: MediaQuery.of(context).size.width / 1.6,
-                          ),
-                          const SizedBox(height: 30.0),
-                          Button(
-                            text: 'Don\'t delete',
-                            onPress: () {
-                              Navigator.of(context).pop();
-                            },
-                            color: appPrimaryColor,
-                            textColor: whiteColor,
-                            isLoading: false,
-                            width: MediaQuery.of(context).size.width / 1.6,
-                          )
-                        ]),
-                      ),
-                    ),
-                  )
-                                      
-                                      
-                                      
-                                      
-                                      ,
+                                      ),
                                       child: Container(
                                           height: 44,
                                           width: 44,
@@ -383,8 +415,8 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                                                   color: Color.fromARGB(
                                                       255, 230, 230, 230),
                                                   spreadRadius: 1,
-                                                  offset:
-                                                      Offset(2.0, 2.0), //(x,y)
+                                                  offset: Offset(2.0, 2.0),
+                                                  //(x,y)
                                                   blurRadius: 8.0,
                                                 ),
                                               ]),
@@ -403,17 +435,16 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                          responseHolder?["name"]
-                                                   ?? '',
+                                          responseHolder?["name"] ?? '',
                                           style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),
                                         ),
-                                        const SizedBox(height: 5,),
+                                        const SizedBox(
+                                          height: 5,
+                                        ),
                                         Text(
-                                          
-                                             responseHolder?["number"]
-                                                   ?? "",
+                                          responseHolder?["number"] ?? "",
                                           style: const TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.w600),
@@ -439,10 +470,10 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                         ),
                       );
                     }),
-              )
-            ],
-          ),
-        )));
+              ],
+            ),
+          ))
+        ])));
   }
 }
 
