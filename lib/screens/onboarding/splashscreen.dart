@@ -10,14 +10,14 @@ import 'package:trakk/utils/constant.dart';
 class SplashScreen extends StatefulWidget {
   static String id = 'splashScreen';
 
-  const SplashScreen({ Key? key }) : super(key: key);
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderStateMixin {
-
+class _SplashScreenState extends State<SplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation animation;
 
@@ -25,15 +25,15 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
   void initState() {
     super.initState();
     controller = AnimationController(
-      duration: const Duration(seconds: 2), 
+      duration: const Duration(seconds: 2),
       vsync: this, // the SingleTickerProviderStateMixin
     );
-    
+
     controller.forward();
     // add listner to animation status and
     // navigate to getStarted screen if animation status is completed
-    controller.addStatusListener((status) { 
-      if (status == AnimationStatus.completed){
+    controller.addStatusListener((status) {
+      if (status == AnimationStatus.completed) {
         _prepareAppState();
       }
     });
@@ -51,23 +51,20 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       token = await box.get("token");
       firstTimeUser = await box.get("firstTimeUser");
       firstTimeUser = box.get("firstTimeUser");
-      if(firstTimeUser == null) {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          Onboarding.id, (route) => false
-        );
-      } else if(token != null){
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          Tabs.id, (route) => false
-          // GetStarted.id, (route) => false
-        );
+      if (firstTimeUser == null) {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(Onboarding.id, (route) => false);
+      } else if (token != null) {
+        Navigator.of(context).pushNamedAndRemoveUntil(Tabs.id, (route) => false
+            // GetStarted.id, (route) => false
+            );
+      } else {
+        Navigator.of(context)
+            .pushNamedAndRemoveUntil(GetStarted.id, (route) => false
+                // Onboarding.id, (route) => false
+                );
       }
-      else {
-        Navigator.of(context).pushNamedAndRemoveUntil(
-          GetStarted.id, (route) => false
-          // Onboarding.id, (route) => false
-        );
-      }
-    } catch(err) {
+    } catch (err) {
       rethrow;
     }
   }
@@ -86,7 +83,7 @@ class _SplashScreenState extends State<SplashScreen> with SingleTickerProviderSt
       child: Center(
         child: Image.asset(
           "assets/images/trakk_logo.png",
-          height:MediaQuery.of(context).size.height / 8,
+          height: MediaQuery.of(context).size.height / 8,
           width: MediaQuery.of(context).size.width / 3,
         ),
       ),

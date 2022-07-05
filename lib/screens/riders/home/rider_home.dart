@@ -1,20 +1,23 @@
-import 'dart:convert';
-import 'dart:math';
+import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:hive_flutter/hive_flutter.dart';
-import 'package:provider/provider.dart';
+import 'package:location/location.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/polyline.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:trakk/bloc/misc_bloc.dart';
+import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/provider/merchant/rider_map_provider.dart';
+import 'package:trakk/screens/riders/home/widgets/home_map/rider_home_map.dart';
+import 'package:trakk/screens/riders/home/widgets/home_standby/rider_home_standby.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
-import 'package:trakk/screens/riders/rider_order.dart';
 import 'package:trakk/services/get_user_service.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
+import 'package:trakk/utils/enums.dart';
 // import 'package:trakk/utils/constant.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class RiderHomeScreen extends StatefulWidget {
   static const String id = 'riderHome';
@@ -26,16 +29,19 @@ class RiderHomeScreen extends StatefulWidget {
 }
 
 class _RiderHomeScreenState extends State<RiderHomeScreen> {
+  final locaBloc = MiscBloc();
+
   GoogleMapController? mapController; //contrller for Google map
   PolylinePoints polylinePoints = PolylinePoints();
 
   String googleAPiKey = "AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U";
 
   Set<Marker> markers = {}; //markers for google map
-  Map<PolylineId, Polyline> polylines = {}; 
+  Map<PolylineId, Polyline> polylines = {};
   late IO.Socket socket;
+
   //var box = Hive.box('userData');
- //double pickupLongitude = box.get('pickupLongitude');
+  //double pickupLongitude = box.get('pickupLongitude');
 
   //  LatLng startLocation = LatLng(
   //     double.parse(box.get("pickupLongitude")), double.parse(box.get("pickupLatitude")));
@@ -44,107 +50,26 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
   double distance = 0.0;
 
-
-
   @override
   void initState() {
-    // TODO: implement initState 
+    // TODO: implement initState
     super.initState();
+    Location.instance.requestPermission();
+
     GetUserData.getUser();
     print("connect called");
     connect();
     print("${box.get('riderId')} hollow");
     listenToRequest();
 
-    // markers.add(Marker(
-    //   //add start location marker
-    //   markerId: MarkerId(startLocation.toString()),
-    //   position: startLocation, //position of marker
-    //   infoWindow: const InfoWindow(
-    //     //popup info
-    //     title: 'Starting Point ',
-    //     snippet: 'Start Marker',
-    //   ),
-    //   icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-    // ));
-
-    // markers.add(Marker(
-    //   //add distination location marker
-    //   markerId: MarkerId(endLocation.toString()),
-    //   position: endLocation, //position of marker
-    //   infoWindow: const InfoWindow(
-    //     //popup info
-    //     title: 'Destination Point ',
-    //     snippet: 'Destination Marker',
-    //   ),
-    //   icon: BitmapDescriptor.defaultMarker, //Icon for Marker
-    // ));
-
-    //getDirections();
+    var injector = RiderMapProvider.riderMapProvider(context);
+    injector.connectAndListenToSocket(
+        onConnected: () {},
+        onConnectionError: () {
+          injector.disconnectSocket();
+          // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
+        });
   }
-
-  getDirections() async {
-    List<LatLng> polylineCoordinates = [];
-
-    // PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
-    //   googleAPiKey,
-    //   PointLatLng(startLocation.latitude, startLocation.longitude),
-    //   PointLatLng(endLocation.latitude, endLocation.longitude),
-    //   travelMode: TravelMode.driving,
-    // );
-
-    // if (result.points.isNotEmpty) {
-    //   result.points.forEach((PointLatLng point) {
-    //     polylineCoordinates.add(LatLng(point.latitude, point.longitude));
-    //   });
-    // } else {
-    //   print(result.errorMessage);
-    // }
-    //polulineCoordinates is the List of longitute and latidtude.
-    double totalDistance = 0;
-    for (var i = 0; i < polylineCoordinates.length - 1; i++) {
-      totalDistance += calculateDistance(
-          polylineCoordinates[i].latitude,
-          polylineCoordinates[i].longitude,
-          polylineCoordinates[i + 1].latitude,
-          polylineCoordinates[i + 1].longitude);
-    }
-    print(totalDistance);
-
-    if (mounted) {
-      setState(() {
-      distance = totalDistance;
-    });
-    }
-    addPolyLine(polylineCoordinates);
-  }
-
-  addPolyLine(List<LatLng> polylineCoordinates) {
-    PolylineId id = const PolylineId("poly");
-    Polyline polyline = Polyline(
-      polylineId: id,
-      color: Colors.deepPurpleAccent,
-      points: polylineCoordinates,
-      width: 8,
-    );
-    polylines[id] = polyline;
-    if(mounted){
-      setState(() {});
-    }
-    
-  }
-
-  //it will return distance in KM
-  double calculateDistance(lat1, lon1, lat2, lon2) {
-    var p = 0.017453292519943295;
-    var a = 0.5 -
-        cos((lat2 - lat1) * p) / 2 +
-        cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
-    //showOrder(context, id,);
-    return 12742 * asin(sqrt(a));
-  }
-
-
 
   void connect() {
     socket = IO.io("http://134.122.92.247:1440", <String, dynamic>{
@@ -165,14 +90,15 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
     //socket.emit("message", "Test for riders");
   }
-  
-  void dispose(){
-    //...
-    super.dispose();
-    listenToRequest();
-    connect();
 
-}
+  @override
+  void dispose() {
+    listenToRequest();
+    locaBloc.dispose();
+    riderHomeStateBloc.invalidate();
+    connect();
+    super.dispose();
+  }
 
   Future<void> listenToRequest() async {
     print('just to test>>>>');
@@ -180,23 +106,23 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
     socket.on("rider_request_${box.get('riderId')}", (data) async {
       print("value of data >>>" + data.toString());
-     await box.putAll({
+      await box.putAll({
         "pickupLongitude": data["order"]["pickupLongitude"],
         "pickupLatitude": data["order"]["pickupLatitude"],
         "destinationLatitude": data["order"]["destinationLatitude"],
         "destinationLongitude": data["order"]["destinationLongitude"],
-      
-    });
+      });
 
       var id = data["order"]["id"];
       var pickup = data["order"]["pickup"];
       var destination = data["order"]["destination"];
-       var pickupLongitude = data["order"]["pickupLongitude"];
+      var pickupLongitude = data["order"]["pickupLongitude"];
       // var pickupLatitude = data["order"]["pickupLatitude"];
       // var destinationLatitude = data["order"]["destinationLatitude"];
       // var destinationLongitude = data["order"]["destinationLongitude"];
-      print("${box.get(["destinationLongitude"].toString())} >>>>>>>>>long lat");
-      
+      print(
+          "${box.get(["destinationLongitude"].toString())} >>>>>>>>>long lat");
+
       showOrder(context, id, pickup, destination);
       print(data["order"]["id"]);
       //data;
@@ -205,111 +131,38 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            const SizedBox(height: 10.0),
-            Container(
-              decoration: const BoxDecoration(
-                image: DecorationImage(
-                  image: AssetImage("assets/images/empty_map.png"),
-                  fit: BoxFit.cover,
-                  // scale: 3.0,
-                ),
-              ),
-              child: SafeArea(
-                child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    height: MediaQuery.of(context).size.height,
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Container(),
-                            const Text(
-                              'Online',
-                              style: TextStyle(
-                                  color: appPrimaryColor,
-                                  fontSize: 20.0,
-                                  fontWeight: FontWeight.bold),
-                            ),
-                            const InkWell(
-                              child: Icon(
-                                Remix.toggle_fill,
-                                size: 30.0,
-                                color: green,
-                              ),
-                            )
-                          ],
-                        ),
+      backgroundColor: Colors.transparent,
+      body: Container(
+        constraints: const BoxConstraints.expand(),
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage(Assets.rider_home_bg), fit: BoxFit.cover)),
+        child: CustomStreamBuilder<RiderOrderState, String>(
+          stream: riderHomeStateBloc.behaviorSubject,
+          dataBuilder: (context, data) {
+            if (data == RiderOrderState.isHomeScreen ||
+                data == RiderOrderState.isOrderCompleted) {
+              return RiderHomeStandbyScreen(locaBloc);
+            }
 
-                        // center item in a container
-                        SizedBox(
-                          // color: Colors.amber,
-                          height: MediaQuery.of(context).size.height / 1.4,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Image.asset(
-                                  'assets/images/rider2.png',
-                                  height:
-                                      MediaQuery.of(context).size.height / 3,
-                                  width:
-                                      MediaQuery.of(context).size.width / 1.5,
-                                ),
-
-                                // Image.asset(
-                                //   'assets/images/location_pointer.png',
-                                //   height: 160,
-                                //   width: 160,
-                                // ),
-
-                                // const Text(
-                                //   'Enable Location',
-                                //   textScaleFactor: 1.5,
-                                //   style: TextStyle(
-                                //     fontWeight: FontWeight.bold,
-                                //     color: appPrimaryColor,
-                                //   ),
-                                // ),
-
-                                // const SizedBox(height: 30.0),
-                                // Text(
-                                //   'Enable location service to your\nlocation easily',
-                                //   textScaleFactor: 1.1,
-                                //   textAlign: TextAlign.center,
-                                //   style: TextStyle(
-                                //     // fontWeight: FontWeight.bold,
-                                //     color: appPrimaryColor.withOpacity(0.4),
-                                //   ),
-                                // ),
-
-                                ElevatedButton(
-                                  child: const Text('Show Order'),
-                                  style: ElevatedButton.styleFrom(
-                                    primary: Colors.black, // Background color
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pushNamed(context, PolylineScreen.id);
-                                    //showOrder(context, identical("", 'b'));
-                                  },
-                                )
-                              ]),
-                        )
-                      ],
-                    )),
-              ),
-            ),
-          ],
+            return RiderHomeMapScreen(locaBloc, data);
+          },
+          loadingBuilder: (context) => const Center(
+            child: CircularProgressIndicator(),
+          ),
+          errorBuilder: (context, err) => Center(
+            child: Text(err),
+          ),
         ),
       ),
     );
   }
-  
 
-  Future<dynamic> showOrder(BuildContext context, var id, pickup, String destination, ) {
+  Future<dynamic> showOrder(
+      BuildContext context, var id, pickup, String destination) {
     return showModalBottomSheet(
         context: context,
         isScrollControlled: true,
@@ -457,7 +310,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                               height: 1.0,
                               width: MediaQuery.of(context).size.width / 1.3,
                             ),
-                             Text(
+                            Text(
                               pickup,
                               textScaleFactor: 1.1,
                               style: TextStyle(
@@ -479,7 +332,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
                               height: 1.0,
                               width: MediaQuery.of(context).size.width / 1.3,
                             ),
-                             Text(
+                            Text(
                               destination,
                               textScaleFactor: 1.2,
                               style: const TextStyle(

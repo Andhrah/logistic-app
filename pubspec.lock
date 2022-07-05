@@ -36,6 +36,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.8.2"
+  avatar_glow:
+    dependency: "direct main"
+    description:
+      name: avatar_glow
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.0.2"
   badges:
     dependency: "direct main"
     description:
@@ -204,6 +211,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.4"
+  custom_bloc:
+    dependency: "direct main"
+    description:
+      name: custom_bloc
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.0.2"
   dart_style:
     dependency: transitive
     description:
@@ -335,13 +349,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "5.0.2"
-  flutter_google_places:
-    dependency: "direct main"
-    description:
-      name: flutter_google_places
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.3.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -436,13 +443,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.5"
-  google_maps_webservice:
-    dependency: transitive
-    description:
-      name: google_maps_webservice
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.20-nullsafety.5"
   google_place:
     dependency: "direct main"
     description:
@@ -527,6 +527,27 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.0.1"
+  location:
+    dependency: "direct main"
+    description:
+      name: location
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "4.4.0"
+  location_platform_interface:
+    dependency: transitive
+    description:
+      name: location_platform_interface
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "2.3.0"
+  location_web:
+    dependency: transitive
+    description:
+      name: location_web
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.1.1"
   logging:
     dependency: transitive
     description:
@@ -806,7 +827,7 @@ packages:
       name: rxdart
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.26.0"
+    version: "0.27.4"
   share:
     dependency: transitive
     description:

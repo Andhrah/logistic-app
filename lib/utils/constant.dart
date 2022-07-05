@@ -1,10 +1,7 @@
 import 'package:hive_flutter/hive_flutter.dart';
 
 Map<String, String> _headers(String token) {
-  return {
-    'Content-type': 'application/json',
-    'Authorization': 'Bearer $token'
-  };
+  return {'Content-type': 'application/json', 'Authorization': 'Bearer $token'};
 }
 
 const String kFirstTimeUser = 'firstTimeUser';
@@ -21,14 +18,22 @@ paramsUriConverter(String url, Map<String, dynamic>? params) {
   print('$baseUrl/$url');
   return Uri.https(baseUrl, '/$url', params);
 }
+
 putUriConverter(String url, int id) {
   print('$baseUrl/$url');
-  return Uri.https(baseUrl, '/$url/$id', );
+  return Uri.https(
+    baseUrl,
+    '/$url/$id',
+  );
 }
-
 
 ssoUriConverter(String url) {
   print('$ssoUrl/$url');
   return Uri.https(ssoUrl, '/$url');
-}var box =  Hive.box('userData');
+}
 
+var box = Hive.box('userData');
+
+const kDistanceKMCoveredInAnHour = 60.0;
+//multiply by 60 to convert from hour to minutes
+const kSpeedInMinutes = kDistanceKMCoveredInAnHour * 60.0;
