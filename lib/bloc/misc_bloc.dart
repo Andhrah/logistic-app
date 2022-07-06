@@ -4,6 +4,10 @@ import 'package:location/location.dart' as Loca;
 import 'package:rxdart/rxdart.dart';
 
 class MiscBloc {
+  MiscBloc() {
+    fetchLocation();
+  }
+
   CancelableOperation? _cancelableOperation;
 
   //user location
@@ -17,6 +21,7 @@ class MiscBloc {
 
   Future<Loca.LocationData?> fetchLocation() async {
     var location = Loca.Location();
+    print('called');
     try {
       currentLocation = await location.getLocation();
 
@@ -26,7 +31,7 @@ class MiscBloc {
       return currentLocation;
     } on Exception {
       currentLocation = null;
-
+      print('called now now');
       return currentLocation;
     }
   }

@@ -73,6 +73,9 @@ dependencies:
   location:
   custom_bloc:
   geolocator:
+  geocoding: ^2.0.0
+  skeleton_text: ^3.0.0
+  shimmer: ^2.0.0
 
 dev_dependencies:
   flutter_test:

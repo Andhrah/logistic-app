@@ -2,27 +2,27 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:trakk/models/rider/on_move_response.dart';
 
-class StreamSocket with BaseBloc<OnMoveResponse, String> {
+class StreamSocket with BaseBloc<OnNewRequestResponse, String> {
   String? _socketID;
 
   String? get socketID => _socketID;
 
   //on move
-  final _socketResponse = BehaviorSubject<OnMoveResponse>();
+  final _socketResponse = BehaviorSubject<OnNewRequestResponse>();
 
-  void addResponseOnMove(OnMoveResponse event) {
+  void addResponseOnMove(OnNewRequestResponse event) {
     addToModel(event);
   }
 
-  BehaviorSubject<OnMoveResponse> get getResponse => _socketResponse;
+  BehaviorSubject<OnNewRequestResponse> get getResponse => _socketResponse;
 
   //on surrounding client broadcast
-  final _surroundingResponse = BehaviorSubject<List<OnMoveResponse>>();
+  final _surroundingResponse = BehaviorSubject<List<OnNewRequestResponse>>();
 
-  void Function(List<OnMoveResponse>) get addSurroundingResponse =>
+  void Function(List<OnNewRequestResponse>) get addSurroundingResponse =>
       _surroundingResponse.sink.add;
 
-  BehaviorSubject<List<OnMoveResponse>> get getSurroundingResponse =>
+  BehaviorSubject<List<OnNewRequestResponse>> get getSurroundingResponse =>
       _surroundingResponse;
 
   updateSocketID(String socketID) => _socketID = socketID;

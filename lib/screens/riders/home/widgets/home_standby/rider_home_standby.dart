@@ -18,30 +18,32 @@ class RiderHomeStandbyScreen extends StatefulWidget {
 
 class _RiderHomeStandbyScreenState extends State<RiderHomeStandbyScreen> {
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(Assets.rider_home_bg), fit: BoxFit.cover)),
-        child: Stack(
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const RiderTopPart(),
-                const Spacer(),
-                RiderLocationCard(widget.locaBloc),
-                const Spacer(flex: 2),
-              ],
-            ),
-            const RiderBottomSheet(),
-          ],
-        ),
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(Assets.rider_home_bg), fit: BoxFit.cover)),
+      child: Stack(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const RiderTopPart(),
+              const Spacer(),
+              RiderLocationCard(widget.locaBloc),
+              const Spacer(flex: 2),
+            ],
+          ),
+          const RiderBottomSheet(),
+        ],
       ),
     );
   }

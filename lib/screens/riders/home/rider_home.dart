@@ -9,7 +9,6 @@ import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/provider/merchant/rider_map_provider.dart';
 import 'package:trakk/screens/riders/home/widgets/home_map/rider_home_map.dart';
-import 'package:trakk/screens/riders/home/widgets/home_standby/rider_home_standby.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/assets.dart';
@@ -145,7 +144,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           dataBuilder: (context, data) {
             if (data == RiderOrderState.isHomeScreen ||
                 data == RiderOrderState.isOrderCompleted) {
-              return RiderHomeStandbyScreen(locaBloc);
+              // return RiderHomeStandbyScreen(locaBloc);
             }
 
             return RiderHomeMapScreen(locaBloc, data);

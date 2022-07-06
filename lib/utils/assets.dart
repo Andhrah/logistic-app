@@ -10,6 +10,8 @@ class Assets {
   static const String initiate_self_delivery =
       'assets/images/rider/initiate_self_delivery.png';
   static const String item_icon = 'assets/images/rider/item_icon.png';
+  static const String location_outline =
+      'assets/images/rider/location_outline.png';
   static const String no_content_notification =
       'assets/images/rider/no_content_notification.png';
   static const String notification_icon_only =
@@ -23,4 +25,5 @@ class Assets {
   static const String rider_location_icon =
       'assets/images/rider/rider_location_icon.png';
   static const String size_icon = 'assets/images/rider/size_icon.png';
+  static const String time_outline = 'assets/images/rider/time_outline.png';
 }

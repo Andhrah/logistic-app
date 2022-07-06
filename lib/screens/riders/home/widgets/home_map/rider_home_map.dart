@@ -30,7 +30,9 @@ class RiderHomeMapScreen extends StatefulWidget {
 class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
   MapExtraUIBloc mapExtraUIBloc = MapExtraUIBloc();
 
-  Completer<GoogleMapController> _controller = Completer();
+  double initialSize = 0.07;
+
+  final Completer<GoogleMapController> _controller = Completer();
 
   @override
   void initState() {
@@ -38,26 +40,29 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       streamSocket.getResponse.listen((event) {
-        if (event != null &&
-            event.location != null &&
-            event.location!.coordinates != null &&
-            event.location!.coordinates!.length > 1) {
-          if (widget.orderState == RiderOrderState.isAlmostAtLocation) {
+        initialSize = 0.5;
+        if (event.order != null) {
+          if (event.order!.destinationLatitude != null &&
+                  event.order!.destinationLongitude != null &&
+                  widget.orderState == RiderOrderState.isEnRoute ||
+              widget.orderState ==
+                  RiderOrderState.isAlmostAtDestinationLocation) {
+            //meant to be for auto map route plotting
+
+          }
+
+          if (event.order!.pickupLatitude != null &&
+              event.order!.pickupLongitude != null &&
+              widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {
             // if (speakIsCloseOnce) {
             //   _speak('You are getting close');
             //   speakIsCloseOnce = false;
           }
         }
-        if (widget.orderState == RiderOrderState.isAtLocation ||
+        if (widget.orderState == RiderOrderState.isAtDestinationLocation ||
             widget.orderState == RiderOrderState.isOrderCompleted) {
           mapExtraUIBloc.stopFetchingRoute();
-        } else {
-          mapExtraUIBloc.updateMarkersWithCircle([
-            LatLng(event.location!.coordinates!.elementAt(1),
-                event.location!.coordinates!.elementAt(0))
-          ], 'Client', true);
         }
-        // }
       });
     });
   }
@@ -72,51 +77,50 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        constraints: const BoxConstraints.expand(),
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(Assets.rider_home_bg), fit: BoxFit.cover)),
-        child: Stack(
-          children: [
-            CustomStreamBuilder<LocationData, String>(
-                stream: widget.locaBloc.myLocationSubject,
-                dataBuilder: (context, locaData) {
-                  return SizedBox(
-                      height: widget.orderState == RiderOrderState.isEnRoute
-                          ? safeAreaHeight(context, 100)
-                          : safeAreaHeight(context, 99),
-                      child: CustomStreamBuilder<MapExtraUI, String>(
-                          stream: mapExtraUIBloc.behaviorSubject,
-                          dataBuilder: (context, extraUIData) {
-                            Set<Marker> _markers = extraUIData.marker;
+    return Container(
+      constraints: const BoxConstraints.expand(),
+      decoration: const BoxDecoration(
+          image: DecorationImage(
+              image: AssetImage(Assets.rider_home_bg), fit: BoxFit.cover)),
+      child: Stack(
+        children: [
+          CustomStreamBuilder<LocationData, String>(
+              stream: widget.locaBloc.myLocationSubject,
+              dataBuilder: (context, locaData) {
+                return SizedBox(
+                    height: widget.orderState == RiderOrderState.isEnRoute
+                        ? safeAreaHeight(context, 100)
+                        : safeAreaHeight(context, 99),
+                    child: CustomStreamBuilder<MapExtraUI, String>(
+                        stream: mapExtraUIBloc.behaviorSubject,
+                        dataBuilder: (context, extraUIData) {
+                          Set<Marker> _markers = extraUIData.marker;
 
-                            Set<Polyline> _polyLines = extraUIData.polyline;
+                          Set<Polyline> _polyLines = extraUIData.polyline;
 
-                            return GoogleMap(
-                                onMapCreated: _onMapCreated,
-                                myLocationEnabled: true,
-                                zoomGesturesEnabled: true,
-                                onCameraMove: (CameraPosition pos) {},
-                                gestureRecognizers: {}..addAll([
-                                    Factory<PanGestureRecognizer>(
-                                        () => PanGestureRecognizer()),
-                                    Factory<VerticalDragGestureRecognizer>(
-                                        () => VerticalDragGestureRecognizer()),
-                                    Factory<HorizontalDragGestureRecognizer>(
-                                        () => HorizontalDragGestureRecognizer())
-                                  ]),
-                                markers: _markers,
-                                polylines: _polyLines,
-                                initialCameraPosition:
-                                    const CameraPosition(target: LatLng(0, 0)));
-                          }));
-                }),
-            const RiderBottomSheet(),
-          ],
-        ),
+                          return GoogleMap(
+                              onMapCreated: _onMapCreated,
+                              myLocationEnabled: true,
+                              zoomGesturesEnabled: true,
+                              onCameraMove: (CameraPosition pos) {},
+                              gestureRecognizers: {}..addAll([
+                                  Factory<PanGestureRecognizer>(
+                                      () => PanGestureRecognizer()),
+                                  Factory<VerticalDragGestureRecognizer>(
+                                      () => VerticalDragGestureRecognizer()),
+                                  Factory<HorizontalDragGestureRecognizer>(
+                                      () => HorizontalDragGestureRecognizer())
+                                ]),
+                              markers: _markers,
+                              polylines: _polyLines,
+                              initialCameraPosition:
+                                  const CameraPosition(target: LatLng(0, 0)));
+                        }));
+              }),
+          RiderBottomSheet(
+            initialSize: initialSize,
+          ),
+        ],
       ),
     );
   }

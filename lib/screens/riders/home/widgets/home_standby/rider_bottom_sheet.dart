@@ -1,7 +1,12 @@
+import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:trakk/bloc/map_socket.dart';
+import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/models/rider/on_move_response.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
@@ -33,7 +38,15 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    return _incomingRequest();
+    //todo: separate both [_incomingRequest] and [_standby] into their own state
+    return StreamBuilder<BaseModel<OnNewRequestResponse, String>>(
+        stream: streamSocket.behaviorSubject,
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data!.model != null) {
+            return _incomingRequest();
+          }
+          return _standby();
+        });
   }
 
   Widget _standby() {
@@ -160,7 +173,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
     var theme = Theme.of(context);
 
     return DraggableScrollableSheet(
-        initialChildSize: 0.2,
+        initialChildSize: 0.8,
         maxChildSize: 0.8,
         minChildSize: 0.2,
         builder: (BuildContext context, ScrollController scrollController) {
@@ -426,7 +439,10 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
                                 child: Button(
                                     text: 'Accept',
                                     fontSize: 14,
-                                    onPress: () {},
+                                    onPress: () {
+                                      riderHomeStateBloc.updateState(
+                                          RiderOrderState.isRequestAccepted);
+                                    },
                                     borderRadius: 12,
                                     color: kTextColor,
                                     width: double.infinity,

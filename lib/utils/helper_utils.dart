@@ -2,6 +2,7 @@ import 'dart:core';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart';
 
 const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -89,5 +90,17 @@ extension SizedboxUitls on num {
 
   Widget flexSpacer() {
     return Spacer(flex: toInt());
+  }
+}
+
+Future<String> getAddressFromLatLng(double lat, double long) async {
+  try {
+    List<Placemark> p =
+        await GeocodingPlatform.instance.placemarkFromCoordinates(lat, long);
+    Placemark place = p[0];
+
+    return "${place.street}, ${place.name}, ${place.country}";
+  } catch (e) {
+    return '...';
   }
 }

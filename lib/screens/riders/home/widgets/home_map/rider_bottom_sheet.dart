@@ -1,22 +1,31 @@
+import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:trakk/bloc/map_socket.dart';
+import 'package:trakk/bloc/map_ui_extras_bloc.dart';
+import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/models/rider/on_move_response.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
-import 'package:trakk/utils/radii.dart';
+import 'package:trakk/utils/styles.dart';
 import 'package:trakk/widgets/button.dart';
 
 class RiderBottomSheet extends StatefulWidget {
-  const RiderBottomSheet({Key? key}) : super(key: key);
+  final double initialSize;
+
+  const RiderBottomSheet({Key? key, this.initialSize = 0.07}) : super(key: key);
 
   @override
-  _RiderBottomSheetState createState() => _RiderBottomSheetState();
+  State<RiderBottomSheet> createState() => _RiderBottomSheetState();
 }
 
 class _RiderBottomSheetState extends State<RiderBottomSheet> {
-  final _pageController = PageController();
+  DraggableScrollableController draggableScrollableController =
+      DraggableScrollableController();
 
   @override
   void initState() {
@@ -25,486 +34,487 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
 
   @override
   void dispose() {
-    _pageController.dispose();
+    draggableScrollableController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-
-    return _incomingRequest();
-  }
-
-  Widget _standby() {
-    var theme = Theme.of(context);
-
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-            horizontal: kDefaultLayoutPadding + kDefaultLayoutPadding,
-            vertical: 34),
-        decoration: const BoxDecoration(
-            color: whiteColor,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(50), topLeft: Radius.circular(50))),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 450),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: Radii.k8pxRadius,
-                          boxShadow: [
-                            BoxShadow(
-                              color: darkBrownColor.withOpacity(0.08),
-                              spreadRadius: 4,
-                              blurRadius: 4,
-                              offset: const Offset(0, 1),
-                            )
-                          ]),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(8),
-                                  bottomRight: Radius.circular(8)),
-                              child: Image.asset(
-                                Assets.request_a_dispatch,
-                                height: 25,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 24),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Request a Dispatch',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(fontWeight: kMediumWeight),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: Radii.k8pxRadius,
-                          boxShadow: [
-                            BoxShadow(
-                              color: darkBrownColor.withOpacity(0.08),
-                              spreadRadius: 4,
-                              blurRadius: 4,
-                              offset: const Offset(0, 1),
-                            )
-                          ]),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(8),
-                                  bottomRight: Radius.circular(8)),
-                              child: Image.asset(
-                                Assets.initiate_self_delivery,
-                                height: 25,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 24),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Initiate self Delivery',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(fontWeight: kMediumWeight),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _incomingRequest() {
-    var theme = Theme.of(context);
-
     return DraggableScrollableSheet(
-        initialChildSize: 0.2,
-        maxChildSize: 0.8,
-        minChildSize: 0.2,
+        initialChildSize: widget.initialSize,
+        maxChildSize: 0.5,
+        minChildSize: 0.07,
+        controller: draggableScrollableController,
         builder: (BuildContext context, ScrollController scrollController) {
-          return Container(
-            decoration: const BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(50),
-                    topLeft: Radius.circular(50))),
-            child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: 450),
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.only(
-                      topRight: Radius.circular(50),
-                      topLeft: Radius.circular(50)),
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal:
-                            kDefaultLayoutPadding + kDefaultLayoutPadding,
-                        vertical: 34),
-                    controller: scrollController,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Incoming Request (Bulk)',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.subtitle1!.copyWith(
-                              fontWeight: kSemiBoldWeight, color: deepGreen),
+          return Stack(
+            children: [
+              Positioned(
+                top: 20,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45.withOpacity(0.07),
+                          spreadRadius: 1,
+                          offset: const Offset(0.0, -2.0), //(x,y)
+                          blurRadius: 8.0,
                         ),
-                        18.heightInPixel(),
-                        Row(
-                          children: [
-                            Text(
-                              'ORDER ID:',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyText1!.copyWith(
-                                  fontWeight: kSemiBoldWeight,
-                                  color: deepGreen),
-                            ),
-                            1.flexSpacer(),
-                            Text(
-                              '#233433',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(fontWeight: kSemiBoldWeight),
-                            ),
-                          ],
-                        ),
-                        18.heightInPixel(),
-                        SizedBox(
-                          height: 90,
-                          child: Row(
-                            children: [
-                              Image.asset(
-                                Assets.pickup_route,
-                                height: 90,
-                              ),
-                              12.widthInPixel(),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'PICKUP LOCATION',
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.bodyText1!.copyWith(
-                                        fontWeight: kSemiBoldWeight,
-                                        color: dividerColor),
-                                  ),
-                                  4.heightInPixel(),
-                                  Text(
-                                    'NO. 50b, Tapa street, Yaba',
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.bodyText1!
-                                        .copyWith(fontWeight: kMediumWeight),
-                                  ),
-                                  1.flexSpacer(),
-                                  Text(
-                                    'DELIVERY LOCATION',
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.bodyText1!.copyWith(
-                                        fontWeight: kSemiBoldWeight,
-                                        color: dividerColor),
-                                  ),
-                                  4.heightInPixel(),
-                                  Text(
-                                    'NO. 34a, McNeil street, Ogba',
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.bodyText1!
-                                        .copyWith(fontWeight: kMediumWeight),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        ),
-                        24.heightInPixel(),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Row(
-                              children: [
-                                Image.asset(
-                                  Assets.item_icon,
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                12.widthInPixel(),
-                                RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                      text: 'Item : ',
-                                      style: theme.textTheme.bodyText1!
-                                          .copyWith(fontWeight: kRegularWeight),
-                                      children: [
-                                        TextSpan(
-                                          text: 'Bag',
-                                          style: theme.textTheme.bodyText1!
-                                              .copyWith(
-                                                  fontWeight: kSemiBoldWeight),
-                                        ),
-                                      ]),
-                                ),
-                              ],
-                            )),
-                            10.widthInPixel(),
-                            Expanded(
-                                child: Row(
-                              children: [
-                                Image.asset(
-                                  Assets.distance_icon,
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                12.widthInPixel(),
-                                RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                      text: 'Distance : ',
-                                      style: theme.textTheme.bodyText1!
-                                          .copyWith(fontWeight: kRegularWeight),
-                                      children: [
-                                        TextSpan(
-                                          text: '25 km',
-                                          style: theme.textTheme.bodyText1!
-                                              .copyWith(
-                                                  fontWeight: kSemiBoldWeight),
-                                        ),
-                                      ]),
-                                ),
-                              ],
-                            ))
-                          ],
-                        ),
-                        34.heightInPixel(),
-                        Row(
-                          children: [
-                            Expanded(
-                                child: Row(
-                              children: [
-                                Image.asset(
-                                  Assets.price_icon,
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                12.widthInPixel(),
-                                RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                      text: 'Price : ',
-                                      style: theme.textTheme.bodyText1!
-                                          .copyWith(fontWeight: kRegularWeight),
-                                      children: [
-                                        TextSpan(
-                                          text: '#2000',
-                                          style: theme.textTheme.bodyText1!
-                                              .copyWith(
-                                                  fontWeight: kSemiBoldWeight),
-                                        ),
-                                      ]),
-                                ),
-                              ],
-                            )),
-                            10.widthInPixel(),
-                            Expanded(
-                                child: Row(
-                              children: [
-                                Image.asset(
-                                  Assets.size_icon,
-                                  width: 20,
-                                  height: 20,
-                                ),
-                                12.widthInPixel(),
-                                RichText(
-                                  textAlign: TextAlign.center,
-                                  text: TextSpan(
-                                      text: 'Size : ',
-                                      style: theme.textTheme.bodyText1!
-                                          .copyWith(fontWeight: kRegularWeight),
-                                      children: [
-                                        TextSpan(
-                                          text: '50kg',
-                                          style: theme.textTheme.bodyText1!
-                                              .copyWith(
-                                                  fontWeight: kSemiBoldWeight),
-                                        ),
-                                      ]),
-                                ),
-                              ],
-                            ))
-                          ],
-                        ),
-                        34.heightInPixel(),
-                        SizedBox(
-                          height: 100,
-                          width: 145,
-                          child: Card(
-                            elevation: 4,
-                            shadowColor: dividerColor.withOpacity(0.4),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius: Radii.k6pxRadius),
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Image of Item',
-                                    style: theme.textTheme.bodyText2!.copyWith(
-                                        fontSize: 12,
-                                        fontWeight: kSemiBoldWeight),
-                                  ),
-                                  8.heightInPixel(),
-                                  Expanded(
-                                    child: PageView.builder(
-                                        controller: _pageController,
-                                        itemCount: 2,
-                                        itemBuilder: (context, index) {
-                                          return Image.asset(
-                                              Assets.dummy_avatar);
-                                        }),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                        20.heightInPixel(),
-                        //todo: change to text base
-                        SmoothPageIndicator(
-                          count: 2,
-                          controller: _pageController,
-                          effect:
-                              const WormEffect(activeDotColor: secondaryColor),
-                        ),
-                        34.heightInPixel(),
-
-                        ConstrainedBox(
-                          constraints: const BoxConstraints(maxWidth: 450),
-                          child: Row(
-                            children: [
-                              Expanded(
-                                child: Button(
-                                    text: 'Accept',
-                                    fontSize: 14,
-                                    onPress: () {},
-                                    borderRadius: 12,
-                                    color: kTextColor,
-                                    width: double.infinity,
-                                    textColor: whiteColor,
-                                    isLoading: false),
-                              ),
-                              20.widthInPixel(),
-                              Expanded(
-                                child: Button(
-                                    text: 'Reject',
-                                    fontSize: 14,
-                                    onPress: () {
-                                      _modalReject(context);
-                                    },
-                                    borderRadius: 12,
-                                    color: redColor,
-                                    width: double.infinity,
-                                    textColor: whiteColor,
-                                    isLoading: false),
-                              ),
-                            ],
-                          ),
-                        )
                       ],
+                      color: whiteColor,
+                      borderRadius: const BorderRadius.only(
+                          topRight: Radius.circular(50),
+                          topLeft: Radius.circular(50))),
+                  child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 450),
+                      child: ClipRRect(
+                        borderRadius: const BorderRadius.only(
+                            topRight: Radius.circular(50),
+                            topLeft: Radius.circular(50)),
+                        child: SingleChildScrollView(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal:
+                                  kDefaultLayoutPadding + kDefaultLayoutPadding,
+                              vertical: 34),
+                          controller: scrollController,
+                          child: CustomStreamBuilder<RiderOrderState, String>(
+                              stream: riderHomeStateBloc.behaviorSubject,
+                              dataBuilder: (context, orderState) {
+                                return CustomStreamBuilder<OnNewRequestResponse,
+                                        String>(
+                                    stream: streamSocket.behaviorSubject,
+                                    dataBuilder: (context, data) {
+                                      final String orderNo =
+                                          data.order?.id ?? '';
+                                      final double pickupLatitude =
+                                          data.order?.pickupLatitude ?? 0.0;
+                                      final double pickupLongitude =
+                                          data.order?.pickupLongitude ?? 0.0;
+                                      final double deliveryLatitude =
+                                          data.order?.destinationLatitude ??
+                                              0.0;
+                                      final double deliveryLongitude =
+                                          data.order?.destinationLongitude ??
+                                              0.0;
+                                      if (orderState ==
+                                          RiderOrderState.isOrderCompleted) {
+                                        return contentCompleted(
+                                            orderState,
+                                            orderNo,
+                                            pickupLatitude,
+                                            pickupLongitude,
+                                            deliveryLatitude,
+                                            deliveryLongitude);
+                                      }
+                                      return contentOnGoing(
+                                          orderState,
+                                          orderNo,
+                                          pickupLatitude,
+                                          pickupLongitude,
+                                          deliveryLatitude,
+                                          deliveryLongitude);
+                                    },
+                                    loadingBuilder: (context) {
+                                      return Column(
+                                        children: [
+                                          LoadingDataStyle(
+                                            height: 12,
+                                            width: 120,
+                                            bgColor: Colors.black45,
+                                          )
+                                        ],
+                                      );
+                                    },
+                                    errorBuilder: (context, err) {
+                                      return Column(
+                                        children: [
+                                          LoadingDataStyle(
+                                            height: 12,
+                                            width: 120,
+                                            bgColor: Colors.black45,
+                                          )
+                                        ],
+                                      );
+                                    });
+                              }),
+                        ),
+                      )),
+                ),
+              ),
+              Positioned(
+                top: 0,
+                right: 44,
+                child: GestureDetector(
+                  onTap: () {
+                    _updateBottomSheetSize();
+                  },
+                  child: Container(
+                    decoration: const BoxDecoration(
+                        shape: BoxShape.circle, color: secondaryColor),
+                    padding: const EdgeInsets.all(11),
+                    alignment: Alignment.center,
+                    child: RotatedBox(
+                      quarterTurns:
+                          draggableScrollableController.size == 0.5 ? 4 : 2,
+                      child: const Icon(
+                        Icons.arrow_downward,
+                        size: 25,
+                        color: Colors.black,
+                      ),
                     ),
                   ),
-                )),
+                ),
+              )
+            ],
           );
         });
   }
 
-  _modalReject(BuildContext context) {
+  Widget contentOnGoing(
+      RiderOrderState orderState,
+      String orderNo,
+      double pickupLatitude,
+      double pickupLongitude,
+      double deliveryLatitude,
+      double deliveryLongitude) {
     var theme = Theme.of(context);
-
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (context) => Container(
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        14.heightInPixel(),
+        Row(
+          children: [
+            Text(
+              'ORDER ID:',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyText1!
+                  .copyWith(fontWeight: kSemiBoldWeight, color: deepGreen),
+            ),
+            1.flexSpacer(),
+            Text(
+              '#$orderNo',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyText1!
+                  .copyWith(fontWeight: kSemiBoldWeight),
+            ),
+          ],
+        ),
+        34.heightInPixel(),
+        SizedBox(
+          height: 90,
+          child: Row(
+            children: [
+              Image.asset(
+                Assets.pickup_route,
+                height: 90,
+              ),
+              12.widthInPixel(),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'PICKUP LOCATION',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyText1!.copyWith(
+                        fontWeight: kSemiBoldWeight, color: dividerColor),
+                  ),
+                  4.heightInPixel(),
+                  FutureBuilder<String>(
+                      future:
+                          getAddressFromLatLng(pickupLatitude, pickupLongitude),
+                      builder: (context, snapshot) {
+                        String address = '';
+                        if (snapshot.hasData) {
+                          address = snapshot.data ?? '';
+                        }
+                        return Text(
+                          address,
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyText1!
+                              .copyWith(fontWeight: kMediumWeight),
+                        );
+                      }),
+                  1.flexSpacer(),
+                  Text(
+                    'DELIVERY LOCATION',
+                    textAlign: TextAlign.center,
+                    style: theme.textTheme.bodyText1!.copyWith(
+                        fontWeight: kSemiBoldWeight, color: dividerColor),
+                  ),
+                  4.heightInPixel(),
+                  FutureBuilder<String>(
+                      future: getAddressFromLatLng(
+                          deliveryLatitude, deliveryLongitude),
+                      builder: (context, snapshot) {
+                        String pickupAddress = '';
+                        String deliveryAddress = '';
+                        if (snapshot.hasData) {
+                          pickupAddress = snapshot.data ?? '';
+                          deliveryAddress = snapshot.data ?? '';
+                        }
+                        return Text(
+                          'From $pickupAddress to $deliveryAddress',
+                          textAlign: TextAlign.center,
+                          style: theme.textTheme.bodyText1!
+                              .copyWith(fontWeight: kMediumWeight),
+                        );
+                      }),
+                ],
+              )
+            ],
+          ),
+        ),
+        44.heightInPixel(),
+        ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 450),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 54),
-            decoration: const BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(50),
-                    topLeft: Radius.circular(50))),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
+            child: Button(
+                text: (orderState == RiderOrderState.isRequestAccepted ||
+                        orderState == RiderOrderState.isAlmostAtPickupLocation)
+                    ? 'Go to pickup'
+                    : (orderState == RiderOrderState.isItemPickedUpLocation)
+                        ? 'Go to Delivery'
+                        : (orderState == RiderOrderState.isEnRoute)
+                            ? 'Delivery in progress'
+                            : (orderState ==
+                                    RiderOrderState
+                                        .isAlmostAtDestinationLocation)
+                                ? 'Arrived at destination'
+                                : (orderState ==
+                                        RiderOrderState.isAtDestinationLocation)
+                                    ? 'Confirm delivery'
+                                    : (orderState ==
+                                            RiderOrderState.isOrderCompleted)
+                                        ? 'Item delivered'
+                                        : 'Done',
+                fontSize: 14,
+                onPress: () {
+                  _onButtonClick(orderState, pickupLatitude, pickupLongitude);
+                },
+                color: (orderState == RiderOrderState.isRequestAccepted ||
+                        orderState == RiderOrderState.isItemPickedUpLocation ||
+                        orderState == RiderOrderState.isAtDestinationLocation)
+                    ? kTextColor
+                    : deepGreen,
+                width: double.infinity,
+                textColor: whiteColor,
+                isLoading: false))
+      ],
+    );
+  }
+
+  Widget contentCompleted(
+      RiderOrderState orderState,
+      String orderNo,
+      double pickupLatitude,
+      double pickupLongitude,
+      double deliveryLatitude,
+      double deliveryLongitude) {
+    var theme = Theme.of(context);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        14.heightInPixel(),
+        Row(
+          children: [
+            Text(
+              'ORDER ID:',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyText1!
+                  .copyWith(fontWeight: kSemiBoldWeight, color: deepGreen),
+            ),
+            1.flexSpacer(),
+            Text(
+              '#$orderNo',
+              textAlign: TextAlign.center,
+              style: theme.textTheme.bodyText1!
+                  .copyWith(fontWeight: kSemiBoldWeight),
+            ),
+          ],
+        ),
+        34.heightInPixel(),
+        Row(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.black),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                Assets.time_outline,
+                width: 24,
+                height: 24,
+              ),
+            ),
+            12.widthInPixel(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Button(
-                          text: 'Refer another rider',
-                          fontSize: 12,
-                          onPress: () {},
-                          borderRadius: 12,
-                          color: kTextColor,
-                          width: double.infinity,
-                          textColor: whiteColor,
-                          isLoading: false),
-                    ),
-                    20.widthInPixel(),
-                    Expanded(
-                      child: Button(
-                          text: 'Reject',
-                          fontSize: 12,
-                          onPress: () {
-                            //
-                          },
-                          borderRadius: 12,
-                          color: redColor,
-                          width: double.infinity,
-                          textColor: whiteColor,
-                          isLoading: false),
-                    ),
-                  ],
+                Text(
+                  'PICKUP TIME',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyText1!.copyWith(
+                      fontWeight: kSemiBoldWeight, color: dividerColor),
                 ),
+                4.heightInPixel(),
+                FutureBuilder<String>(
+                    future:
+                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
+                    builder: (context, snapshot) {
+                      String address = '';
+                      if (snapshot.hasData) {
+                        address = snapshot.data ?? '';
+                      }
+                      return Text(
+                        address,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyText1!
+                            .copyWith(fontWeight: kMediumWeight),
+                      );
+                    }),
               ],
-            )));
+            )
+          ],
+        ),
+        24.heightInPixel(),
+        Row(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.black),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                Assets.time_outline,
+                width: 24,
+                height: 24,
+              ),
+            ),
+            12.widthInPixel(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'DELIVERY TIME',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyText1!.copyWith(
+                      fontWeight: kSemiBoldWeight, color: dividerColor),
+                ),
+                4.heightInPixel(),
+                FutureBuilder<String>(
+                    future:
+                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
+                    builder: (context, snapshot) {
+                      String address = '';
+                      if (snapshot.hasData) {
+                        address = snapshot.data ?? '';
+                      }
+                      return Text(
+                        address,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyText1!
+                            .copyWith(fontWeight: kMediumWeight),
+                      );
+                    }),
+              ],
+            )
+          ],
+        ),
+        24.heightInPixel(),
+        Row(
+          children: [
+            Container(
+              decoration: const BoxDecoration(
+                  shape: BoxShape.circle, color: Colors.black),
+              alignment: Alignment.center,
+              padding: const EdgeInsets.all(10),
+              child: Image.asset(
+                Assets.location_outline,
+                width: 24,
+                height: 24,
+              ),
+            ),
+            12.widthInPixel(),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'DELIVERY LOCATION',
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyText1!.copyWith(
+                      fontWeight: kSemiBoldWeight, color: dividerColor),
+                ),
+                4.heightInPixel(),
+                FutureBuilder<String>(
+                    future:
+                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
+                    builder: (context, snapshot) {
+                      String address = '';
+                      if (snapshot.hasData) {
+                        address = snapshot.data ?? '';
+                      }
+                      return Text(
+                        address,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.bodyText1!
+                            .copyWith(fontWeight: kMediumWeight),
+                      );
+                    }),
+              ],
+            )
+          ],
+        ),
+        44.heightInPixel(),
+        Center(
+          child: Image.asset(
+            Assets.check_success,
+            width: 54,
+            height: 54,
+          ),
+        ),
+        24.heightInPixel(),
+        ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 450),
+            child: Button(
+                text: 'Item delivered',
+                fontSize: 14,
+                onPress: () {
+                  _updateBottomSheetSize();
+                },
+                color: deepGreen,
+                width: double.infinity,
+                textColor: whiteColor,
+                isLoading: false))
+      ],
+    );
+  }
+
+  _onButtonClick(
+      RiderOrderState data, double pickupLatitude, double pickupLongitude) {
+    if (data == RiderOrderState.isRequestAccepted ||
+        data == RiderOrderState.isAlmostAtPickupLocation) {
+      mapExtraUIBloc.updateMarkersWithCircle(
+          [LatLng(pickupLatitude, pickupLongitude)], 'Pickup', true);
+    } else if (data == RiderOrderState.isItemPickedUpLocation) {
+    } else if (data == RiderOrderState.isEnRoute) {
+    } else if (data == RiderOrderState.isAlmostAtDestinationLocation) {
+    } else if (data == RiderOrderState.isAtDestinationLocation) {
+    } else if (data == RiderOrderState.isOrderCompleted) {
+    } else {
+      //  minimize bottom sheet
+      _updateBottomSheetSize();
+    }
+  }
+
+  _updateBottomSheetSize() {
+    if (draggableScrollableController.size == 0.5) {
+      draggableScrollableController.animateTo(0.07,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    } else {
+      draggableScrollableController.animateTo(0.5,
+          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+    }
   }
 }

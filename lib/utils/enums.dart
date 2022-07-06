@@ -2,8 +2,10 @@ enum RiderOrderState {
   isHomeScreen,
   isNewRequest,
   isRequestAccepted,
+  isAlmostAtPickupLocation,
+  isItemPickedUpLocation,
   isEnRoute,
-  isAlmostAtLocation,
-  isAtLocation,
+  isAlmostAtDestinationLocation,
+  isAtDestinationLocation,
   isOrderCompleted
 }
