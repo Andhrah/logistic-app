@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:overlay_support/overlay_support.dart';
-import 'package:path_provider/path_provider.dart' as pp;
 import 'package:provider/provider.dart';
 import 'package:pusher_client/pusher_client.dart';
-import 'package:trakk/models/auth/first_time_user.dart';
-import 'package:trakk/models/auth/is_logged_in.dart';
-import 'package:trakk/models/auth/user.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/forgot_password_pin.dart';
@@ -72,7 +68,7 @@ void main() async {
   SingletonData.singletonData.initSsoURL('https://zebrrasso.herokuapp.com/');
 
   await _openHive();
-  var box = await Hive.openBox('userData');
+
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
@@ -80,18 +76,13 @@ void main() async {
 
   await dotenv.load(fileName: ".env");
   //await dotenv.load(fileName: ".env");
-  await Hive.openBox('riderData');
   runApp(const MyApp());
 }
 
 _openHive() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var appDocDir = await pp.getApplicationDocumentsDirectory();
-  await Hive.initFlutter(appDocDir.path);
+
   // Register the generated adapter
-  Hive.registerAdapter(FirstTimeUserAdapter());
-  Hive.registerAdapter(UserAdapter());
-  Hive.registerAdapter(IsLoggedInAdapter());
 }
 
 class MyApp extends StatefulWidget {
@@ -111,7 +102,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    Hive.close();
     super.dispose();
   }
 
@@ -167,7 +157,7 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             CartScreen.id: (context) => const CartScreen(),
-            PolylineScreen.id: (context) => PolylineScreen(),
+            // PolylineScreen.id: (context) => PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
             ProfileMenu.id: (context) => const ProfileMenu(),
             EditProfile.id: (context) => const EditProfile(),

@@ -35,16 +35,15 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   }
 
   init() async {
-    await GetUserData.getUser();
-
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var injector = RiderMapProvider.riderMapProvider(context);
-      injector.connectAndListenToSocket(
-          onConnected: () {},
-          onConnectionError: () {
-            injector.disconnectSocket();
-            // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
-          });
+      injector.connect();
+      // injector.connectAndListenToSocket(
+      //     onConnected: () {},
+      //     onConnectionError: () {
+      //       injector.disconnectSocket();
+      //       // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
+      //     });
     });
   }
 

@@ -4,10 +4,12 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-import 'package:hive/hive.dart';
+
 import 'package:provider/provider.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/models/order/order.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+
 import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
@@ -59,7 +61,6 @@ class _ItemDetailsState extends State<ItemDetails> {
   String? _pickUpDate;
   String? _dropOffDate;
   dynamic _buttonText = "";
-  dynamic _previousRoute = "";
 
   late GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
@@ -71,7 +72,6 @@ class _ItemDetailsState extends State<ItemDetails> {
 
   bool _isItemImage = false;
   String _pickItem = "Food";
-var box =  Hive.box('appState');
   var itemsCategory = ["Food", "Cloth", "Electronics", "others (specify)"];
 
   void autoCompleteSearch(String value) async {
@@ -85,7 +85,6 @@ var box =  Hive.box('appState');
   }
 
   _getPreviousRoute() async {
-    var box = await Hive.openBox('routes');
     // setState(() {
     //   _previousRoute = box.get('previousRoute');
     // });
@@ -94,7 +93,7 @@ var box =  Hive.box('appState');
   @override
   void initState() {
     super.initState();
-    print(">>>>>>${box.get("firstName")}");
+
     String apiKey = "AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U";
     googlePlace = GooglePlace(apiKey);
 
@@ -157,7 +156,6 @@ var box =  Hive.box('appState');
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
   _onAddItemPress(BuildContext cxt) async {
-    
     final FormState? form = _formKey.currentState;
     // print(_itemDescription);
     // Order _orderProvider = Provider.of<Order>(cxt, listen: false);
@@ -191,28 +189,26 @@ var box =  Hive.box('appState');
       print(_dropOff);
       Order _orderProvider = Provider.of<Order>(cxt, listen: false);
       _orderProvider.setOrder(OrderModel(
-        pickUpLocation: OrderLocation(
-          address: _pickUp.toString(),
-          latitude: 19,
-          longitude: 10,
-          isPickUp: false,
-          isDelivery: false,
-        ),
-        deliveryLocation: OrderLocation(
-          address: _pickUp.toString(),
-          latitude: 19,
-          longitude: 10,
-          isPickUp: false,
-          isDelivery: false,
-        ),
-        orderItem: OrderItem(
-          orderItemTypeId: 1,
-          description: _itemDescription,
-          imageReference: _itemImage,
-          weight: "none"
-        ),
-        notes: "Hello")
-        );
+          pickUpLocation: OrderLocation(
+            address: _pickUp.toString(),
+            latitude: 19,
+            longitude: 10,
+            isPickUp: false,
+            isDelivery: false,
+          ),
+          deliveryLocation: OrderLocation(
+            address: _pickUp.toString(),
+            latitude: 19,
+            longitude: 10,
+            isPickUp: false,
+            isDelivery: false,
+          ),
+          orderItem: OrderItem(
+              orderItemTypeId: 1,
+              description: _itemDescription,
+              imageReference: _itemImage,
+              weight: "none"),
+          notes: "Hello"));
       // var box = await Hive.openBox('userOrder');
       // box.putAll({
       //   "pickUp": _pickUp,
@@ -230,268 +226,240 @@ var box =  Hive.box('appState');
   }
 
   _saveEdittedItem() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.delete('previousRoute');
-    });
     Navigator.pop(context);
   }
 
   _onButtonPress() async {
     // Navigator.of(context).pushNamed(PickRide.id);
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
+        context: context,
+        isScrollControlled: true,
         backgroundColor: Colors.transparent,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0)
-        )
-      ),
-      builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // TweenAnimationBuilder(
-            //   tween: Tween(begin: const Duration(minutes: 2), end: Duration.zero),
-            //   duration: const Duration(minutes: 3),
-            //   builder: (BuildContext context, Duration value, Widget? child) {
-            //     final minutes = value.inMinutes;
-            //     final seconds = value.inSeconds % 60;
-            //     return Container(
-            //       height: 150.0,
-            //       width: 150.0,
-            //       decoration: const BoxDecoration(
-            //         shape: BoxShape.circle,
-            //         color: appPrimaryColor,
-            //       ),
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Text(
-            //             '$minutes:$seconds',
-            //             textAlign: TextAlign.center,
-            //             style: const TextStyle(
-            //               color: secondaryColor,
-            //               fontWeight: FontWeight.bold,
-            //               fontSize: 30
-            //             )
-            //           )
-            //         ],
-            //       )
-            //     );
-            //   }
-            // ),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // TweenAnimationBuilder(
+              //   tween: Tween(begin: const Duration(minutes: 2), end: Duration.zero),
+              //   duration: const Duration(minutes: 3),
+              //   builder: (BuildContext context, Duration value, Widget? child) {
+              //     final minutes = value.inMinutes;
+              //     final seconds = value.inSeconds % 60;
+              //     return Container(
+              //       height: 150.0,
+              //       width: 150.0,
+              //       decoration: const BoxDecoration(
+              //         shape: BoxShape.circle,
+              //         color: appPrimaryColor,
+              //       ),
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Text(
+              //             '$minutes:$seconds',
+              //             textAlign: TextAlign.center,
+              //             style: const TextStyle(
+              //               color: secondaryColor,
+              //               fontWeight: FontWeight.bold,
+              //               fontSize: 30
+              //             )
+              //           )
+              //         ],
+              //       )
+              //     );
+              //   }
+              // ),
 
-            const SizedBox(height: 80.0),
-            Container(
-              padding: const EdgeInsetsDirectional.only(top: 20.0),
-              decoration: const BoxDecoration(
-                color: whiteColor,
-                // color: Colors.amber,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-              ),
-                child: Column(
-                children: [
+              const SizedBox(height: 80.0),
+              Container(
+                  padding: const EdgeInsetsDirectional.only(top: 20.0),
+                  decoration: const BoxDecoration(
+                    color: whiteColor,
+                    // color: Colors.amber,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0),
+                    ),
+                  ),
+                  child: Column(children: [
                     ListTile(
-                    leading: Container(
-                      height: 50.0,
-                      width: 50.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey.shade200
-                      ),
-                      child: const Icon(
-                        Remix.user_3_fill,
-                        size: 30.0,
-                        color: appPrimaryColor,
-                      ),
-                    ),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Order ID',
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                            color: appPrimaryColor,
-                            fontWeight: FontWeight.bold
-                          ),
+                      leading: Container(
+                        height: 50.0,
+                        width: 50.0,
+                        decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Colors.grey.shade200),
+                        child: const Icon(
+                          Remix.user_3_fill,
+                          size: 30.0,
+                          color: appPrimaryColor,
                         ),
-
-                        const SizedBox(height: 10.0),
-                        Text(
-                          '#234516',
-                          textScaleFactor: 1.0,
-                          style: TextStyle(
-                            color: appPrimaryColor.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Divider(
-                    color: appPrimaryColor.withOpacity(0.4),
-                  ),
-
-                  const SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 20.0),
-                      Column(
-                        children: [
-                          Text(
-                            '6\nmin',
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
-
-                          const SizedBox(height: 20.0),
-                            Text(
-                            '28\nmin',
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
-                        ],
                       ),
-
-                      Image.asset(
-                        'assets/images/order_highlighter.png',
-                        height: 160,
-                        width: 30,
-                      ),
-
-                      const SizedBox(width: 20.0),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
+                      title: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'My location',
+                            'Order ID',
                             textScaleFactor: 1.2,
                             style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.bold
-                            ),
+                                color: appPrimaryColor,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(height: 5.0),
+                          const SizedBox(height: 10.0),
                           Text(
-                            '1.2km',
+                            '#234516',
                             textScaleFactor: 1.0,
                             style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            color: appPrimaryColor.withOpacity(0.2),
-                            height: 1.0,
-                            width: MediaQuery.of(context).size.width/1.3,
-                          ),
-
-                          const Text(
-                            '50b, Tapa street, yaba',
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            '29.2km',
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            color: appPrimaryColor.withOpacity(0.2),
-                            height: 1.0,
-                            width: MediaQuery.of(context).size.width/1.3,
-                          ),
-
-                          const Text(
-                            '1 Aminu street, mende maryland',
-                            textScaleFactor: 1.2,
-                            style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.bold
+                              color: appPrimaryColor.withOpacity(0.5),
                             ),
                           ),
                         ],
                       ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 30.0),
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    Divider(
+                      color: appPrimaryColor.withOpacity(0.4),
+                    ),
+                    const SizedBox(height: 20.0),
                     Row(
-                    children: [
-                      const SizedBox(width: 40.0),
-                      Expanded(
-                        child: Button(
-                          text: 'Accept', 
-                          onPress: () {
-                            // Navigator.of(context).pushNamed(id);
-                            Navigator.pop(context);
-                          }, 
-                          color: secondaryColor, 
-                          textColor: appPrimaryColor, 
-                          isLoading: false,
-                          width: 60.0,
-                          // width: MediaQuery.of(context).size.width/6
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const SizedBox(width: 20.0),
+                        Column(
+                          children: [
+                            Text(
+                              '6\nmin',
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.3),
+                              ),
+                            ),
+                            const SizedBox(height: 20.0),
+                            Text(
+                              '28\nmin',
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.3),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-
-                      const SizedBox(width: 20.0),
-
-                      Expanded(
-                        child: Button(
-                          text: 'Decline', 
-                          onPress: () {
-                            // Navigator.of(context).pushNamed(id);
-                            Navigator.pop(context);
-                          }, 
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: false,
-                          width: MediaQuery.of(context).size.width/7
+                        Image.asset(
+                          'assets/images/order_highlighter.png',
+                          height: 160,
+                          width: 30,
                         ),
-                      ),
-                      const SizedBox(width: 40.0),
-                    ],
-                  ),
-                  const SizedBox(height: 30.0),
-                ]
-              )
-            ),
-          ],
-        );
-      }
-    );
+                        const SizedBox(width: 20.0),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'My location',
+                              textScaleFactor: 1.2,
+                              style: TextStyle(
+                                  color: appPrimaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Text(
+                              '1.2km',
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.3),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  top: 10.0, bottom: 10.0),
+                              color: appPrimaryColor.withOpacity(0.2),
+                              height: 1.0,
+                              width: MediaQuery.of(context).size.width / 1.3,
+                            ),
+                            const Text(
+                              '50b, Tapa street, yaba',
+                              textScaleFactor: 1.1,
+                              style: TextStyle(
+                                  color: appPrimaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                            const SizedBox(height: 5.0),
+                            Text(
+                              '29.2km',
+                              textScaleFactor: 1.0,
+                              style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.3),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(
+                                  top: 10.0, bottom: 10.0),
+                              color: appPrimaryColor.withOpacity(0.2),
+                              height: 1.0,
+                              width: MediaQuery.of(context).size.width / 1.3,
+                            ),
+                            const Text(
+                              '1 Aminu street, mende maryland',
+                              textScaleFactor: 1.2,
+                              style: TextStyle(
+                                  color: appPrimaryColor,
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 30.0),
+                    Row(
+                      children: [
+                        const SizedBox(width: 40.0),
+                        Expanded(
+                          child: Button(
+                            text: 'Accept',
+                            onPress: () {
+                              // Navigator.of(context).pushNamed(id);
+                              Navigator.pop(context);
+                            },
+                            color: secondaryColor,
+                            textColor: appPrimaryColor,
+                            isLoading: false,
+                            width: 60.0,
+                            // width: MediaQuery.of(context).size.width/6
+                          ),
+                        ),
+                        const SizedBox(width: 20.0),
+                        Expanded(
+                          child: Button(
+                              text: 'Decline',
+                              onPress: () {
+                                // Navigator.of(context).pushNamed(id);
+                                Navigator.pop(context);
+                              },
+                              color: appPrimaryColor,
+                              textColor: whiteColor,
+                              isLoading: false,
+                              width: MediaQuery.of(context).size.width / 7),
+                        ),
+                        const SizedBox(width: 40.0),
+                      ],
+                    ),
+                    const SizedBox(height: 30.0),
+                  ])),
+            ],
+          );
+        });
   }
 
   @override
   Widget build(BuildContext context) {
-    Auth _authProvider = Provider.of<Auth>(context);
-    print('authProvider: ${_authProvider.user} token: ${_authProvider.token}');
-    if (_previousRoute == "DispatchSummary") {
-      final arg = ModalRoute.of(context)!.settings.arguments as Map;
-      _buttonText = arg["buttonText"];
-    }
+    final arg = ModalRoute.of(context)?.settings.arguments as Map;
+    if (arg.isNotEmpty) _buttonText = arg["buttonText"];
 
     return Scaffold(
       body: SingleChildScrollView(
@@ -506,7 +474,7 @@ var box =  Hive.box('appState');
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               decoration: const BoxDecoration(
-                image: DecorationImage(
+                  image: DecorationImage(
                 image: AssetImage("assets/images/empty_map.png"),
                 fit: BoxFit.fill,
               )),
@@ -536,7 +504,8 @@ var box =  Hive.box('appState');
                                   hintText: 'Pick Up',
                                   node: _pickUpNode,
                                   textController: _pickUpController,
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textHeight: 0.0,
                                   borderColor: appPrimaryColor.withOpacity(0.5),
                                   validator: (value) {
@@ -571,7 +540,8 @@ var box =  Hive.box('appState');
                                   hintText: 'Drop Off',
                                   node: _dropOffNode,
                                   textController: _dropOffController,
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textHeight: 0,
                                   borderColor: appPrimaryColor.withOpacity(0.5),
                                   validator: (value) {
@@ -609,44 +579,49 @@ var box =  Hive.box('appState');
                   ),
 
                   ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: predictions.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: appPrimaryColor,
-                          child: Icon(
-                            Remix.pin_distance_fill,
-                            color: secondaryColor,
+                      shrinkWrap: true,
+                      itemCount: predictions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: const CircleAvatar(
+                            backgroundColor: appPrimaryColor,
+                            child: Icon(
+                              Remix.pin_distance_fill,
+                              color: secondaryColor,
+                            ),
                           ),
-                        ),
-                        title: Text(predictions[index].description.toString()),
-                        onTap: () async {
-                          final placeId = predictions[index].placeId!;
-                          final details = await googlePlace.details.get(placeId);
-                          if (details != null && details.result != null && mounted) {
-                            print("+++++++++++++++++++++++++++++");
-                            print(details.result!.addressComponents);
-                            if (_pickUpNode!.hasFocus) {
-                              setState(() {
-                                _pickUp =  details.result!.name!;
-                                print('******************************');
-                                print(_pickUp.runtimeType);
-                                _pickUpController.text = details.result!.name!;
-                                predictions = [];
-                              });
-                            } else {
-                              setState(() {
-                                _dropOff = details.result!.name!;
-                                _dropOffController.text = details.result!.name!;
-                                predictions = [];
-                              });
+                          title:
+                              Text(predictions[index].description.toString()),
+                          onTap: () async {
+                            final placeId = predictions[index].placeId!;
+                            final details =
+                                await googlePlace.details.get(placeId);
+                            if (details != null &&
+                                details.result != null &&
+                                mounted) {
+                              print("+++++++++++++++++++++++++++++");
+                              print(details.result!.addressComponents);
+                              if (_pickUpNode!.hasFocus) {
+                                setState(() {
+                                  _pickUp = details.result!.name!;
+                                  print('******************************');
+                                  print(_pickUp.runtimeType);
+                                  _pickUpController.text =
+                                      details.result!.name!;
+                                  predictions = [];
+                                });
+                              } else {
+                                setState(() {
+                                  _dropOff = details.result!.name!;
+                                  _dropOffController.text =
+                                      details.result!.name!;
+                                  predictions = [];
+                                });
+                              }
                             }
-                          }
-                        },
-                      );
-                    }
-                  ),
+                          },
+                        );
+                      }),
 
                   InputField(
                     obscureText: false,
@@ -671,18 +646,18 @@ var box =  Hive.box('appState');
                       // value: _pickItem,
                       hint: Text(
                         " choose category of item",
-                        style: TextStyle(
-                          color: appPrimaryColor.withOpacity(0.3)
-                        ),
+                        style:
+                            TextStyle(color: appPrimaryColor.withOpacity(0.3)),
                       ),
                       icon: const Icon(Remix.arrow_down_s_line),
                       elevation: 16,
-                      isExpanded: true, 
+                      isExpanded: true,
                       style: TextStyle(
                         color: appPrimaryColor.withOpacity(0.8),
                         fontSize: 18.0,
                       ),
-                      underline: Container(), //empty line
+                      underline: Container(),
+                      //empty line
                       onChanged: (String? newValue) {
                         setState(() {
                           _pickItem = newValue!;
@@ -774,9 +749,9 @@ var box =  Hive.box('appState');
                             icon: Container(
                               padding: const EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
-                                 color: secondaryColor.withOpacity(0.2),
-                                borderRadius: const BorderRadius.all(Radius.circular(50))
-                              ),
+                                  color: secondaryColor.withOpacity(0.2),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50))),
                               child: const Icon(
                                 Remix.calendar_2_fill,
                                 size: 18.0,
@@ -811,45 +786,44 @@ var box =  Hive.box('appState');
                           suffixIcon: IconButton(
                             onPressed: () {
                               DatePicker.showDatePicker(context,
-                                showTitleActions: true,
-                                minTime: DateTime(2022, 3, 5),
-                                maxTime: DateTime(2100, 6, 7),
-                                theme: const DatePickerTheme(
-                                  headerColor: appPrimaryColor,
-                                  backgroundColor: whiteColor,
-                                  itemStyle: TextStyle(
-                                    color: appPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                  doneStyle: TextStyle(
-                                    color: secondaryColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  cancelStyle: TextStyle(
-                                    color: secondaryColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ), 
-                                onChanged: (date) {
-                                  print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-                                }, 
-                                onConfirm: (date) {
-                                  print('confirm $date');
-                                _dropOffDateController.text = _parseDate(date.toString());
-                                },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.en
-                              );
+                                  showTitleActions: true,
+                                  minTime: DateTime(2022, 3, 5),
+                                  maxTime: DateTime(2100, 6, 7),
+                                  theme: const DatePickerTheme(
+                                    headerColor: appPrimaryColor,
+                                    backgroundColor: whiteColor,
+                                    itemStyle: TextStyle(
+                                      color: appPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                    doneStyle: TextStyle(
+                                      color: secondaryColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    cancelStyle: TextStyle(
+                                      color: secondaryColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ), onChanged: (date) {
+                                print('change $date in time zone ' +
+                                    date.timeZoneOffset.inHours.toString());
+                              }, onConfirm: (date) {
+                                print('confirm $date');
+                                _dropOffDateController.text =
+                                    _parseDate(date.toString());
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.en);
                             },
                             icon: Container(
                               padding: const EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
-                                 color: secondaryColor.withOpacity(0.2),
-                                borderRadius: const BorderRadius.all(Radius.circular(50))
-                              ),
+                                  color: secondaryColor.withOpacity(0.2),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50))),
                               child: const Icon(
                                 Remix.calendar_2_fill,
                                 size: 18.0,
@@ -874,9 +848,13 @@ var box =  Hive.box('appState');
 
                   const SizedBox(height: 30.0),
 
-                  _authProvider.user == null && _authProvider.token != null
-                      ? Container(
-                          child: Column(
+                  StreamBuilder<AppSettings>(
+                      stream: appSettingsBloc.appSettings,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            (snapshot.data?.loginResponse?.data?.token ?? '')
+                                .isNotEmpty) {
+                          return Column(
                             children: [
                               const Text(
                                 'Sender’s Info',
@@ -946,9 +924,11 @@ var box =  Hive.box('appState');
 
                               const SizedBox(height: 20.0),
                             ],
-                          ),
-                        )
-                      : Container(),
+                          );
+                        }
+                        return const SizedBox();
+                      }),
+
                   const Text(
                     'Receiver’s Info',
                     textScaleFactor: 1.2,

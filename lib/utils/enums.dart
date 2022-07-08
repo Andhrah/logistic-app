@@ -1,4 +1,15 @@
-enum UserType { user, rider, guest, merchant }
+enum UserType {
+  user('user'),
+  rider('rider'),
+  guest('guest'),
+  merchant('merchant');
+
+const UserType(this.value);
+
+  final String value;
+
+}
+
 
 enum RiderOrderState {
   isHomeScreen,

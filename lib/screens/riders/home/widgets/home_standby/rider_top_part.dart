@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/utils/radii.dart';
@@ -71,11 +72,18 @@ class _RiderTopPartState extends State<RiderTopPart> {
         Padding(
           padding:
               const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
-          child: Text(
-            'Hello ${box.get('firstName')},',
-            style: theme.textTheme.headline5!
-                .copyWith(fontWeight: kSemiBoldWeight, color: whiteColor),
-          ),
+          child: StreamBuilder<AppSettings>(
+              stream: appSettingsBloc.appSettings,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return Text(
+                    'Hello ${snapshot.data?.loginResponse?.data?.user?.firstName ?? ''},',
+                    style: theme.textTheme.headline5!.copyWith(
+                        fontWeight: kSemiBoldWeight, color: whiteColor),
+                  );
+                }
+                return const SizedBox();
+              }),
         ),
         const SizedBox(
           height: 10,

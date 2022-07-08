@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/models/auth_response.dart';
 import 'package:trakk/services/local_storage/app_settings_provider.dart';
+import 'package:trakk/utils/enums.dart';
 
 class _AppSettingsBloc {
   final BehaviorSubject<AppSettings> _appSettingsStreamController =
@@ -29,9 +30,9 @@ class _AppSettingsBloc {
     _appSettingsStreamController.sink.add(saved);
   }
 
-  saveLoginDetails(AuthResponse loginResponse, {bool isLoggedIn = true}) {
+  saveLoginDetails(AuthResponse authResponse, {bool isLoggedIn = true}) {
     appSettingsProvider
-        .saveLoginDetails(loginResponse, isLoggedIn: isLoggedIn)
+        .saveLoginDetails(authResponse, isLoggedIn: isLoggedIn)
         .then((result) {
       _appSettingsStreamController.sink.add(result);
     });
@@ -45,6 +46,33 @@ class _AppSettingsBloc {
   setLogOut() async {
     var saved = await appSettingsProvider.setLogOut();
     _appSettingsStreamController.sink.add(saved);
+  }
+
+  //getters
+  Future<String> get getToken async {
+    var appSettings = await appSettingsProvider.fetchAppSettings();
+
+    String token = appSettings.loginResponse?.data?.token ?? '';
+
+    return token;
+  }
+
+  //getters
+  Future<UserType> get getUserType async {
+    var appSettings = await appSettingsProvider.fetchAppSettings();
+
+    switch (appSettings.loginResponse?.data?.user?.userType ?? '') {
+      case 'user':
+        return UserType.user;
+      case 'rider':
+        return UserType.rider;
+      case 'merchant':
+        return UserType.merchant;
+      case 'guest':
+        return UserType.guest;
+      default:
+        return UserType.guest;
+    }
   }
 }
 

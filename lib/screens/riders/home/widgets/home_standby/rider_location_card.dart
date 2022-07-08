@@ -1,4 +1,5 @@
 import 'package:custom_bloc/custom_bloc.dart';
+import 'package:location/location.dart' as Loca;
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:trakk/bloc/map_socket.dart';
@@ -150,40 +151,36 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                       const SizedBox(
                         height: 10,
                       ),
-                      CustomStreamBuilder<LocationData, String>(
-                        stream: widget.locaBloc.myLocationSubject,
-                        dataBuilder: (context, data) {
-                          return FutureBuilder<String>(
-                              future: getAddressFromLatLng(
-                                  data.latitude ?? 0.0, data.longitude ?? 0.0),
-                              builder: (context, snapshot) {
-                                String address = '...';
-                                if (snapshot.hasData) {
-                                  address = snapshot.data ?? '-';
-                                } else {
-                                  address = '...';
-                                }
-                                return ConstrainedBox(
-                                  constraints: BoxConstraints(
-                                      maxWidth: safeAreaWidth(context, 60)),
-                                  child: Text(
-                                    address,
-                                    style: theme.textTheme.bodyText1!.copyWith(
-                                        fontWeight: kMediumWeight,
-                                        color: dividerColor),
-                                  ),
-                                );
-                              });
+                      StreamBuilder<LocationData>(
+                        stream: miscBloc.location.onLocationChanged,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return FutureBuilder<String>(
+                                future: getAddressFromLatLng(
+                                    snapshot.data?.latitude ?? 0.0,
+                                    snapshot.data?.longitude ?? 0.0),
+                                builder: (context, snapshot) {
+                                  String address = '...';
+                                  if (snapshot.hasData) {
+                                    address = snapshot.data ?? '-';
+                                  } else {
+                                    address = '...';
+                                  }
+                                  return ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                        maxWidth: safeAreaWidth(context, 60)),
+                                    child: Text(
+                                      address,
+                                      style: theme.textTheme.bodyText1!
+                                          .copyWith(
+                                              fontWeight: kMediumWeight,
+                                              color: dividerColor),
+                                    ),
+                                  );
+                                });
+                          }
+                          return SizedBox();
                         },
-                        loadingBuilder: (context) =>
-                            const Center(child: CircularProgressIndicator()),
-                        errorBuilder: (context, err) => Center(
-                          child: Text(
-                            err,
-                            style: theme.textTheme.caption!
-                                .copyWith(color: dividerColor),
-                          ),
-                        ),
                       ),
                     ],
                   )

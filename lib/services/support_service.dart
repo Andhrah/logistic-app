@@ -11,7 +11,7 @@ class SupportService {
     required String message,
   }) async {
     print("[][][][] NETWORK");
-    String token = box.get("token");
+
     try {
       Data data = Data(
         name: name,

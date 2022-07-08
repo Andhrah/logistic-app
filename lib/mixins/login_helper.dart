@@ -53,7 +53,8 @@ class LoginHelper with ConnectivityHelper {
         SingletonData.singletonData.navKey.currentState!
             .pushNamed(VerifiyAccountScreen.id, arguments: {
           "email": authResponse.data?.user?.email ?? '',
-          "phoneNumber": authResponse.data?.user?.phoneNumber ?? ''
+          "phoneNumber": authResponse.data?.user?.phoneNumber ?? '',
+          'userType': authResponse.data?.user?.userType ?? ''
         });
       }
     } else {

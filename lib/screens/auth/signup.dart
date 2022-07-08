@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/mixins/signup_helper.dart';
 import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/verify_account.dart';
@@ -21,21 +22,7 @@ class Signup extends StatefulWidget {
   _SignupState createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> {
-  final _formKey = GlobalKey<FormState>();
-
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneNumberController;
-  late TextEditingController _passwordController;
-
-  FocusNode? _firstNameNode;
-  FocusNode? _lastNameNode;
-  FocusNode? _phoneNumberNode;
-  FocusNode? _emailNode;
-  FocusNode? _passwordNode;
-
+class _SignupState extends State<Signup> with SignupHelper {
   String? _firstName;
   String? _lastName;
   String? _email;
@@ -51,11 +38,6 @@ class _SignupState extends State<Signup> {
   @override
   void initState() {
     super.initState();
-    _firstNameController = TextEditingController();
-    _lastNameController = TextEditingController();
-    _emailController = TextEditingController();
-    _phoneNumberController = TextEditingController();
-    _passwordController = TextEditingController();
   }
 
   /// This function handles email validation
@@ -63,7 +45,7 @@ class _SignupState extends State<Signup> {
     RegExp regex;
     String pattern =
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    String email = _emailController.text;
+    String email = emailController.text;
     if (email.trim().isEmpty) {
       setState(() {
         _emailIsValid = false;
@@ -80,60 +62,21 @@ class _SignupState extends State<Signup> {
     }
   }
 
-  /*
-   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
-  */
-  _onSubmit() async {
-    setState(() {
-      _loading = true;
-    });
-
-    final FormState? form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-
-      try {
-        var response = await SignupProvider.authProvider(context).createUser(
-            _firstName.toString(),
-            _lastName.toString(),
-            _email.toString(),
-            _password.toString(),
-            _phoneNumber.toString(),
-            userType.toString());
-        setState(() {
-          _loading = false;
-        });
-        form.reset();
-        await appToast(
-          'Your account has been created and ' + response["data"]["message"],
-          green,
-        );
-        Navigator.of(context).pushNamed(VerifiyAccountScreen.id,
-            arguments: {"email": _email, "phoneNumber": _phoneNumber});
-      }
-      // else {
-      //   Navigator.of(context).pushNamed(PersonalData.id);
-      // }
-      catch (err) {
-        setState(() {
-          _loading = false;
-        });
-        appToast(err.toString(), redColor);
-        rethrow;
-      }
-    }
-    setState(() {
-      _loading = false;
-    });
+  _onSubmit(String userType) async {
+    doSignUpOperation(
+        userType,
+        () => setState(() {
+              _loading = true;
+            }),
+        () => setState(() {
+              _loading = false;
+            }));
   }
 
   @override
   Widget build(BuildContext context) {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    userType = arg["userType"];
-
-    print('================================');
-    print(userType);
+    String userType = arg["userType"];
 
     return Scaffold(
         backgroundColor: whiteColor,
@@ -173,14 +116,13 @@ class _SignupState extends State<Signup> {
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       InputField(
                         key: const Key('firstName'),
-                        textController: _firstNameController,
-                        node: _firstNameNode,
+                        textController: firstNameController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
                         text: 'First Name',
@@ -206,8 +148,7 @@ class _SignupState extends State<Signup> {
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('lastName'),
-                        textController: _lastNameController,
-                        node: _lastNameNode,
+                        textController: lastNameController,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
                         text: 'Last Name',
@@ -233,9 +174,8 @@ class _SignupState extends State<Signup> {
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('email'),
-                        textController: _emailController,
+                        textController: emailController,
                         keyboardType: TextInputType.emailAddress,
-                        node: _emailNode,
                         obscureText: false,
                         text: 'Email Address',
                         hintText: 'jane@email.com',
@@ -257,9 +197,8 @@ class _SignupState extends State<Signup> {
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('phoneNumber'),
-                        textController: _phoneNumberController,
+                        textController: phoneNumberController,
                         keyboardType: TextInputType.phone,
-                        node: _phoneNumberNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
                         text: 'Phone Number',
@@ -285,8 +224,7 @@ class _SignupState extends State<Signup> {
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('password'),
-                        textController: _passwordController,
-                        node: _passwordNode,
+                        textController: passwordController,
                         obscureText: _hidePassword,
                         maxLines: 1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -335,7 +273,7 @@ class _SignupState extends State<Signup> {
                           alignment: Alignment.center,
                           child: Button(
                               text: 'Create an account',
-                              onPress: _onSubmit,
+                              onPress: () => _onSubmit(userType),
                               // onPress: () {
                               //   Navigator.of(context).pushNamed(PersonalData.id);
                               // },

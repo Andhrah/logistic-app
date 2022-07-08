@@ -2,9 +2,9 @@
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/rider/personal_data.dart';
 import 'package:trakk/screens/merchant/add_rider1.dart';
@@ -24,7 +24,6 @@ class AddRider extends StatefulWidget {
 }
 
 class _AddRiderState extends State<AddRider> {
-
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _firstNameController;
@@ -69,7 +68,8 @@ class _AddRiderState extends State<AddRider> {
 
   _validateEmail() {
     RegExp regex;
-    String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    String pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     String email = _emailController.text;
     if (email.trim().isEmpty) {
       setState(() {
@@ -81,7 +81,7 @@ class _AddRiderState extends State<AddRider> {
       setState(() {
         _emailIsValid = regex.hasMatch(email);
       });
-      if(_emailIsValid == false){
+      if (_emailIsValid == false) {
         return "Enter a valid email address";
       }
     }
@@ -90,14 +90,12 @@ class _AddRiderState extends State<AddRider> {
   isConfirmPasswordValid() {
     setState(() {
       _confirmPasswordIsValid = _confirmPasswordController.text != null &&
-        _confirmPasswordController.text == _passwordController.text;
+          _confirmPasswordController.text == _passwordController.text;
     });
   }
-  
-  
+
   @override
   Widget build(BuildContext context) {
-
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     //userType = arg["userType"];
 
@@ -105,18 +103,19 @@ class _AddRiderState extends State<AddRider> {
     print(userType);
 
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
+        backgroundColor: whiteColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Column(
             children: [
               const SizedBox(height: 10.0),
               Row(
                 children: [
                   BackIcon(
-                    onPress: () {Navigator.pop(context);},
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-
                   Container(
                     margin: const EdgeInsets.only(left: 40.0),
                     alignment: Alignment.center,
@@ -136,9 +135,7 @@ class _AddRiderState extends State<AddRider> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30.0),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -147,7 +144,6 @@ class _AddRiderState extends State<AddRider> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      
                       InputField(
                         key: const Key('firstName'),
                         textController: _firstNameController,
@@ -169,14 +165,12 @@ class _AddRiderState extends State<AddRider> {
                           }
                           return "Enter a valid first name";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _firstName = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 20.0),
-
                       InputField(
                         key: const Key('lastName'),
                         textController: _lastNameController,
@@ -203,7 +197,6 @@ class _AddRiderState extends State<AddRider> {
                           return null;
                         },
                       ),
-                    
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('email'),
@@ -223,12 +216,11 @@ class _AddRiderState extends State<AddRider> {
                         validator: (value) {
                           return _validateEmail();
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _email = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('phoneNumber'),
@@ -257,7 +249,6 @@ class _AddRiderState extends State<AddRider> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('password'),
@@ -272,7 +263,9 @@ class _AddRiderState extends State<AddRider> {
                         borderColor: appPrimaryColor.withOpacity(0.9),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
+                            _hidePassword == false
+                                ? Remix.eye_fill
+                                : Remix.eye_close_line,
                             size: 18.0,
                             color: const Color(0xFF909090),
                           ),
@@ -293,130 +286,121 @@ class _AddRiderState extends State<AddRider> {
                           return null;
                         },
                       ),
-
-                    const SizedBox(height: 40.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Button(
-                        text: "Next",
-                        //onPress: _onSubmit,
-                        onPress: () {
-                          Navigator.of(context).pushNamed(AddRider1.id);
-                        }, 
-                        color: appPrimaryColor, 
-                        textColor: whiteColor, 
-                        isLoading: _loading,
-                        width: 350.0
-                      )
-                    ),
-                    
-                    const SizedBox(height: 15.0),
-                    InkWell(
-                      onTap: (){
-                        Navigator.of(context).pushNamed(Login.id);
-                      },
-                      child: Align(
-                        child: RichText(
-                          textScaleFactor: 0.9,
-                          text: const TextSpan(
-                            text: 'Already have an account? ',
-                            style: TextStyle(
+                      const SizedBox(height: 40.0),
+                      Align(
+                          alignment: Alignment.center,
+                          child: Button(
+                              text: "Next",
+                              //onPress: _onSubmit,
+                              onPress: () {
+                                Navigator.of(context).pushNamed(AddRider1.id);
+                              },
                               color: appPrimaryColor,
-                              fontWeight: FontWeight.w500,
+                              textColor: whiteColor,
+                              isLoading: _loading,
+                              width: 350.0)),
+                      const SizedBox(height: 15.0),
+                      InkWell(
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Login.id);
+                        },
+                        child: Align(
+                          child: RichText(
+                            textScaleFactor: 0.9,
+                            text: const TextSpan(
+                              text: 'Already have an account? ',
+                              style: TextStyle(
+                                color: appPrimaryColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                    text: 'Log in',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: secondaryColor)),
+                              ],
                             ),
-                            children: <TextSpan>[
-                              TextSpan(text: 'Log in', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
-                            ],
                           ),
                         ),
                       ),
-                    ),
-
-                    const SizedBox(height: 25.0),
-                    Row(
-                      children: const [
-                        Expanded(
-                          child: Divider(
-                            color: appPrimaryColor,
-                          ),
-                        ),
-
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                          'Or continue with',
-                            textScaleFactor: 1.2,
-                            style: TextStyle(
+                      const SizedBox(height: 25.0),
+                      Row(
+                        children: const [
+                          Expanded(
+                            child: Divider(
                               color: appPrimaryColor,
-                              fontWeight: FontWeight.w400
                             ),
                           ),
-                        ),
-
-                        Expanded(
-                          child: Divider(
-                            color: appPrimaryColor,
-                          ),
-                        ),
-                      ],
-                    ),
-
-                    Row(
-                      children: [
-                        Expanded(
-                          child: ElevatedContainer(
-                            onPress: (){},
-                            radius: 5.0, 
-                            color: whiteColor,
-                            height: 55.0,
-                            width: 55.0,
-                            child: Image.asset(
-                              'assets/images/google_icon.png',
-                              height: 15,
-                              width: 15,
+                          Padding(
+                            padding: EdgeInsets.symmetric(horizontal: 8.0),
+                            child: Text(
+                              'Or continue with',
+                              textScaleFactor: 1.2,
+                              style: TextStyle(
+                                  color: appPrimaryColor,
+                                  fontWeight: FontWeight.w400),
                             ),
                           ),
-                        ),
-
-                        Expanded(
-                          child: ElevatedContainer(
-                            onPress: (){},
-                            radius: 5.0, 
-                            color: whiteColor,
-                            height: 55.0,
-                            width: 55.0,
-                            child: Image.asset(
-                              'assets/images/apple_icon.png',
-                              height: 20,
-                              width: 20,
+                          Expanded(
+                            child: Divider(
+                              color: appPrimaryColor,
                             ),
                           ),
-                        ),
-
-                        Expanded(
-                          child: ElevatedContainer(
-                            onPress: (){},
-                            radius: 5.0, 
-                            color: whiteColor,
-                            height: 55.0,
-                            width: 55.0,
-                            child: Image.asset(
-                              'assets/images/facebook_icon.png',
-                              height: 18,
-                              width: 18,
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedContainer(
+                              onPress: () {},
+                              radius: 5.0,
+                              color: whiteColor,
+                              height: 55.0,
+                              width: 55.0,
+                              child: Image.asset(
+                                'assets/images/google_icon.png',
+                                height: 15,
+                                width: 15,
+                              ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                          Expanded(
+                            child: ElevatedContainer(
+                              onPress: () {},
+                              radius: 5.0,
+                              color: whiteColor,
+                              height: 55.0,
+                              width: 55.0,
+                              child: Image.asset(
+                                'assets/images/apple_icon.png',
+                                height: 20,
+                                width: 20,
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: ElevatedContainer(
+                              onPress: () {},
+                              radius: 5.0,
+                              color: whiteColor,
+                              height: 55.0,
+                              width: 55.0,
+                              child: Image.asset(
+                                'assets/images/facebook_icon.png',
+                                height: 18,
+                                width: 18,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 }

@@ -1,34 +1,33 @@
-import 'dart:convert';
+import 'package:trakk/services/base_network_call_handler.dart';
+import 'package:trakk/utils/enums.dart';
+import 'package:trakk/utils/operation.dart';
 
-import 'package:http/http.dart' as http;
-import 'package:trakk/Exceptions/api_failure_exception.dart';
-
-import 'package:trakk/utils/constant.dart';
-
-class SignupService {
-  Future<dynamic> signupUser(String firstName, String lastName, String email,
-    String password, String phoneNumber, String userType) async {
-    var body = {
+class SignupService with BaseNetworkCallHandler {
+  Future<Operation> doSignUp(String firstName, String lastName, String email,
+      String password, String phoneNumber, String userType) async {
+    return runAPI('api/user/register', HttpRequestType.post, body: {
       "firstName": firstName,
       "lastName": lastName,
       "email": email,
       "phoneNumber": phoneNumber,
       "password": password,
       "userType": userType,
-    };
-    var response = await http.post(
-      uriConverter('api/user/register'),
-      headers: kHeaders(''), body: json.encode(body)
-    );
-    var decoded = jsonDecode(response.body);
-    if (response.statusCode.toString().startsWith('2')) {
-      return decoded;
-    } else if (response.statusCode.toString().startsWith('4')) {
-      // print('reason is ...${response.reasonPhrase} message is ${decoded['error']}');
-      throw ApiFailureException(decoded['error']["message"] ?? response.reasonPhrase);
-    } else {
-      throw ApiFailureException('An error occurred, please try again');
-      // throw ApiFailureException(decoded['error']['message'] ?? response.reasonPhrase);
-    }
+    });
+  }
+
+  Future<Operation> doVerify(String code, String email) async {
+    return runAPI('api/user/verify-otp', HttpRequestType.post, body: {
+      "code": code,
+      "email": email,
+    });
+  }
+
+  Future<Operation> doResendOTP(String email, String phoneNumber) async {
+    return runAPI('api/user/send-otp', HttpRequestType.post, body: {
+      "email": email,
+      "phoneNumber": phoneNumber,
+    });
   }
 }
+
+final signupService = SignupService();

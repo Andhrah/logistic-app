@@ -1,8 +1,11 @@
 import 'package:flutter/foundation.dart' as Foundation;
 import 'package:flutter/material.dart';
 import 'package:location/location.dart' as Loca;
+
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/models/rider/on_move_response.dart';
@@ -19,11 +22,35 @@ class RiderMapProvider extends ChangeNotifier {
   bool isNewConnection = false;
   Socket? socket;
 
+  void connect() async {
+    var appSettings = await appSettingsBloc.fetchAppSettings();
+    String? token = appSettings.loginResponse?.data?.token ?? '';
+
+    socket = IO.io("http://134.122.92.247:1440", <String, dynamic>{
+      "transports": ["websocket"],
+      "autoConnect": false,
+      'path': '/socket/v1/',
+      'auth': {
+        // put token here, it will be used to make authenticated calls
+        "token": token
+      }
+    });
+    socket?.connect();
+    socket?.onConnect((data) => print(" the sever is connected"));
+    // listenToRequest();
+    print("this is the socket response " + socket!.connected.toString());
+    //ride request with the rider id, so we will retrieve the rider's id and use it here
+
+    //socket.emit("message", "Test for riders");
+  }
+
   connectAndListenToSocket(
       {String? responseID,
       Function()? onConnected,
       Function()? onConnectionError}) async {
-    String? token = box.get('ssoToken');
+    var appSettings = await appSettingsBloc.fetchAppSettings();
+    String? token = appSettings.loginResponse?.data?.token ?? '';
+    String? riderID = '${appSettings.loginResponse?.data?.user?.id ?? ' '}';
 
     print('token: $token');
     String? userID;
@@ -62,7 +89,7 @@ class RiderMapProvider extends ChangeNotifier {
     //When an event recieved from server, data is added to the stream
     // socket.on('on:move', (data) => print('on: ${data.toString()}'));
 
-    socket?.on("rider_request_${box.get('riderId')}", (data) {
+    socket?.on("rider_request_$riderID", (data) {
       streamSocket.addResponseOnMove(OnNewRequestResponse.fromJson(
           data,
           riderLocationData?.latitude ?? 0.0,
@@ -91,6 +118,18 @@ class RiderMapProvider extends ChangeNotifier {
     }
   }
 
+//   emit to riders_location
+//   with this payload
+//
+//   {
+//   riderId:  :id
+//   currentLongitude: currentLongitude,
+//   currentLatitude: currentLatitude,
+//   currentLocation: currentLocation
+// }
+
+  // rider_request_13
+
   sendData(// String userID,
       // Coord coord
       ) {
@@ -98,7 +137,7 @@ class RiderMapProvider extends ChangeNotifier {
       streamSocket.updateSocketID(socket?.id ?? '');
     }
 
-    socket?.emit('user:online:location', {
+    socket?.emit('rider', {
       // 'id': userID,
       'socketId': '${socket?.id}',
       // 'coords': coord.toJson(),

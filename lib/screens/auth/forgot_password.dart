@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/forgot_password_provider.dart';
+import 'package:trakk/mixins/forgot_password_helper.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
@@ -17,11 +17,8 @@ class ForgetPassword extends StatefulWidget {
   _ForgetPasswordState createState() => _ForgetPasswordState();
 }
 
-class _ForgetPasswordState extends State<ForgetPassword> {
-  final _formKey = GlobalKey<FormState>();
-
-  late TextEditingController _emailController;
-
+class _ForgetPasswordState extends State<ForgetPassword>
+    with ForgotPasswordHelper {
   FocusNode? _emailNode;
 
   bool _loading = false;
@@ -32,92 +29,26 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   void initState() {
     super.initState();
-    _emailController = TextEditingController();
   }
 
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
   _onSubmit() async {
-    setState(() {
-      _loading = true;
-    });
-
-    final FormState? form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-
-      try {
-        var response =
-            await ForgotPasswordProvider.authProvider(context).forgetPassword(
-          _email.toString(),
-        );
-        setState(() {
-          _loading = false;
-        });
-        await appToast(
-          response["data"]["message"],
-          green,
-        );
-        // if (response["statusCode"] == "OK") {
-        //   form.reset();
-        //   await Flushbar(
-        //     messageText: Text(
-        //       response["message"],
-        //       textAlign: TextAlign.center,
-        //       style: const TextStyle(
-        //         color: whiteColor,
-        //         fontSize: 18,
-        //       ),
-        //     ),
-        //     backgroundColor: green,
-        //     maxWidth: MediaQuery.of(context).size.width/1.2,
-        //     flushbarPosition: FlushbarPosition.TOP,
-        //     borderRadius: BorderRadius.circular(10),
-        //     duration: const Duration(seconds: 4),
-        //   ).show(context);
-        //   Navigator.of(context).pushNamed(
-        //     ForgetPasswordPin.id,
-        //     arguments: {
-        //       "email": _email,
-        //     }
-        //   );
-        // } else {
-        //   await Flushbar(
-        //     messageText: Text(
-        //       response["message"],
-        //       textAlign: TextAlign.center,
-        //       style: const TextStyle(
-        //         color: whiteColor,
-        //         fontSize: 18,
-        //       ),
-        //     ),
-        //     backgroundColor: redColor,
-        //     maxWidth: MediaQuery.of(context).size.width/1.2,
-        //     flushbarPosition: FlushbarPosition.TOP,
-        //     borderRadius: BorderRadius.circular(10),
-        //     duration: const Duration(seconds: 5),
-        //   ).show(context);
-        // }
-        // Auth.authProvider(context)
-      } catch (err) {
-        setState(() {
-          _loading = false;
-        });
-        await appToast(err.toString(), redColor);
-        rethrow;
-      }
-    }
-    setState(() {
-      _loading = false;
-    });
+    doForgotPasswordOperation(
+        () => setState(() {
+              _loading = true;
+            }),
+        () => setState(() {
+              _loading = false;
+            }));
   }
 
   _validateEmail() {
     RegExp regex;
     String pattern =
         r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    String email = _emailController.text;
+    String email = emailCC.text;
     if (email.trim().isEmpty) {
       setState(() {
         _emailIsValid = false;
@@ -177,7 +108,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Form(
-                  key: _formKey,
+                  key: formKey,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -193,7 +124,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       InputField(
                         key: const Key('email'),
                         obscureText: false,
-                        textController: _emailController,
+                        textController: emailCC,
                         keyboardType: TextInputType.emailAddress,
                         node: _emailNode,
                         text: 'Email Address',

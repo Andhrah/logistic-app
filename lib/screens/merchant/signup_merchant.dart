@@ -3,7 +3,7 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/utils/colors.dart';

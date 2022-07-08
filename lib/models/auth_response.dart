@@ -80,16 +80,16 @@ class User {
 
   final int? id;
   final String? username;
-  final String? email;
+  String? email;
   final String? provider;
   final bool? confirmed;
   final bool? blocked;
   final String? zebrraId;
   final String? middleName;
-  final String? firstName;
-  final String? lastName;
-  final String? phoneNumber;
-  final String? address;
+  String? firstName;
+  String? lastName;
+  String? phoneNumber;
+  String? address;
   final String? userType;
   final bool? isAdmin;
   final String? avatar;
@@ -107,7 +107,7 @@ class User {
   final String? suspensionStartDate;
   final String? suspensionEndDate;
   final List<dynamic>? beneficiaries;
-  final Rider? rider;
+  Rider? rider;
   final List<dynamic>? orders;
   final dynamic merchant;
 
@@ -208,23 +208,23 @@ class OnBoardingSteps {
 }
 
 class Rider {
-  Rider({
-    this.id,
-    this.avatar,
-    this.dateOfBirth,
-    this.currentLocation,
-    this.currentLongitude,
-    this.currentLatitude,
-    this.stateOfOrigin,
-    this.stateOfResidence,
-    this.residentialAddress,
-    this.phone,
-    this.createdAt,
-    this.updatedAt,
-    this.publishedAt,
-    this.status,
-    this.cost,
-  });
+  Rider(
+      {this.id,
+      this.avatar,
+      this.dateOfBirth,
+      this.currentLocation,
+      this.currentLongitude,
+      this.currentLatitude,
+      this.stateOfOrigin,
+      this.stateOfResidence,
+      this.residentialAddress,
+      this.phone,
+      this.createdAt,
+      this.updatedAt,
+      this.publishedAt,
+      this.status,
+      this.cost,
+      this.vehicles});
 
   final int? id;
   final String? avatar;
@@ -241,34 +241,35 @@ class Rider {
   final DateTime? publishedAt;
   final String? status;
   final double? cost;
+  Vehicles? vehicles;
 
   factory Rider.fromJson(Map<String, dynamic> json) => Rider(
-        id: json["id"],
-        avatar: json["avatar"],
-        dateOfBirth: json["dateOfBirth"],
-        currentLocation: json["currentLocation"],
-        currentLongitude: json["currentLongitude"] == null
-            ? null
-            : json["currentLongitude"].toDouble(),
-        currentLatitude: json["currentLatitude"] == null
-            ? null
-            : json["currentLatitude"].toDouble(),
-        stateOfOrigin: json["stateOfOrigin"],
-        stateOfResidence: json["stateOfResidence"],
-        residentialAddress: json["residentialAddress"],
-        phone: json["phone"],
-        createdAt: json["createdAt"] == null
-            ? null
-            : DateTime.parse(json["createdAt"]),
-        updatedAt: json["updatedAt"] == null
-            ? null
-            : DateTime.parse(json["updatedAt"]),
-        publishedAt: json["publishedAt"] == null
-            ? null
-            : DateTime.parse(json["publishedAt"]),
-        status: json["status"],
-        cost: json["cost"] == null ? null : json["cost"].toDouble(),
-      );
+      id: json["id"],
+      avatar: json["avatar"],
+      dateOfBirth: json["dateOfBirth"],
+      currentLocation: json["currentLocation"],
+      currentLongitude: json["currentLongitude"] == null
+          ? null
+          : json["currentLongitude"].toDouble(),
+      currentLatitude: json["currentLatitude"] == null
+          ? null
+          : json["currentLatitude"].toDouble(),
+      stateOfOrigin: json["stateOfOrigin"],
+      stateOfResidence: json["stateOfResidence"],
+      residentialAddress: json["residentialAddress"],
+      phone: json["phone"],
+      createdAt:
+          json["createdAt"] == null ? null : DateTime.parse(json["createdAt"]),
+      updatedAt:
+          json["updatedAt"] == null ? null : DateTime.parse(json["updatedAt"]),
+      publishedAt: json["publishedAt"] == null
+          ? null
+          : DateTime.parse(json["publishedAt"]),
+      status: json["status"],
+      cost: json["cost"] == null ? null : json["cost"].toDouble(),
+      vehicles: json['vehicles'] == null
+          ? null
+          : Vehicles.fromJson(json['vehicles']));
 
   Map<String, dynamic> toJson() => {
         "id": id,
@@ -287,5 +288,26 @@ class Rider {
             publishedAt == null ? null : publishedAt!.toIso8601String(),
         "status": status,
         "cost": cost,
+        "vehicles": vehicles == null ? null : vehicles!.toJson(),
+      };
+}
+
+class Vehicles {
+  Vehicles({
+    this.name,
+    this.number,
+  });
+
+  String? name;
+  String? number;
+
+  factory Vehicles.fromJson(Map<String, dynamic> json) => Vehicles(
+        name: json["name"],
+        number: json["number"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "name": name,
+        "number": number,
       };
 }

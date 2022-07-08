@@ -1,7 +1,10 @@
+import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/bloc/vehicles_bloc.dart';
+import 'package:trakk/models/vehicles_list_response.dart';
 import 'package:trakk/screens/merchant/inactive_vehicle.dart';
 import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/utils/colors.dart';
@@ -45,8 +48,6 @@ class ListOfVehicles extends StatefulWidget {
 class _ListOfVehiclesState extends State<ListOfVehicles> {
   bool _isButtonPress = false;
 
-  Map<String, dynamic>? responseHolder;
-
   dynamic itemCount;
   dynamic responseKey;
   dynamic responseId;
@@ -62,28 +63,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
   }
 
   fetchVehicleList() async {
-    var box = await Hive.openBox('riderData');
-    var response =
-        await VehiclesProvider.vehiclesProvider(context).getVehiclesList();
-    print("get vehicle list response>>> $response");
-    //print("responseData=> ${response["data"][0]["attributes"]}");
-    //print("))))))overdose=> ${response["meta"]["pagination"]["total"]}");
-
-    responseHolder = await response["data"][0]["attributes"];
-
-    itemCount = response["meta"]["pagination"]["total"];
-    responseKey = await response["data"][0]["attributes"]["riderId"]["data"]
-        ["attributes"]["merchantId"]["data"]["id"];
-    responseId =
-        await response["data"][0]["attributes"]["riderId"]["data"]["id"];
-    print("responseKey >>>>>>. ${responseKey}");
-    print("response to riderId >>>>>>. ${responseId}");
-    await box.put(
-        "merchantId",
-        response["data"][0]["attributes"]["riderId"]["data"]["attributes"]
-            ["merchantId"]["data"]["id"]);
-    await box.put(
-        "riderId", response["data"][0]["attributes"]["riderId"]["data"]["id"]);
+    getVehiclesListBloc.fetchCurrent();
   }
 
   // fetchVehicleList() async {
@@ -430,27 +410,37 @@ class _ListOfVehiclesState extends State<ListOfVehicles> {
                                       MainAxisAlignment.spaceBetween,
                                   children: [
                                     Image.asset('assets/images/bike.png'),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          responseHolder?["name"] ?? '',
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                        const SizedBox(
-                                          height: 5,
-                                        ),
-                                        Text(
-                                          responseHolder?["number"] ?? "",
-                                          style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    )
+                                    CustomStreamBuilder<List<VehiclesList>,
+                                            String>(
+                                        stream:
+                                            getVehiclesListBloc.behaviorSubject,
+                                        dataBuilder: (context, data) {
+                                          String name = '';
+                                          String number = '';
+                                          return Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(
+                                                name,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                              const SizedBox(
+                                                height: 5,
+                                              ),
+                                              Text(
+                                                number,
+                                                style: const TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w600),
+                                              ),
+                                            ],
+                                          );
+                                        })
                                   ],
                                 ),
                                 Button(

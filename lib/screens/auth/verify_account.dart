@@ -1,12 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:trakk/provider/auth/verify_account_provider.dart';
-import 'package:trakk/screens/auth/merchant/company_data.dart';
-import 'package:trakk/screens/tab.dart';
-import 'package:trakk/utils/app_toast.dart';
+import 'package:trakk/mixins/signup_helper.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -20,7 +17,8 @@ class VerifiyAccountScreen extends StatefulWidget {
   _VerifiyAccountScreenState createState() => _VerifiyAccountScreenState();
 }
 
-class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
+class _VerifiyAccountScreenState extends State<VerifiyAccountScreen>
+    with SignupHelper {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController textEditingController = TextEditingController();
@@ -35,6 +33,7 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
   String _code = "";
   String? _email;
   String? _phoneNumber;
+  String? _userType;
   String currentText = "";
 
   Color inactiveColor = appPrimaryColor;
@@ -87,73 +86,29 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
 
   /// This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   _onSubmit() async {
-    setState(() {
-      _loading = true;
-    });
-
-    final FormState? form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-
-      try {
-        var box = await Hive.openBox('appState');
-        var userType = (box.get('userType'));
-        print(box.get('userType'));
-        var response =
-            await VerifyAccountProvider.authProvider(context).verifyAccount(
-          _code.toString(),
-          _email.toString(),
-        );
-        setState(() {
-          _loading = false;
-        });
-        form.reset();
-        await appToast(
-          response["data"]["message"],
-          green,
-        );
-        userType != "merchant"
-            ? Navigator.of(context).pushNamed(Tabs.id)
-            : Navigator.of(context).pushNamed(CompanyData.id);
-      } catch (err) {
-        setState(() {
-          _loading = false;
-        });
-        await appToast(err.toString(), redColor);
-        rethrow;
-      }
-    }
-    setState(() {
-      _loading = false;
-    });
+    doVerifyOperation(
+        _userType ?? '',
+        _code.toString(),
+        _email.toString(),
+        () => setState(() {
+              _loading = true;
+            }),
+        () => setState(() {
+              _loading = false;
+            }));
   }
 
   /// This method handles the resend otp event and sends data to the API
   _resendOtp() async {
-    setState(() {
-      _resendOtpLoading = true;
-    });
-
-    try {
-      var response =
-          await VerifyAccountProvider.authProvider(context).resendOtp(
+    doResendOTPOperation(
         _email.toString(),
         _phoneNumber.toString(),
-      );
-      setState(() {
-        _resendOtpLoading = false;
-      });
-      await appToast(
-        response["data"]["message"],
-        green,
-      );
-    } catch (err) {
-      setState(() {
-        _resendOtpLoading = false;
-      });
-      await appToast(err.toString(), redColor);
-      rethrow;
-    }
+        () => setState(() {
+              _resendOtpLoading = true;
+            }),
+        () => setState(() {
+              _resendOtpLoading = false;
+            }));
   }
 
   @override
@@ -161,6 +116,7 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen> {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     _email = arg["email"];
     _phoneNumber = arg["phoneNumber"];
+    _userType = arg["userType"];
 
     return Scaffold(
         backgroundColor: whiteColor,

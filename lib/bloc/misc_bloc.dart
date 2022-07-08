@@ -9,6 +9,7 @@ class MiscBloc {
   }
 
   CancelableOperation? _cancelableOperation;
+  var location = Loca.Location();
 
   //user location
   BehaviorSubject<BaseModel<Loca.LocationData, String>> get myLocationSubject =>
@@ -20,7 +21,6 @@ class MiscBloc {
   Loca.LocationData? currentLocation;
 
   Future<Loca.LocationData?> fetchLocation() async {
-    var location = Loca.Location();
     print('called');
     try {
       currentLocation = await location.getLocation();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
+
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
@@ -23,15 +23,9 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
-  _fetchUser() async {
-    var box = await Hive.openBox('appState');
-    setState(() {
-      userType = box.get("userType");
-    });
-  }
+
 
   int _selectedIndex = 0;
-  String userType = "customer";
 
   String currentTitle = 'Home';
 
@@ -111,7 +105,7 @@ class _TabsState extends State<Tabs> {
   @override
   void initState() {
     super.initState();
-    _fetchUser();
+    // _fetchUser();
   }
 
   @override

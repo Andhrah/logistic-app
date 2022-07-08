@@ -2,8 +2,10 @@
 
 import 'dart:convert';
 
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:http/http.dart' as http;
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/auth_response.dart';
 
 //var box = Hive.box('appState');
 
@@ -11,10 +13,9 @@ class GetUserData {
   // a new instance of hive can be created with new box
 
   static Future getUser() async {
-    var box = Hive.box('userData');
     // get user id and token from the values stored in hive after login
-    var id = box.get('id');
-    var token = box.get('token');
+
+    var token = await appSettingsBloc.getToken;
     try {
       var response = await http.get(
           Uri.parse(
@@ -28,16 +29,7 @@ class GetUserData {
       if (response.statusCode == 200) {
         // set returned value hive
 
-        box.putAll({
-          "firstName": decoded['data']['firstName'],
-          "lastName": decoded['data']['lastName'],
-          "email": decoded['data']['email'],
-          "phoneNumber": decoded['data']['phoneNumber'],
-          "address": decoded['data']['address'],
-          "id": decoded['data']['id'],
-          // "riderId": decoded['data']['rider']['id']
-        });
-        print("${box.get('lastName')} >>>>");
+        await appSettingsBloc.saveLoginDetails(AuthResponse.fromJson(decoded));
 
         // this will be done for all details to be stored locally
       } else {

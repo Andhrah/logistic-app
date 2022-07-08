@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
@@ -23,9 +23,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     super.initState();
-    var box = Hive.openBox('userOrder');
-    print("============");
-    print(box);
+
 
   }
 

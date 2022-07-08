@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/provider/update_profile/update_profile.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
@@ -55,9 +56,6 @@ class _ProfileMenuState extends State<ProfileMenu> {
   // }
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box('userData');
-    print("${box.get('lastName')} second call>>>");
-
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -103,81 +101,106 @@ class _ProfileMenuState extends State<ProfileMenu> {
                           padding: const EdgeInsets.only(
                               left: 35.0, right: 35.0, top: 0, bottom: 0),
                           child: Stack(children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 78,
-                                    width: 80,
-                                    alignment: Alignment.centerLeft,
-                                    decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/ladySmiling.png'),
-                                            fit: BoxFit.contain),
-                                        shape: BoxShape.circle),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Row(
-                                  children: [
-                                    Text(
-                                      box.get('firstName') ?? "",
-                                      style: TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
-                                    Text(
-                                      box.get('lastName') ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(box.get('phoneNumber').toString()),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(
-                                          box.get('email') ?? "",
-                                        ),
-                                      ],
-                                    ),
-                                    Button(
-                                        text: 'Edit profile',
-                                        onPress: () {
-                                          //  var id = box.get('id');
-                                          //   //print("This is the token " + name);
-                                          //   print("This is the user id " +
-                                          //       id.toString());
+                            StreamBuilder<AppSettings>(
+                                stream: appSettingsBloc.appSettings,
+                                builder: (context, snapshot) {
+                                  String firstName = '';
+                                  String lastName = '';
+                                  String phone = '';
+                                  String email = '';
 
-                                          Navigator.of(context)
-                                              .pushNamed(EditProfile.id);
-                                        },
-                                        color: Colors.black,
-                                        width: 80.0,
-                                        textColor: whiteColor,
-                                        isLoading: false),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  if (snapshot.hasData) {
+                                    firstName = snapshot.data?.loginResponse
+                                            ?.data?.user?.firstName ??
+                                        '';
+                                    lastName = snapshot.data?.loginResponse
+                                            ?.data?.user?.lastName ??
+                                        '';
+                                    phone = snapshot.data?.loginResponse?.data
+                                            ?.user?.phoneNumber ??
+                                        '';
+                                    email = snapshot.data?.loginResponse?.data
+                                            ?.user?.email ??
+                                        '';
+                                  }
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: 78,
+                                          width: 80,
+                                          alignment: Alignment.centerLeft,
+                                          decoration: const BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/images/ladySmiling.png'),
+                                                  fit: BoxFit.contain),
+                                              shape: BoxShape.circle),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            firstName,
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            lastName,
+                                            style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(phone),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                email,
+                                              ),
+                                            ],
+                                          ),
+                                          Button(
+                                              text: 'Edit profile',
+                                              onPress: () {
+                                                //  var id = box.get('id');
+                                                //   //print("This is the token " + name);
+                                                //   print("This is the user id " +
+                                                //       id.toString());
+
+                                                Navigator.of(context)
+                                                    .pushNamed(EditProfile.id);
+                                              },
+                                              color: Colors.black,
+                                              width: 80.0,
+                                              textColor: whiteColor,
+                                              isLoading: false),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }),
                           ]),
                         ),
                       ),

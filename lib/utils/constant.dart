@@ -1,5 +1,3 @@
-import 'package:hive_flutter/hive_flutter.dart';
-
 Map<String, String> _headers(String token) {
   return {'Content-type': 'application/json', 'Authorization': 'Bearer $token'};
 }
@@ -32,7 +30,7 @@ ssoUriConverter(String url) {
   return Uri.https(ssoUrl, '/$url');
 }
 
-var box = Hive.box('userData');
+// var box = Hive.box('userData');
 
 const kDistanceKMCoveredInAnHour = 60.0;
 //multiply by 60 to convert from hour to minutes
