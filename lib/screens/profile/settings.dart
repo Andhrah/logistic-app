@@ -3,9 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 
-import 'package:trakk/provider/auth/signup_provider.dart';
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';

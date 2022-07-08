@@ -5,14 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
-import 'package:trakk/models/update_profile/update_profile.dart';
-
-import 'package:trakk/provider/auth/signup_provider.dart';
-import 'package:trakk/provider/provider_list.dart';
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/services/get_user_service.dart';
-import 'package:trakk/services/update_profile_service.dart';
 
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';

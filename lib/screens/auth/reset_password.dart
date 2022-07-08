@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/mixins/forgot_password_helper.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -16,7 +17,7 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword>
-    with ForgotPasswordHelper {
+    with ForgotPasswordHelper, ConnectivityHelper {
   final _formKey = GlobalKey<FormState>();
 
   bool _loading = false;

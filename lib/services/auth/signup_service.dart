@@ -2,7 +2,7 @@ import 'package:trakk/services/base_network_call_handler.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
 
-class SignupService with BaseNetworkCallHandler {
+class SignupService extends BaseNetworkCallHandler {
   Future<Operation> doSignUp(String firstName, String lastName, String email,
       String password, String phoneNumber, String userType) async {
     return runAPI('api/user/register', HttpRequestType.post, body: {

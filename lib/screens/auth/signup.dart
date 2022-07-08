@@ -2,11 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/mixins/signup_helper.dart';
-import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/verify_account.dart';
-import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -22,7 +20,7 @@ class Signup extends StatefulWidget {
   _SignupState createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> with SignupHelper {
+class _SignupState extends State<Signup> with SignupHelper, ConnectivityHelper {
   String? _firstName;
   String? _lastName;
   String? _email;
