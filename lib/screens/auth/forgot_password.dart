@@ -18,8 +18,6 @@ class ForgetPassword extends StatefulWidget {
 }
 
 class _ForgetPasswordState extends State<ForgetPassword> {
-
-
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _emailController;
@@ -44,22 +42,21 @@ class _ForgetPasswordState extends State<ForgetPassword> {
     setState(() {
       _loading = true;
     });
-    
-    final FormState? form = _formKey.currentState;
-    if(form!.validate()){
 
+    final FormState? form = _formKey.currentState;
+    if (form!.validate()) {
       form.save();
-      
+
       try {
-        var response = await ForgotPasswordProvider.authProvider(context).forgetPassword(
-          _email.toString(), 
+        var response =
+            await ForgotPasswordProvider.authProvider(context).forgetPassword(
+          _email.toString(),
         );
         setState(() {
           _loading = false;
         });
         await appToast(
-          context, 
-          response["data"]["message"], 
+          response["data"]["message"],
           green,
         );
         // if (response["statusCode"] == "OK") {
@@ -103,11 +100,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         //   ).show(context);
         // }
         // Auth.authProvider(context)
-      } catch(err){
+      } catch (err) {
         setState(() {
           _loading = false;
         });
-        await appToast(context, err.toString(), redColor);
+        await appToast(err.toString(), redColor);
         rethrow;
       }
     }
@@ -118,7 +115,8 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
   _validateEmail() {
     RegExp regex;
-    String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    String pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     String email = _emailController.text;
     if (email.trim().isEmpty) {
       setState(() {
@@ -131,7 +129,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
         _emailIsValid = regex.hasMatch(email);
         print(_emailIsValid);
       });
-      if(_emailIsValid == false){
+      if (_emailIsValid == false) {
         return "Enter a valid email address";
       }
     }
@@ -140,19 +138,20 @@ class _ForgetPasswordState extends State<ForgetPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
+        backgroundColor: whiteColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Column(
             children: [
               kSizeBox,
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackIcon(
-                    onPress: () {Navigator.pop(context);},
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-
                   Container(
                     margin: const EdgeInsets.only(right: 70.0),
                     alignment: Alignment.center,
@@ -170,13 +169,10 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       ),
                     ),
                   ),
-
                   const SizedBox(),
                 ],
               ),
-
               const SizedBox(height: 30.0),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -188,13 +184,12 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                       Text(
                         'Please enter the email address associated\nwith your trakk account, we will send a\nreset code to you',
                         textScaleFactor: 1.2,
-                          style: TextStyle(
-                            color: appPrimaryColor.withOpacity(0.5),
-                            // fontWeight: FontWeight.bold,
-                          ),
+                        style: TextStyle(
+                          color: appPrimaryColor.withOpacity(0.5),
+                          // fontWeight: FontWeight.bold,
+                        ),
                       ),
                       const SizedBox(height: 50.0),
-
                       InputField(
                         key: const Key('email'),
                         obscureText: false,
@@ -213,28 +208,24 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                         validator: (value) {
                           return _validateEmail();
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _email = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 50.0),
                       Align(
-                        alignment: Alignment.center,
-                        child: Button(
-                          text: 'Request reset code', 
-                          onPress: _onSubmit, 
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: _loading,
-                          width: 350.0
-                        )
-                      ),
-
+                          alignment: Alignment.center,
+                          child: Button(
+                              text: 'Request reset code',
+                              onPress: _onSubmit,
+                              color: appPrimaryColor,
+                              textColor: whiteColor,
+                              isLoading: _loading,
+                              width: 350.0)),
                       const SizedBox(height: 15.0),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.of(context).pushNamed(Login.id);
                         },
                         child: Align(
@@ -247,7 +238,11 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                                 fontWeight: FontWeight.w500,
                               ),
                               children: <TextSpan>[
-                                TextSpan(text: 'Sign up', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
+                                TextSpan(
+                                    text: 'Sign up',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: secondaryColor)),
                               ],
                             ),
                           ),
@@ -258,9 +253,7 @@ class _ForgetPasswordState extends State<ForgetPassword> {
                 ),
               ),
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 }

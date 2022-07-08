@@ -1,3 +1,5 @@
+enum UserType { user, rider, guest, merchant }
+
 enum RiderOrderState {
   isHomeScreen,
   isNewRequest,
@@ -9,3 +11,5 @@ enum RiderOrderState {
   isAtDestinationLocation,
   isOrderCompleted
 }
+
+enum HttpRequestType { get, post, put, patch, delete, head, request, download }

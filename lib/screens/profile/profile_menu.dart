@@ -2,16 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:hive/hive.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-
-import 'package:trakk/provider/update_profile/update_profile.dart';
-import 'package:trakk/screens/support/help_and_support.dart';
-import 'package:trakk/services/get_user_service.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/provider/update_profile/update_profile.dart';
+import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/onboarding/get_started.dart';
+import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
-import 'package:trakk/screens/profile/edit_profile.dart';
-import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/screens/support/help_and_support.dart';
+import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -21,6 +20,7 @@ import '../support/help_and_support.dart';
 
 class ProfileMenu extends StatefulWidget {
   static const String id = "ProfileMenu";
+
   const ProfileMenu({Key? key}) : super(key: key);
 
   @override
@@ -28,11 +28,10 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu> {
-
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
 
-@override
+  @override
   void initState() {
     super.initState();
     GetUserData.getUser();
@@ -40,9 +39,9 @@ class _ProfileMenuState extends State<ProfileMenu> {
   }
 
   fetchUserData() async {
-    var response = await UpdateUserProvider.updateUserProvider(context).updateUserProfile();
-    print(
-        "responseData=> ${response}");
+    var response = await UpdateUserProvider.updateUserProvider(context)
+        .updateUserProfile();
+    print("responseData=> ${response}");
   }
 
   // fetchRiderHistory() async {
@@ -57,9 +56,9 @@ class _ProfileMenuState extends State<ProfileMenu> {
   @override
   Widget build(BuildContext context) {
     var box = Hive.box('userData');
-       print("${box.get('lastName')} second call>>>");
+    print("${box.get('lastName')} second call>>>");
 
-        return Scaffold(
+    return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
         child: Column(
@@ -121,23 +120,25 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                 Row(
-                                   children: [
-                                     Text(
+                                Row(
+                                  children: [
+                                    Text(
                                       box.get('firstName') ?? "",
-                                      style:  TextStyle(
+                                      style: TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(width: 5,),
-                                     Text(
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    Text(
                                       box.get('lastName') ?? "",
                                       style: const TextStyle(
                                           fontSize: 24,
                                           fontWeight: FontWeight.w600),
+                                    ),
+                                  ],
                                 ),
-                                   ],
-                                 ),
                                 const SizedBox(
                                   height: 8,
                                 ),
@@ -153,16 +154,18 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                         const SizedBox(
                                           height: 8,
                                         ),
-                                        Text(box.get('email') ?? "",),
+                                        Text(
+                                          box.get('email') ?? "",
+                                        ),
                                       ],
                                     ),
                                     Button(
                                         text: 'Edit profile',
                                         onPress: () {
-                                        //  var id = box.get('id');
-                                        //   //print("This is the token " + name);
-                                        //   print("This is the user id " +
-                                        //       id.toString());
+                                          //  var id = box.get('id');
+                                          //   //print("This is the token " + name);
+                                          //   print("This is the user id " +
+                                          //       id.toString());
 
                                           Navigator.of(context)
                                               .pushNamed(EditProfile.id);
@@ -212,14 +215,12 @@ class _ProfileMenuState extends State<ProfileMenu> {
                           ),
                         ),
                       ),
-                     
-                      const SizedBox(
 
+                      const SizedBox(
                         height: 18,
                       ),
                       InkWell(
                         onTap: () {
-
                           Navigator.of(context)
                               .pushNamed(UserDispatchHistory.id);
                         },
@@ -304,7 +305,12 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                   width: 22,
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    //do logout for local storage
+                                    Navigator.popUntil(context,
+                                        ModalRoute.withName(GetStarted.id));
+                                    Navigator.of(context).pushNamed(Login.id);
+                                  },
                                   child: const Text(
                                     "Log out",
                                     style: TextStyle(

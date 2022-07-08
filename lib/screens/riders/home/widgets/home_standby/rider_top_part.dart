@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/utils/radii.dart';
@@ -71,7 +72,7 @@ class _RiderTopPartState extends State<RiderTopPart> {
           padding:
               const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
           child: Text(
-            'Hello  Malik,',
+            'Hello ${box.get('firstName')},',
             style: theme.textTheme.headline5!
                 .copyWith(fontWeight: kSemiBoldWeight, color: whiteColor),
           ),

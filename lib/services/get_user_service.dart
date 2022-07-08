@@ -1,63 +1,63 @@
 // Get User Service
 
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:http/http.dart' as http;
 
+//var box = Hive.box('appState');
 
-    
-  //var box = Hive.box('appState');
+class GetUserData {
+  // a new instance of hive can be created with new box
 
-class GetUserData{
-  // a new instance of hive can be created with new box 
-  
   static Future getUser() async {
-    
-  var box = await Hive.box('userData');
-  // get user id and token from the values stored in hive after login
-  var id = box.get('id');
-  var token = box.get('token');
-  try{
-    var response = await http.get(Uri.parse('https://zebrra.itskillscenter.com/api/users/55?populate=*'), headers: {
-      'Content-type': 'application/json',
-      //'Authorization': 'Bearer '
-    });
-    var decoded = json.decode(response.body);
-    print('This is the get user data response' + response.body);
-    if(response.statusCode == 200) {
-     
-      // set returned value hive
+    var box = Hive.box('userData');
+    // get user id and token from the values stored in hive after login
+    var id = box.get('id');
+    var token = box.get('token');
+    try {
+      var response = await http.get(
+          Uri.parse(
+              'https://zebrra.itskillscenter.com/api/users/55?populate=*'),
+          headers: {
+            'Content-type': 'application/json',
+            //'Authorization': 'Bearer '
+          });
+      var decoded = json.decode(response.body);
+      print('This is the get user data response' + response.body);
+      if (response.statusCode == 200) {
+        // set returned value hive
 
-    box.putAll({
-        "firstName": decoded['data']['firstName'],
-        "lastName": decoded['data']['lastName'],
-        "email": decoded['data']['email'],
-        "phoneNumber": decoded['data']['phoneNumber'],
-        "address": decoded['data']['address'],
-        "id": decoded['data']['id'],
-        // "riderId": decoded['data']['rider']['id']
-      });
-   print("${box.get('lastName')} >>>>");
-    
-    // this will be done for all details to be stored locally
-    } else {
-      throw('unable to get user data');
+        box.putAll({
+          "firstName": decoded['data']['firstName'],
+          "lastName": decoded['data']['lastName'],
+          "email": decoded['data']['email'],
+          "phoneNumber": decoded['data']['phoneNumber'],
+          "address": decoded['data']['address'],
+          "id": decoded['data']['id'],
+          // "riderId": decoded['data']['rider']['id']
+        });
+        print("${box.get('lastName')} >>>>");
+
+        // this will be done for all details to be stored locally
+      } else {
+        throw ('unable to get user data');
+      }
+
+      return response;
+    } catch (err) {
+      print(err.toString());
+
+      return null;
     }
-    
-  } catch (err) {
-    print(err.toString());
-  }
-    
   }
 }
 
 // on the UI being displayed immediately after login
 
-
-
 // initState(){
 //   //super ...
-//   // you can create an instace of the getUserData Service or call it 
+//   // you can create an instace of the getUserData Service or call it
 //   // directly since is a static method
 //   GetUserData.getUser();
 // }

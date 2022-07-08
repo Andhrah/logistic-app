@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/auth/signup_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/merchant/company_data.dart';
 import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
@@ -23,7 +22,6 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _firstNameController;
@@ -60,10 +58,11 @@ class _SignupState extends State<Signup> {
     _passwordController = TextEditingController();
   }
 
-   /// This function handles email validation
+  /// This function handles email validation
   _validateEmail() {
     RegExp regex;
-    String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    String pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     String email = _emailController.text;
     if (email.trim().isEmpty) {
       setState(() {
@@ -75,7 +74,7 @@ class _SignupState extends State<Signup> {
       setState(() {
         _emailIsValid = regex.hasMatch(email);
       });
-      if(_emailIsValid == false){
+      if (_emailIsValid == false) {
         return "Enter a valid email address";
       }
     }
@@ -88,46 +87,38 @@ class _SignupState extends State<Signup> {
     setState(() {
       _loading = true;
     });
-    
-    final FormState? form = _formKey.currentState;
-    if(form!.validate()){
 
+    final FormState? form = _formKey.currentState;
+    if (form!.validate()) {
       form.save();
-    
+
       try {
         var response = await SignupProvider.authProvider(context).createUser(
-          _firstName.toString(), 
-          _lastName.toString(), 
-          _email.toString(), 
-          _password.toString(), 
-          _phoneNumber.toString(),
-          userType.toString()
-        );
+            _firstName.toString(),
+            _lastName.toString(),
+            _email.toString(),
+            _password.toString(),
+            _phoneNumber.toString(),
+            userType.toString());
         setState(() {
           _loading = false;
         });
         form.reset();
         await appToast(
-          context, 
-          'Your account has been created and ' + response["data"]["message"], 
+          'Your account has been created and ' + response["data"]["message"],
           green,
         );
-        Navigator.of(context).pushNamed(
-          VerifiyAccountScreen.id,
-          arguments: {
-            "email": _email,
-            "phoneNumber": _phoneNumber
-          }
-        );
-      } 
-        // else {
-        //   Navigator.of(context).pushNamed(PersonalData.id);
-        // }
-      catch(err){
+        Navigator.of(context).pushNamed(VerifiyAccountScreen.id,
+            arguments: {"email": _email, "phoneNumber": _phoneNumber});
+      }
+      // else {
+      //   Navigator.of(context).pushNamed(PersonalData.id);
+      // }
+      catch (err) {
         setState(() {
           _loading = false;
         });
-        appToast(context, err.toString(), redColor);
+        appToast(err.toString(), redColor);
         rethrow;
       }
     }
@@ -138,7 +129,6 @@ class _SignupState extends State<Signup> {
 
   @override
   Widget build(BuildContext context) {
-
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     userType = arg["userType"];
 
@@ -146,18 +136,19 @@ class _SignupState extends State<Signup> {
     print(userType);
 
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
+        backgroundColor: whiteColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Column(
             children: [
               kSizeBox,
               Row(
                 children: [
                   BackIcon(
-                    onPress: () {Navigator.pop(context);},
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-
                   Container(
                     margin: const EdgeInsets.only(left: 40.0),
                     alignment: Alignment.center,
@@ -177,9 +168,7 @@ class _SignupState extends State<Signup> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30.0),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -209,14 +198,12 @@ class _SignupState extends State<Signup> {
                           }
                           return "Enter a valid first name";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _firstName = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
-
                       InputField(
                         key: const Key('lastName'),
                         textController: _lastNameController,
@@ -243,7 +230,6 @@ class _SignupState extends State<Signup> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('email'),
@@ -263,12 +249,11 @@ class _SignupState extends State<Signup> {
                         validator: (value) {
                           return _validateEmail();
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _email = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('phoneNumber'),
@@ -297,7 +282,6 @@ class _SignupState extends State<Signup> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('password'),
@@ -312,7 +296,9 @@ class _SignupState extends State<Signup> {
                         borderColor: appPrimaryColor.withOpacity(0.9),
                         suffixIcon: IconButton(
                           icon: Icon(
-                            _hidePassword == false ? Remix.eye_fill : Remix.eye_close_line,
+                            _hidePassword == false
+                                ? Remix.eye_fill
+                                : Remix.eye_close_line,
                             size: 18.0,
                             color: const Color(0xFF909090),
                           ),
@@ -325,15 +311,16 @@ class _SignupState extends State<Signup> {
                         validator: (value) {
                           // This statements handles password validation
                           RegExp regex;
-                          String strongRegex = r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})';
+                          String strongRegex =
+                              r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})';
                           if (value!.isEmpty) {
                             _passwordIsValid = false;
                             return "Password cannot be empty";
                           } else {
                             regex = RegExp(strongRegex);
-                              _passwordIsValid = regex.hasMatch(value);
-                            if(_passwordIsValid == false){
-                            return "Password should be 8 characters or more,\ncontain at least a number, \na lowercase, \na capital letter and a special character";
+                            _passwordIsValid = regex.hasMatch(value);
+                            if (_passwordIsValid == false) {
+                              return "Password should be 8 characters or more,\ncontain at least a number, \na lowercase, \na capital letter and a special character";
                             }
                           }
                           return null;
@@ -343,27 +330,22 @@ class _SignupState extends State<Signup> {
                           return null;
                         },
                       ),
-                     
-
                       const SizedBox(height: 40.0),
                       Align(
-                        alignment: Alignment.center,
-                        child: Button(
-                          text: 'Create an account',
-                          onPress: _onSubmit,
-                          // onPress: () {
-                          //   Navigator.of(context).pushNamed(PersonalData.id);
-                          // }, 
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: _loading,
-                          width: 350.0
-                        )
-                      ),
-                    
+                          alignment: Alignment.center,
+                          child: Button(
+                              text: 'Create an account',
+                              onPress: _onSubmit,
+                              // onPress: () {
+                              //   Navigator.of(context).pushNamed(PersonalData.id);
+                              // },
+                              color: appPrimaryColor,
+                              textColor: whiteColor,
+                              isLoading: _loading,
+                              width: 350.0)),
                       const SizedBox(height: 15.0),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.of(context).pushNamed(Login.id);
                         },
                         child: Align(
@@ -376,103 +358,100 @@ class _SignupState extends State<Signup> {
                                 fontWeight: FontWeight.w500,
                               ),
                               children: <TextSpan>[
-                                TextSpan(text: 'Log in', style: TextStyle(fontWeight: FontWeight.bold, color: secondaryColor)),
+                                TextSpan(
+                                    text: 'Log in',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: secondaryColor)),
                               ],
                             ),
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 25.0),
-
-                      userType != "merchant" ? Row(
-                        children: const [
-                          Expanded(
-                            child: Divider(
-                              color: appPrimaryColor,
-                            ),
-                          ),
-
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                            'Or continue with',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                color: appPrimaryColor,
-                                fontWeight: FontWeight.w400
-                              ),
-                            ),
-                          ),
-
-                          Expanded(
-                            child: Divider(
-                              color: appPrimaryColor,
-                            ),
-                          ),
-                        ],
-                      ) : Container(),
-
-                      userType != "merchant" ? Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedContainer(
-                              onPress: (){},
-                              radius: 5.0, 
-                              color: whiteColor,
-                              height: 55.0,
-                              width: 55.0,
-                              child: Image.asset(
-                                'assets/images/google_icon.png',
-                                height: 15,
-                                width: 15,
-                              ),
-                            ),
-                          ),
-
-                          Expanded(
-                            child: ElevatedContainer(
-                              onPress: (){},
-                              radius: 5.0, 
-                              color: whiteColor,
-                              height: 55.0,
-                              width: 55.0,
-                              child: Image.asset(
-                                'assets/images/apple_icon.png',
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                          ),
-
-                          Expanded(
-                            child: ElevatedContainer(
-                              onPress: (){},
-                              radius: 5.0, 
-                              color: whiteColor,
-                              height: 55.0,
-                              width: 55.0,
-                              child: Image.asset(
-                                'assets/images/facebook_icon.png',
-                                height: 18,
-                                width: 18,
-                              ),
-                            ),
-                          ),
-
-                          kSizeBox,
-                          kSizeBox,
-
-                        ],
-                      ) : Container(),
+                      userType != "merchant"
+                          ? Row(
+                              children: const [
+                                Expanded(
+                                  child: Divider(
+                                    color: appPrimaryColor,
+                                  ),
+                                ),
+                                Padding(
+                                  padding:
+                                      EdgeInsets.symmetric(horizontal: 8.0),
+                                  child: Text(
+                                    'Or continue with',
+                                    textScaleFactor: 1.2,
+                                    style: TextStyle(
+                                        color: appPrimaryColor,
+                                        fontWeight: FontWeight.w400),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: Divider(
+                                    color: appPrimaryColor,
+                                  ),
+                                ),
+                              ],
+                            )
+                          : Container(),
+                      userType != "merchant"
+                          ? Row(
+                              children: [
+                                Expanded(
+                                  child: ElevatedContainer(
+                                    onPress: () {},
+                                    radius: 5.0,
+                                    color: whiteColor,
+                                    height: 55.0,
+                                    width: 55.0,
+                                    child: Image.asset(
+                                      'assets/images/google_icon.png',
+                                      height: 15,
+                                      width: 15,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: ElevatedContainer(
+                                    onPress: () {},
+                                    radius: 5.0,
+                                    color: whiteColor,
+                                    height: 55.0,
+                                    width: 55.0,
+                                    child: Image.asset(
+                                      'assets/images/apple_icon.png',
+                                      height: 20,
+                                      width: 20,
+                                    ),
+                                  ),
+                                ),
+                                Expanded(
+                                  child: ElevatedContainer(
+                                    onPress: () {},
+                                    radius: 5.0,
+                                    color: whiteColor,
+                                    height: 55.0,
+                                    width: 55.0,
+                                    child: Image.asset(
+                                      'assets/images/facebook_icon.png',
+                                      height: 18,
+                                      width: 18,
+                                    ),
+                                  ),
+                                ),
+                                kSizeBox,
+                                kSizeBox,
+                              ],
+                            )
+                          : Container(),
                     ],
                   ),
                 ),
               ),
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 }

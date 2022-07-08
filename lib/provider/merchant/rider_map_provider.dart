@@ -23,8 +23,9 @@ class RiderMapProvider extends ChangeNotifier {
       {String? responseID,
       Function()? onConnected,
       Function()? onConnectionError}) async {
-    String? token;
+    String? token = box.get('ssoToken');
 
+    print('token: $token');
     String? userID;
 
     socket = io(
@@ -34,6 +35,7 @@ class RiderMapProvider extends ChangeNotifier {
                 .setTransports(Foundation.kIsWeb ? ['polling'] : ['websocket'])
                 .build())
         .connect();
+
     if (onConnected != null) onConnected();
     socket?.onConnect((data) {
       if (socket?.id != null) streamSocket.updateSocketID(socket?.id ?? '');

@@ -62,11 +62,15 @@ import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/singleton_data.dart';
 
 import 'screens/profile/profile_menu.dart';
 import 'screens/profile/user_dispatch_history.dart';
 
 void main() async {
+  SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
+  SingletonData.singletonData.initSsoURL('https://zebrrasso.herokuapp.com/');
+
   await _openHive();
   var box = await Hive.openBox('userData');
   // To load the .env file contents into dotenv.
@@ -75,7 +79,6 @@ void main() async {
   // await dotenv.load(fileName: ".env");
 
   await dotenv.load(fileName: ".env");
-
   //await dotenv.load(fileName: ".env");
   await Hive.openBox('riderData');
   runApp(const MyApp());
@@ -122,6 +125,7 @@ class _MyAppState extends State<MyApp> {
       providers: appProviders,
       child: OverlaySupport(
         child: MaterialApp(
+          navigatorKey: SingletonData.singletonData.navKey,
           title: 'Trakk',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(

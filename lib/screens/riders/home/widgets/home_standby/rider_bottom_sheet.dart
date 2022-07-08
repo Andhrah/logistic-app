@@ -2,11 +2,10 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:trakk/bloc/map_socket.dart';
-import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/mixins/order_helper.dart';
 import 'package:trakk/models/rider/on_move_response.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
@@ -20,7 +19,7 @@ class RiderBottomSheet extends StatefulWidget {
   _RiderBottomSheetState createState() => _RiderBottomSheetState();
 }
 
-class _RiderBottomSheetState extends State<RiderBottomSheet> {
+class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
   final _pageController = PageController();
 
   @override
@@ -43,7 +42,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
         stream: streamSocket.behaviorSubject,
         builder: (context, snapshot) {
           if (snapshot.hasData && snapshot.data!.model != null) {
-            return _incomingRequest();
+            return _incomingRequest(snapshot.data!.model!);
           }
           return _standby();
         });
@@ -169,7 +168,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
     );
   }
 
-  Widget _incomingRequest() {
+  Widget _incomingRequest(OnNewRequestResponse newRequestResponse) {
     var theme = Theme.of(context);
 
     return DraggableScrollableSheet(
@@ -440,8 +439,11 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
                                     text: 'Accept',
                                     fontSize: 14,
                                     onPress: () {
-                                      riderHomeStateBloc.updateState(
-                                          RiderOrderState.isRequestAccepted);
+                                      if ((newRequestResponse.order?.id ?? '')
+                                          .isNotEmpty) {
+                                        doAcceptOrder(
+                                            newRequestResponse.order?.id ?? '');
+                                      }
                                     },
                                     borderRadius: 12,
                                     color: kTextColor,
