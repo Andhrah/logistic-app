@@ -6,7 +6,6 @@ import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/provider/merchant/rider_map_provider.dart';
 import 'package:trakk/screens/riders/home/widgets/home_map/rider_home_map.dart';
 import 'package:trakk/screens/riders/home/widgets/home_standby/rider_home_standby.dart';
-import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/enums.dart';
 
@@ -37,19 +36,18 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
   init() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var injector = RiderMapProvider.riderMapProvider(context);
-      injector.connect();
-      // injector.connectAndListenToSocket(
-      //     onConnected: () {},
-      //     onConnectionError: () {
-      //       injector.disconnectSocket();
-      //       // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
-      //     });
+      // injector.connect();
+      injector.connectAndListenToSocket(
+          onConnected: () {},
+          onConnectionError: () {
+            injector.disconnectSocket();
+            // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
+          });
     });
   }
 
   @override
   void dispose() {
-    locaBloc.dispose();
     riderHomeStateBloc.invalidate();
     super.dispose();
   }
@@ -69,7 +67,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           stream: riderHomeStateBloc.behaviorSubject,
           dataBuilder: (context, data) {
             if (data == RiderOrderState.isHomeScreen ||
-                data == RiderOrderState.isOrderCompleted) {
+                data == RiderOrderState.isNewRequest) {
               return RiderHomeStandbyScreen(locaBloc);
             }
 

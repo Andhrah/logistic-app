@@ -1,31 +1,36 @@
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
-import 'package:trakk/models/rider/on_move_response.dart';
-import 'package:trakk/utils/assets.dart';
+import 'package:trakk/mixins/order_helper.dart';
+import 'package:trakk/models/rider/order_response.dart';
+import 'package:trakk/screens/riders/home/widgets/home_map/rider_bottom_sheet_content.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
-import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/utils/styles.dart';
-import 'package:trakk/widgets/button.dart';
 
 class RiderBottomSheet extends StatefulWidget {
   final double initialSize;
+  double maxSize;
 
-  const RiderBottomSheet({Key? key, this.initialSize = 0.07}) : super(key: key);
+  RiderBottomSheet({Key? key, this.initialSize = 0.07, this.maxSize = 0.5})
+      : super(key: key);
 
   @override
   State<RiderBottomSheet> createState() => _RiderBottomSheetState();
 }
 
-class _RiderBottomSheetState extends State<RiderBottomSheet> {
+class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
   DraggableScrollableController draggableScrollableController =
       DraggableScrollableController();
+
+  final TextEditingController _controller = TextEditingController();
 
   @override
   void initState() {
@@ -34,6 +39,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
 
   @override
   void dispose() {
+    _controller.dispose();
     draggableScrollableController.dispose();
     super.dispose();
   }
@@ -43,7 +49,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
     var theme = Theme.of(context);
     return DraggableScrollableSheet(
         initialChildSize: widget.initialSize,
-        maxChildSize: 0.5,
+        maxChildSize: widget.maxSize,
         minChildSize: 0.07,
         controller: draggableScrollableController,
         builder: (BuildContext context, ScrollController scrollController) {
@@ -83,12 +89,15 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
                           child: CustomStreamBuilder<RiderOrderState, String>(
                               stream: riderHomeStateBloc.behaviorSubject,
                               dataBuilder: (context, orderState) {
-                                return CustomStreamBuilder<OnNewRequestResponse,
+                                return CustomStreamBuilder<OrderResponse,
                                         String>(
                                     stream: streamSocket.behaviorSubject,
                                     dataBuilder: (context, data) {
                                       final String orderNo =
-                                          data.order?.id ?? '';
+                                          '${data.order?.id ?? ''}';
+
+                                      final String deliveryCode =
+                                          '${data.order?.deliveryCode ?? ''}';
                                       final double pickupLatitude =
                                           data.order?.pickupLatitude ?? 0.0;
                                       final double pickupLongitude =
@@ -100,22 +109,40 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
                                           data.order?.destinationLongitude ??
                                               0.0;
                                       if (orderState ==
-                                          RiderOrderState.isOrderCompleted) {
-                                        return contentCompleted(
-                                            orderState,
-                                            orderNo,
-                                            pickupLatitude,
-                                            pickupLongitude,
-                                            deliveryLatitude,
-                                            deliveryLongitude);
+                                              RiderOrderState
+                                                  .isRequestAccepted ||
+                                          orderState ==
+                                              RiderOrderState
+                                                  .isAlmostAtPickupLocation) {
+                                        mapExtraUIBloc.updateMarkersWithCircle([
+                                          LatLng(
+                                              pickupLatitude, pickupLongitude)
+                                        ], 'Pickup', true);
                                       }
-                                      return contentOnGoing(
-                                          orderState,
-                                          orderNo,
-                                          pickupLatitude,
-                                          pickupLongitude,
-                                          deliveryLatitude,
-                                          deliveryLongitude);
+
+                                      if (orderState ==
+                                          RiderOrderState.isOrderCompleted) {
+                                        return RiderBottomSheetContentCompleted(
+                                          orderState: orderState,
+                                          orderNo: orderNo,
+                                          deliveryCode: deliveryCode,
+                                          pickupLatitude: pickupLatitude,
+                                          pickupLongitude: pickupLongitude,
+                                          deliveryLatitude: deliveryLatitude,
+                                          deliveryLongitude: deliveryLongitude,
+                                          onButtonClick: _onButtonClick,
+                                        );
+                                      }
+                                      return RiderBottomSheetContentOnGoing(
+                                        orderState: orderState,
+                                        orderNo: orderNo,
+                                        deliveryCode: deliveryCode,
+                                        pickupLatitude: pickupLatitude,
+                                        pickupLongitude: pickupLongitude,
+                                        deliveryLatitude: deliveryLatitude,
+                                        deliveryLongitude: deliveryLongitude,
+                                        onButtonClick: _onButtonClick,
+                                      );
                                     },
                                     loadingBuilder: (context) {
                                       return Column(
@@ -158,7 +185,9 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
                     alignment: Alignment.center,
                     child: RotatedBox(
                       quarterTurns:
-                          draggableScrollableController.size == 0.5 ? 4 : 2,
+                          draggableScrollableController.size == widget.maxSize
+                              ? 4
+                              : 2,
                       child: const Icon(
                         Icons.arrow_downward,
                         size: 25,
@@ -173,335 +202,63 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
         });
   }
 
-  Widget contentOnGoing(
-      RiderOrderState orderState,
-      String orderNo,
-      double pickupLatitude,
-      double pickupLongitude,
-      double deliveryLatitude,
-      double deliveryLongitude) {
-    var theme = Theme.of(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        14.heightInPixel(),
-        Row(
-          children: [
-            Text(
-              'ORDER ID:',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(fontWeight: kSemiBoldWeight, color: deepGreen),
-            ),
-            1.flexSpacer(),
-            Text(
-              '#$orderNo',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(fontWeight: kSemiBoldWeight),
-            ),
-          ],
-        ),
-        34.heightInPixel(),
-        SizedBox(
-          height: 90,
-          child: Row(
-            children: [
-              Image.asset(
-                Assets.pickup_route,
-                height: 90,
-              ),
-              12.widthInPixel(),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    'PICKUP LOCATION',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                        fontWeight: kSemiBoldWeight, color: dividerColor),
-                  ),
-                  4.heightInPixel(),
-                  FutureBuilder<String>(
-                      future:
-                          getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                      builder: (context, snapshot) {
-                        String address = '';
-                        if (snapshot.hasData) {
-                          address = snapshot.data ?? '';
-                        }
-                        return Text(
-                          address,
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyText1!
-                              .copyWith(fontWeight: kMediumWeight),
-                        );
-                      }),
-                  1.flexSpacer(),
-                  Text(
-                    'DELIVERY LOCATION',
-                    textAlign: TextAlign.center,
-                    style: theme.textTheme.bodyText1!.copyWith(
-                        fontWeight: kSemiBoldWeight, color: dividerColor),
-                  ),
-                  4.heightInPixel(),
-                  FutureBuilder<String>(
-                      future: getAddressFromLatLng(
-                          deliveryLatitude, deliveryLongitude),
-                      builder: (context, snapshot) {
-                        String pickupAddress = '';
-                        String deliveryAddress = '';
-                        if (snapshot.hasData) {
-                          pickupAddress = snapshot.data ?? '';
-                          deliveryAddress = snapshot.data ?? '';
-                        }
-                        return Text(
-                          'From $pickupAddress to $deliveryAddress',
-                          textAlign: TextAlign.center,
-                          style: theme.textTheme.bodyText1!
-                              .copyWith(fontWeight: kMediumWeight),
-                        );
-                      }),
-                ],
-              )
-            ],
-          ),
-        ),
-        44.heightInPixel(),
-        ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
-            child: Button(
-                text: (orderState == RiderOrderState.isRequestAccepted ||
-                        orderState == RiderOrderState.isAlmostAtPickupLocation)
-                    ? 'Go to pickup'
-                    : (orderState == RiderOrderState.isItemPickedUpLocation)
-                        ? 'Go to Delivery'
-                        : (orderState == RiderOrderState.isEnRoute)
-                            ? 'Delivery in progress'
-                            : (orderState ==
-                                    RiderOrderState
-                                        .isAlmostAtDestinationLocation)
-                                ? 'Arrived at destination'
-                                : (orderState ==
-                                        RiderOrderState.isAtDestinationLocation)
-                                    ? 'Confirm delivery'
-                                    : (orderState ==
-                                            RiderOrderState.isOrderCompleted)
-                                        ? 'Item delivered'
-                                        : 'Done',
-                fontSize: 14,
-                onPress: () {
-                  _onButtonClick(orderState, pickupLatitude, pickupLongitude);
-                },
-                color: (orderState == RiderOrderState.isRequestAccepted ||
-                        orderState == RiderOrderState.isItemPickedUpLocation ||
-                        orderState == RiderOrderState.isAtDestinationLocation)
-                    ? kTextColor
-                    : deepGreen,
-                width: double.infinity,
-                textColor: whiteColor,
-                isLoading: false))
-      ],
-    );
-  }
+  _onButtonClick(RiderOrderState data, String orderNo, String deliveryCode,
+      double pickupLatitude, double pickupLongitude) {
+    print('RiderOrderState: $data');
 
-  Widget contentCompleted(
-      RiderOrderState orderState,
-      String orderNo,
-      double pickupLatitude,
-      double pickupLongitude,
-      double deliveryLatitude,
-      double deliveryLongitude) {
-    var theme = Theme.of(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        14.heightInPixel(),
-        Row(
-          children: [
-            Text(
-              'ORDER ID:',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(fontWeight: kSemiBoldWeight, color: deepGreen),
-            ),
-            1.flexSpacer(),
-            Text(
-              '#$orderNo',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(fontWeight: kSemiBoldWeight),
-            ),
-          ],
-        ),
-        34.heightInPixel(),
-        Row(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.black),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                Assets.time_outline,
-                width: 24,
-                height: 24,
-              ),
-            ),
-            12.widthInPixel(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'PICKUP TIME',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText1!.copyWith(
-                      fontWeight: kSemiBoldWeight, color: dividerColor),
-                ),
-                4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
-              ],
-            )
-          ],
-        ),
-        24.heightInPixel(),
-        Row(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.black),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                Assets.time_outline,
-                width: 24,
-                height: 24,
-              ),
-            ),
-            12.widthInPixel(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'DELIVERY TIME',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText1!.copyWith(
-                      fontWeight: kSemiBoldWeight, color: dividerColor),
-                ),
-                4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
-              ],
-            )
-          ],
-        ),
-        24.heightInPixel(),
-        Row(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.black),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                Assets.location_outline,
-                width: 24,
-                height: 24,
-              ),
-            ),
-            12.widthInPixel(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'DELIVERY LOCATION',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText1!.copyWith(
-                      fontWeight: kSemiBoldWeight, color: dividerColor),
-                ),
-                4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
-              ],
-            )
-          ],
-        ),
-        44.heightInPixel(),
-        Center(
-          child: Image.asset(
-            Assets.check_success,
-            width: 54,
-            height: 54,
-          ),
-        ),
-        24.heightInPixel(),
-        ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
-            child: Button(
-                text: 'Item delivered',
-                fontSize: 14,
-                onPress: () {
-                  _updateBottomSheetSize();
-                },
-                color: deepGreen,
-                width: double.infinity,
-                textColor: whiteColor,
-                isLoading: false))
-      ],
-    );
-  }
-
-  _onButtonClick(
-      RiderOrderState data, double pickupLatitude, double pickupLongitude) {
     if (data == RiderOrderState.isRequestAccepted ||
         data == RiderOrderState.isAlmostAtPickupLocation) {
-      mapExtraUIBloc.updateMarkersWithCircle(
-          [LatLng(pickupLatitude, pickupLongitude)], 'Pickup', true);
-    } else if (data == RiderOrderState.isItemPickedUpLocation) {
-    } else if (data == RiderOrderState.isEnRoute) {
+      modalDialog(
+        context,
+        title: 'Are you sure to go to delivery?',
+        positiveLabel: 'Yes',
+        onPositiveCallback: () {
+          doPickupOrder(orderNo);
+        },
+        negativeLabel: 'No',
+        onNegativeCallback: () => Navigator.pop(context),
+      );
+    } else if (data == RiderOrderState.isItemPickedUpLocationAndEnRoute) {
+      riderHomeStateBloc
+          .updateState(RiderOrderState.isAlmostAtDestinationLocation);
     } else if (data == RiderOrderState.isAlmostAtDestinationLocation) {
+      riderHomeStateBloc.updateState(RiderOrderState.isAtDestinationLocation);
     } else if (data == RiderOrderState.isAtDestinationLocation) {
+      modalDialog(
+        context,
+        title: 'Enter delivery code',
+        child: Column(
+          children: [
+            TextFormField(
+              controller: _controller,
+              keyboardType: TextInputType.number,
+              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+              decoration: InputDecoration(
+                labelText: 'Code',
+                labelStyle:
+                    const TextStyle(fontSize: 18.0, color: Color(0xFFCDCDCD)),
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: darkerPurple.withOpacity(0.3), width: 0.0),
+                ),
+              ),
+            )
+          ],
+        ),
+        positiveLabel: 'Confirm',
+        onPositiveCallback: () {
+          if (_controller.text == deliveryCode) {
+            doDeliverOrder(orderNo);
+            return;
+          }
+
+          appToast('Invalid Code', redColor);
+        },
+        negativeLabel: 'Cancel',
+        onNegativeCallback: () => Navigator.pop(context),
+      );
     } else if (data == RiderOrderState.isOrderCompleted) {
+      riderHomeStateBloc.updateState(RiderOrderState.isHomeScreen);
     } else {
       //  minimize bottom sheet
       _updateBottomSheetSize();
@@ -509,11 +266,11 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> {
   }
 
   _updateBottomSheetSize() {
-    if (draggableScrollableController.size == 0.5) {
+    if (draggableScrollableController.size == widget.maxSize) {
       draggableScrollableController.animateTo(0.07,
           duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     } else {
-      draggableScrollableController.animateTo(0.5,
+      draggableScrollableController.animateTo(widget.maxSize,
           duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
     }
   }

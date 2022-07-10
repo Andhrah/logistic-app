@@ -4,6 +4,7 @@ import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/font.dart';
+import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/utils/radii.dart';
 
@@ -92,7 +93,7 @@ class _RiderTopPartState extends State<RiderTopPart> {
           padding:
               const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
           child: Text(
-            'Good evening',
+            greetWithTime(),
             style: theme.textTheme.subtitle1!.copyWith(
               color: whiteColor,
             ),

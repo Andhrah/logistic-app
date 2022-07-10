@@ -1,6 +1,5 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
@@ -11,13 +10,9 @@ import 'package:trakk/screens/merchant/notifications.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
-import 'package:trakk/services/get_user_service.dart';
-import 'package:trakk/services/merchant/vehicle_list_service.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/widgets/merchant_container.dart';
-import 'package:badges/badges.dart';
-
-import '../../services/merchant/rider_profile_service.dart';
 
 class CompanyHome extends StatefulWidget {
   static const String id = 'companyhome';
@@ -30,32 +25,12 @@ class CompanyHome extends StatefulWidget {
 
 class _CompanyHomeState extends State<CompanyHome> {
   int notificatiobount = 26;
-  String _greeting = "";
-
-  _fetchTime() {
-    var hour = DateTime.now().hour;
-    if (hour < 12) {
-      setState(() {
-        _greeting = "Good Morning";
-      });
-    } else if (hour < 16) {
-      setState(() {
-        _greeting = "Good Afternoon";
-      });
-    } else {
-      setState(() {
-        _greeting = "Good Evening";
-      });
-    }
-  }
 
   @override
   void initState() {
     //GetVehiclesListService.getVehiclesList();
     //RiderProfileService.getRiderProfile();
     super.initState();
-
-    _fetchTime();
   }
 
   @override
@@ -155,8 +130,8 @@ class _CompanyHomeState extends State<CompanyHome> {
                           );
                         }),
                     Text(
-                      _greeting,
-                      style: TextStyle(
+                      greetWithTime(),
+                      style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.w400,
                           color: whiteColor),

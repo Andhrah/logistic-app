@@ -1,52 +1,42 @@
-import 'package:async/async.dart';
-import 'package:custom_bloc/custom_bloc.dart';
-import 'package:location/location.dart' as Loca;
-import 'package:rxdart/rxdart.dart';
+import 'package:location/location.dart';
+import 'package:trakk/utils/app_toast.dart';
+import 'package:trakk/utils/colors.dart';
 
 class MiscBloc {
   MiscBloc() {
     fetchLocation();
   }
 
-  CancelableOperation? _cancelableOperation;
-  var location = Loca.Location();
+  var location = Location();
 
-  //user location
-  BehaviorSubject<BaseModel<Loca.LocationData, String>> get myLocationSubject =>
-      _myLocationSubject;
-  final BehaviorSubject<BaseModel<Loca.LocationData, String>>
-      _myLocationSubject =
-      BehaviorSubject<BaseModel<Loca.LocationData, String>>();
+  LocationData? currentLocation;
 
-  Loca.LocationData? currentLocation;
+  Future<LocationData?> fetchLocation() async {
+    LocationData? locationData;
+    final Location location = Location();
+    bool serviceEnabled;
+    PermissionStatus permissionGranted;
 
-  Future<Loca.LocationData?> fetchLocation() async {
-    print('called');
-    try {
-      currentLocation = await location.getLocation();
-
-      _myLocationSubject.addStream(location.onLocationChanged.map(
-          (event) => BaseModel(model: event, itemState: ItemState.hasData)));
-
-      return currentLocation;
-    } on Exception {
-      currentLocation = null;
-      print('called now now');
-      return currentLocation;
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return locationData;
+      }
     }
-  }
 
-  cancelOperation() async {
-    await _cancelableOperation?.cancel();
-  }
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      //TODO: do your logic to manage when user denies the permission
+      if (permissionGranted != PermissionStatus.granted) {
+        appToast('Permission not granted', redColor);
+        return locationData;
+      }
+    }
+    locationData = await location.getLocation();
 
-  invalidate() {
-    currentLocation = null;
-  }
-
-  dispose() async {
-    await _myLocationSubject.drain();
-    _myLocationSubject.close();
+    return locationData;
   }
 }
 

@@ -3,6 +3,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:trakk/utils/colors.dart';
+import 'package:trakk/widgets/button.dart';
 
 const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -103,4 +105,86 @@ Future<String> getAddressFromLatLng(double lat, double long) async {
   } catch (e) {
     return '...';
   }
+}
+
+String greetWithTime() {
+  if (DateTime.now().hour < 12) {
+    return 'Good morning ';
+  } else if (DateTime.now().hour >= 12 && DateTime.now().hour < 18) {
+    return 'Good afternoon ';
+  } else if (DateTime.now().hour >= 18 && DateTime.now().hour <= 24) {
+    return 'Good evening ';
+  } else {
+    return 'Hi ';
+  }
+}
+
+modalDialog(BuildContext context,
+    {String title = '',
+    Widget? child,
+    required String positiveLabel,
+    required Function() onPositiveCallback,
+    required String negativeLabel,
+    required Function() onNegativeCallback}) {
+  var theme = Theme.of(context);
+  MediaQueryData mediaQuery = MediaQuery.of(context);
+
+  showBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (context) => Container(
+          margin: EdgeInsets.only(bottom: mediaQuery.viewInsets.bottom),
+          constraints: const BoxConstraints(maxWidth: 450),
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 54),
+          decoration: const BoxDecoration(
+              color: whiteColor,
+              borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(50), topLeft: Radius.circular(50))),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (title.isNotEmpty) 24.heightInPixel(),
+              if (title.isNotEmpty)
+                Center(
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.headline6!.copyWith(),
+                  ),
+                ),
+              if (title.isNotEmpty) 24.heightInPixel(),
+              if (child != null) child,
+              if (child != null) 24.heightInPixel(),
+              Row(
+                children: [
+                  Expanded(
+                    child: Button(
+                        text: positiveLabel,
+                        fontSize: 12,
+                        onPress: () {
+                          onPositiveCallback();
+                        },
+                        borderRadius: 12,
+                        color: kTextColor,
+                        width: double.infinity,
+                        textColor: whiteColor,
+                        isLoading: false),
+                  ),
+                  20.widthInPixel(),
+                  Expanded(
+                    child: Button(
+                        text: negativeLabel,
+                        fontSize: 12,
+                        onPress: () {
+                          onNegativeCallback();
+                        },
+                        borderRadius: 12,
+                        color: redColor,
+                        width: double.infinity,
+                        textColor: whiteColor,
+                        isLoading: false),
+                  ),
+                ],
+              ),
+            ],
+          )));
 }

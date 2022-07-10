@@ -32,19 +32,27 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
 
   double initialSize = 0.07;
 
+  double maxSize = 0.5;
+
   final Completer<GoogleMapController> _controller = Completer();
+
+  var bottomSheetKey = UniqueKey();
 
   @override
   void initState() {
     super.initState();
 
+    if (widget.orderState == RiderOrderState.isOrderCompleted) {
+      maxSize = 0.7;
+    }
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       streamSocket.getResponse.listen((event) {
         initialSize = 0.5;
         if (event.order != null) {
           if (event.order!.destinationLatitude != null &&
                   event.order!.destinationLongitude != null &&
-                  widget.orderState == RiderOrderState.isEnRoute ||
+                  widget.orderState ==
+                      RiderOrderState.isItemPickedUpLocationAndEnRoute ||
               widget.orderState ==
                   RiderOrderState.isAlmostAtDestinationLocation) {
             //meant to be for auto map route plotting
@@ -84,52 +92,67 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
               image: AssetImage(Assets.rider_home_bg), fit: BoxFit.cover)),
       child: Stack(
         children: [
-          CustomStreamBuilder<LocationData, String>(
-              stream: widget.locaBloc.myLocationSubject,
-              dataBuilder: (context, locaData) {
-                return SizedBox(
-                    height: widget.orderState == RiderOrderState.isEnRoute
-                        ? safeAreaHeight(context, 100)
-                        : safeAreaHeight(context, 99),
-                    child: CustomStreamBuilder<MapExtraUI, String>(
-                        stream: mapExtraUIBloc.behaviorSubject,
-                        dataBuilder: (context, extraUIData) {
-                          Set<Marker> _markers = extraUIData.marker;
+          GestureDetector(
+            onDoubleTap: () => _updateKey(),
+            child: StreamBuilder<LocationData>(
+                stream: widget.locaBloc.location.onLocationChanged,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return SizedBox(
+                        height: widget.orderState ==
+                                RiderOrderState.isItemPickedUpLocationAndEnRoute
+                            ? safeAreaHeight(context, 100)
+                            : safeAreaHeight(context, 99),
+                        child: StreamBuilder<BaseModel<MapExtraUI, String>>(
+                            stream: mapExtraUIBloc.behaviorSubject,
+                            builder: (context, snapshot) {
+                              Set<Marker> _markers =
+                                  snapshot.data?.model?.marker ?? {};
 
-                          Set<Polyline> _polyLines = extraUIData.polyline;
+                              Set<Polyline> _polyLines =
+                                  snapshot.data?.model?.polyline ?? {};
 
-                          return GoogleMap(
-                              onMapCreated: _onMapCreated,
-                              myLocationEnabled: true,
-                              zoomGesturesEnabled: true,
-                              onCameraMove: (CameraPosition pos) {},
-                              gestureRecognizers: {}..addAll([
-                                  Factory<PanGestureRecognizer>(
-                                      () => PanGestureRecognizer()),
-                                  Factory<VerticalDragGestureRecognizer>(
-                                      () => VerticalDragGestureRecognizer()),
-                                  Factory<HorizontalDragGestureRecognizer>(
-                                      () => HorizontalDragGestureRecognizer())
-                                ]),
-                              markers: _markers,
-                              polylines: _polyLines,
-                              initialCameraPosition:
-                                  const CameraPosition(target: LatLng(0, 0)));
-                        }));
-              }),
+                              return GoogleMap(
+                                  onMapCreated: _onMapCreated,
+                                  myLocationEnabled: true,
+                                  zoomGesturesEnabled: true,
+                                  onCameraMove: (CameraPosition pos) {},
+                                  gestureRecognizers: {}..addAll([
+                                      Factory<PanGestureRecognizer>(
+                                          () => PanGestureRecognizer()),
+                                      Factory<VerticalDragGestureRecognizer>(
+                                          () =>
+                                              VerticalDragGestureRecognizer()),
+                                      Factory<HorizontalDragGestureRecognizer>(
+                                          () =>
+                                              HorizontalDragGestureRecognizer())
+                                    ]),
+                                  markers: _markers,
+                                  polylines: _polyLines,
+                                  initialCameraPosition: const CameraPosition(
+                                      target: LatLng(0, 0)));
+                            }));
+                  }
+                  return const SizedBox();
+                }),
+          ),
           RiderBottomSheet(
+            key: bottomSheetKey,
             initialSize: initialSize,
+            maxSize: maxSize,
           ),
         ],
       ),
     );
   }
 
+  _updateKey() => setState(() => bottomSheetKey = UniqueKey());
+
   void moveCameraToUser() async {
-    final loca = await miscBloc.myLocationSubject.first;
+    final loca = await miscBloc.fetchLocation();
     if (loca != null) {
-      final latitude = loca.model?.latitude ?? 0;
-      final longitude = loca.model?.longitude ?? 0;
+      final latitude = loca.latitude ?? 0;
+      final longitude = loca.longitude ?? 0;
       final center = LatLng(latitude, longitude);
 
       final GoogleMapController controller = await _controller.future;

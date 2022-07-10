@@ -35,3 +35,5 @@ ssoUriConverter(String url) {
 const kDistanceKMCoveredInAnHour = 60.0;
 //multiply by 60 to convert from hour to minutes
 const kSpeedInMinutes = kDistanceKMCoveredInAnHour * 60.0;
+
+String naira = '₦';

@@ -1,13 +1,3 @@
-// To parse this JSON data, do
-//
-//     final riderModel = riderModelFromJson(jsonString);
-
-import 'dart:convert';
-
-RiderModel riderModelFromJson(String str) => RiderModel.fromJson(json.decode(str));
-
-String riderModelToJson(RiderModel data) => json.encode(data.toJson());
-
 class RiderModel {
   RiderModel({
     this.user,
@@ -18,14 +8,14 @@ class RiderModel {
   Vehicle? vehicle;
 
   factory RiderModel.fromJson(Map<String, dynamic> json) => RiderModel(
-    user: User.fromJson(json["user"]),
-    vehicle: Vehicle.fromJson(json["vehicle"]),
-  );
+        user: User.fromJson(json["user"]),
+        vehicle: Vehicle.fromJson(json["vehicle"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "user": user!.toJson(),
-    "vehicle": vehicle!.toJson(),
-  };
+        "user": user!.toJson(),
+        "vehicle": vehicle!.toJson(),
+      };
 }
 
 class User {
@@ -58,34 +48,34 @@ class User {
   // DateTime? dateOfBirth;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
-    email: json["email"],
-    password: json["password"],
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    // middleName: json["middleName"],
-    phoneNumber: json["phoneNumber"],
-    nextOfKin: NextOfKin.fromJson(json["nextOfKin"]),
-    residentialAddress: json["residentialAddress"],
-    stateOfOrigin: json["stateOfOrigin"],
-    stateOfResidence: json["stateOfResidence"],
-    // address: json["address"],
-    // dateOfBirth: DateTime.parse(json["dateOfBirth"]),
-  );
+        email: json["email"],
+        password: json["password"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        // middleName: json["middleName"],
+        phoneNumber: json["phoneNumber"],
+        nextOfKin: NextOfKin.fromJson(json["nextOfKin"]),
+        residentialAddress: json["residentialAddress"],
+        stateOfOrigin: json["stateOfOrigin"],
+        stateOfResidence: json["stateOfResidence"],
+        // address: json["address"],
+        // dateOfBirth: DateTime.parse(json["dateOfBirth"]),
+      );
 
   Map<String, dynamic> toJson() => {
-    "email": email,
-    "password": password,
-    "firstName": firstName,
-    "lastName": lastName,
-    // "middleName": middleName,
-    "phoneNumber": phoneNumber,
-    "nextOfKin": nextOfKin!.toJson(),
-    "residentialAddress": residentialAddress,
-    "stateOfOrigin": stateOfOrigin,
-    "stateOfResidence": stateOfResidence,
-    // "address": address,
-    // "dateOfBirth": dateOfBirth!.toIso8601String(),
-  };
+        "email": email,
+        "password": password,
+        "firstName": firstName,
+        "lastName": lastName,
+        // "middleName": middleName,
+        "phoneNumber": phoneNumber,
+        "nextOfKin": nextOfKin!.toJson(),
+        "residentialAddress": residentialAddress,
+        "stateOfOrigin": stateOfOrigin,
+        "stateOfResidence": stateOfResidence,
+        // "address": address,
+        // "dateOfBirth": dateOfBirth!.toIso8601String(),
+      };
 }
 
 class NextOfKin {
@@ -106,22 +96,22 @@ class NextOfKin {
   String? relationship;
 
   factory NextOfKin.fromJson(Map<String, dynamic> json) => NextOfKin(
-    firstName: json["firstName"],
-    lastName: json["lastName"],
-    phoneNumber: json["phoneNumber"],
-    email: json["email"],
-    address: json["address"],
-    relationship: json["relationship"],
-  );
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        phoneNumber: json["phoneNumber"],
+        email: json["email"],
+        address: json["address"],
+        relationship: json["relationship"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "firstName": firstName,
-    "lastName": lastName,
-    "phoneNumber": phoneNumber,
-    "email": email,
-    "address": address,
-    "relationship": relationship,
-  };
+        "firstName": firstName,
+        "lastName": lastName,
+        "phoneNumber": phoneNumber,
+        "email": email,
+        "address": address,
+        "relationship": relationship,
+      };
 }
 
 class Vehicle {
@@ -144,26 +134,25 @@ class Vehicle {
   List<Document>? documents;
 
   factory Vehicle.fromJson(Map<String, dynamic> json) => Vehicle(
-    color: json["color"],
-    name: json["name"],
-    number: json["number"],
-    model: json["model"],
-    vehicleTypeId: json["vehicleTypeId"],
-    capacity: json["capacity"],
-    documents: List<Document>.from(
-      json["documents"].map((x) => Document.fromJson(x))
-    ),
-  );
+        color: json["color"],
+        name: json["name"],
+        number: json["number"],
+        model: json["model"],
+        vehicleTypeId: json["vehicleTypeId"],
+        capacity: json["capacity"],
+        documents: List<Document>.from(
+            json["documents"].map((x) => Document.fromJson(x))),
+      );
 
   Map<String, dynamic> toJson() => {
-    "color": color,
-    "name": name,
-    "number": number,
-    "model": model,
-    "vehicleTypeId": vehicleTypeId,
-    "capacity": capacity,
-    "documents": List<dynamic>.from(documents!.map((x) => x.toJson())),
-  };
+        "color": color,
+        "name": name,
+        "number": number,
+        "model": model,
+        "vehicleTypeId": vehicleTypeId,
+        "capacity": capacity,
+        "documents": List<dynamic>.from(documents!.map((x) => x.toJson())),
+      };
 }
 
 class Document {
@@ -176,12 +165,12 @@ class Document {
   String? url;
 
   factory Document.fromJson(Map<String, dynamic> json) => Document(
-    name: json["name"],
-    url: json["url"],
-  );
+        name: json["name"],
+        url: json["url"],
+      );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "url": url,
-  };
+        "name": name,
+        "url": url,
+      };
 }

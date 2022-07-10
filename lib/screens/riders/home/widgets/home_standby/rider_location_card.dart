@@ -1,12 +1,13 @@
 import 'package:custom_bloc/custom_bloc.dart';
-import 'package:location/location.dart' as Loca;
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
-import 'package:trakk/models/rider/on_move_response.dart';
+import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/glow_widget.dart';
 import 'package:trakk/utils/helper_utils.dart';
@@ -34,13 +35,20 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    return StreamBuilder<BaseModel<OnNewRequestResponse, String>>(
-        stream: streamSocket.behaviorSubject,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.model != null) {
-            return cardWithNewRequest(context);
+    return CustomStreamBuilder<RiderOrderState, String>(
+        stream: riderHomeStateBloc.behaviorSubject,
+        dataBuilder: (context, data) {
+          if (data == RiderOrderState.isNewRequest) {
+            return StreamBuilder<BaseModel<OrderResponse, String>>(
+                stream: streamSocket.behaviorSubject,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.model != null) {
+                    return cardWithNewRequest(context);
+                  }
+                  //todo: change to no new request screen
+                  return cardWithLocation(context);
+                });
           }
-
           return cardWithLocation(context);
         });
   }

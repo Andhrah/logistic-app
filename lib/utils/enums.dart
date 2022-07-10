@@ -4,20 +4,17 @@ enum UserType {
   guest('guest'),
   merchant('merchant');
 
-const UserType(this.value);
+  const UserType(this.value);
 
   final String value;
-
 }
-
 
 enum RiderOrderState {
   isHomeScreen,
   isNewRequest,
   isRequestAccepted,
   isAlmostAtPickupLocation,
-  isItemPickedUpLocation,
-  isEnRoute,
+  isItemPickedUpLocationAndEnRoute,
   isAlmostAtDestinationLocation,
   isAtDestinationLocation,
   isOrderCompleted

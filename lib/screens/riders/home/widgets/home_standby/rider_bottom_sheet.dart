@@ -1,11 +1,16 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:trakk/bloc/map_socket.dart';
+import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/mixins/order_helper.dart';
-import 'package:trakk/models/rider/on_move_response.dart';
+import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
@@ -38,12 +43,22 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
     var theme = Theme.of(context);
 
     //todo: separate both [_incomingRequest] and [_standby] into their own state
-    return StreamBuilder<BaseModel<OnNewRequestResponse, String>>(
-        stream: streamSocket.behaviorSubject,
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data!.model != null) {
-            return _incomingRequest(snapshot.data!.model!);
+    return CustomStreamBuilder<RiderOrderState, String>(
+        stream: riderHomeStateBloc.behaviorSubject,
+        dataBuilder: (context, data) {
+          if (data == RiderOrderState.isNewRequest) {
+            return StreamBuilder<BaseModel<OrderResponse, String>>(
+                stream: streamSocket.behaviorSubject,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData && snapshot.data!.model != null) {
+                    return _incomingRequest(snapshot.data!.model!);
+                  }
+
+                  //todo: change to no new request screen
+                  return _standby();
+                });
           }
+
           return _standby();
         });
   }
@@ -168,8 +183,10 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
     );
   }
 
-  Widget _incomingRequest(OnNewRequestResponse newRequestResponse) {
+  Widget _incomingRequest(OrderResponse orderResponse) {
     var theme = Theme.of(context);
+
+    Order? order = orderResponse.order;
 
     return DraggableScrollableSheet(
         initialChildSize: 0.8,
@@ -215,7 +232,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                             ),
                             1.flexSpacer(),
                             Text(
-                              '#233433',
+                              '#${order?.id ?? ''}',
                               textAlign: TextAlign.center,
                               style: theme.textTheme.bodyText1!
                                   .copyWith(fontWeight: kSemiBoldWeight),
@@ -243,12 +260,25 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                         color: dividerColor),
                                   ),
                                   4.heightInPixel(),
-                                  Text(
-                                    'NO. 50b, Tapa street, Yaba',
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.bodyText1!
-                                        .copyWith(fontWeight: kMediumWeight),
-                                  ),
+                                  FutureBuilder<String>(
+                                      future: getAddressFromLatLng(
+                                          order?.pickupLatitude ?? 0.0,
+                                          order?.pickupLongitude ?? 0.0),
+                                      builder: (context, snapshot) {
+                                        String address = '...';
+                                        if (snapshot.hasData) {
+                                          address = snapshot.data ?? '-';
+                                        } else {
+                                          address = '...';
+                                        }
+                                        return Text(
+                                          address,
+                                          textAlign: TextAlign.center,
+                                          style: theme.textTheme.bodyText1!
+                                              .copyWith(
+                                                  fontWeight: kMediumWeight),
+                                        );
+                                      }),
                                   1.flexSpacer(),
                                   Text(
                                     'DELIVERY LOCATION',
@@ -258,12 +288,25 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                         color: dividerColor),
                                   ),
                                   4.heightInPixel(),
-                                  Text(
-                                    'NO. 34a, McNeil street, Ogba',
-                                    textAlign: TextAlign.center,
-                                    style: theme.textTheme.bodyText1!
-                                        .copyWith(fontWeight: kMediumWeight),
-                                  ),
+                                  FutureBuilder<String>(
+                                      future: getAddressFromLatLng(
+                                          order?.destinationLatitude ?? 0.0,
+                                          order?.destinationLongitude ?? 0.0),
+                                      builder: (context, snapshot) {
+                                        String address = '...';
+                                        if (snapshot.hasData) {
+                                          address = snapshot.data ?? '-';
+                                        } else {
+                                          address = '...';
+                                        }
+                                        return Text(
+                                          address,
+                                          textAlign: TextAlign.center,
+                                          style: theme.textTheme.bodyText1!
+                                              .copyWith(
+                                                  fontWeight: kMediumWeight),
+                                        );
+                                      }),
                                 ],
                               )
                             ],
@@ -289,7 +332,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                           .copyWith(fontWeight: kRegularWeight),
                                       children: [
                                         TextSpan(
-                                          text: 'Bag',
+                                          text: order?.itemName ?? '',
                                           style: theme.textTheme.bodyText1!
                                               .copyWith(
                                                   fontWeight: kSemiBoldWeight),
@@ -316,7 +359,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                           .copyWith(fontWeight: kRegularWeight),
                                       children: [
                                         TextSpan(
-                                          text: '25 km',
+                                          text:
+                                              '${(Geolocator.distanceBetween(order?.pickupLatitude ?? 0.0, order?.pickupLongitude ?? 0.0, order?.destinationLatitude ?? 0.0, order?.destinationLongitude ?? 0.0).round() / 1000).toStringAsFixed(2)} km',
                                           style: theme.textTheme.bodyText1!
                                               .copyWith(
                                                   fontWeight: kSemiBoldWeight),
@@ -347,9 +391,18 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                           .copyWith(fontWeight: kRegularWeight),
                                       children: [
                                         TextSpan(
-                                          text: '#2000',
+                                          text: naira,
                                           style: theme.textTheme.bodyText1!
                                               .copyWith(
+                                                  fontFamily: kNairaFontFamily,
+                                                  fontWeight: kSemiBoldWeight),
+                                        ),
+                                        TextSpan(
+                                          text: '${order?.amount ?? '-'}',
+                                          style: theme.textTheme.bodyText1!
+                                              .copyWith(
+                                                  fontFamily:
+                                                      kDefaultFontFamily,
                                                   fontWeight: kSemiBoldWeight),
                                         ),
                                       ]),
@@ -374,7 +427,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                           .copyWith(fontWeight: kRegularWeight),
                                       children: [
                                         TextSpan(
-                                          text: '50kg',
+                                          text: order?.weight ?? '-',
                                           style: theme.textTheme.bodyText1!
                                               .copyWith(
                                                   fontWeight: kSemiBoldWeight),
@@ -409,10 +462,28 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                   Expanded(
                                     child: PageView.builder(
                                         controller: _pageController,
-                                        itemCount: 2,
+                                        itemCount: 1,
                                         itemBuilder: (context, index) {
-                                          return Image.asset(
-                                              Assets.dummy_avatar);
+                                          return CachedNetworkImage(
+                                            imageUrl: '${order?.itemImage}',
+                                            placeholder: (context, url) =>
+                                                const Center(
+                                              child:
+                                                  CircularProgressIndicator(),
+                                            ),
+                                            errorWidget: (context, url, err) =>
+                                                SizedBox(
+                                              child: Center(
+                                                child: Text(
+                                                  'Could not load image',
+                                                  textAlign: TextAlign.center,
+                                                  style: theme
+                                                      .textTheme.caption!
+                                                      .copyWith(),
+                                                ),
+                                              ),
+                                            ),
+                                          );
                                         }),
                                   ),
                                 ],
@@ -423,7 +494,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                         20.heightInPixel(),
                         //todo: change to text base
                         SmoothPageIndicator(
-                          count: 2,
+                          count: 1,
                           controller: _pageController,
                           effect:
                               const WormEffect(activeDotColor: secondaryColor),
@@ -439,10 +510,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                     text: 'Accept',
                                     fontSize: 14,
                                     onPress: () {
-                                      if ((newRequestResponse.order?.id ?? '')
-                                          .isNotEmpty) {
-                                        doAcceptOrder(
-                                            newRequestResponse.order?.id ?? '');
+                                      if ('${(order?.id ?? '')}'.isNotEmpty) {
+                                        doAcceptOrder('${order?.id ?? ''}');
                                       }
                                     },
                                     borderRadius: 12,
@@ -457,7 +526,15 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                     text: 'Reject',
                                     fontSize: 14,
                                     onPress: () {
-                                      _modalReject(context);
+                                      modalDialog(
+                                        context,
+                                        positiveLabel: 'Refer another rider',
+                                        onPositiveCallback: () {},
+                                        negativeLabel: 'Reject',
+                                        onNegativeCallback: () =>
+                                            doDeclineOrder(
+                                                '${order?.id ?? ' '}'),
+                                      );
                                     },
                                     borderRadius: 12,
                                     color: redColor,
@@ -474,55 +551,5 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                 )),
           );
         });
-  }
-
-  _modalReject(BuildContext context) {
-    var theme = Theme.of(context);
-
-    showModalBottomSheet(
-        context: context,
-        backgroundColor: Colors.transparent,
-        builder: (context) => Container(
-            constraints: const BoxConstraints(maxWidth: 450),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 54),
-            decoration: const BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.only(
-                    topRight: Radius.circular(50),
-                    topLeft: Radius.circular(50))),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  children: [
-                    Expanded(
-                      child: Button(
-                          text: 'Refer another rider',
-                          fontSize: 12,
-                          onPress: () {},
-                          borderRadius: 12,
-                          color: kTextColor,
-                          width: double.infinity,
-                          textColor: whiteColor,
-                          isLoading: false),
-                    ),
-                    20.widthInPixel(),
-                    Expanded(
-                      child: Button(
-                          text: 'Reject',
-                          fontSize: 12,
-                          onPress: () {
-                            //
-                          },
-                          borderRadius: 12,
-                          color: redColor,
-                          width: double.infinity,
-                          textColor: whiteColor,
-                          isLoading: false),
-                    ),
-                  ],
-                ),
-              ],
-            )));
   }
 }

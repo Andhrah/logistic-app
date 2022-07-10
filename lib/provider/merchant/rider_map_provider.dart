@@ -1,15 +1,16 @@
-import 'package:flutter/foundation.dart' as Foundation;
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:location/location.dart' as Loca;
-
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
-import 'package:trakk/models/rider/on_move_response.dart';
-import 'package:trakk/utils/constant.dart';
+import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/models/rider/order_response.dart';
+import 'package:trakk/utils/enums.dart';
 
 class RiderMapProvider extends ChangeNotifier {
   //final GetVehiclesListService _getVehiclesListService = GetVehiclesListService();
@@ -22,27 +23,27 @@ class RiderMapProvider extends ChangeNotifier {
   bool isNewConnection = false;
   Socket? socket;
 
-  void connect() async {
-    var appSettings = await appSettingsBloc.fetchAppSettings();
-    String? token = appSettings.loginResponse?.data?.token ?? '';
-
-    socket = IO.io("http://134.122.92.247:1440", <String, dynamic>{
-      "transports": ["websocket"],
-      "autoConnect": false,
-      'path': '/socket/v1/',
-      'auth': {
-        // put token here, it will be used to make authenticated calls
-        "token": token
-      }
-    });
-    socket?.connect();
-    socket?.onConnect((data) => print(" the sever is connected"));
-    // listenToRequest();
-    print("this is the socket response " + socket!.connected.toString());
-    //ride request with the rider id, so we will retrieve the rider's id and use it here
-
-    //socket.emit("message", "Test for riders");
-  }
+  // void connect() async {
+  //   var appSettings = await appSettingsBloc.fetchAppSettings();
+  //   String? token = appSettings.loginResponse?.data?.token ?? '';
+  //
+  //   socket = IO.io("http://134.122.92.247:1440", <String, dynamic>{
+  //     "transports": ["websocket"],
+  //     "autoConnect": false,
+  //     'path': '/socket/v1/',
+  //     'auth': {
+  //       // put token here, it will be used to make authenticated calls
+  //       "token": token
+  //     }
+  //   });
+  //   socket?.connect();
+  //   socket?.onConnect((data) => print(" the sever is connected"));
+  //   // listenToRequest();
+  //   print("this is the socket response " + socket!.connected.toString());
+  //   //ride request with the rider id, so we will retrieve the rider's id and use it here
+  //
+  //   //socket.emit("message", "Test for riders");
+  // }
 
   connectAndListenToSocket(
       {String? responseID,
@@ -50,18 +51,17 @@ class RiderMapProvider extends ChangeNotifier {
       Function()? onConnectionError}) async {
     var appSettings = await appSettingsBloc.fetchAppSettings();
     String? token = appSettings.loginResponse?.data?.token ?? '';
-    String? riderID = '${appSettings.loginResponse?.data?.user?.id ?? ' '}';
+    String? riderID =
+        '${appSettings.loginResponse?.data?.user?.rider?.id ?? ' '}';
 
     print('token: $token');
-    String? userID;
 
-    socket = io(
-            'http://134.122.92.247:1440/socket/v1/',
-            OptionBuilder()
-                .setAuth({'token': token})
-                .setTransports(Foundation.kIsWeb ? ['polling'] : ['websocket'])
-                .build())
-        .connect();
+    socket = io("http://134.122.92.247:1440", <String, dynamic>{
+      "transports": ["websocket"],
+      "autoConnect": false,
+      'path': '/socket/v1/',
+      'auth': {"token": token}
+    }).connect();
 
     if (onConnected != null) onConnected();
     socket?.onConnect((data) {
@@ -85,24 +85,6 @@ class RiderMapProvider extends ChangeNotifier {
       print('connection error: ${err.toString()}');
     });
 
-    Loca.LocationData? riderLocationData = await fetchLocation();
-    //When an event recieved from server, data is added to the stream
-    // socket.on('on:move', (data) => print('on: ${data.toString()}'));
-
-    socket?.on("rider_request_$riderID", (data) {
-      streamSocket.addResponseOnMove(OnNewRequestResponse.fromJson(
-          data,
-          riderLocationData?.latitude ?? 0.0,
-          riderLocationData?.longitude ?? 0.0));
-    });
-
-    socket?.on('on:surrounding:packages', (data) {
-      streamSocket.addSurroundingResponse([
-        OnNewRequestResponse.fromJson(data, riderLocationData?.latitude ?? 0.0,
-            riderLocationData?.longitude ?? 0.0)
-      ]);
-    });
-
     socket?.onError((data) => print('error: ${data.toString()}'));
 
     socket?.onDisconnect((dis) {
@@ -110,6 +92,20 @@ class RiderMapProvider extends ChangeNotifier {
 
       print('disconnect: ${dis.toString()}');
     });
+
+    _listeners(riderID);
+  }
+
+  _listeners(String riderID) async {
+    socket?.on("rider_request_$riderID", (data) {
+      log('rider_request_data ${jsonEncode(data)}');
+      streamSocket.addResponseOnMove(OrderResponse.fromJson(data));
+      riderHomeStateBloc.updateState(RiderOrderState.isNewRequest);
+    });
+
+    // socket?.on('on:surrounding:packages', (data) {
+    //   streamSocket.addSurroundingResponse([OrderResponse.fromJson(data)]);
+    // });
   }
 
   disconnectSocket() {
@@ -149,8 +145,8 @@ class RiderMapProvider extends ChangeNotifier {
   startUpdatingUserLocation(// String userID
       ) async {
     miscBloc.fetchLocation();
-    miscBloc.myLocationSubject.listen((value) {
-      Loca.LocationData? _loca = value.model;
+    miscBloc.location.onLocationChanged.listen((value) {
+      Loca.LocationData? _loca = value;
 
       if (_loca != null) {
         // Coord coord = Coord(
@@ -170,19 +166,5 @@ class RiderMapProvider extends ChangeNotifier {
         }
       }
     });
-  }
-
-  Future<Loca.LocationData?> fetchLocation() async {
-    Loca.LocationData? currentLocation;
-    var location = Loca.Location();
-    try {
-      currentLocation = await location.getLocation();
-
-      return currentLocation;
-    } on Exception {
-      currentLocation = null;
-
-      return currentLocation;
-    }
   }
 }

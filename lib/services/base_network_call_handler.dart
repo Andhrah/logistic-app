@@ -174,7 +174,7 @@ class BaseNetworkCallHandler with LogoutHelper {
 
       AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
 
-      Map<String, dynamic> header = {};
+      Map<String, dynamic> header = {'Content-Type': 'application/json'};
 
       if (appSettings.isLoggedIn &&
           appSettings.loginResponse != null &&
@@ -182,6 +182,7 @@ class BaseNetworkCallHandler with LogoutHelper {
           appSettings.loginResponse!.data!.token != null) {
         header = {
           'Authorization': 'Bearer ${appSettings.loginResponse!.data!.token}',
+          'Content-Type': 'application/json'
         };
       }
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/models/message_only_response.dart';
 import 'package:trakk/services/order/order_api.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
@@ -28,13 +28,16 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
+      appToast('Request Accepted', green);
       riderHomeStateBloc.updateState(RiderOrderState.isRequestAccepted);
     } else {
-      appToast(operation.result['message'] ?? '', green, isSuccess: false);
+      MessageOnlyResponse messageOnlyResponse = operation.result;
+      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
     }
   }
 
   doDeclineOrder(String orderID) async {
+    Navigator.pop(_authContext);
     showDialog(
         context: _authContext,
         builder: (context) => const Center(
@@ -50,14 +53,16 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
-      //this is redundant but still make the update as a fail-safe
+      appToast('Request Declined', green);
       riderHomeStateBloc.updateState(RiderOrderState.isHomeScreen);
     } else {
-      appToast(operation.result['message'] ?? '', green, isSuccess: false);
+      MessageOnlyResponse messageOnlyResponse = operation.result;
+      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
     }
   }
 
   doPickupOrder(String orderID) async {
+    Navigator.pop(_authContext);
     showDialog(
         context: _authContext,
         builder: (context) => const Center(
@@ -73,13 +78,17 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
-      riderHomeStateBloc.updateState(RiderOrderState.isEnRoute);
+      appToast('Item Picked Up', green);
+      riderHomeStateBloc
+          .updateState(RiderOrderState.isItemPickedUpLocationAndEnRoute);
     } else {
-      appToast(operation.result['message'] ?? '', green, isSuccess: false);
+      MessageOnlyResponse messageOnlyResponse = operation.result;
+      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
     }
   }
 
   doDeliverOrder(String orderID) async {
+    Navigator.pop(_authContext);
     showDialog(
         context: _authContext,
         builder: (context) => const Center(
@@ -95,9 +104,11 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
+      appToast('Item Delivered', green);
       riderHomeStateBloc.updateState(RiderOrderState.isOrderCompleted);
     } else {
-      appToast(operation.result['message'] ?? '', green, isSuccess: false);
+      MessageOnlyResponse messageOnlyResponse = operation.result;
+      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
     }
   }
 }
