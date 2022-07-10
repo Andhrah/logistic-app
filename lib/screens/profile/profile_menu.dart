@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
-import 'package:trakk/provider/update_profile/update_profile.dart';
-import 'package:trakk/screens/support/help_and_support.dart';
-import 'package:trakk/services/get_user_service.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/app_settings.dart';
+import 'package:trakk/provider/update_profile/update_profile.dart';
+import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/onboarding/get_started.dart';
+import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
-import 'package:trakk/screens/profile/edit_profile.dart';
-import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/screens/support/help_and_support.dart';
+import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -21,6 +21,7 @@ import '../support/help_and_support.dart';
 
 class ProfileMenu extends StatefulWidget {
   static const String id = "ProfileMenu";
+
   const ProfileMenu({Key? key}) : super(key: key);
 
   @override
@@ -28,11 +29,10 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu> {
-
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
 
-@override
+  @override
   void initState() {
     super.initState();
     GetUserData.getUser();
@@ -40,9 +40,9 @@ class _ProfileMenuState extends State<ProfileMenu> {
   }
 
   fetchUserData() async {
-    var response = await UpdateUserProvider.updateUserProvider(context).updateUserProfile();
-    print(
-        "responseData=> ${response}");
+    var response = await UpdateUserProvider.updateUserProvider(context)
+        .updateUserProfile();
+    print("responseData=> ${response}");
   }
 
   // fetchRiderHistory() async {
@@ -56,10 +56,7 @@ class _ProfileMenuState extends State<ProfileMenu> {
   // }
   @override
   Widget build(BuildContext context) {
-    var box = Hive.box('userData');
-       print("${box.get('lastName')} second call>>>");
-
-        return Scaffold(
+    return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
         child: Column(
@@ -104,77 +101,106 @@ class _ProfileMenuState extends State<ProfileMenu> {
                           padding: const EdgeInsets.only(
                               left: 35.0, right: 35.0, top: 0, bottom: 0),
                           child: Stack(children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  child: Container(
-                                    height: 78,
-                                    width: 80,
-                                    alignment: Alignment.centerLeft,
-                                    decoration: const BoxDecoration(
-                                        image: DecorationImage(
-                                            image: AssetImage(
-                                                'assets/images/ladySmiling.png'),
-                                            fit: BoxFit.contain),
-                                        shape: BoxShape.circle),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                 Row(
-                                   children: [
-                                     Text(
-                                      box.get('firstName') ?? "",
-                                      style:  TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600),
-                                ),
-                                const SizedBox(width: 5,),
-                                     Text(
-                                      box.get('lastName') ?? "",
-                                      style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.w600),
-                                ),
-                                   ],
-                                 ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(box.get('phoneNumber').toString()),
-                                        const SizedBox(
-                                          height: 8,
-                                        ),
-                                        Text(box.get('email') ?? "",),
-                                      ],
-                                    ),
-                                    Button(
-                                        text: 'Edit profile',
-                                        onPress: () {
-                                        //  var id = box.get('id');
-                                        //   //print("This is the token " + name);
-                                        //   print("This is the user id " +
-                                        //       id.toString());
+                            StreamBuilder<AppSettings>(
+                                stream: appSettingsBloc.appSettings,
+                                builder: (context, snapshot) {
+                                  String firstName = '';
+                                  String lastName = '';
+                                  String phone = '';
+                                  String email = '';
 
-                                          Navigator.of(context)
-                                              .pushNamed(EditProfile.id);
-                                        },
-                                        color: Colors.black,
-                                        width: 80.0,
-                                        textColor: whiteColor,
-                                        isLoading: false),
-                                  ],
-                                ),
-                              ],
-                            ),
+                                  if (snapshot.hasData) {
+                                    firstName = snapshot.data?.loginResponse
+                                            ?.data?.user?.firstName ??
+                                        '';
+                                    lastName = snapshot.data?.loginResponse
+                                            ?.data?.user?.lastName ??
+                                        '';
+                                    phone = snapshot.data?.loginResponse?.data
+                                            ?.user?.phoneNumber ??
+                                        '';
+                                    email = snapshot.data?.loginResponse?.data
+                                            ?.user?.email ??
+                                        '';
+                                  }
+
+                                  return Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Expanded(
+                                        child: Container(
+                                          height: 78,
+                                          width: 80,
+                                          alignment: Alignment.centerLeft,
+                                          decoration: const BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: AssetImage(
+                                                      'assets/images/ladySmiling.png'),
+                                                  fit: BoxFit.contain),
+                                              shape: BoxShape.circle),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 8),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            firstName,
+                                            style: TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          const SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            lastName,
+                                            style: const TextStyle(
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      ),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            children: [
+                                              Text(phone),
+                                              const SizedBox(
+                                                height: 8,
+                                              ),
+                                              Text(
+                                                email,
+                                              ),
+                                            ],
+                                          ),
+                                          Button(
+                                              text: 'Edit profile',
+                                              onPress: () {
+                                                //  var id = box.get('id');
+                                                //   //print("This is the token " + name);
+                                                //   print("This is the user id " +
+                                                //       id.toString());
+
+                                                Navigator.of(context)
+                                                    .pushNamed(EditProfile.id);
+                                              },
+                                              color: Colors.black,
+                                              width: 80.0,
+                                              textColor: whiteColor,
+                                              isLoading: false),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                }),
                           ]),
                         ),
                       ),
@@ -212,14 +238,12 @@ class _ProfileMenuState extends State<ProfileMenu> {
                           ),
                         ),
                       ),
-                     
-                      const SizedBox(
 
+                      const SizedBox(
                         height: 18,
                       ),
                       InkWell(
                         onTap: () {
-
                           Navigator.of(context)
                               .pushNamed(UserDispatchHistory.id);
                         },
@@ -304,7 +328,12 @@ class _ProfileMenuState extends State<ProfileMenu> {
                                   width: 22,
                                 ),
                                 InkWell(
-                                  onTap: () {},
+                                  onTap: () {
+                                    //do logout for local storage
+                                    Navigator.popUntil(context,
+                                        ModalRoute.withName(GetStarted.id));
+                                    Navigator.of(context).pushNamed(Login.id);
+                                  },
                                   child: const Text(
                                     "Log out",
                                     style: TextStyle(

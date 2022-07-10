@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/default_container.dart';
@@ -57,7 +57,6 @@ class _RejectedRidesState extends State<RejectedRides> {
   String? _pickUpDate;
   String? _dropOffDate;
   dynamic _buttonText = "";
-  dynamic _previousRoute = "";
 
   late GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
@@ -80,10 +79,7 @@ class _RejectedRidesState extends State<RejectedRides> {
   }
 
   _getPreviousRoute() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.get('previousRoute');
-    });
+
   }
 
   @override
@@ -155,8 +151,7 @@ class _RejectedRidesState extends State<RejectedRides> {
     if (form!.validate()) {
       form.save();
 
-      var box = await Hive.openBox('userOrder');
-      box.putAll({
+      Map<String, dynamic> _map = {
         "pickUp": _pickUp,
         "dropOff": _dropOff,
         "receiverName": _receiverName,
@@ -166,16 +161,12 @@ class _RejectedRidesState extends State<RejectedRides> {
         "pickUpDate": _pickUpDate,
         "dropOffDate": _dropOffDate,
         "itemImage": _itemImage,
-      });
+      };
       // Navigator.of(context).pushNamed( NextOfKin.id);
     }
   }
 
   _saveEdittedItem() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.delete('previousRoute');
-    });
     Navigator.pop(context);
   }
 
@@ -185,35 +176,35 @@ class _RejectedRidesState extends State<RejectedRides> {
         backgroundColor: whiteColor,
         body: SafeArea(
             child: Column(
+          children: [
+            const SizedBox(height: 10.0),
+            Row(
               children: [
-                 const SizedBox(height: 10.0),
-              Row(
-                children: [
-                  BackIcon(
-                    onPress: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'REJECTED RIDES',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
-                      ),
+                BackIcon(
+                  onPress: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40.0),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'REJECTED RIDES',
+                    textScaleFactor: 1.2,
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      // decoration: TextDecoration.underline,
                     ),
                   ),
-                ],
-              ),
-                SingleChildScrollView(
-          child: Column(
+                ),
+              ],
+            ),
+            SingleChildScrollView(
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                Container(
+                  Container(
                     margin: EdgeInsets.only(left: 30, right: 30, top: 20),
                     child: Column(
                       //crossAxisAlignment: CrossAxisAlignment.start,
@@ -265,16 +256,20 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ), onChanged: (date) {
-                                              print('change $date in time zone ' +
-                                                  date.timeZoneOffset.inHours
-                                                      .toString());
+                                              print(
+                                                  'change $date in time zone ' +
+                                                      date.timeZoneOffset
+                                                          .inHours
+                                                          .toString());
                                               print(date);
-                                              print(_parseDate(date.toString()));
+                                              print(
+                                                  _parseDate(date.toString()));
                                             }, onConfirm: (date) {
                                               _pickUpDateController.text =
                                                   _parseDate(date.toString());
                                               print('confirm $date');
-                                              print(_parseDate(date.toString()));
+                                              print(
+                                                  _parseDate(date.toString()));
                                             },
                                                 currentTime: DateTime.now(),
                                                 locale: LocaleType.en);
@@ -343,9 +338,11 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                     fontWeight: FontWeight.bold,
                                                   ),
                                                 ), onChanged: (date) {
-                                              print('change $date in time zone ' +
-                                                  date.timeZoneOffset.inHours
-                                                      .toString());
+                                              print(
+                                                  'change $date in time zone ' +
+                                                      date.timeZoneOffset
+                                                          .inHours
+                                                          .toString());
                                             }, onConfirm: (date) {
                                               print('confirm $date');
                                               _dropOffDateController.text =
@@ -402,7 +399,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                           height: 100,
                           decoration: BoxDecoration(
                               color: Color(0xffEEEEEE),
-                              borderRadius: BorderRadius.all(Radius.circular(4))),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
                           child: Align(
                             alignment: Alignment.centerLeft,
                             child: Padding(
@@ -413,16 +411,21 @@ class _RejectedRidesState extends State<RejectedRides> {
                         )
                       ],
                     ),
-                  ),SizedBox(height: 20,),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
+                    padding: const EdgeInsets.only(
+                        top: 10, bottom: 10, right: 30, left: 30),
                     child: Text(
                       'Previous referred',
                       textAlign: TextAlign.start,
                       style: TextStyle(
-                          fontSize: 18,
-                         color: appPrimaryColor,
-                              fontWeight: FontWeight.bold,),
+                        fontSize: 18,
+                        color: appPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   SizedBox(
@@ -433,12 +436,14 @@ class _RejectedRidesState extends State<RejectedRides> {
                         itemCount: 1,
                         itemBuilder: (context, index) {
                           return Padding(
-                            padding: const EdgeInsets.only(top: 10,right: 30, left: 30),
+                            padding: const EdgeInsets.only(
+                                top: 10, right: 30, left: 30),
                             child: Column(
                               children: [
                                 ExpansionPanelList(
                                   elevation: 1,
-                                  animationDuration: Duration(milliseconds: 200),
+                                  animationDuration:
+                                      Duration(milliseconds: 200),
                                   children: [
                                     ExpansionPanel(
                                       backgroundColor: color,
@@ -455,7 +460,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                   Expanded(
                                                     child: Text(
                                                       'Delivery to Ikorodu',
-                                                      textAlign: TextAlign.start,
+                                                      textAlign:
+                                                          TextAlign.start,
                                                       style: TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18,
@@ -486,7 +492,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                 style: TextStyle(
                                                     color: grayColor,
                                                     fontSize: 14,
-                                                    fontWeight: FontWeight.w400),
+                                                    fontWeight:
+                                                        FontWeight.w400),
                                               ),
                                             ],
                                           ),
@@ -547,7 +554,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                     ),
                                                     Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Text('Pickup Location'),
                                                         const SizedBox(
@@ -567,14 +575,15 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                 Container(
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.all(
-                                                                4.0),
+                                                            const EdgeInsets
+                                                                .all(4.0),
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -612,8 +621,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
-                                                                left: 4),
+                                                            const EdgeInsets
+                                                                .only(left: 4),
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -647,7 +656,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                                 Text(
                                                                   'Malik Johnson',
                                                                   style: TextStyle(
-                                                                      fontSize: 16,
+                                                                      fontSize:
+                                                                          16,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500),
@@ -658,7 +668,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                                 Text(
                                                                   'Boxer 0098',
                                                                   style: TextStyle(
-                                                                      fontSize: 16,
+                                                                      fontSize:
+                                                                          16,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500),
@@ -674,7 +685,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                 Container(
                                                   child: Column(
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     children: [
@@ -683,8 +695,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                       ),
                                                       Padding(
                                                         padding:
-                                                            const EdgeInsets.only(
-                                                                left: 4),
+                                                            const EdgeInsets
+                                                                .only(left: 4),
                                                         child: Row(
                                                           mainAxisAlignment:
                                                               MainAxisAlignment
@@ -718,7 +730,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                                 Text(
                                                                   'Malik Johnson',
                                                                   style: TextStyle(
-                                                                      fontSize: 16,
+                                                                      fontSize:
+                                                                          16,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500),
@@ -729,7 +742,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                                                 Text(
                                                                   'Boxer 0098',
                                                                   style: TextStyle(
-                                                                      fontSize: 16,
+                                                                      fontSize:
+                                                                          16,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500),
@@ -751,7 +765,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                       canTapOnHeader: true,
                                     ),
                                   ],
-                                  dividerColor: Color.fromARGB(255, 143, 141, 141),
+                                  dividerColor:
+                                      Color.fromARGB(255, 143, 141, 141),
                                   expansionCallback:
                                       (int panelIndex, bool isExpanded) {
                                     setState(() {
@@ -765,7 +780,8 @@ class _RejectedRidesState extends State<RejectedRides> {
                                       });
                                     } else if (_expanded1 == false) {
                                       setState(() {
-                                        color = Color.fromARGB(255, 235, 235, 235);
+                                        color =
+                                            Color.fromARGB(255, 235, 235, 235);
                                       });
                                     }
                                   },
@@ -776,9 +792,9 @@ class _RejectedRidesState extends State<RejectedRides> {
                         }),
                   ),
                 ],
-          ),
-        ),
-              ],
-            )));
+              ),
+            ),
+          ],
+        )));
   }
 }

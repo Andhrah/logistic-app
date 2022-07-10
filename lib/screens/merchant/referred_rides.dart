@@ -4,7 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/default_container.dart';
@@ -57,7 +57,7 @@ class _ReferredRidesState extends State<ReferredRides> {
   String? _pickUpDate;
   String? _dropOffDate;
   dynamic _buttonText = "";
-  dynamic _previousRoute = "";
+  
 
   late GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
@@ -79,12 +79,6 @@ class _ReferredRidesState extends State<ReferredRides> {
     }
   }
 
-  _getPreviousRoute() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.get('previousRoute');
-    });
-  }
 
   @override
   void initState() {
@@ -114,7 +108,6 @@ class _ReferredRidesState extends State<ReferredRides> {
     _receiverphoneNumberNode = FocusNode();
     _senderphoneNumberNode = FocusNode();
 
-    _getPreviousRoute();
   }
 
   @override
@@ -155,29 +148,21 @@ class _ReferredRidesState extends State<ReferredRides> {
     if (form!.validate()) {
       form.save();
 
-      var box = await Hive.openBox('userOrder');
-      box.putAll({
-        "pickUp": _pickUp,
-        "dropOff": _dropOff,
-        "receiverName": _receiverName,
-        "receiverPhoneNumber": _receiverPhoneNumber,
-        "item": _item,
-        "itemDescription": _itemDescription,
-        "pickUpDate": _pickUpDate,
-        "dropOffDate": _dropOffDate,
-        "itemImage": _itemImage,
-      });
-      // Navigator.of(context).pushNamed( NextOfKin.id);
+
+      // Navigator.of(context).pushNamed( NextOfKin.id,arguments: {
+      //   "pickUp": _pickUp,
+      //   "dropOff": _dropOff,
+      //   "receiverName": _receiverName,
+      //   "receiverPhoneNumber": _receiverPhoneNumber,
+      //   "item": _item,
+      //   "itemDescription": _itemDescription,
+      //   "pickUpDate": _pickUpDate,
+      //   "dropOffDate": _dropOffDate,
+      //   "itemImage": _itemImage,
+      // });
     }
   }
 
-  _saveEdittedItem() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.delete('previousRoute');
-    });
-    Navigator.pop(context);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -185,33 +170,33 @@ class _ReferredRidesState extends State<ReferredRides> {
         backgroundColor: whiteColor,
         body: SafeArea(
             child: Column(
+          children: [
+            const SizedBox(height: 10.0),
+            Row(
               children: [
-                 const SizedBox(height: 10.0),
-              Row(
-                children: [
-                  BackIcon(
-                    onPress: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'REFRRED RIDES',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
-                      ),
+                BackIcon(
+                  onPress: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40.0),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'REFRRED RIDES',
+                    textScaleFactor: 1.2,
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      // decoration: TextDecoration.underline,
                     ),
                   ),
-                ],
-              ),
-                Expanded(
-                  child: SingleChildScrollView(
-                          child: Column(
+                ),
+              ],
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
@@ -236,8 +221,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                           textHeight: 5.0,
                                           node: _pickUpDateNode,
                                           textController: _pickUpDateController,
-                                          autovalidateMode:
-                                              AutovalidateMode.onUserInteraction,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           borderColor:
                                               appPrimaryColor.withOpacity(0.5),
                                           area: null,
@@ -248,34 +233,42 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                   minTime: DateTime(2022, 3, 5),
                                                   maxTime: DateTime(2100, 6, 7),
                                                   theme: const DatePickerTheme(
-                                                    headerColor: appPrimaryColor,
+                                                    headerColor:
+                                                        appPrimaryColor,
                                                     backgroundColor: whiteColor,
                                                     itemStyle: TextStyle(
                                                       color: appPrimaryColor,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 18,
                                                     ),
                                                     doneStyle: TextStyle(
                                                       color: secondaryColor,
                                                       fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                     cancelStyle: TextStyle(
                                                       color: secondaryColor,
                                                       fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ), onChanged: (date) {
-                                                print('change $date in time zone ' +
-                                                    date.timeZoneOffset.inHours
-                                                        .toString());
+                                                print(
+                                                    'change $date in time zone ' +
+                                                        date.timeZoneOffset
+                                                            .inHours
+                                                            .toString());
                                                 print(date);
-                                                print(_parseDate(date.toString()));
+                                                print(_parseDate(
+                                                    date.toString()));
                                               }, onConfirm: (date) {
                                                 _pickUpDateController.text =
                                                     _parseDate(date.toString());
                                                 print('confirm $date');
-                                                print(_parseDate(date.toString()));
+                                                print(_parseDate(
+                                                    date.toString()));
                                               },
                                                   currentTime: DateTime.now(),
                                                   locale: LocaleType.en);
@@ -313,9 +306,10 @@ class _ReferredRidesState extends State<ReferredRides> {
                                           hintText: '26/3/2022',
                                           textHeight: 5.0,
                                           node: _dropOffDateNode,
-                                          textController: _dropOffDateController,
-                                          autovalidateMode:
-                                              AutovalidateMode.onUserInteraction,
+                                          textController:
+                                              _dropOffDateController,
+                                          autovalidateMode: AutovalidateMode
+                                              .onUserInteraction,
                                           borderColor:
                                               appPrimaryColor.withOpacity(0.5),
                                           area: null,
@@ -326,27 +320,33 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                   minTime: DateTime(2022, 3, 5),
                                                   maxTime: DateTime(2100, 6, 7),
                                                   theme: const DatePickerTheme(
-                                                    headerColor: appPrimaryColor,
+                                                    headerColor:
+                                                        appPrimaryColor,
                                                     backgroundColor: whiteColor,
                                                     itemStyle: TextStyle(
                                                       color: appPrimaryColor,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                       fontSize: 18,
                                                     ),
                                                     doneStyle: TextStyle(
                                                       color: secondaryColor,
                                                       fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                     cancelStyle: TextStyle(
                                                       color: secondaryColor,
                                                       fontSize: 20,
-                                                      fontWeight: FontWeight.bold,
+                                                      fontWeight:
+                                                          FontWeight.bold,
                                                     ),
                                                   ), onChanged: (date) {
-                                                print('change $date in time zone ' +
-                                                    date.timeZoneOffset.inHours
-                                                        .toString());
+                                                print(
+                                                    'change $date in time zone ' +
+                                                        date.timeZoneOffset
+                                                            .inHours
+                                                            .toString());
                                               }, onConfirm: (date) {
                                                 print('confirm $date');
                                                 _dropOffDateController.text =
@@ -403,7 +403,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                             height: 100,
                             decoration: BoxDecoration(
                                 color: Color(0xffEEEEEE),
-                                borderRadius: BorderRadius.all(Radius.circular(4))),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(4))),
                             child: Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(
@@ -414,16 +415,21 @@ class _ReferredRidesState extends State<ReferredRides> {
                           )
                         ],
                       ),
-                    ),SizedBox(height: 20,),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
                     Padding(
-                      padding: const EdgeInsets.only(top: 10, bottom: 10, right: 30, left: 30),
+                      padding: const EdgeInsets.only(
+                          top: 10, bottom: 10, right: 30, left: 30),
                       child: Text(
                         'Previous referred',
                         textAlign: TextAlign.start,
                         style: TextStyle(
-                            fontSize: 18,
-                           color: appPrimaryColor,
-                                fontWeight: FontWeight.bold,),
+                          fontSize: 18,
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
                     ),
                     SizedBox(
@@ -434,12 +440,14 @@ class _ReferredRidesState extends State<ReferredRides> {
                           itemCount: 1,
                           itemBuilder: (context, index) {
                             return Padding(
-                              padding: const EdgeInsets.only(top: 10,right: 30, left: 30),
+                              padding: const EdgeInsets.only(
+                                  top: 10, right: 30, left: 30),
                               child: Column(
                                 children: [
                                   ExpansionPanelList(
                                     elevation: 1,
-                                    animationDuration: Duration(milliseconds: 200),
+                                    animationDuration:
+                                        Duration(milliseconds: 200),
                                     children: [
                                       ExpansionPanel(
                                         backgroundColor: color,
@@ -456,12 +464,14 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                     Expanded(
                                                       child: Text(
                                                         'Delivery to Ikorodu',
-                                                        textAlign: TextAlign.start,
+                                                        textAlign:
+                                                            TextAlign.start,
                                                         style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 18,
                                                             fontWeight:
-                                                                FontWeight.w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -474,7 +484,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                             color: Colors.black,
                                                             fontSize: 18,
                                                             fontWeight:
-                                                                FontWeight.w600),
+                                                                FontWeight
+                                                                    .w600),
                                                       ),
                                                     ),
                                                   ],
@@ -487,7 +498,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                   style: TextStyle(
                                                       color: grayColor,
                                                       fontSize: 14,
-                                                      fontWeight: FontWeight.w400),
+                                                      fontWeight:
+                                                          FontWeight.w400),
                                                 ),
                                               ],
                                             ),
@@ -516,7 +528,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Container(
                                                         width: 50,
@@ -527,10 +540,12 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                           height: 100.0,
                                                         ),
                                                       ),
-                                                      const SizedBox(width: 0.0),
+                                                      const SizedBox(
+                                                          width: 0.0),
                                                       Column(
                                                         children: [
-                                                          Text('Pickup Location'),
+                                                          Text(
+                                                              'Pickup Location'),
                                                           const SizedBox(
                                                               height: 65.0),
                                                           Text(
@@ -548,9 +563,11 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                       ),
                                                       Column(
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
-                                                          Text('Pickup Location'),
+                                                          Text(
+                                                              'Pickup Location'),
                                                           const SizedBox(
                                                               height: 65.0),
                                                           Text(
@@ -568,14 +585,16 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                   Container(
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets.all(
-                                                                  4.0),
+                                                              const EdgeInsets
+                                                                  .all(4.0),
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -583,14 +602,15 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                             children: [
                                                               Radio(
                                                                 value: null,
-                                                                groupValue: null,
+                                                                groupValue:
+                                                                    null,
                                                                 fillColor:
                                                                     MaterialStateProperty
                                                                         .all(
                                                                             secondaryColor),
-                
+
                                                                 onChanged: null,
-                
+
                                                                 //mouseCursor: MouseCursor.uncontrolled,
                                                               ),
                                                               Text("Item"),
@@ -603,7 +623,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    fontSize: 16,
+                                                                    fontSize:
+                                                                        16,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
@@ -613,7 +634,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets.only(
+                                                              const EdgeInsets
+                                                                      .only(
                                                                   left: 4),
                                                           child: Row(
                                                             mainAxisAlignment:
@@ -623,14 +645,15 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                             children: [
                                                               Radio(
                                                                 value: null,
-                                                                groupValue: null,
+                                                                groupValue:
+                                                                    null,
                                                                 fillColor:
                                                                     MaterialStateProperty
                                                                         .all(
                                                                             secondaryColor),
-                
+
                                                                 onChanged: null,
-                
+
                                                                 //mouseCursor: MouseCursor.uncontrolled,
                                                               ),
                                                               Text("Rider"),
@@ -648,10 +671,10 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                                   Text(
                                                                     'Malik Johnson',
                                                                     style: TextStyle(
-                                                                        fontSize: 16,
+                                                                        fontSize:
+                                                                            16,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500),
+                                                                            FontWeight.w500),
                                                                   ),
                                                                   SizedBox(
                                                                     height: 5,
@@ -659,10 +682,10 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                                   Text(
                                                                     'Boxer 0098',
                                                                     style: TextStyle(
-                                                                        fontSize: 16,
+                                                                        fontSize:
+                                                                            16,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500),
+                                                                            FontWeight.w500),
                                                                   ),
                                                                 ],
                                                               ),
@@ -675,16 +698,19 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                   Container(
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                       children: [
                                                         SizedBox(
                                                           height: 30,
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets.only(
+                                                              const EdgeInsets
+                                                                      .only(
                                                                   left: 4),
                                                           child: Row(
                                                             mainAxisAlignment:
@@ -694,17 +720,19 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                             children: [
                                                               Radio(
                                                                 value: null,
-                                                                groupValue: null,
+                                                                groupValue:
+                                                                    null,
                                                                 fillColor:
                                                                     MaterialStateProperty
                                                                         .all(
                                                                             secondaryColor),
-                
+
                                                                 onChanged: null,
-                
+
                                                                 //mouseCursor: MouseCursor.uncontrolled,
                                                               ),
-                                                              Text("Referred to"),
+                                                              Text(
+                                                                  "Referred to"),
                                                               // const SizedBox(
                                                               //   width: 20,
                                                               // ),
@@ -719,10 +747,10 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                                   Text(
                                                                     'Malik Johnson',
                                                                     style: TextStyle(
-                                                                        fontSize: 16,
+                                                                        fontSize:
+                                                                            16,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500),
+                                                                            FontWeight.w500),
                                                                   ),
                                                                   SizedBox(
                                                                     height: 5,
@@ -730,10 +758,10 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                                   Text(
                                                                     'Boxer 0098',
                                                                     style: TextStyle(
-                                                                        fontSize: 16,
+                                                                        fontSize:
+                                                                            16,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500),
+                                                                            FontWeight.w500),
                                                                   ),
                                                                 ],
                                                               ),
@@ -752,7 +780,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                         canTapOnHeader: true,
                                       ),
                                     ],
-                                    dividerColor: Color.fromARGB(255, 143, 141, 141),
+                                    dividerColor:
+                                        Color.fromARGB(255, 143, 141, 141),
                                     expansionCallback:
                                         (int panelIndex, bool isExpanded) {
                                       setState(() {
@@ -766,7 +795,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                         });
                                       } else if (_expanded1 == false) {
                                         setState(() {
-                                          color = Color.fromARGB(255, 235, 235, 235);
+                                          color = Color.fromARGB(
+                                              255, 235, 235, 235);
                                         });
                                       }
                                     },
@@ -777,10 +807,10 @@ class _ReferredRidesState extends State<ReferredRides> {
                           }),
                     ),
                   ],
-                          ),
-                        ),
                 ),
-              ],
-            )));
+              ),
+            ),
+          ],
+        )));
   }
 }

@@ -2,7 +2,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/default_container.dart';
@@ -54,7 +54,7 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
   String? _pickUpDate;
   String? _dropOffDate;
   dynamic _buttonText = "";
-  dynamic _previousRoute = "";
+  
 
   late GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
@@ -68,7 +68,7 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
   bool _expanded = false;
   bool _expanded1 = false;
 
-   Color color = whiteColor;
+  Color color = whiteColor;
 
   void autoCompleteSearch(String value) async {
     var result = await googlePlace.autocomplete.get(value);
@@ -78,13 +78,6 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
         predictions = result.predictions!;
       });
     }
-  }
-
-  _getPreviousRoute() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.get('previousRoute');
-    });
   }
 
   @override
@@ -114,8 +107,6 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
     _senderNameNode = FocusNode();
     _receiverphoneNumberNode = FocusNode();
     _senderphoneNumberNode = FocusNode();
-
-    _getPreviousRoute();
   }
 
   @override
@@ -156,28 +147,18 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
     if (form!.validate()) {
       form.save();
 
-      var box = await Hive.openBox('userOrder');
-      box.putAll({
-        "pickUp": _pickUp,
-        "dropOff": _dropOff,
-        "receiverName": _receiverName,
-        "receiverPhoneNumber": _receiverPhoneNumber,
-        "item": _item,
-        "itemDescription": _itemDescription,
-        "pickUpDate": _pickUpDate,
-        "dropOffDate": _dropOffDate,
-        "itemImage": _itemImage,
-      });
-      // Navigator.of(context).pushNamed( NextOfKin.id);
+      // Navigator.of(context).pushNamed( NextOfKin.id,arguments: {
+      //   "pickUp": _pickUp,
+      //   "dropOff": _dropOff,
+      //   "receiverName": _receiverName,
+      //   "receiverPhoneNumber": _receiverPhoneNumber,
+      //   "item": _item,
+      //   "itemDescription": _itemDescription,
+      //   "pickUpDate": _pickUpDate,
+      //   "dropOffDate": _dropOffDate,
+      //   "itemImage": _itemImage,
+      // });
     }
-  }
-
-  _saveEdittedItem() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.delete('previousRoute');
-    });
-    Navigator.pop(context);
   }
 
   @override
@@ -186,36 +167,35 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
         backgroundColor: whiteColor,
         body: SafeArea(
             child: Column(
+          children: [
+            const SizedBox(height: 10.0),
+            Row(
               children: [
-                const SizedBox(height: 10.0),
-                  Row(
-                    children: [
-                      BackIcon(
-                        onPress: () {
-                          Navigator.pop(context);
-                        },
-                      ),
-                      Container(
-                        margin: const EdgeInsets.only(left: 40.0),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'DISPATCH HISTORY',
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                            color: appPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                            // decoration: TextDecoration.underline,
-                          ),
-                        ),
-                      ),
-                    ],
+                BackIcon(
+                  onPress: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Container(
+                  margin: const EdgeInsets.only(left: 40.0),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    'DISPATCH HISTORY',
+                    textScaleFactor: 1.2,
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      // decoration: TextDecoration.underline,
+                    ),
                   ),
-                SafeArea(
-                  child: SingleChildScrollView(
-                          child: Column(
+                ),
+              ],
+            ),
+            SafeArea(
+              child: SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    
                     const SizedBox(
                       height: 30,
                     ),
@@ -234,7 +214,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                 textHeight: 5.0,
                                 node: _pickUpDateNode,
                                 textController: _pickUpDateController,
-                                autovalidateMode: AutovalidateMode.onUserInteraction,
+                                autovalidateMode:
+                                    AutovalidateMode.onUserInteraction,
                                 borderColor: appPrimaryColor.withOpacity(0.5),
                                 area: null,
                                 suffixIcon: IconButton(
@@ -263,7 +244,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                           ),
                                         ), onChanged: (date) {
                                       print('change $date in time zone ' +
-                                          date.timeZoneOffset.inHours.toString());
+                                          date.timeZoneOffset.inHours
+                                              .toString());
                                       print(date);
                                       print(_parseDate(date.toString()));
                                     }, onConfirm: (date) {
@@ -339,7 +321,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                 child: Text(
                                   '30/01/2022',
                                   style: TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.w400),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w400),
                                 ),
                               ),
                             ),
@@ -360,10 +343,13 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                       ),
                     ),
                     SizedBox(
-                      child: ListView.separated(padding: EdgeInsets.only(left: 15, right: 20),
-                      separatorBuilder: (context, index) {
-                        return SizedBox(height: 10,);
-                      },
+                      child: ListView.separated(
+                          padding: EdgeInsets.only(left: 15, right: 20),
+                          separatorBuilder: (context, index) {
+                            return SizedBox(
+                              height: 10,
+                            );
+                          },
                           physics: const ScrollPhysics(),
                           shrinkWrap: true,
                           scrollDirection: Axis.vertical,
@@ -375,7 +361,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                 children: [
                                   ExpansionPanelList(
                                     elevation: 1,
-                                    animationDuration: Duration(milliseconds: 200),
+                                    animationDuration:
+                                        Duration(milliseconds: 200),
                                     children: [
                                       ExpansionPanel(
                                         headerBuilder: (context, isExpanded) {
@@ -386,7 +373,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                               children: [
                                                 Row(
                                                   mainAxisAlignment:
-                                                      MainAxisAlignment.spaceBetween,
+                                                      MainAxisAlignment
+                                                          .spaceBetween,
                                                   children: const [
                                                     Expanded(
                                                       child: Text(
@@ -395,7 +383,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                             color: Colors.black,
                                                             fontSize: 18,
                                                             fontWeight:
-                                                                FontWeight.w400),
+                                                                FontWeight
+                                                                    .w400),
                                                       ),
                                                     ),
                                                     SizedBox(
@@ -408,18 +397,22 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                             color: Colors.black,
                                                             fontSize: 18,
                                                             fontWeight:
-                                                                FontWeight.w600),
+                                                                FontWeight
+                                                                    .w600),
                                                       ),
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 5,),
+                                                const SizedBox(
+                                                  height: 5,
+                                                ),
                                                 const Text(
                                                   '21/2/2022',
                                                   style: TextStyle(
                                                       color: grayColor,
                                                       fontSize: 14,
-                                                      fontWeight: FontWeight.w400),
+                                                      fontWeight:
+                                                          FontWeight.w400),
                                                 ),
                                               ],
                                             ),
@@ -448,7 +441,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                     mainAxisAlignment:
                                                         MainAxisAlignment.start,
                                                     crossAxisAlignment:
-                                                        CrossAxisAlignment.start,
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: [
                                                       Container(
                                                         width: 50,
@@ -459,10 +453,12 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                           height: 100.0,
                                                         ),
                                                       ),
-                                                      const SizedBox(width: 0.0),
+                                                      const SizedBox(
+                                                          width: 0.0),
                                                       Column(
                                                         children: [
-                                                          Text('Pickup Location'),
+                                                          Text(
+                                                              'Pickup Location'),
                                                           const SizedBox(
                                                               height: 65.0),
                                                           Text(
@@ -480,9 +476,11 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                       ),
                                                       Column(
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         children: [
-                                                          Text('Pickup Location'),
+                                                          Text(
+                                                              'Pickup Location'),
                                                           const SizedBox(
                                                               height: 65.0),
                                                           Text(
@@ -500,14 +498,16 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                   Container(
                                                     child: Column(
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets.all(
-                                                                  4.0),
+                                                              const EdgeInsets
+                                                                  .all(4.0),
                                                           child: Row(
                                                             mainAxisAlignment:
                                                                 MainAxisAlignment
@@ -515,14 +515,15 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                             children: [
                                                               Radio(
                                                                 value: null,
-                                                                groupValue: null,
+                                                                groupValue:
+                                                                    null,
                                                                 fillColor:
                                                                     MaterialStateProperty
                                                                         .all(
                                                                             secondaryColor),
-                
+
                                                                 onChanged: null,
-                
+
                                                                 //mouseCursor: MouseCursor.uncontrolled,
                                                               ),
                                                               Text("Item"),
@@ -535,7 +536,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                                     overflow:
                                                                         TextOverflow
                                                                             .ellipsis,
-                                                                    fontSize: 16,
+                                                                    fontSize:
+                                                                        16,
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .w500),
@@ -545,7 +547,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                         ),
                                                         Padding(
                                                           padding:
-                                                              const EdgeInsets.only(
+                                                              const EdgeInsets
+                                                                      .only(
                                                                   left: 4),
                                                           child: Row(
                                                             mainAxisAlignment:
@@ -555,14 +558,15 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                             children: [
                                                               Radio(
                                                                 value: null,
-                                                                groupValue: null,
+                                                                groupValue:
+                                                                    null,
                                                                 fillColor:
                                                                     MaterialStateProperty
                                                                         .all(
                                                                             secondaryColor),
-                
+
                                                                 onChanged: null,
-                
+
                                                                 //mouseCursor: MouseCursor.uncontrolled,
                                                               ),
                                                               Text("Rider"),
@@ -580,10 +584,10 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                                   Text(
                                                                     'Malik Johnson',
                                                                     style: TextStyle(
-                                                                        fontSize: 16,
+                                                                        fontSize:
+                                                                            16,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500),
+                                                                            FontWeight.w500),
                                                                   ),
                                                                   SizedBox(
                                                                     height: 5,
@@ -591,10 +595,10 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                                   Text(
                                                                     'Boxer 0098',
                                                                     style: TextStyle(
-                                                                        fontSize: 16,
+                                                                        fontSize:
+                                                                            16,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .w500),
+                                                                            FontWeight.w500),
                                                                   ),
                                                                 ],
                                                               ),
@@ -613,9 +617,11 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                         canTapOnHeader: true,
                                       ),
                                     ],
-                                    dividerColor: Color.fromARGB(255, 143, 141, 141),
-                                    expansionCallback: (int panelIndex, bool isExpanded) {
-                                       _expanded = !_expanded;
+                                    dividerColor:
+                                        Color.fromARGB(255, 143, 141, 141),
+                                    expansionCallback:
+                                        (int panelIndex, bool isExpanded) {
+                                      _expanded = !_expanded;
                                       setState(() {
                                         isExpanded ? Colors.blue : Colors.grey;
                                       });
@@ -640,9 +646,9 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                     ),
                     SizedBox(
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 15, right:20),
+                        padding: const EdgeInsets.only(left: 15, right: 20),
                         child: ListView.builder(
-                          //padding: EdgeInsets.only(left: 15, right: 20),
+                            //padding: EdgeInsets.only(left: 15, right: 20),
                             physics: const ScrollPhysics(),
                             shrinkWrap: true,
                             scrollDirection: Axis.vertical,
@@ -654,7 +660,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                   children: [
                                     ExpansionPanelList(
                                       elevation: 1,
-                                      animationDuration: Duration(milliseconds: 200),
+                                      animationDuration:
+                                          Duration(milliseconds: 200),
                                       children: [
                                         ExpansionPanel(
                                           backgroundColor: color,
@@ -666,16 +673,19 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                 children: [
                                                   Row(
                                                     mainAxisAlignment:
-                                                        MainAxisAlignment.spaceBetween,
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: const [
                                                       Expanded(
                                                         child: Text(
                                                           'Delivery to Ikorodu',
                                                           style: TextStyle(
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight.w400),
+                                                                  FontWeight
+                                                                      .w400),
                                                         ),
                                                       ),
                                                       SizedBox(
@@ -685,21 +695,26 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                         child: Text(
                                                           '#4000',
                                                           style: TextStyle(
-                                                              color: Colors.black,
+                                                              color:
+                                                                  Colors.black,
                                                               fontSize: 18,
                                                               fontWeight:
-                                                                  FontWeight.w600),
+                                                                  FontWeight
+                                                                      .w600),
                                                         ),
                                                       ),
                                                     ],
                                                   ),
-                                                  SizedBox(height: 5,),
+                                                  SizedBox(
+                                                    height: 5,
+                                                  ),
                                                   Text(
                                                     '21/2/2022',
                                                     style: TextStyle(
                                                         color: grayColor,
                                                         fontSize: 14,
-                                                        fontWeight: FontWeight.w400),
+                                                        fontWeight:
+                                                            FontWeight.w400),
                                                   ),
                                                 ],
                                               ),
@@ -726,9 +741,11 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                     Container(
                                                         child: Row(
                                                       mainAxisAlignment:
-                                                          MainAxisAlignment.start,
+                                                          MainAxisAlignment
+                                                              .start,
                                                       crossAxisAlignment:
-                                                          CrossAxisAlignment.start,
+                                                          CrossAxisAlignment
+                                                              .start,
                                                       children: [
                                                         Container(
                                                           width: 50,
@@ -739,10 +756,12 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                             height: 100.0,
                                                           ),
                                                         ),
-                                                        const SizedBox(width: 0.0),
+                                                        const SizedBox(
+                                                            width: 0.0),
                                                         Column(
                                                           children: [
-                                                            Text('Pickup Location'),
+                                                            Text(
+                                                                'Pickup Location'),
                                                             const SizedBox(
                                                                 height: 65.0),
                                                             Text(
@@ -760,9 +779,11 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                         ),
                                                         Column(
                                                           crossAxisAlignment:
-                                                              CrossAxisAlignment.start,
+                                                              CrossAxisAlignment
+                                                                  .start,
                                                           children: [
-                                                            Text('Pickup Location'),
+                                                            Text(
+                                                                'Pickup Location'),
                                                             const SizedBox(
                                                                 height: 65.0),
                                                             Text(
@@ -780,14 +801,16 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                     Container(
                                                       child: Column(
                                                         crossAxisAlignment:
-                                                            CrossAxisAlignment.start,
+                                                            CrossAxisAlignment
+                                                                .start,
                                                         mainAxisAlignment:
-                                                            MainAxisAlignment.start,
+                                                            MainAxisAlignment
+                                                                .start,
                                                         children: [
                                                           Padding(
                                                             padding:
-                                                                const EdgeInsets.all(
-                                                                    4.0),
+                                                                const EdgeInsets
+                                                                    .all(4.0),
                                                             child: Row(
                                                               mainAxisAlignment:
                                                                   MainAxisAlignment
@@ -795,14 +818,16 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                               children: [
                                                                 Radio(
                                                                   value: null,
-                                                                  groupValue: null,
+                                                                  groupValue:
+                                                                      null,
                                                                   fillColor:
                                                                       MaterialStateProperty
                                                                           .all(
                                                                               secondaryColor),
-                
-                                                                  onChanged: null,
-                
+
+                                                                  onChanged:
+                                                                      null,
+
                                                                   //mouseCursor: MouseCursor.uncontrolled,
                                                                 ),
                                                                 Text("Item"),
@@ -815,7 +840,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                                       overflow:
                                                                           TextOverflow
                                                                               .ellipsis,
-                                                                      fontSize: 16,
+                                                                      fontSize:
+                                                                          16,
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .w500),
@@ -825,7 +851,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                           ),
                                                           Padding(
                                                             padding:
-                                                                const EdgeInsets.only(
+                                                                const EdgeInsets
+                                                                        .only(
                                                                     left: 4),
                                                             child: Row(
                                                               mainAxisAlignment:
@@ -835,14 +862,16 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                               children: [
                                                                 Radio(
                                                                   value: null,
-                                                                  groupValue: null,
+                                                                  groupValue:
+                                                                      null,
                                                                   fillColor:
                                                                       MaterialStateProperty
                                                                           .all(
                                                                               secondaryColor),
-                
-                                                                  onChanged: null,
-                
+
+                                                                  onChanged:
+                                                                      null,
+
                                                                   //mouseCursor: MouseCursor.uncontrolled,
                                                                 ),
                                                                 Text("Rider"),
@@ -860,10 +889,10 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                                     Text(
                                                                       'Malik Johnson',
                                                                       style: TextStyle(
-                                                                          fontSize: 16,
+                                                                          fontSize:
+                                                                              16,
                                                                           fontWeight:
-                                                                              FontWeight
-                                                                                  .w500),
+                                                                              FontWeight.w500),
                                                                     ),
                                                                     SizedBox(
                                                                       height: 5,
@@ -871,10 +900,10 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                                                     Text(
                                                                       'Boxer 0098',
                                                                       style: TextStyle(
-                                                                          fontSize: 16,
+                                                                          fontSize:
+                                                                              16,
                                                                           fontWeight:
-                                                                              FontWeight
-                                                                                  .w500),
+                                                                              FontWeight.w500),
                                                                     ),
                                                                   ],
                                                                 ),
@@ -893,24 +922,25 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                                           canTapOnHeader: true,
                                         ),
                                       ],
-                                      dividerColor: Color.fromARGB(255, 143, 141, 141),
-                                      expansionCallback: (int panelIndex, bool isExpanded) {
+                                      dividerColor:
+                                          Color.fromARGB(255, 143, 141, 141),
+                                      expansionCallback:
+                                          (int panelIndex, bool isExpanded) {
                                         setState(() {
                                           isExpanded = !_expanded1;
-                                         !isExpanded ? color  : grayColor;
+                                          !isExpanded ? color : grayColor;
                                         });
-                                         _expanded1 = !_expanded1;
-                                         if(_expanded1 == true){
-                                           setState(() {
-                                              color = whiteColor;
-                                           });
-                                          
-                                         }else if(_expanded1 == false){
-                                           setState(() {
-                                             color = Color.fromARGB(255, 235, 235, 235);
-                                           });
-                                         }
-                                        
+                                        _expanded1 = !_expanded1;
+                                        if (_expanded1 == true) {
+                                          setState(() {
+                                            color = whiteColor;
+                                          });
+                                        } else if (_expanded1 == false) {
+                                          setState(() {
+                                            color = Color.fromARGB(
+                                                255, 235, 235, 235);
+                                          });
+                                        }
                                       },
                                     ),
                                   ],
@@ -920,11 +950,10 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                       ),
                     ),
                   ],
-                          ),
-                        ),
                 ),
-              ],
-            )));
+              ),
+            ),
+          ],
+        )));
   }
 }
-

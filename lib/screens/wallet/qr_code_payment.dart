@@ -9,7 +9,7 @@ import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/payments.dart';
 import 'package:trakk/screens/wallet/transfers.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'dart:math' as math;
 import 'package:trakk/utils/colors.dart';
@@ -70,7 +70,6 @@ class _QrCodePaymentState extends State<QrCodePayment> {
 
   String? _pickUpDate;
   String? _dropOffDate;
-  dynamic _previousRoute = "";
 
   late TextEditingController _pickUpController;
   late TextEditingController _dropOffController;
@@ -93,13 +92,6 @@ class _QrCodePaymentState extends State<QrCodePayment> {
   FocusNode? _itemDescriptionNode;
   FocusNode? _pickUpDateNode;
   FocusNode? _dropOffDateNode;
-
-  _getPreviousRoute() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.get('previousRoute');
-    });
-  }
 
   void paint(Canvas canvas, Size size) {
     Paint paint = Paint()..color = Colors.blue;
@@ -143,8 +135,6 @@ class _QrCodePaymentState extends State<QrCodePayment> {
     _senderNameNode = FocusNode();
     _receiverphoneNumberNode = FocusNode();
     _senderphoneNumberNode = FocusNode();
-
-    _getPreviousRoute();
   }
 
   _parseDate(value) {

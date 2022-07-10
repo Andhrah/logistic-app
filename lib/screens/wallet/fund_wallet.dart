@@ -4,7 +4,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
@@ -187,68 +187,6 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
-  _onSubmit() async {
-    setState(() {
-      _loading = true;
-    });
-
-    final FormState? form = _formKey.currentState;
-    if (form!.validate()) {
-      form.save();
-
-      try {
-        var response = await Auth.authProvider(context).createUser(
-            _firstName.toString(),
-            _lastName.toString(),
-            _email.toString(),
-            _password.toString(),
-            _phoneNumber.toString(),
-            userType);
-        setState(() {
-          _loading = false;
-        });
-        if (response["code"] == 201) {
-          form.reset();
-          await Flushbar(
-            messageText: Text(
-              response["message"] + ' Please login',
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: whiteColor,
-                fontSize: 18,
-              ),
-            ),
-            backgroundColor: green,
-            flushbarPosition: FlushbarPosition.TOP,
-            duration: const Duration(seconds: 2),
-          ).show(context);
-          Navigator.of(context).pushNamed(Login.id);
-        }
-        // Auth.authProvider(context)
-      } catch (err) {
-        setState(() {
-          _loading = false;
-        });
-        await Flushbar(
-          messageText: Text(
-            err.toString(),
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: whiteColor,
-              fontSize: 18,
-            ),
-          ),
-          backgroundColor: redColor,
-          flushbarPosition: FlushbarPosition.TOP,
-          duration: const Duration(seconds: 5),
-        ).show(context);
-        rethrow;
-      }
-    }
-    setState(() {
-      _loading = false;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {

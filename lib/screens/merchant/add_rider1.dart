@@ -2,11 +2,7 @@ import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/screens/dispatch/checkout.dart';
-import 'package:trakk/screens/dispatch/pick_ride.dart';
+
 import 'package:trakk/screens/merchant/add_rider2.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';

@@ -1,15 +1,14 @@
 import 'dart:convert';
 
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:http/http.dart' as http;
 import 'package:trakk/Exceptions/api_failure_exception.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
 
 import 'package:trakk/models/update_profile/update_profile.dart';
 import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/constant.dart';
 
 class UpdateProfileService {
-  var box = Hive.box('appState');
   Future<bool?> updateProfile(
       {required String firstName,
       required String lastName,
@@ -18,8 +17,11 @@ class UpdateProfileService {
       required String address}) async {
     print("[][][][] NETWORK");
     //String token = box.get("appState");
-    String token = box.get("token");
-    var ID = box.get("id");
+
+    var appSettings = await appSettingsBloc.fetchAppSettings();
+    String token = await appSettingsBloc.getToken;
+    String id = '${(appSettings.loginResponse?.data?.user?.id)}';
+
     try {
       Data data = Data(
           firstName: firstName,
@@ -29,7 +31,7 @@ class UpdateProfileService {
           address: address);
       UpdateProfile updateProfile = UpdateProfile(data: data);
       var putResponses = await http.put(
-        putUriConverter("api/users", ID),
+        uriConverter("api/users/$id" ),
         headers: kHeaders(token),
         body: updateProfileToJson(updateProfile),
       );
@@ -77,16 +79,14 @@ class UpdateProfileService {
     }
   }
 
-
   updateUserProfile() {}
 
-
-  // Future<dynamic> createComplaint(
-  //   String name,
-  //   String email,
-  //   String message,
-  // ) async {
-  //   var body = {"name": name, "email": email, "message": message};
-  //   return await authRequest(body, 'api/Complaints/create');
-  // }
+// Future<dynamic> createComplaint(
+//   String name,
+//   String email,
+//   String message,
+// ) async {
+//   var body = {"name": name, "email": email, "message": message};
+//   return await authRequest(body, 'api/Complaints/create');
+// }
 }

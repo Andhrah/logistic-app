@@ -1,24 +1,21 @@
 import 'dart:convert';
+
 //import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:http/http.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/auth_response.dart';
 
 import '../../Exceptions/api_failure_exception.dart';
 import '../../utils/constant.dart';
 
 class RiderProfileService {
   static Future<dynamic> getRiderProfile() async {
-       var boxR = await Hive.openBox('riderData');
-       var box =  Hive.box('appState');
-       print("riderData ox opend>>>>>>>>");
-
-       var merchantId = boxR.get('merchantId');
-       String token = box.get('token');
-       // get user id and token from the values stored in hive after login
-  // var id = box.get('id');
-  // var token = box.get('token');
+    // get user id and token from the values stored in hive after login
+    // var id = box.get('id');
+    // var token = box.get('token');
     var response = await http.get(
         //this merchant ID is hard-coded, but should be gotten from the service when the merchant logs in
         Uri.parse(
@@ -35,20 +32,34 @@ class RiderProfileService {
     var decoded = jsonDecode(response.body);
     if (response.statusCode.toString().startsWith('2')) {
       print('profile test: $decoded');
-         
+
       // set returned value hive
-    boxR.putAll({
-        "firstName": decoded['data'][0]['firstName'],
-        "lastName": decoded['data'][0]['lastName'],
-        "email": decoded['data'][0]['email'],
-        "phoneNumber": decoded['data'][0]['phoneNumber'],
-        "address": decoded['data'][0]['address'],
-        "bikeName": decoded['data'][0]["rider"]["vehicles"][0]["name"],
-        "bikeNumber": decoded['data'][0]["rider"]["vehicles"][0]["number"],
-        //"id": decoded['data']['id'],
-        // "riderId": decoded['data']['rider']['id']
-      });
-   print("see >>>. ${boxR.get('bikeName')} ~~~~~~~???????>>>>");
+
+      var appSettings = await appSettingsBloc.fetchAppSettings();
+      User user = appSettings.loginResponse?.data?.user ?? User();
+
+      Rider rider = user.rider ?? Rider();
+
+      Vehicles vehicles = rider.vehicles ?? Vehicles();
+
+      vehicles.name = decoded['data'][0]["rider"]["vehicles"][0]["name"];
+      vehicles.number = decoded['data'][0]["rider"]["vehicles"][0]["number"];
+
+      user.firstName = decoded['data'][0]['firstName'];
+      user.lastName = decoded['data'][0]['lastName'];
+      user.email = decoded['data'][0]['email'];
+      user.phoneNumber = decoded['data'][0]['phoneNumber'];
+      user.address = decoded['data'][0]['address'];
+      user.rider = rider;
+
+      AuthResponse authResponse = AuthResponse(
+          data: AuthData(
+              token: appSettings.loginResponse?.data?.token,
+              refreshToken: appSettings.loginResponse?.data?.refreshToken,
+              ssoToken: appSettings.loginResponse?.data?.ssoToken,
+              user: user));
+      await appSettingsBloc.saveLoginDetails(authResponse);
+
       return decoded;
     } else if (decoded['data']) {
       print(

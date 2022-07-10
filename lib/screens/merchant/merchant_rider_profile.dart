@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+
 import 'package:trakk/provider/merchant/rider_profile_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
@@ -51,7 +51,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     "add",
   ];
 
-  var box = Hive.box("riderData");
   bool _isButtonPress = false;
   bool _isActive = false;
   bool _isActive1 = false;
@@ -108,7 +107,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   Map<String, dynamic>? rider;
   Map<String, dynamic>? responseKey;
 
-
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
@@ -116,15 +114,15 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   //   setState(() {
   //     _isButtonPress = true;
   //   });
-    
+
   //   final FormState? form = _formKey.currentState;
-    
-  //   if(form!.validate() && 
-  //     _suspensionDuration != "Choose duration" 
-     
+
+  //   if(form!.validate() &&
+  //     _suspensionDuration != "Choose duration"
+
   //     ){
   //     form.save();
-      
+
   //     try{
   //      setState(() {
   //         _loading = true;
@@ -135,7 +133,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   //         Navigator.pop(context);
   //       }
   //      print(response.toString());
-      
+
   //     }catch(e){
   //       print(e.toString());
   //     }finally {
@@ -144,18 +142,16 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   //      });
   //     }
 
-     
   //     var box = await Hive.openBox('complaintType');
   //     //var imgBox = await Hive.openBox('imgDocs');
   //     await box.putAll({
   //       "complaint": _complaintType,
-       
-  //     });
-      
-  //   }
-   
-  // }
 
+  //     });
+
+  //   }
+
+  // }
 
   fetchVehicleList() async {
     var response = await RiderProfileProvider.riderProfileProvider(context)
@@ -221,7 +217,8 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                 width: 100,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(
-                    Radius.circular(10),                  ),
+                    Radius.circular(10),
+                  ),
                   border: Border.all(color: grayColor),
                 ),
                 child: ElevatedButton(
@@ -909,52 +906,50 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
         child: Column(
           children: [
             Padding(
-                padding:
-                    const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BackIcon(
-                      onPress: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    //Text('data'),
-                    SizedBox(
-                      width: mediaQuery.size.width / 4,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(
-                                top: 30,
-                                bottom: 0,
-                              ),
-                              height: 80,
-                              width: 80,
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/malik.png'))),
+              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BackIcon(
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  //Text('data'),
+                  SizedBox(
+                    width: mediaQuery.size.width / 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 30,
+                              bottom: 0,
                             ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                            height: 80,
+                            width: 80,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/malik.png'))),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
               ),
+            ),
             Expanded(
               child: SingleChildScrollView(
                 //physics: NeverScrollableScrollPhysics(),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: const [
-                    
                     Padding(
                       padding:
                           EdgeInsets.symmetric(vertical: 10, horizontal: 25),

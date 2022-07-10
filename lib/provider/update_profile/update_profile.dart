@@ -1,6 +1,6 @@
 
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:provider/provider.dart';
 import 'package:trakk/Exceptions/api_failure_exception.dart';
 

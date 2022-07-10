@@ -1,8 +1,8 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
+
 import 'package:trakk/provider/rider/rider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/utils/colors.dart';
@@ -20,7 +20,6 @@ class NextOfKin extends StatefulWidget {
 }
 
 class _NextOfKinState extends State<NextOfKin> {
-
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _kinFirstNameController;
@@ -43,12 +42,14 @@ class _NextOfKinState extends State<NextOfKin> {
   String? _phoneNumber;
   String? _password;
   String? userType;
+
   // address
   String? country;
   String? stateOfOrigin;
   String? stateOfResidence;
   String? residentialAddress;
   String? _userPassport;
+
   // vehicle info
   String? _vehicleName;
   String? _vehicleColor;
@@ -56,6 +57,7 @@ class _NextOfKinState extends State<NextOfKin> {
   String? _vehicleCapacity;
   int vehicleTypeId = 1;
   String? vehicleModel;
+
   // kin info
   String? _kinFirstName;
   String? _kinLastName;
@@ -81,7 +83,8 @@ class _NextOfKinState extends State<NextOfKin> {
 
   _validateEmail() {
     RegExp regex;
-    String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    String pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     String email = _kinEmailController.text;
     if (email.trim().isEmpty) {
       setState(() {
@@ -93,7 +96,7 @@ class _NextOfKinState extends State<NextOfKin> {
       setState(() {
         _emailIsValid = regex.hasMatch(email);
       });
-      if(_emailIsValid == false){
+      if (_emailIsValid == false) {
         return "Enter a valid email address";
       }
     }
@@ -106,42 +109,39 @@ class _NextOfKinState extends State<NextOfKin> {
     setState(() {
       _loading = true;
     });
-    var box = await Hive.openBox('imgDocs');
     print('============ PRINTING IMAGES =============');
-    print(box.get('riderDocs'));
-    
+
     final FormState? form = _formKey.currentState;
 
-    if(form!.validate()){
-
+    if (form!.validate()) {
       form.save();
 
-      var box = await Hive.openBox('userData');
-      var imgBox = await Hive.openBox('imgDocs');
+      var routeMap =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
       try {
         var response = await RiderAuth.authProvider(context).createRider(
-          _firstName = box.get("firstName"),
-          _lastName = box.get("lastName"),
-          _email = box.get("email"),
-          _password = box.get("password"),
-          _phoneNumber = box.get("phoneNumber"),
-          stateOfOrigin = box.get("stateOfOrigin"),
-          stateOfResidence = box.get("stateOfResidence"),
-          residentialAddress = box.get("residentialAddress"),
-          _vehicleName = box.get("vehicleName"),
-          _vehicleColor = box.get("vehicleColor"),
-          _vehicleNumber = box.get("vehicleNumber"),
-          _vehicleCapacity = box.get("vehicleCapacity"),
-          vehicleModel = box.get("vehicleModel"),
+          _firstName = routeMap['firstName'],
+          _lastName = routeMap['lastName'],
+          _email = routeMap['email'] ,
+          _password =routeMap['password'] ,
+          _phoneNumber =routeMap['phoneNumber'] ,
+          stateOfOrigin = routeMap['stateOfOrigin'],
+          stateOfResidence =routeMap['stateOfResidence'] ,
+          residentialAddress =routeMap['residentialAddress'],
+          _vehicleName = routeMap['vehicleName'],
+          _vehicleColor =routeMap['vehicleColor'] ,
+          _vehicleNumber =routeMap['vehicleNumber'] ,
+          _vehicleCapacity = routeMap['vehicleCapacity'] ,
+          vehicleModel = routeMap['vehicleModel'] ,
           vehicleTypeId,
-          _imgDocs = imgBox.get("riderDocs"),
+          _imgDocs = (routeMap['riderDocs'] as Map<String,dynamic>).values.toList(),
           _kinFirstName.toString(),
           _kinLastName.toString(),
           _kinPhoneNumber.toString(),
           _kinEmail.toString(),
           _kinAddress.toString(),
-         _kinRelationship.toString(),
+          _kinRelationship.toString(),
         );
         setState(() {
           _loading = false;
@@ -158,7 +158,7 @@ class _NextOfKinState extends State<NextOfKin> {
               ),
             ),
             backgroundColor: green,
-            maxWidth: MediaQuery.of(context).size.width/1.2,
+            maxWidth: MediaQuery.of(context).size.width / 1.2,
             borderRadius: BorderRadius.circular(10),
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
@@ -175,13 +175,13 @@ class _NextOfKinState extends State<NextOfKin> {
               ),
             ),
             backgroundColor: redColor,
-            maxWidth: MediaQuery.of(context).size.width/1.2,
+            maxWidth: MediaQuery.of(context).size.width / 1.2,
             borderRadius: BorderRadius.circular(10),
             flushbarPosition: FlushbarPosition.TOP,
             duration: const Duration(seconds: 2),
           ).show(context);
         }
-      } catch(err){
+      } catch (err) {
         setState(() {
           _loading = false;
         });
@@ -196,7 +196,7 @@ class _NextOfKinState extends State<NextOfKin> {
           ),
           backgroundColor: redColor,
           flushbarPosition: FlushbarPosition.TOP,
-          maxWidth: MediaQuery.of(context).size.width/1.2,
+          maxWidth: MediaQuery.of(context).size.width / 1.2,
           borderRadius: BorderRadius.circular(10),
           duration: const Duration(seconds: 5),
         ).show(context);
@@ -207,23 +207,23 @@ class _NextOfKinState extends State<NextOfKin> {
       _loading = false;
     });
   }
-  
+
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
+        backgroundColor: whiteColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Column(
             children: [
               const SizedBox(height: 10.0),
               Row(
                 children: [
                   BackIcon(
-                    onPress: () {Navigator.pop(context);},
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-
                   Container(
                     margin: const EdgeInsets.only(left: 40.0),
                     alignment: Alignment.center,
@@ -243,215 +243,200 @@ class _NextOfKinState extends State<NextOfKin> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30.0),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Next Of Kin',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Next Of Kin',
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                    
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('kinFirstName'),
-                      textController: _kinFirstNameController,
-                      node: _kinFirstNameNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'First Name of Kin',
-                      hintText: 'John Doe',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.user_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
-                      ),
-                      validator: (value) {
-                        if (value!.trim().length > 3) {
-                          return null;
-                        }
-                        return "Enter a valid first name";
-                      },
-                        onSaved: (value){
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('kinFirstName'),
+                        textController: _kinFirstNameController,
+                        node: _kinFirstNameNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'First Name of Kin',
+                        hintText: 'John Doe',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.user_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length > 3) {
+                            return null;
+                          }
+                          return "Enter a valid first name";
+                        },
+                        onSaved: (value) {
                           _kinFirstName = value!.trim();
                           return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('kinLastName'),
-                      textController: _kinLastNameController,
-                      node: _kinLastNameNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Last Name of Kin',
-                      hintText: 'Doe',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.user_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
+                        },
                       ),
-                      validator: (value) {
-                        if (value!.trim().length > 3) {
-                          return null;
-                        }
-                        return "Enter a valid last name";
-                      },
-                        onSaved: (value){
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('kinLastName'),
+                        textController: _kinLastNameController,
+                        node: _kinLastNameNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Last Name of Kin',
+                        hintText: 'Doe',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.user_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length > 3) {
+                            return null;
+                          }
+                          return "Enter a valid last name";
+                        },
+                        onSaved: (value) {
                           _kinLastName = value!.trim();
                           return null;
-                      },
-                    ),
-                    
-
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('kinEmail'),
-                      textController: _kinEmailController,
-                      keyboardType: TextInputType.emailAddress,
-                      node: _kinEmailNode,
-                      obscureText: false,
-                      text: 'Email Address of Kin',
-                      hintText: 'johndoe@email.com',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.mail_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
+                        },
                       ),
-                      validator: (value) {
-                        return _validateEmail();
-                      },
-                      onSaved: (value){
-                        _kinEmail = value!.trim();
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('kinAddress'),
-                      textController: _kinAddressController,
-                      node: _kinAddressNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Address of Kin',
-                      hintText: 'Address of next of kin',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.home_7_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
-                      ),
-                      validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return "Enter your residential address";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _kinAddress = value!.trim();
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('kinRelationship'),
-                      textController: _kinRelationshipController,
-                      node: _kinRelationshipNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Relationship with Kin',
-                      hintText: 'E.g. brother, sister, mother',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.home_7_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
-                      ),
-                      validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return "Field cannot be empty";
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        _kinRelationship = value!.trim();
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 30.0),
-                    InputField(
-                      key: const Key('kinPhoneNumber'),
-                      textController: _kinPhoneNumberController,
-                      node: _kinPhoneNumberNode,
-                      keyboardType: TextInputType.phone,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Phone number of Kin',
-                      hintText: '08000000000',
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      suffixIcon: const Icon(
-                        Remix.phone_line,
-                        size: 18.0,
-                        color: Color(0xFF909090),
-                      ),
-                      validator: (value) {
-                        if (value!.trim().length == 11) {
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('kinEmail'),
+                        textController: _kinEmailController,
+                        keyboardType: TextInputType.emailAddress,
+                        node: _kinEmailNode,
+                        obscureText: false,
+                        text: 'Email Address of Kin',
+                        hintText: 'johndoe@email.com',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.mail_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          return _validateEmail();
+                        },
+                        onSaved: (value) {
+                          _kinEmail = value!.trim();
                           return null;
-                        }
-                        return "Enter a valid phone number";
-                      },
-                      onSaved: (value) {
-                        _kinPhoneNumber = value!.trim();
-                        return null;
-                      },
-                    ),
-
-                    const SizedBox(height: 40.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: Button(
-                        text: 'Create account', 
-                        onPress: _onSubmit,
-                        color: appPrimaryColor, 
-                        textColor: whiteColor, 
-                        isLoading: _loading,
-                        width: 350.0
-                      )
-                    ),
-
-                    const SizedBox(height: 40.0),
-                  ],
-                ),
+                        },
+                      ),
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('kinAddress'),
+                        textController: _kinAddressController,
+                        node: _kinAddressNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Address of Kin',
+                        hintText: 'Address of next of kin',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.home_7_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return "Enter your residential address";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _kinAddress = value!.trim();
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('kinRelationship'),
+                        textController: _kinRelationshipController,
+                        node: _kinRelationshipNode,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Relationship with Kin',
+                        hintText: 'E.g. brother, sister, mother',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.home_7_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().isEmpty) {
+                            return "Field cannot be empty";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _kinRelationship = value!.trim();
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('kinPhoneNumber'),
+                        textController: _kinPhoneNumberController,
+                        node: _kinPhoneNumberNode,
+                        keyboardType: TextInputType.phone,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        obscureText: false,
+                        text: 'Phone number of Kin',
+                        hintText: '08000000000',
+                        textHeight: 10.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.phone_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: (value) {
+                          if (value!.trim().length == 11) {
+                            return null;
+                          }
+                          return "Enter a valid phone number";
+                        },
+                        onSaved: (value) {
+                          _kinPhoneNumber = value!.trim();
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 40.0),
+                      Align(
+                          alignment: Alignment.center,
+                          child: Button(
+                              text: 'Create account',
+                              onPress: _onSubmit,
+                              color: appPrimaryColor,
+                              textColor: whiteColor,
+                              isLoading: _loading,
+                              width: 350.0)),
+                      const SizedBox(height: 40.0),
+                    ],
+                  ),
                 ),
               ),
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 }
