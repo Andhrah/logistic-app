@@ -67,7 +67,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
           stream: riderHomeStateBloc.behaviorSubject,
           dataBuilder: (context, data) {
             if (data == RiderOrderState.isHomeScreen ||
-                data == RiderOrderState.isNewRequest) {
+                data == RiderOrderState.isNewRequestClicked) {
               return RiderHomeStandbyScreen(locaBloc);
             }
 

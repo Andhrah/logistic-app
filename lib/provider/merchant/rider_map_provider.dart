@@ -100,7 +100,7 @@ class RiderMapProvider extends ChangeNotifier {
     socket?.on("rider_request_$riderID", (data) {
       log('rider_request_data ${jsonEncode(data)}');
       streamSocket.addResponseOnMove(OrderResponse.fromJson(data));
-      riderHomeStateBloc.updateState(RiderOrderState.isNewRequest);
+      riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
     });
 
     // socket?.on('on:surrounding:packages', (data) {

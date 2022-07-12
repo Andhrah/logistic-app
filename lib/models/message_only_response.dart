@@ -1,3 +1,5 @@
+import 'package:trakk/services/base_network_call_handler.dart';
+
 class MessageOnlyResponse {
   String? message;
 
@@ -11,7 +13,7 @@ class MessageOnlyResponse {
 
   factory MessageOnlyResponse.fromJson(Map<String, dynamic> json) =>
       MessageOnlyResponse(
-        message: json["message"],
+        message: json["message"] ?? kNetworkGeneralText,
       );
 
   Map<String, dynamic> toJson() => {

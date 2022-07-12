@@ -38,18 +38,20 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
     return CustomStreamBuilder<RiderOrderState, String>(
         stream: riderHomeStateBloc.behaviorSubject,
         dataBuilder: (context, data) {
-          if (data == RiderOrderState.isNewRequest) {
+          if (data == RiderOrderState.isNewRequestIncoming) {
             return StreamBuilder<BaseModel<OrderResponse, String>>(
                 stream: streamSocket.behaviorSubject,
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.model != null) {
                     return cardWithNewRequest(context);
                   }
-                  //todo: change to no new request screen
                   return cardWithLocation(context);
                 });
+          } else if (data == RiderOrderState.isHomeScreen) {
+            return cardWithLocation(context);
           }
-          return cardWithLocation(context);
+
+          return const SizedBox();
         });
   }
 
@@ -89,7 +91,10 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                   Button(
                     text: 'View Details',
                     fontSize: 14,
-                    onPress: () {},
+                    onPress: () {
+                      riderHomeStateBloc
+                          .updateState(RiderOrderState.isNewRequestClicked);
+                    },
                     color: appPrimaryColor,
                     textColor: whiteColor,
                     isLoading: false,
@@ -187,7 +192,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                                   );
                                 });
                           }
-                          return SizedBox();
+                          return const SizedBox();
                         },
                       ),
                     ],

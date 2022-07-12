@@ -11,7 +11,8 @@ enum UserType {
 
 enum RiderOrderState {
   isHomeScreen,
-  isNewRequest,
+  isNewRequestIncoming,
+  isNewRequestClicked,
   isRequestAccepted,
   isAlmostAtPickupLocation,
   isItemPickedUpLocationAndEnRoute,

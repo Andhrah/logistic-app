@@ -46,7 +46,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
     return CustomStreamBuilder<RiderOrderState, String>(
         stream: riderHomeStateBloc.behaviorSubject,
         dataBuilder: (context, data) {
-          if (data == RiderOrderState.isNewRequest) {
+          if (data == RiderOrderState.isNewRequestClicked) {
             return StreamBuilder<BaseModel<OrderResponse, String>>(
                 stream: streamSocket.behaviorSubject,
                 builder: (context, snapshot) {
@@ -215,7 +215,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Incoming Request (Bulk)',
+                          'Incoming Request',
                           textAlign: TextAlign.center,
                           style: theme.textTheme.subtitle1!.copyWith(
                               fontWeight: kSemiBoldWeight, color: deepGreen),
