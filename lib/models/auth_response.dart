@@ -24,7 +24,7 @@ class AuthData {
 
   String? token;
   String? refreshToken;
-  final User? user;
+  User? user;
   final String? ssoToken;
 
   factory AuthData.fromJson(Map<String, dynamic> json) => AuthData(

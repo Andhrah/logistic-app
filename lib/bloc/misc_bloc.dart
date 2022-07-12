@@ -1,6 +1,6 @@
 import 'package:location/location.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 
 class MiscBloc {
   MiscBloc() {
@@ -30,7 +30,7 @@ class MiscBloc {
       permissionGranted = await location.requestPermission();
       //TODO: do your logic to manage when user denies the permission
       if (permissionGranted != PermissionStatus.granted) {
-        appToast('Permission not granted', redColor);
+        appToast('Permission not granted', appToastType: AppToastType.failed);
         return locationData;
       }
     }

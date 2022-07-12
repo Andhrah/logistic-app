@@ -13,7 +13,7 @@ import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/services/auth/login_service.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
 import '../utils/operation.dart';
@@ -46,10 +46,11 @@ class LoginHelper with ConnectivityHelper {
       await appSettingsBloc.saveLoginDetails(authResponse);
 
       if ((authResponse.data?.user?.confirmed ?? false) == true) {
-        await appToast('Login Successful', green);
+        await appToast('Login Successful', appToastType: AppToastType.success);
         SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
       } else {
-        await appToast('Login Successful, please verify your account', green);
+        await appToast('Login Successful, please verify your account',
+            appToastType: AppToastType.success);
         SingletonData.singletonData.navKey.currentState!
             .pushNamed(VerifiyAccountScreen.id, arguments: {
           "email": authResponse.data?.user?.email ?? '',
@@ -60,7 +61,7 @@ class LoginHelper with ConnectivityHelper {
     } else {
       MessageOnlyResponse error = operation.result;
 
-      appToast(error.message ?? '', redColor);
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
 }

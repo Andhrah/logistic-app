@@ -57,6 +57,14 @@ class _AppSettingsBloc {
     return token;
   }
 
+  Future<String> get getUserID async {
+    var appSettings = await appSettingsProvider.fetchAppSettings();
+
+    String id = '${appSettings.loginResponse?.data?.user?.id ?? ''}';
+
+    return id;
+  }
+
   //getters
   Future<UserType> get getUserType async {
     var appSettings = await appSettingsProvider.fetchAppSettings();

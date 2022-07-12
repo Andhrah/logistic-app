@@ -22,3 +22,5 @@ enum RiderOrderState {
 }
 
 enum HttpRequestType { get, post, put, patch, delete, head, request, download }
+
+enum AppToastType { success, failed }

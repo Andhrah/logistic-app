@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
-import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -21,7 +19,6 @@ class _HomeState extends State<Home> {
   @override
   void initState() {
     super.initState();
-    GetUserData.getUser();
   }
 
   @override

@@ -252,7 +252,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
             return;
           }
 
-          appToast('Invalid Code', redColor);
+          appToast('Invalid Code', appToastType: AppToastType.failed);
         },
         negativeLabel: 'Cancel',
         onNegativeCallback: () => Navigator.pop(context),

@@ -3,7 +3,6 @@ import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/models/message_only_response.dart';
 import 'package:trakk/services/order/order_api.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
 import 'package:trakk/utils/singleton_data.dart';
@@ -28,11 +27,14 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
-      appToast('Request Accepted', green);
+      appToast('Request Accepted', appToastType: AppToastType.success);
       riderHomeStateBloc.updateState(RiderOrderState.isRequestAccepted);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
-      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
+      appToast(
+        messageOnlyResponse.message ?? '',
+        appToastType: AppToastType.failed,
+      );
     }
   }
 
@@ -53,11 +55,12 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
-      appToast('Request Declined', green);
+      appToast('Request Declined', appToastType: AppToastType.success);
       riderHomeStateBloc.updateState(RiderOrderState.isHomeScreen);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
-      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
+      appToast(messageOnlyResponse.message ?? '',
+          appToastType: AppToastType.failed);
     }
   }
 
@@ -78,12 +81,15 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
-      appToast('Item Picked Up', green);
+      appToast('Item Picked Up', appToastType: AppToastType.success);
       riderHomeStateBloc
           .updateState(RiderOrderState.isItemPickedUpLocationAndEnRoute);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
-      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
+      appToast(
+        messageOnlyResponse.message ?? '',
+        appToastType: AppToastType.failed,
+      );
     }
   }
 
@@ -104,11 +110,12 @@ class OrderHelper {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
-      appToast('Item Delivered', green);
+      appToast('Item Delivered', appToastType: AppToastType.success);
       riderHomeStateBloc.updateState(RiderOrderState.isOrderCompleted);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
-      appToast(messageOnlyResponse.message ?? '', redColor, isSuccess: false);
+      appToast(messageOnlyResponse.message ?? '',
+          appToastType: AppToastType.failed);
     }
   }
 }

@@ -8,7 +8,7 @@ import 'package:connectivity/connectivity.dart';
 import 'package:dio/dio.dart';
 import 'package:trakk/services/base_network_call_handler.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
 typedef ProcessCompleted = Function();
@@ -18,7 +18,7 @@ class ConnectivityHelper {
       {ProcessCompleted? hasInternetCallback,
       ProcessCompleted? hasNoInternetCallback,
       bool loadInternet = false}) async {
-    var connectivityResult = await (new Connectivity().checkConnectivity());
+    var connectivityResult = await (Connectivity().checkConnectivity());
     if (connectivityResult == ConnectivityResult.mobile ||
         connectivityResult == ConnectivityResult.wifi) {
       try {
@@ -26,10 +26,10 @@ class ConnectivityHelper {
           String url = SingletonData.singletonData.baseURL!;
 
           if (url.isEmpty) {
-            checkInternetConnection(
-                hasInternetCallback: hasInternetCallback,
-                hasNoInternetCallback: hasNoInternetCallback,
-                loadInternet: loadInternet);
+            // checkInternetConnection(
+            //     hasInternetCallback: hasInternetCallback,
+            //     hasNoInternetCallback: hasNoInternetCallback,
+            //     loadInternet: loadInternet);
             return false;
           }
           var response = await SingletonData.singletonData.dio
@@ -84,6 +84,6 @@ class ConnectivityHelper {
   }
 
   _showNoInternet() {
-    appToast('No Internet Connection', redColor, isSuccess: false);
+    appToast('No Internet Connection', appToastType: AppToastType.failed);
   }
 }

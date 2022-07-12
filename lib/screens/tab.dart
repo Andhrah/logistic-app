@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
@@ -23,8 +22,6 @@ class Tabs extends StatefulWidget {
 }
 
 class _TabsState extends State<Tabs> {
-
-
   int _selectedIndex = 0;
 
   String currentTitle = 'Home';

@@ -164,8 +164,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                       ),
                     ],
                   ),
-                  child: Expanded(
-                      child: Column(
+                  child: Column(
                     children: [
                       const SizedBox(
                         height: 15,
@@ -282,7 +281,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                         ],
                       ),
                     ],
-                  )),
+                  ),
                 ),
               ),
             ],
