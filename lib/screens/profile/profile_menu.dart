@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/support/help.dart';
@@ -20,6 +22,13 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu> {
+
+  _logout() async {
+    var box = await Hive.openBox('appState');
+    await box.delete('token');
+    Navigator.of(context).pushNamed(GetStarted.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -194,7 +203,8 @@ class _ProfileMenuState extends State<ProfileMenu> {
                         width: 22,
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: _logout,
+                        
                         child: const Text(
                           "Log out",
                           style: TextStyle(

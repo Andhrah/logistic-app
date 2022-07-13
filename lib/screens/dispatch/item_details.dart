@@ -25,7 +25,9 @@ class ItemDetails extends StatefulWidget {
   _ItemDetailsState createState() => _ItemDetailsState();
 }
 
-class _ItemDetailsState extends State<ItemDetails> {
+/// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
+
+class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _pickUpController;
@@ -38,6 +40,9 @@ class _ItemDetailsState extends State<ItemDetails> {
   late TextEditingController _senderPhoneNumberController;
   late TextEditingController _pickUpDateController;
   late TextEditingController _dropOffDateController;
+
+  late AnimationController controller;
+  late Animation<Color?> animation;
 
   FocusNode? _pickUpNode;
   FocusNode? _dropOffNode;
@@ -119,6 +124,32 @@ class _ItemDetailsState extends State<ItemDetails> {
     _senderphoneNumberNode = FocusNode();
 
     _getPreviousRoute();
+
+    controller = AnimationController(
+      vsync: this, // the TickerProviderStateMixin
+      duration: const Duration(seconds: 5),
+
+    );
+
+    // animation = controller.drive(
+    //   ColorTween(
+    //     begin: appPrimaryColor, 
+    //     end: secondaryColor,
+    //   )
+    // );
+
+    animation = ColorTween(begin: appPrimaryColor, end: secondaryColor).animate(controller);
+    controller.repeat();
+    // controller.addListener(() {
+    //   setState(() {});
+    // });
+
+    // controller.forward();
+
+    // controller.addStatusListener((status) { 
+    //   if (status == AnimationStatus.completed){
+    //   }
+    // });
   }
 
   @override
@@ -281,6 +312,7 @@ class _ItemDetailsState extends State<ItemDetails> {
             //     );
             //   }
             // ),
+            
 
             const SizedBox(height: 80.0),
             Container(
@@ -295,183 +327,107 @@ class _ItemDetailsState extends State<ItemDetails> {
               ),
                 child: Column(
                 children: [
-                    ListTile(
-                    leading: Container(
-                      height: 50.0,
-                      width: 50.0,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.grey.shade200
-                      ),
-                      child: const Icon(
-                        Remix.user_3_fill,
-                        size: 30.0,
-                        color: appPrimaryColor,
-                      ),
+                  const SizedBox(height: 20.0),
+                  const Text(
+                    'Searching for a rider',
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontSize: 22.0,
                     ),
-                    title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text(
-                          'Order ID',
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                            color: appPrimaryColor,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-
-                        const SizedBox(height: 10.0),
-                        Text(
-                          '#234516',
-                          textScaleFactor: 1.0,
-                          style: TextStyle(
-                            color: appPrimaryColor.withOpacity(0.5),
-                          ),
-                        ),
-                      ],
-                    ),
-                    onTap: () {
-                      Navigator.pop(context);
-                    },
                   ),
+                  const SizedBox(height: 20.0),
+                  //   ListTile(
+                  //   leading: Container(
+                  //     height: 50.0,
+                  //     width: 50.0,
+                  //     decoration: BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       color: Colors.grey.shade200
+                  //     ),
+                  //     child: const Icon(
+                  //       Remix.user_3_fill,
+                  //       size: 30.0,
+                  //       color: appPrimaryColor,
+                  //     ),
+                  //   ),
+                  //   title: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       const Text(
+                  //         'Order ID',
+                  //         textScaleFactor: 1.2,
+                  //         style: TextStyle(
+                  //           color: appPrimaryColor,
+                  //           fontWeight: FontWeight.bold
+                  //         ),
+                  //       ),
+
+                  //       const SizedBox(height: 10.0),
+                  //       Text(
+                  //         '#234516',
+                  //         textScaleFactor: 1.0,
+                  //         style: TextStyle(
+                  //           color: appPrimaryColor.withOpacity(0.5),
+                  //         ),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   onTap: () {
+                  //     Navigator.pop(context);
+                  //   },
+                  // ),
                   Divider(
                     color: appPrimaryColor.withOpacity(0.4),
                   ),
 
                   const SizedBox(height: 20.0),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-                      const SizedBox(width: 20.0),
-                      Column(
-                        children: [
-                          Text(
-                            '6\nmin',
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
 
-                          const SizedBox(height: 20.0),
-                            Text(
-                            '28\nmin',
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
-                        ],
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20.0),
+                    child: Align(
+                      alignment: Alignment.centerLeft,
+                      child: Text(
+                        "Hold on while Trakk find you a rider",
+                        style: TextStyle(
+                          color: appPrimaryColor
+                        ),
                       ),
-
-                      Image.asset(
-                        'assets/images/order_highlighter.png',
-                        height: 160,
-                        width: 30,
-                      ),
-
-                      const SizedBox(width: 20.0),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'My location',
-                            textScaleFactor: 1.2,
-                            style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            '1.2km',
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            color: appPrimaryColor.withOpacity(0.2),
-                            height: 1.0,
-                            width: MediaQuery.of(context).size.width/1.3,
-                          ),
-
-                          const Text(
-                            '50b, Tapa street, yaba',
-                            textScaleFactor: 1.1,
-                            style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                          const SizedBox(height: 5.0),
-                          Text(
-                            '29.2km',
-                            textScaleFactor: 1.0,
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.3),
-                            ),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.only(top: 10.0, bottom: 10.0),
-                            color: appPrimaryColor.withOpacity(0.2),
-                            height: 1.0,
-                            width: MediaQuery.of(context).size.width/1.3,
-                          ),
-
-                          const Text(
-                            '1 Aminu street, mende maryland',
-                            textScaleFactor: 1.2,
-                            style: TextStyle(
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.bold
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
+                    ),
                   ),
 
                   const SizedBox(height: 30.0),
-                    Row(
-                    children: [
-                      const SizedBox(width: 40.0),
-                      Expanded(
-                        child: Button(
-                          text: 'Accept', 
-                          onPress: () {
-                            // Navigator.of(context).pushNamed(id);
-                            Navigator.pop(context);
-                          }, 
-                          color: secondaryColor, 
-                          textColor: appPrimaryColor, 
-                          isLoading: false,
-                          width: 60.0,
-                          // width: MediaQuery.of(context).size.width/6
+
+                  Stack(
+                    children: <Widget>[
+                      SizedBox(
+                        height: 80,
+                        width: 80,
+                        child: CircularProgressIndicator(
+                          // backgroundColor: Colors.pinkAccent,
+                          strokeWidth: 5.0,
+                          // value: 0.7,
+                          valueColor: animation,
+                          // valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
                         ),
                       ),
-
-                      const SizedBox(width: 20.0),
-
-                      Expanded(
-                        child: Button(
-                          text: 'Decline', 
-                          onPress: () {
-                            // Navigator.of(context).pushNamed(id);
-                            Navigator.pop(context);
-                          }, 
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: false,
-                          width: MediaQuery.of(context).size.width/7
-                        ),
-                      ),
-                      const SizedBox(width: 40.0),
+                      Positioned(
+                        left: 25,
+                        top: 20,
+                        child: Center(
+                          child: SizedBox(
+                            height: 40,
+                            width: 40,
+                            child: Image.asset(
+                              "assets/images/rider_vehicle.png",
+                              // height: 60,
+                              // width: 60,
+                            ),
+                          ),
+                        )
+                      )
                     ],
                   ),
+                  
                   const SizedBox(height: 30.0),
                 ]
               )
@@ -646,53 +602,94 @@ class _ItemDetailsState extends State<ItemDetails> {
                     }
                   ),
 
-                  InputField(
-                    obscureText: false,
-                    text: '',
-                    hintText: 'Item',
-                    textHeight: 0,
-                    node: _itemNode,
-                    textController: _itemController,
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    borderColor: appPrimaryColor.withOpacity(0.5),
-                    validator: (value) {
-                      if (value!.trim().length > 2) {
-                        return null;
-                      }
-                      return "Enter a valid item name";
-                    },
-                    onSaved: (value) {
-                      _item = value!.trim();
-                      return null;
-                    },
-                    suffixIcon: DropdownButton<String>(
-                      // value: _pickItem,
-                      hint: Text(
-                        " choose category of item",
-                        style: TextStyle(
-                          color: appPrimaryColor.withOpacity(0.3)
-                        ),
-                      ),
-                      icon: const Icon(Remix.arrow_down_s_line),
-                      elevation: 16,
-                      isExpanded: true, 
-                      style: TextStyle(
-                        color: appPrimaryColor.withOpacity(0.8),
-                        fontSize: 18.0,
-                      ),
-                      underline: Container(), //empty line
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _pickItem = newValue!;
-                        });
-                      },
-                      items: itemsCategory.map((String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                  // InputField(
+                  //   obscureText: false,
+                  //   text: '',
+                  //   hintText: 'Item',
+                  //   textHeight: 0,
+                  //   node: _itemNode,
+                  //   textController: _itemController,
+                  //   autovalidateMode: AutovalidateMode.onUserInteraction,
+                  //   borderColor: appPrimaryColor.withOpacity(0.5),
+                  //   validator: (value) {
+                  //     if (value!.trim().length > 2) {
+                  //       return null;
+                  //     }
+                  //     return "Enter a valid item name";
+                  //   },
+                  //   onSaved: (value) {
+                  //     _item = value!.trim();
+                  //     return null;
+                  //   },
+                  //   suffixIcon: DropdownButton<String>(
+                  //     // value: _pickItem,
+                  //     hint: Text(
+                  //       " choose category of item",
+                  //       style: TextStyle(
+                  //         color: appPrimaryColor.withOpacity(0.3)
+                  //       ),
+                  //     ),
+                  //     icon: const Icon(Remix.arrow_down_s_line),
+                  //     elevation: 16,
+                  //     isExpanded: true, 
+                  //     style: TextStyle(
+                  //       color: appPrimaryColor.withOpacity(0.8),
+                  //       fontSize: 18.0,
+                  //     ),
+                  //     underline: Container(), //empty line
+                  //     onChanged: (String? newValue) {
+                  //       setState(() {
+                  //         _pickItem = newValue!;
+                  //       });
+                  //     },
+                  //     items: itemsCategory.map((String value) {
+                  //       return DropdownMenuItem(
+                  //         value: value,
+                  //         child: Text(value),
+                  //       );
+                  //     }).toList(),
+                  //   ),
+                  // ),
+
+                  DecoratedBox(
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: appPrimaryColor.withOpacity(0.5),
+                        width: 0.3
+                      ), //border of dropdown button
+                      borderRadius: BorderRadius.circular(5.0), //border raiuds of dropdown button
                     ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: DropdownButton<String>(
+                        value: _pickItem,
+                        hint: Text(
+                          "choose category of item",
+                          style: TextStyle(
+                            color: appPrimaryColor.withOpacity(0.3)
+                          ),
+                        ),
+                        icon: const Icon(Remix.arrow_down_s_line),
+                        elevation: 16,
+                        isExpanded: true, 
+                        style: TextStyle(
+                          color: appPrimaryColor.withOpacity(0.8),
+                          fontSize: 18.0,
+                        ),
+                         underline: Container(), //empty line
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            _pickItem = newValue!;
+                          });
+                        },
+                        items: itemsCategory.map((String value) {
+                          return DropdownMenuItem(
+                            value: value,
+                            child: Text(value),
+                          );
+                        }).toList(),
+                      ),
+                    )
                   ),
 
                   InputField(

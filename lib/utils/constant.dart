@@ -15,6 +15,11 @@ uriConverter(String url) {
   return Uri.https(baseUrl, '/$url');
 }
 
+paramsUriConverter(String url, Map<String, dynamic>? params) {
+  print('$baseUrl/$url');
+  return Uri.https(baseUrl, '/$url', params);
+}
+
 ssoUriConverter(String url) {
   print('$ssoUrl/$url');
   return Uri.https(ssoUrl, '/$url');
