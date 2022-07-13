@@ -38,18 +38,20 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
     return CustomStreamBuilder<RiderOrderState, String>(
         stream: riderHomeStateBloc.behaviorSubject,
         dataBuilder: (context, data) {
-          if (data == RiderOrderState.isNewRequest) {
+          if (data == RiderOrderState.isNewRequestIncoming) {
             return StreamBuilder<BaseModel<OrderResponse, String>>(
                 stream: streamSocket.behaviorSubject,
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.model != null) {
                     return cardWithNewRequest(context);
                   }
-                  //todo: change to no new request screen
                   return cardWithLocation(context);
                 });
+          } else if (data == RiderOrderState.isHomeScreen) {
+            return cardWithLocation(context);
           }
-          return cardWithLocation(context);
+
+          return const SizedBox();
         });
   }
 
@@ -57,15 +59,19 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
     var theme = Theme.of(context);
 
     return Center(
-      child: IgnorePointer(
+      child: SizedBox(
+        key: UniqueKey(),
+        width: double.infinity,
         child: CircularGlow(
           glowColor: secondaryColor,
-          endRadius: 120.0,
+          endRadius: 180.0,
           duration: const Duration(milliseconds: 2000),
           repeat: true,
+          reverse: true,
           showTwoGlows: true,
-          repeatPauseDuration: const Duration(milliseconds: 100),
-          child: DecoratedBox(
+          repeatPauseDuration: const Duration(milliseconds: 0),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 200),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: whiteColor.withOpacity(0.5),
@@ -73,7 +79,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
             child: Container(
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: secondaryColor.withOpacity(0.5),
+                color: secondaryColor.withOpacity(0.1),
               ),
               padding: const EdgeInsets.symmetric(vertical: 24, horizontal: 24),
               alignment: Alignment.center,
@@ -89,7 +95,10 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                   Button(
                     text: 'View Details',
                     fontSize: 14,
-                    onPress: () {},
+                    onPress: () {
+                      riderHomeStateBloc
+                          .updateState(RiderOrderState.isNewRequestClicked);
+                    },
                     color: appPrimaryColor,
                     textColor: whiteColor,
                     isLoading: false,
@@ -187,7 +196,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                                   );
                                 });
                           }
-                          return SizedBox();
+                          return const SizedBox();
                         },
                       ),
                     ],

@@ -1,9 +1,7 @@
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trakk/bloc/map_socket.dart';
-import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/mixins/order_helper.dart';
 import 'package:trakk/models/rider/order_response.dart';
@@ -108,17 +106,6 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                       final double deliveryLongitude =
                                           data.order?.destinationLongitude ??
                                               0.0;
-                                      if (orderState ==
-                                              RiderOrderState
-                                                  .isRequestAccepted ||
-                                          orderState ==
-                                              RiderOrderState
-                                                  .isAlmostAtPickupLocation) {
-                                        mapExtraUIBloc.updateMarkersWithCircle([
-                                          LatLng(
-                                              pickupLatitude, pickupLongitude)
-                                        ], 'Pickup', true);
-                                      }
 
                                       if (orderState ==
                                           RiderOrderState.isOrderCompleted) {
@@ -204,13 +191,11 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
 
   _onButtonClick(RiderOrderState data, String orderNo, String deliveryCode,
       double pickupLatitude, double pickupLongitude) {
-    print('RiderOrderState: $data');
-
     if (data == RiderOrderState.isRequestAccepted ||
         data == RiderOrderState.isAlmostAtPickupLocation) {
       modalDialog(
         context,
-        title: 'Are you sure to go to delivery?',
+        title: 'Are you sure you have picked up item?',
         positiveLabel: 'Yes',
         onPositiveCallback: () {
           doPickupOrder(orderNo);
@@ -252,7 +237,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
             return;
           }
 
-          appToast('Invalid Code', redColor);
+          appToast('Invalid Code', appToastType: AppToastType.failed);
         },
         negativeLabel: 'Cancel',
         onNegativeCallback: () => Navigator.pop(context),

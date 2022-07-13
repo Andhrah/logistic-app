@@ -8,6 +8,7 @@ class CircularGlow extends StatefulWidget {
   final BoxShape shape;
   final Duration duration;
   final bool repeat;
+  final bool reverse;
   final bool animate;
   final Duration repeatPauseDuration;
   final Curve curve;
@@ -22,6 +23,7 @@ class CircularGlow extends StatefulWidget {
     this.shape = BoxShape.circle,
     this.duration = const Duration(milliseconds: 2000),
     this.repeat = true,
+    this.reverse = false,
     this.animate = true,
     this.repeatPauseDuration = const Duration(milliseconds: 100),
     this.curve = Curves.fastOutSlowIn,
@@ -45,11 +47,19 @@ class _CircularGlowState extends State<CircularGlow>
     curve: widget.curve,
   );
   late final Animation<double> _smallDiscAnimation = Tween(
-    begin: (widget.endRadius * 2) / 6,
-    end: (widget.endRadius * 2) * (3 / 4),
+    begin: (widget.endRadius * 2) / 2,
+    end: (widget.endRadius * 2) * 0.7,
   ).animate(_curve);
   late final Animation<double> _bigDiscAnimation = Tween(
-    begin: 0.5,
+    begin: (widget.endRadius * 2) / 1.8,
+    end: (widget.endRadius * 2) * 0.8,
+  ).animate(_curve);
+  late final Animation<double> _biggerDiscAnimation = Tween(
+    begin: (widget.endRadius * 2) / 1.6,
+    end: (widget.endRadius * 2) * 0.9,
+  ).animate(_curve);
+  late final Animation<double> _biggestDiscAnimation = Tween(
+    begin: (widget.endRadius * 2) / 1.4,
     end: (widget.endRadius * 2),
   ).animate(_curve);
   late final Animation<double> _alphaAnimation = Tween(
@@ -59,9 +69,19 @@ class _CircularGlowState extends State<CircularGlow>
 
   late void Function(AnimationStatus status) _statusListener = (_) async {
     if (controller.status == AnimationStatus.completed) {
-      await Future.delayed(widget.repeatPauseDuration);
+      // await Future.delayed(widget.repeatPauseDuration);
       if (mounted && widget.repeat && widget.animate) {
-        controller.reset();
+        if (widget.reverse) {
+          controller.reverse();
+        } else {
+          controller.reset();
+          controller.forward();
+        }
+      }
+    } else if (widget.reverse &&
+        controller.status == AnimationStatus.dismissed) {
+      // await Future.delayed(widget.repeatPauseDuration);
+      if (mounted && widget.repeat && widget.animate) {
         controller.forward();
       }
     }
@@ -114,17 +134,53 @@ class _CircularGlowState extends State<CircularGlow>
           // this opacity will have unexpected effects without clamping
           color: widget.glowColor.withOpacity(
             _alphaAnimation.value.clamp(
-              0.0,
+              0.05,
               1.0,
             ),
           ),
         );
-        return Container(
+        return SizedBox(
           height: widget.endRadius * 2,
           width: widget.endRadius * 2,
           child: Stack(
             alignment: Alignment.center,
             children: <Widget>[
+              widget.animate
+                  ? AnimatedBuilder(
+                      animation: _biggestDiscAnimation,
+                      builder: (context, widget) {
+                        // If the user picks a curve that goes below 0,
+                        // this will throw without clamping
+                        final num size = _biggestDiscAnimation.value.clamp(
+                          0.0,
+                          double.infinity,
+                        );
+                        return Container(
+                          height: size as double?,
+                          width: size as double?,
+                          decoration: decoration,
+                        );
+                      },
+                    )
+                  : const SizedBox(height: 0.0, width: 0.0),
+              widget.animate
+                  ? AnimatedBuilder(
+                      animation: _biggerDiscAnimation,
+                      builder: (context, widget) {
+                        // If the user picks a curve that goes below 0,
+                        // this will throw without clamping
+                        final num size = _biggerDiscAnimation.value.clamp(
+                          0.0,
+                          double.infinity,
+                        );
+                        return Container(
+                          height: size as double?,
+                          width: size as double?,
+                          decoration: decoration,
+                        );
+                      },
+                    )
+                  : const SizedBox(height: 0.0, width: 0.0),
               widget.animate
                   ? AnimatedBuilder(
                       animation: _bigDiscAnimation,

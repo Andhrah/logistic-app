@@ -7,6 +7,7 @@ import 'package:trakk/provider/merchant/add_company_data_provider.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/input_field.dart';
@@ -108,7 +109,7 @@ class _CompanyDataState extends State<CompanyData> {
         form.reset();
         await appToast(
           'Your information has been add successfully',
-          green,
+          appToastType: AppToastType.success,
         );
         Navigator.of(context).pushNamed(
           Tabs.id,
@@ -118,7 +119,7 @@ class _CompanyDataState extends State<CompanyData> {
         setState(() {
           _loading = false;
         });
-        appToast(err.toString(), redColor);
+        appToast(err.toString(), appToastType: AppToastType.failed);
         rethrow;
       }
     }

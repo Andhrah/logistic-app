@@ -11,7 +11,8 @@ enum UserType {
 
 enum RiderOrderState {
   isHomeScreen,
-  isNewRequest,
+  isNewRequestIncoming,
+  isNewRequestClicked,
   isRequestAccepted,
   isAlmostAtPickupLocation,
   isItemPickedUpLocationAndEnRoute,
@@ -21,3 +22,5 @@ enum RiderOrderState {
 }
 
 enum HttpRequestType { get, post, put, patch, delete, head, request, download }
+
+enum AppToastType { success, failed }

@@ -146,7 +146,7 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
             child: Button(
                 text: (orderState == RiderOrderState.isRequestAccepted ||
                         orderState == RiderOrderState.isAlmostAtPickupLocation)
-                    ? 'Go to delivery'
+                    ? 'Confirm Pickup'
                     :
                     // (orderState == RiderOrderState.isItemPickedUpLocationAndEnRoute)
                     //         ? 'Go to Delivery'

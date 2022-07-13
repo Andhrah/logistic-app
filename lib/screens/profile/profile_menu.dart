@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/mixins/connectivity_helper.dart';
+import 'package:trakk/mixins/profile_helper.dart';
 import 'package:trakk/models/app_settings.dart';
-import 'package:trakk/provider/update_profile/update_profile.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
-import 'package:trakk/services/get_user_service.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -28,21 +27,15 @@ class ProfileMenu extends StatefulWidget {
   State<ProfileMenu> createState() => _ProfileMenuState();
 }
 
-class _ProfileMenuState extends State<ProfileMenu> {
+class _ProfileMenuState extends State<ProfileMenu>
+    with ProfileHelper, ConnectivityHelper {
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
 
   @override
   void initState() {
     super.initState();
-    GetUserData.getUser();
-    fetchUserData();
-  }
-
-  fetchUserData() async {
-    var response = await UpdateUserProvider.updateUserProvider(context)
-        .updateUserProfile();
-    print("responseData=> ${response}");
+    doGetProfileOperation(() {}, () {});
   }
 
   // fetchRiderHistory() async {

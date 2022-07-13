@@ -5,17 +5,13 @@
     */
 
 import 'package:flutter/material.dart';
-import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/models/auth_response.dart';
 import 'package:trakk/models/message_only_response.dart';
 import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/verify_account.dart';
-import 'package:trakk/screens/tab.dart';
 import 'package:trakk/services/auth/forgot_password_service.dart';
-import 'package:trakk/services/auth/login_service.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
 import '../utils/operation.dart';
@@ -45,11 +41,12 @@ class ForgotPasswordHelper with ConnectivityHelper {
       MessageOnlyResponse messageOnlyResponse =
           MessageOnlyResponse.fromJson(operation.result);
 
-      await appToast(messageOnlyResponse.message ?? '', green);
+      await appToast(messageOnlyResponse.message ?? '',
+          appToastType: AppToastType.success);
     } else {
       MessageOnlyResponse error = operation.result;
 
-      appToast(error.message ?? '', redColor);
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
 
@@ -69,12 +66,13 @@ class ForgotPasswordHelper with ConnectivityHelper {
       MessageOnlyResponse messageOnlyResponse =
           MessageOnlyResponse.fromJson(operation.result);
 
-      await appToast(messageOnlyResponse.message ?? '', green);
+      await appToast(messageOnlyResponse.message ?? '',
+          appToastType: AppToastType.success);
       SingletonData.singletonData.navKey.currentState!.pushNamed(Login.id);
     } else {
       MessageOnlyResponse error = operation.result;
 
-      appToast(error.message ?? '', redColor);
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
 }

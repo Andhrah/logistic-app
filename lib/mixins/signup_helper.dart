@@ -5,17 +5,14 @@
     */
 
 import 'package:flutter/material.dart';
-import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/models/auth_response.dart';
 import 'package:trakk/models/message_only_response.dart';
 import 'package:trakk/screens/auth/merchant/company_data.dart';
 import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/screens/tab.dart';
-import 'package:trakk/services/auth/login_service.dart';
 import 'package:trakk/services/auth/signup_service.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
@@ -61,7 +58,7 @@ class SignupHelper with ConnectivityHelper {
       await appToast(
           'Your account has been created and ' +
               (messageOnlyResponse.message ?? ''),
-          green);
+          appToastType: AppToastType.success);
 
       SingletonData.singletonData.navKey.currentState!
           .pushNamed(VerifiyAccountScreen.id, arguments: {
@@ -72,7 +69,7 @@ class SignupHelper with ConnectivityHelper {
     } else {
       MessageOnlyResponse error = operation.result;
 
-      appToast(error.message ?? '', redColor);
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
 
@@ -99,7 +96,7 @@ class SignupHelper with ConnectivityHelper {
     } else {
       MessageOnlyResponse error = operation.result;
 
-      appToast(error.message ?? '', redColor);
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
 
@@ -123,12 +120,12 @@ class SignupHelper with ConnectivityHelper {
           MessageOnlyResponse.fromJson(operation.result);
       await appToast(
         (messageOnlyResponse.message ?? ''),
-        green,
+        appToastType: AppToastType.success,
       );
     } else {
       MessageOnlyResponse error = operation.result;
 
-      appToast(error.message ?? '', redColor);
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
 }

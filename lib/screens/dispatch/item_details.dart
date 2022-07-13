@@ -4,20 +4,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-
 import 'package:provider/provider.dart';
+import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/models/order/order.dart';
-
 import 'package:trakk/provider/order/order.dart';
-import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
 import 'package:trakk/widgets/input_field.dart';
-import 'package:remixicon/remixicon.dart';
 
 class ItemDetails extends StatefulWidget {
   static const String id = 'itemDetails';
@@ -60,7 +56,6 @@ class _ItemDetailsState extends State<ItemDetails> {
   String _itemImage = "";
   String? _pickUpDate;
   String? _dropOffDate;
-  dynamic _buttonText = "";
 
   late GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
@@ -458,9 +453,6 @@ class _ItemDetailsState extends State<ItemDetails> {
 
   @override
   Widget build(BuildContext context) {
-    final arg = ModalRoute.of(context)?.settings.arguments as Map;
-    if (arg.isNotEmpty) _buttonText = arg["buttonText"];
-
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
