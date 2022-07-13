@@ -4,6 +4,8 @@
 *  Copyright © 2022 [Zebrra]. All rights reserved.
     */
 
+import 'dart:ui';
+
 import 'package:trakk/models/auth_response.dart';
 
 class AppSettings {
@@ -17,6 +19,38 @@ class AppSettings {
       this.isLoggedIn = false,
       this.isPersistentLogin = false,
       this.loginResponse});
+
+  AppSettings copyWith(
+      {bool? hasViewedAppTour,
+      bool? isLoggedIn,
+      AuthResponse? loginResponse,
+      bool? isPersistentLogin}) {
+    return AppSettings(
+      hasViewedAppTour: hasViewedAppTour ?? this.hasViewedAppTour,
+      isLoggedIn: isLoggedIn ?? this.isLoggedIn,
+      loginResponse: loginResponse ?? this.loginResponse,
+      isPersistentLogin: isPersistentLogin ?? this.isPersistentLogin,
+    );
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (runtimeType != other.runtimeType) return false;
+    final AppSettings typedOther = other;
+    return hasViewedAppTour == typedOther.hasViewedAppTour &&
+        isLoggedIn == typedOther.isLoggedIn &&
+        loginResponse == typedOther.loginResponse &&
+        isPersistentLogin == typedOther.isPersistentLogin;
+  }
+
+  @override
+  int get hashCode => hashValues(
+      hasViewedAppTour, isLoggedIn, loginResponse, isPersistentLogin);
+
+  @override
+  String toString() {
+    return '$runtimeType';
+  }
 
   factory AppSettings.fromJson(Map<String, dynamic> data) => AppSettings(
         hasViewedAppTour: data['hasViewedAppTour'] ?? false,
@@ -36,6 +70,7 @@ class AppSettings {
 
   removeAccount({bool removeLoginData = true}) {
     isLoggedIn = false;
+
     isPersistentLogin = false;
     if (removeLoginData) {
       loginResponse = null;

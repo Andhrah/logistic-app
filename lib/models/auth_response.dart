@@ -1,9 +1,22 @@
+import 'dart:ui';
+
 class AuthResponse {
   AuthResponse({
     this.data,
   });
 
   final AuthData? data;
+
+  AuthResponse copyWith({AuthData? data}) {
+    return AuthResponse(
+      data: data ?? this.data,
+    );
+  }
+
+  @override
+  String toString() {
+    return '$runtimeType';
+  }
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
         data: json["data"] == null ? null : AuthData.fromJson(json["data"]),
@@ -27,11 +40,43 @@ class AuthData {
   User? user;
   final String? ssoToken;
 
+  AuthData copyWith(
+      {String? token, String? refreshToken, User? user, String? ssoToken}) {
+    return AuthData(
+      token: token ?? this.token,
+      refreshToken: refreshToken ?? this.refreshToken,
+      user: user ?? this.user,
+      ssoToken: ssoToken ?? this.ssoToken,
+    );
+  }
+
+  @override
+  bool operator ==(dynamic other) {
+    if (runtimeType != other.runtimeType) return false;
+    final AuthData typedOther = other;
+    return token == typedOther.token &&
+        refreshToken == typedOther.refreshToken &&
+        user == typedOther.user &&
+        ssoToken == typedOther.ssoToken;
+  }
+
+  @override
+  int get hashCode => hashValues(token, refreshToken, user, ssoToken);
+
+  @override
+  String toString() {
+    return '$runtimeType';
+  }
+
   factory AuthData.fromJson(Map<String, dynamic> json) => AuthData(
         token: json["jwt"],
         refreshToken: json["refreshToken"],
         user: json["user"] == null ? null : User.fromJson(json["user"]),
         ssoToken: json["ssoToken"],
+      );
+
+  factory AuthData.fromJsonWithData(Map<String, dynamic> json) => AuthData(
+        user: json["data"] == null ? null : User.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {

@@ -29,15 +29,15 @@ class ProfileHelper with ConnectivityHelper {
   _completeGet(Operation operation, [Function()? onCloseLoader]) async {
     if (onCloseLoader != null) onCloseLoader();
     if (operation.code == 200 || operation.code == 201) {
-      AuthResponse authResponseNew = AuthResponse.fromJson(operation.result);
+      AuthData authData = AuthData.fromJsonWithData(operation.result);
 
       var appSettings = await appSettingsBloc.fetchAppSettings();
-      appSettings.loginResponse!.data!.user =
-          authResponseNew.data?.user ?? User();
 
-      print('appSettings.loginResponse!.data!.user');
-      print(appSettings.loginResponse!.data!.user);
-      // await appSettingsBloc.saveLoginDetails(appSettings.loginResponse!);
+      AuthData user =
+          appSettings.loginResponse!.data!.copyWith(user: authData.user);
+
+      await appSettingsBloc
+          .saveLoginDetails(appSettings.loginResponse!.copyWith(data: user));
     } else {
       MessageOnlyResponse error = operation.result;
 
