@@ -3,13 +3,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
+import 'package:trakk/mixins/logout_helper.dart';
 import 'package:trakk/mixins/profile_helper.dart';
 import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
+import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/settings.dart';
-import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -28,7 +29,7 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu>
-    with ProfileHelper, ConnectivityHelper {
+    with ProfileHelper, ConnectivityHelper, LogoutHelper {
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
 
@@ -322,10 +323,11 @@ class _ProfileMenuState extends State<ProfileMenu>
                                 ),
                                 InkWell(
                                   onTap: () {
-                                    //do logout for local storage
-                                    Navigator.popUntil(context,
-                                        ModalRoute.withName(GetStarted.id));
-                                    Navigator.of(context).pushNamed(Login.id);
+                                    logout(context, completeLogout: () {
+                                      Navigator.popUntil(context,
+                                          ModalRoute.withName(GetStarted.id));
+                                      Navigator.of(context).pushNamed(Login.id);
+                                    });
                                   },
                                   child: const Text(
                                     "Log out",

@@ -17,7 +17,7 @@ appToast(String message,
       textAlign: TextAlign.center,
       style: const TextStyle(
         color: whiteColor,
-        fontSize: 18,
+        fontSize: 14,
       ),
     ),
     margin: const EdgeInsets.only(top: 20.0),
