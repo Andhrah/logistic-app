@@ -9,6 +9,7 @@ import 'package:location/location.dart' as Loca;
 import 'package:trakk/.env.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/helper_utils.dart';
 
 class MapExtraUI {
   Set<Marker> marker;
@@ -55,32 +56,41 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
     }
   }
 
-  updateMarkersWithCircle(
-      List<LatLng> latLng, String snippet, bool createRoute) async {
+  updateMarkersWithCircle(List<LatLng> latLng, String snippet, bool createRoute,
+      bool refreshMarker) async {
     stopFetchingRoute();
 
+    print('updateMarkersWithCircle');
     var data = await rootBundle.load(Assets.marker_icon);
     var bytes = data.buffer.asUint8List();
     final Uint8List markerIcon = bytes;
 
     if (latLng.any((element) => element != null)) {
+      // BitmapDescriptor markerbitmap = await BitmapDescriptor.fromAssetImage(
+      //   const ImageConfiguration(size: Size(14, 14)),
+      //   Assets.marker_icon,
+      // );
+
+      final Uint8List? markerIcon = await getBytesFromAsset(
+          snippet == 'Pickup' ? Assets.marker_icon : Assets.marker_icon, 55);
+      BitmapDescriptor? markerbitmap =
+          markerIcon == null ? null : BitmapDescriptor.fromBytes(markerIcon);
+      if (refreshMarker) _markers = {};
       _markers.addAll(List.generate(
         latLng.length,
-        (index) => Marker(
-            markerId: MarkerId(latLng.toString()),
-            position: latLng.elementAt(index),
-            draggable: false,
-            // zIndex: 2,
-            // flat: true,
-            // anchor: Offset(0.5, 0.5),
-            // infoWindow: InfoWindow(
-            //   title: '${user.firstName} ${user.lastName}',
-            //   snippet: snippet,
-            // ),
-
-            icon: BitmapDescriptor.fromBytes(markerIcon)),
+        (index) => markerbitmap != null
+            ? Marker(
+                markerId: MarkerId(latLng.toString()),
+                position: latLng.elementAt(index),
+                draggable: false,
+                icon: markerbitmap)
+            : Marker(
+                markerId: MarkerId(latLng.toString()),
+                position: latLng.elementAt(index),
+                draggable: false),
       ));
 
+      print('MapExtraUI');
       addToModel(MapExtraUI(marker: _markers, polyline: _polyLines));
 
       if (createRoute) sendRequest(latLng.first);
@@ -105,6 +115,7 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
     LatLng myLocation = LatLng(
         currentLocation.latitude ?? 0.0, currentLocation.longitude ?? 0.0);
 
+    print('sendRequest');
     String? route =
         await _locationPath.getRouteCoordinates(myLocation, destination);
     if (route != null) createRoute(route, destination);

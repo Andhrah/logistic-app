@@ -45,40 +45,59 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
     if (widget.orderState == RiderOrderState.isOrderCompleted) {
       maxSize = 0.7;
     }
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      streamSocket.getResponse.listen((event) {
-        initialSize = 0.5;
-        if (event.order != null) {
-          if (event.order!.destinationLatitude != null &&
-                  event.order!.destinationLongitude != null &&
-                  widget.orderState ==
-                      RiderOrderState.isItemPickedUpLocationAndEnRoute ||
-              widget.orderState ==
-                  RiderOrderState.isAlmostAtDestinationLocation) {
-            //meant to be for auto map route plotting
+  }
 
-          }
-
-          if (event.order!.pickupLatitude != null &&
-              event.order!.pickupLongitude != null &&
-              widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {
-            // if (speakIsCloseOnce) {
-            //   _speak('You are getting close');
-            //   speakIsCloseOnce = false;
-          }
-        }
-        if (widget.orderState == RiderOrderState.isAtDestinationLocation ||
-            widget.orderState == RiderOrderState.isOrderCompleted) {
-          mapExtraUIBloc.stopFetchingRoute();
-        }
-      });
-    });
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    initialSize = 0.5;
   }
 
   @override
   void dispose() {
     mapExtraUIBloc.dispose();
     super.dispose();
+  }
+
+  updateRoute() {
+    var model = streamSocket.behaviorSubject.value.model;
+    if (model != null && model.order != null) {
+      if (model.order!.destinationLatitude != null &&
+              model.order!.destinationLongitude != null &&
+              widget.orderState ==
+                  RiderOrderState.isItemPickedUpLocationAndEnRoute ||
+          widget.orderState == RiderOrderState.isAlmostAtDestinationLocation) {
+        //meant to be for auto map route plotting
+
+      }
+
+      if (model.order!.pickupLatitude != null &&
+          model.order!.pickupLongitude != null &&
+          widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {
+        // if (speakIsCloseOnce) {
+        //   _speak('You are getting close');
+        //   speakIsCloseOnce = false;
+      }
+    }
+
+    if (widget.orderState == RiderOrderState.isRequestAccepted ||
+        widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {
+      mapExtraUIBloc.updateMarkersWithCircle([
+        LatLng(model?.order?.pickupLatitude ?? 0.0,
+            model?.order?.pickupLongitude ?? 0.0)
+      ], 'Pickup', true, true);
+    }
+    if (widget.orderState == RiderOrderState.isItemPickedUpLocationAndEnRoute ||
+        widget.orderState == RiderOrderState.isAlmostAtDestinationLocation) {
+      mapExtraUIBloc.updateMarkersWithCircle([
+        LatLng(model?.order?.destinationLatitude ?? 0.0,
+            model?.order?.destinationLongitude ?? 0.0)
+      ], 'Destination', true, true);
+    }
+    if (widget.orderState == RiderOrderState.isAtDestinationLocation ||
+        widget.orderState == RiderOrderState.isOrderCompleted) {
+      mapExtraUIBloc.stopFetchingRoute();
+    }
   }
 
   @override
@@ -137,10 +156,7 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
                 }),
           ),
           RiderBottomSheet(
-            key: bottomSheetKey,
-            initialSize: initialSize,
-            maxSize: maxSize,
-          ),
+              key: bottomSheetKey, initialSize: initialSize, maxSize: maxSize),
         ],
       ),
     );
@@ -176,7 +192,7 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
       if (isDark) {
         controller.setMapStyle(MapStyle().night);
       } else {
-        controller.setMapStyle(MapStyle().sliver);
+        controller.setMapStyle(MapStyle().aubergine);
       }
     });
     // await miscBloc.fetchLocation();

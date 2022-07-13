@@ -66,7 +66,10 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
         child: CustomStreamBuilder<RiderOrderState, String>(
           stream: riderHomeStateBloc.behaviorSubject,
           dataBuilder: (context, data) {
+            print('riderHome');
+            print(data);
             if (data == RiderOrderState.isHomeScreen ||
+                data == RiderOrderState.isNewRequestIncoming ||
                 data == RiderOrderState.isNewRequestClicked) {
               return RiderHomeStandbyScreen(locaBloc);
             }
