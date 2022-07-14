@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/bloc/order_history_bloc.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/widgets/date_widget.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/widgets/list_history.dart';
 import 'package:trakk/utils/colors.dart';
@@ -7,9 +8,10 @@ import 'package:trakk/utils/padding.dart';
 import '../../../widgets/back_icon.dart';
 
 class UserDispatchHistory extends StatefulWidget {
+  final bool canPop;
   static const String id = 'userDispatchHistory';
 
-  const UserDispatchHistory({Key? key}) : super(key: key);
+  const UserDispatchHistory({Key? key, this.canPop = true}) : super(key: key);
 
   @override
   State<UserDispatchHistory> createState() => _UserDispatcHistoryState();
@@ -21,6 +23,7 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
   @override
   void initState() {
     super.initState();
+    getOrderHistoryBloc.fetchCurrent();
   }
 
   @override
@@ -41,12 +44,15 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                BackIcon(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: kDefaultLayoutPadding),
-                  onPress: () {
-                    Navigator.pop(context);
-                  },
+                Opacity(
+                  opacity: widget.canPop ? 1 : 0,
+                  child: BackIcon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
+                    onPress: () {
+                      if (widget.canPop) Navigator.pop(context);
+                    },
+                  ),
                 ),
                 Text(
                   'DISPATCH HISTORY',

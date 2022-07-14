@@ -5,7 +5,6 @@
     */
 
 import 'package:trakk/bloc/app_settings_bloc.dart';
-import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/models/auth_response.dart';
 import 'package:trakk/models/message_only_response.dart';
 import 'package:trakk/models/update_profile/update_profile.dart';
@@ -15,29 +14,37 @@ import 'package:trakk/utils/enums.dart';
 
 import '../utils/operation.dart';
 
-typedef _Completed = Function(AuthResponse loginResponse);
+typedef _ProfileFetchSuccess = Function(AuthData authData);
 
-class ProfileHelper with ConnectivityHelper {
+class ProfileHelper {
   doGetProfileOperation(
-      [Function()? onShowLoader, Function()? onCloseLoader]) async {
+      {String? authToken,
+      Function()? onShowLoader,
+      Function()? onCloseLoader,
+      _ProfileFetchSuccess? profileFetchSuccess}) async {
     if (onShowLoader != null) onShowLoader();
-    profileService
-        .getProfile()
-        .then((value) => _completeGet(value, onCloseLoader));
+    profileService.getProfile(authToken).then(
+        (value) => _completeGet(value, onCloseLoader, profileFetchSuccess));
   }
 
-  _completeGet(Operation operation, [Function()? onCloseLoader]) async {
+  _completeGet(Operation operation,
+      [Function()? onCloseLoader,
+      _ProfileFetchSuccess? profileFetchSuccess]) async {
     if (onCloseLoader != null) onCloseLoader();
     if (operation.code == 200 || operation.code == 201) {
       AuthData authData = AuthData.fromJsonWithData(operation.result);
 
       var appSettings = await appSettingsBloc.fetchAppSettings();
-
+      if (!appSettings.isLoggedIn) {}
       AuthData user =
-          appSettings.loginResponse!.data!.copyWith(user: authData.user);
+          appSettings.loginResponse?.data?.copyWith(user: authData.user) ??
+              authData;
 
-      await appSettingsBloc
-          .saveLoginDetails(appSettings.loginResponse!.copyWith(data: user));
+      // await appSettingsBloc.saveLoginDetails(
+      //     appSettings.loginResponse?.copyWith(data: user) ??
+      //         AuthResponse(data: authData));
+
+      if (profileFetchSuccess != null) profileFetchSuccess(user);
     } else {
       MessageOnlyResponse error = operation.result;
 
@@ -55,7 +62,7 @@ class ProfileHelper with ConnectivityHelper {
 
   _completeUpdate(Operation operation, Function() onCloseLoader) async {
     if (operation.code == 200 || operation.code == 201) {
-      doGetProfileOperation(() {}, () {
+      doGetProfileOperation(profileFetchSuccess: (AuthData authData) {
         appToast('Profile updated successfully',
             appToastType: AppToastType.success);
 

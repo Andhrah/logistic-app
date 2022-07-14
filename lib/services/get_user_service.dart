@@ -5,8 +5,15 @@ import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
 
 class ProfileService extends BaseNetworkCallHandler {
-  Future<Operation> getProfile() async {
-    return runAPI('api/users/me', HttpRequestType.get);
+  Future<Operation> getProfile(String? authToken) async {
+    Map<String, dynamic> masterHeader = authToken == null
+        ? const {}
+        : {
+            'Authorization': 'Bearer $authToken',
+            'Content-Type': 'application/json'
+          };
+
+    return runAPI('api/users/me', HttpRequestType.get, header: masterHeader);
   }
 
   Future<Operation> updateProfile(UpdateProfile updateProfile) async {

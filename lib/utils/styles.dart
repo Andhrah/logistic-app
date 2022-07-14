@@ -9,6 +9,10 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:skeleton_text/skeleton_text.dart';
+import 'package:trakk/utils/colors.dart';
+
+const kCircularProgressIndicator =
+    CircularProgressIndicator(color: secondaryColor);
 
 class LoadingDataStyle extends StatelessWidget {
   double height;

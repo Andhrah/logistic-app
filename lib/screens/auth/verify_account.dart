@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
+import 'package:trakk/mixins/profile_helper.dart';
 import 'package:trakk/mixins/signup_helper.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -19,12 +19,12 @@ class VerifiyAccountScreen extends StatefulWidget {
 }
 
 class _VerifiyAccountScreenState extends State<VerifiyAccountScreen>
-    with SignupHelper, ConnectivityHelper {
+    with SignupHelper, ProfileHelper, ConnectivityHelper {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController textEditingController = TextEditingController();
 
-  // ignore: close_sinks
+// ignore: close_sinks
   StreamController<ErrorAnimationType>? errorController;
 
   bool hasError = false;
@@ -52,7 +52,7 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen>
     super.dispose();
   }
 
-  // snackBar Widget
+// snackBar Widget
   snackBar(String? message, Color? color) {
     return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -88,7 +88,6 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen>
   /// This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   _onSubmit() async {
     doVerifyOperation(
-        _userType ?? '',
         _code.toString(),
         _email.toString(),
         () => setState(() {

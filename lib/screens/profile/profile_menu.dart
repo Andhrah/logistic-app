@@ -37,7 +37,7 @@ class _ProfileMenuState extends State<ProfileMenu>
   @override
   void initState() {
     super.initState();
-    doGetProfileOperation(() {}, () {});
+    doGetProfileOperation();
   }
 
   // fetchRiderHistory() async {
@@ -51,6 +51,8 @@ class _ProfileMenuState extends State<ProfileMenu>
   // }
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -219,14 +221,24 @@ class _ProfileMenuState extends State<ProfileMenu>
                             ),
                           ],
                         ),
-                        child: const Align(
+                        child: Align(
                           alignment: Alignment.center,
                           child: ListTile(
-                            title: Text(
-                              'Share App with your Trakk\ncode and get ₦500 bonus in\nyour wallet',
-                              textAlign: TextAlign.justify,
+                            title: Row(
+                              children: [
+                                ConstrainedBox(
+                                  constraints:
+                                      const BoxConstraints(maxWidth: 200),
+                                  child: Text(
+                                    'Share App with your Trakk code and get ₦500 bonus in your wallet',
+                                    textAlign: TextAlign.justify,
+                                    style: theme.textTheme.bodyText2!
+                                        .copyWith(height: 1.4),
+                                  ),
+                                ),
+                              ],
                             ),
-                            trailing: Icon(
+                            trailing: const Icon(
                               Remix.share_line,
                               color: appPrimaryColor,
                             ),

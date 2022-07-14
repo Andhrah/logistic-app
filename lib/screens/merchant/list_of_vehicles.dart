@@ -1,7 +1,6 @@
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/vehicles_bloc.dart';
 import 'package:trakk/models/vehicles_list_response.dart';
@@ -10,7 +9,6 @@ import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
-import '../../provider/merchant/vehicles_provider.dart';
 import '../../widgets/back_icon.dart';
 import '../../widgets/cancel_button.dart';
 import 'company_home.dart';

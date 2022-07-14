@@ -4,7 +4,7 @@ import 'package:trakk/utils/operation.dart';
 
 class SignupService extends BaseNetworkCallHandler {
   Future<Operation> doSignUp(String firstName, String lastName, String email,
-      String password, String phoneNumber, String userType) async {
+      String phoneNumber, String password, String userType) async {
     return runAPI('api/user/register', HttpRequestType.post, body: {
       "firstName": firstName,
       "lastName": lastName,
@@ -16,10 +16,12 @@ class SignupService extends BaseNetworkCallHandler {
   }
 
   Future<Operation> doVerify(String code, String email) async {
-    return runAPI('api/user/verify-otp', HttpRequestType.post, body: {
-      "code": code,
-      "email": email,
-    });
+    return runAPI('api/user/verify-otp', HttpRequestType.post,
+        body: {
+          "code": code,
+          "email": email,
+        },
+        useIsLoggedIn: false);
   }
 
   Future<Operation> doResendOTP(String email, String phoneNumber) async {

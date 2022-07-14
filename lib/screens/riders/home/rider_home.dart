@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
-import 'package:trakk/provider/merchant/rider_map_provider.dart';
+import 'package:trakk/provider/rider/rider_map_provider.dart';
 import 'package:trakk/screens/riders/home/widgets/home_map/rider_home_map.dart';
 import 'package:trakk/screens/riders/home/widgets/home_standby/rider_home_standby.dart';
 import 'package:trakk/utils/assets.dart';
