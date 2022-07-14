@@ -1,26 +1,41 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:trakk/Exceptions/api_failure_exception.dart';
 import 'package:trakk/models/support/support.dart';
 import 'package:trakk/utils/constant.dart';
 
 class SupportService {
-  Future<bool?> sendMessage({name, email, message}) async {
+  Future<bool?> sendMessage({
+    required String name,
+    required String email,
+    required String message,
+  }) async {
     print("[][][][] NETWORK");
+
     try {
-      var response = await http
-          .post(Uri.parse('https://zebrra.itskillscenter.com/api/complaints'),
-              body: json.encode({
-                "data": {
-                  "name": name,
-                  "email": email,
-                  "message": message
-                }
-              }),
-              headers: {'Content-Type': 'application/json',
-              //'Authorization': "Bearer $token"
-              });
+      Data data = Data(
+        name: name,
+        email: email,
+        message: message,
+      );
+      Support support = Support(data: data);
+      // var response = await http
+      //     .post(Uri.parse('https://zebrra.itskillscenter.com/api/complaints'),
+      //       body: supportToJson(support),
+      //         headers: {'Content-Type': 'application/json',
+      //         //'Authorization': "Bearer $token"
+      //         });
+      var response = await http.post(
+        Uri.parse("https://zebrra.itskillscenter.com/api/complaints"),
+        //headers: kHeaders(token),
+        body: supportToJson(support),
+      );
+      var responses = await http.post(
+        uriConverter("api/complaints"),
+        //headers: kHeaders(token),
+        body: supportToJson(support),
+      );
+
       if (response.statusCode == 200 || response.statusCode == 201) {
         print(response.body);
         return true;

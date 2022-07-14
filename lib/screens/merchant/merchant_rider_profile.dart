@@ -1,10 +1,10 @@
 import 'dart:ui';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
-import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/app_settings.dart';
+import 'package:trakk/models/auth_response.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
@@ -31,8 +31,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _firstNameController;
-
   bool _selectedProfile = false;
 
   FocusNode? _firstNameNode;
@@ -55,16 +53,9 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   bool _isActive1 = false;
   bool _isActive2 = false;
 
-  // void _handleTap() {
-  //   setState(() {
-  //     _isActive = !_isActive;
-  //     // _isActive1 = !_isActive1;
-  //     // _isActive2 = !_isActive2;
-  //   });
-  // }
-
   String _suspensionDuration = 'Choose duration';
 
+  late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
   late TextEditingController _phoneNumberController;
@@ -79,13 +70,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   FocusNode? _homeAddressNode;
   FocusNode? _assignedvehicleNode;
 
-  String? _lastName;
-  String? _email;
-  String? _phoneNumber;
-  String? _password;
-  String? _confirmPassword;
-  String? _assignedvehicle;
-
   bool _loading = false;
   bool _passwordIsValid = false;
   bool _confirmPasswordIsValid = false;
@@ -95,8 +79,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
 
   @override
   void initState() {
-    super.initState();
-    _firstNameController = TextEditingController();
     _firstNameController = TextEditingController();
     _lastNameController = TextEditingController();
     _emailController = TextEditingController();
@@ -104,7 +86,10 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     _passwordController = TextEditingController();
     _homeAddressController = TextEditingController();
     _assignedvehicleController = TextEditingController();
+    super.initState();
   }
+
+  Map<String, dynamic>? responseKey;
 
   _validateEmail() {
     RegExp regex;
@@ -136,209 +121,240 @@ class _ProfileWidgetState extends State<ProfileIdget> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
-    return SingleChildScrollView(
-      
-      child: Column(
-        children: [
-
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  height: 59,
-                  width: 100,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
-                  border: Border.all(style: BorderStyle.solid,color: grayColor),),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          (selectedProfileOptions == ProfileOptions.Edit)
-                              ? MaterialStateProperty.all(appPrimaryColor)
-                              : MaterialStateProperty.all(whiteColor),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedProfileOptions = ProfileOptions.Edit;
-                        _selectedProfile = true;
-                      });
-                    },
-                    child: Text(
-                      "Edit",
-                      style: TextStyle(
-                          color: (selectedProfileOptions == ProfileOptions.Edit)
-                              ? whiteColor
-                              : appPrimaryColor),
-                    ),
+    return StreamBuilder<AppSettings>(
+        stream: appSettingsBloc.appSettings,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  Text(
+                    "${snapshot.data?.loginResponse?.data?.user?.firstName ?? ""} "
+                    "${snapshot.data?.loginResponse?.data?.user?.lastName ?? ""} ",
+                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
                   ),
-                ),
-                Container(
-                  height: 59,
-                  width: 100,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
-                  border: Border.all(style: BorderStyle.solid,color: grayColor),),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          (selectedProfileOptions == ProfileOptions.Suspend)
-                              ? MaterialStateProperty.all(appPrimaryColor)
-                              : MaterialStateProperty.all(whiteColor),
-                    ),
-                    onPressed: () {
-                      setState(() {
-                        selectedProfileOptions = ProfileOptions.Suspend;
-                      });
-                    },
-                    child: Text(
-                      "Suspend",
-                      style: TextStyle(
-                          color: (selectedProfileOptions == ProfileOptions.Suspend)
-                              ? whiteColor
-                              : appPrimaryColor),
-                    ),
+                  SizedBox(
+                    height: 20,
                   ),
-                ),
-                Container(
-                  height: 59,
-                  width: 100,
-                  decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(8),),
-                  border: Border.all(style: BorderStyle.solid,color: grayColor),),
-                  child: ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor:
-                          (selectedProfileOptions == ProfileOptions.Delete)
-                              ? MaterialStateProperty.all(appPrimaryColor)
-                              : MaterialStateProperty.all(whiteColor),
-                    ),
-                    onPressed: () => showDialog<String>(
-                      // barrierDismissible: true,
-                      context: context,
-                      builder: (BuildContext context) => AlertDialog(
-                        // title: const Text('AlertDialog Title'),
-                        contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 20.0, vertical: 15.0),
-                        content: SizedBox(
-                          height: 220.0,
-                          child: Column(children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.end,
-                              children: [
-                                InkWell(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .pushNamed(CompanyHome.id);
-                                    },
-                                    child: const CancelButton())
-                              ],
-                            ),
-                            Container(
-                              width: 300,
-                              child: const Text(
-                                'You are about to delete Malik\nJohnson from the list of riders',
-                                // maxLines: 2,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 14,
-                            ),
-                            Button(
-                              text: 'Delete',
-                              onPress: () => showDialog<String>(
-                                // barrierDismissible: true,
-                                context: context,
-                                builder: (BuildContext context) => AlertDialog(
-                                  // title: const Text('AlertDialog Title'),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                      horizontal: 20.0, vertical: 15.0),
-                                  content: SizedBox(
-                                    height: 220.0,
-                                    child: Column(
-                                      children: [
-                                        Row(
-                                          mainAxisAlignment: MainAxisAlignment.end,
-                                          children: [
-                                            InkWell(
-                                              onTap: () {
-                                                Navigator.of(context)
-                                                    .pushNamed(CompanyHome.id);
-                                              },
-                                              child: const CancelButton(),
-                                            )
-                                          ],
-                                        ),
-                                        Container(
-                                          padding:
-                                              EdgeInsets.symmetric(vertical: 30),
-                                          child: const Center(
-                                            child: Text(
-                                              'You have succefully deleted Malik Johnson from the list of riders',
-                                              // maxLines: 2,
-                                              style: TextStyle(
-                                                fontSize: 15,
-                                                fontWeight: FontWeight.w400,
-                                              ),
-                                              textAlign: TextAlign.center,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                              ),
-                              color: redColor,
-                              textColor: whiteColor,
-                              isLoading: false,
-                              width: MediaQuery.of(context).size.width / 1.6,
-                            ),
-                            const SizedBox(height: 30.0),
-                            Button(
-                              text: 'Don\'t delete',
-                              onPress: () {
-                                Navigator.of(context).pop();
-                              },
-                              color: appPrimaryColor,
-                              textColor: whiteColor,
-                              isLoading: false,
-                              width: MediaQuery.of(context).size.width / 1.6,
-                            )
-                          ]),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        height: 59,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          border: Border.all(color: grayColor),
+                        ),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                (selectedProfileOptions == ProfileOptions.Edit)
+                                    ? MaterialStateProperty.all(appPrimaryColor)
+                                    : MaterialStateProperty.all(whiteColor),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedProfileOptions = ProfileOptions.Edit;
+                              _selectedProfile = true;
+                            });
+                          },
+                          child: Text(
+                            "Edit",
+                            style: TextStyle(
+                                color: (selectedProfileOptions ==
+                                        ProfileOptions.Edit)
+                                    ? whiteColor
+                                    : appPrimaryColor),
+                          ),
                         ),
                       ),
-                    ),
-                    child: Text(
-                      "Delete",
-                      style: TextStyle(
-                          color: (selectedProfileOptions == ProfileOptions.Delete)
-                              ? whiteColor
-                              : appPrimaryColor),
-                    ),
+                      Container(
+                        height: 59,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          border: Border.all(color: grayColor),
+                        ),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: (selectedProfileOptions ==
+                                    ProfileOptions.Suspend)
+                                ? MaterialStateProperty.all(appPrimaryColor)
+                                : MaterialStateProperty.all(whiteColor),
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              selectedProfileOptions = ProfileOptions.Suspend;
+                            });
+                          },
+                          child: Text(
+                            "Suspend",
+                            style: TextStyle(
+                                color: (selectedProfileOptions ==
+                                        ProfileOptions.Suspend)
+                                    ? whiteColor
+                                    : appPrimaryColor),
+                          ),
+                        ),
+                      ),
+                      Container(
+                        height: 59,
+                        width: 100,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(10),
+                          ),
+                          border: Border.all(color: grayColor),
+                        ),
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: (selectedProfileOptions ==
+                                    ProfileOptions.Delete)
+                                ? MaterialStateProperty.all(appPrimaryColor)
+                                : MaterialStateProperty.all(whiteColor),
+                          ),
+                          onPressed: () => showDialog<String>(
+                            // barrierDismissible: true,
+                            context: context,
+                            builder: (BuildContext context) => AlertDialog(
+                              // title: const Text('AlertDialog Title'),
+                              contentPadding: const EdgeInsets.symmetric(
+                                  horizontal: 20.0, vertical: 15.0),
+                              content: SizedBox(
+                                height: 220.0,
+                                child: Column(children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            Navigator.of(context)
+                                                .pushNamed(CompanyHome.id);
+                                          },
+                                          child: const CancelButton())
+                                    ],
+                                  ),
+                                  Container(
+                                    width: 300,
+                                    child: const Text(
+                                      'You are about to delete Malik\nJohnson from the list of riders',
+                                      // maxLines: 2,
+                                      style: TextStyle(
+                                        fontSize: 13,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      textAlign: TextAlign.center,
+                                    ),
+                                  ),
+                                  const SizedBox(
+                                    height: 14,
+                                  ),
+                                  Button(
+                                    text: 'Delete',
+                                    onPress: () => showDialog<String>(
+                                      // barrierDismissible: true,
+                                      context: context,
+                                      builder: (BuildContext context) =>
+                                          AlertDialog(
+                                        // title: const Text('AlertDialog Title'),
+                                        contentPadding:
+                                            const EdgeInsets.symmetric(
+                                                horizontal: 20.0,
+                                                vertical: 15.0),
+                                        content: SizedBox(
+                                          height: 220.0,
+                                          child: Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  InkWell(
+                                                    onTap: () {
+                                                      Navigator.of(context)
+                                                          .pushNamed(
+                                                              CompanyHome.id);
+                                                    },
+                                                    child: const CancelButton(),
+                                                  )
+                                                ],
+                                              ),
+                                              Container(
+                                                padding: EdgeInsets.symmetric(
+                                                    vertical: 30),
+                                                child: const Center(
+                                                  child: Text(
+                                                    'You have succefully deleted Malik Johnson from the list of riders',
+                                                    // maxLines: 2,
+                                                    style: TextStyle(
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                  ),
+                                                ),
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    color: redColor,
+                                    textColor: whiteColor,
+                                    isLoading: false,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.6,
+                                  ),
+                                  const SizedBox(height: 30.0),
+                                  Button(
+                                    text: 'Don\'t delete',
+                                    onPress: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    color: appPrimaryColor,
+                                    textColor: whiteColor,
+                                    isLoading: false,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.6,
+                                  )
+                                ]),
+                              ),
+                            ),
+                          ),
+                          child: Text(
+                            "Delete",
+                            style: TextStyle(
+                                color: (selectedProfileOptions ==
+                                        ProfileOptions.Delete)
+                                    ? whiteColor
+                                    : appPrimaryColor),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
-          getCustomContainer(),
-        ],
-      ),
-    );
+                  getCustomContainer(snapshot.data!.loginResponse!.data!.user!),
+                ],
+              ),
+            );
+          }
+          return SizedBox();
+        });
   }
 
-  Widget getCustomContainer() {
+  Widget getCustomContainer(User user) {
     //var selectedOptions;
     switch (selectedProfileOptions) {
       case ProfileOptions.Edit:
-        return editContainer();
+        return editContainer(user);
       case ProfileOptions.Suspend:
         return suspendContainer();
       case ProfileOptions.Delete:
@@ -347,17 +363,16 @@ class _ProfileWidgetState extends State<ProfileIdget> {
         // TODO: Handle this case.
         break;
     }
-    return editContainer();
+    return editContainer(user);
   }
 
-  Widget editContainer() {
+  Widget editContainer(User user) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return _selectedProfile
         ? Column(
             //physics: NeverScrollableScrollPhysics(),
             //shrinkWrap: true,
             children: [
-
                 Form(
                   key: _formKey,
                   child: Column(
@@ -443,7 +458,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                           return "Enter a valid phone number";
                         },
                         onSaved: (value) {
-                          _phoneNumber = value!.trim();
                           return null;
                         },
                       ),
@@ -468,7 +482,6 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                           return _validateEmail();
                         },
                         onSaved: (value) {
-                          _email = value!.trim();
                           return null;
                         },
                       ),
@@ -514,40 +527,40 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                               color: appPrimaryColor,
                               textColor: whiteColor,
                               isLoading: _loading,
-                              width: mediaQuery.size.width* 1)),
+                              width: mediaQuery.size.width * 1)),
                       const SizedBox(height: 10.0),
                     ],
                   ),
                 ),
               ])
         : Column(
-            children: const [
+            children: [
               SizedBox(
                 height: 20,
               ),
-              profillebox(
+              Profillebox(
                 title: 'First name',
-                detail: 'Malik',
+                detail: user.firstName ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Last name',
-                detail: 'Johnson',
+                detail: user.lastName ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Phone',
-                detail: '0806-333-2255',
+                detail: user.phoneNumber ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Email address',
-                detail: 'malikjohn11@gmail.com',
+                detail: user.email ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Home address',
-                detail: 'N0. Mcneil Street, Yaba',
+                detail: user.address ?? "",
               ),
-              profillebox(
+              Profillebox(
                 title: 'Assigned vehicle',
-                detail: 'Yamaha 4567658',
+                detail: "${user.rider?.id ?? ""} " "${user.rider?.phone ?? ""}",
               ),
             ],
           );
@@ -623,7 +636,8 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                     color: appPrimaryColor.withOpacity(0.8),
                     fontSize: 18.0,
                   ),
-                  underline: Container(), //empty line
+                  underline: Container(),
+                  //empty line
                   onChanged: (String? newValue) {
                     setState(() {
                       _suspensionDuration = newValue!;
@@ -697,37 +711,39 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                                   contentPadding: const EdgeInsets.symmetric(
                                       horizontal: 20.0, vertical: 15.0),
                                   content: SizedBox(
-                                      height: 220.0,
-                                      child: Column(
-                                        children: [
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.end,
-                                            children: [
-                                              InkWell(
-                                                  onTap: () {
-                                                    Navigator.of(context).pop();
-                                                  },
-                                                  child: const CancelButton(),),
-                                            ],
-                                          ),
-                                          Container(
-                                            padding: const EdgeInsets.symmetric(
-                                                vertical: 20.0),
-                                            child: const Center(
-                                              child: Text(
-                                                'You have succefully suspended Malik Johnson for 1 month',
-                                                // maxLines: 2,
-                                                style: TextStyle(
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w400,
-                                                ),
-                                                textAlign: TextAlign.center,
+                                    height: 220.0,
+                                    child: Column(
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.end,
+                                          children: [
+                                            InkWell(
+                                              onTap: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const CancelButton(),
+                                            ),
+                                          ],
+                                        ),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 20.0),
+                                          child: const Center(
+                                            child: Text(
+                                              'You have succefully suspended Malik Johnson for 1 month',
+                                              // maxLines: 2,
+                                              style: TextStyle(
+                                                fontSize: 15,
+                                                fontWeight: FontWeight.w400,
                                               ),
+                                              textAlign: TextAlign.center,
                                             ),
                                           ),
-                                        ],
-                                      ),),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
                                 ),
                               ),
                               color: redColor,
@@ -751,7 +767,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                       ),
                     ),
                 color: Colors.black,
-                width: mediaQuery.size.width*1,
+                width: mediaQuery.size.width * 1,
                 textColor: Colors.white,
                 isLoading: false),
           ],
@@ -768,11 +784,11 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   }
 }
 
-class profillebox extends StatelessWidget {
+class Profillebox extends StatelessWidget {
   final String title;
   final String detail;
 
-  const profillebox({
+  const Profillebox({
     Key? key,
     required this.title,
     required this.detail,
@@ -828,67 +844,63 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
-        child: SingleChildScrollView(
-          //physics: NeverScrollableScrollPhysics(),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding:
-                    const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
-                child: Row(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BackIcon(
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  //Text('data'),
+                  SizedBox(
+                    width: mediaQuery.size.width / 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 30,
+                              bottom: 0,
+                            ),
+                            height: 80,
+                            width: 80,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/malik.png'))),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                //physics: NeverScrollableScrollPhysics(),
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    BackIcon(
-                      onPress: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    //Text('data'),
-                    SizedBox(
-
-                      width: mediaQuery.size.width * 0.15,
-
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                              margin: const EdgeInsets.only(
-                                top: 30,
-                                bottom: 12,
-                              ),
-                              height: 80,
-                              width: 80,
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-
-                                          'assets/images/malik.png'),),),
-
-                            ),
-                            const Text(
-                              'Malik Johnson',
-                              style: TextStyle(
-                                  fontSize: 24, fontWeight: FontWeight.w600),
-                            ),
-                          ],
-                        ),
-                      ],
+                  children: const [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                      child: ProfileIdget(),
                     ),
                   ],
                 ),
               ),
-              const Padding(
-                padding:
-                    EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                child: ProfileIdget(),
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

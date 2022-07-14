@@ -4,10 +4,10 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/provider/merchant/add_company_data_provider.dart';
-import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/input_field.dart';
@@ -22,7 +22,6 @@ class CompanyData extends StatefulWidget {
 }
 
 class _CompanyDataState extends State<CompanyData> {
-
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _firstNameController;
@@ -60,10 +59,11 @@ class _CompanyDataState extends State<CompanyData> {
     _passwordController = TextEditingController();
   }
 
-   /// This function handles email validation
+  /// This function handles email validation
   _validateEmail() {
     RegExp regex;
-    String pattern = r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
+    String pattern =
+        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
     String email = _emailController.text;
     if (email.trim().isEmpty) {
       setState(() {
@@ -75,7 +75,7 @@ class _CompanyDataState extends State<CompanyData> {
       setState(() {
         _emailIsValid = regex.hasMatch(email);
       });
-      if(_emailIsValid == false){
+      if (_emailIsValid == false) {
         return "Enter a valid email address";
       }
     }
@@ -89,16 +89,16 @@ class _CompanyDataState extends State<CompanyData> {
       _isButtonPress = true;
       _loading = true;
     });
-    
-    final FormState? form = _formKey.currentState;
-    if(form!.validate() && _cacDocument.isNotEmpty){
 
+    final FormState? form = _formKey.currentState;
+    if (form!.validate() && _cacDocument.isNotEmpty) {
       form.save();
-    
+
       try {
-        var response = await AddCompanyDataProvider.authProvider(context).addCompanyData(
-          _name.toString(), 
-          _email.toString(), 
+        var response =
+            await AddCompanyDataProvider.authProvider(context).addCompanyData(
+          _name.toString(),
+          _email.toString(),
           _phoneNumber.toString(),
           _rcNumber.toString(),
           _cacDocument.toString(),
@@ -108,20 +108,18 @@ class _CompanyDataState extends State<CompanyData> {
         });
         form.reset();
         await appToast(
-          context, 
-          'Your information has been add successfully', 
-          green,
+          'Your information has been add successfully',
+          appToastType: AppToastType.success,
         );
         Navigator.of(context).pushNamed(
           Tabs.id,
           // CompanyHome.id
         );
-      } 
-      catch(err){
+      } catch (err) {
         setState(() {
           _loading = false;
         });
-        appToast(context, err.toString(), redColor);
+        appToast(err.toString(), appToastType: AppToastType.failed);
         rethrow;
       }
     }
@@ -130,22 +128,22 @@ class _CompanyDataState extends State<CompanyData> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
+        backgroundColor: whiteColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Column(
             children: [
               kSizeBox,
               Row(
                 children: [
                   BackIcon(
-                    onPress: () {Navigator.pop(context);},
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-
                   Container(
                     margin: const EdgeInsets.only(left: 40.0),
                     alignment: Alignment.center,
@@ -165,9 +163,7 @@ class _CompanyDataState extends State<CompanyData> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30.0),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -197,7 +193,7 @@ class _CompanyDataState extends State<CompanyData> {
                           }
                           return "Enter a valid company's name";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _name = value!.trim();
                           return null;
                         },
@@ -222,7 +218,7 @@ class _CompanyDataState extends State<CompanyData> {
                         validator: (value) {
                           return _validateEmail();
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _email = value!.trim();
                           return null;
                         },
@@ -280,110 +276,112 @@ class _CompanyDataState extends State<CompanyData> {
                           }
                           return "Enter a valid cac rc number";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _rcNumber = value!.trim();
                           return null;
                         },
                       ),
-                     
+
                       const SizedBox(height: 30.0),
 
-                      _isImage == false ? 
-                      InkWell(
-                        onTap: () async {
-                          final result = await FilePicker.platform.pickFiles();
-                          if(result != null) {
-                            // Open single file open
-                            final file = result.files.first;
-                            print("============= PRINTING File ========");
-                            print(file);
-                             setState(() {
-                              _cacDocument = file.name;
-                              _isImage = true;
-                            });
-                            return;
-                          }
-                        },
-                        child: Align(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.height / 7,
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Remix.upload_2_line,
-                                  size: 25,
-                                ),
-
-                                SizedBox(height: 15.0),
-                                Text(
-                                  'Upload CAC Certificate not more than 5mb',
-                                  textScaleFactor: 0.9,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: appPrimaryColor,
+                      _isImage == false
+                          ? InkWell(
+                              onTap: () async {
+                                final result =
+                                    await FilePicker.platform.pickFiles();
+                                if (result != null) {
+                                  // Open single file open
+                                  final file = result.files.first;
+                                  print("============= PRINTING File ========");
+                                  print(file);
+                                  setState(() {
+                                    _cacDocument = file.name;
+                                    _isImage = true;
+                                  });
+                                  return;
+                                }
+                              },
+                              child: Align(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 15.0),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height:
+                                      MediaQuery.of(context).size.height / 7,
+                                  child: Column(
+                                    children: const [
+                                      Icon(
+                                        Remix.upload_2_line,
+                                        size: 25,
+                                      ),
+                                      SizedBox(height: 15.0),
+                                      Text(
+                                        'Upload CAC Certificate not more than 5mb',
+                                        textScaleFactor: 0.9,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: appPrimaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: appPrimaryColor.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: appPrimaryColor.withOpacity(0.2),
-                                width: 1,
                               ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5.0),
+                            )
+                          : Align(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 8.0, vertical: 15.0),
+                                width: MediaQuery.of(context).size.width / 3,
+                                height: MediaQuery.of(context).size.height / 7,
+                                child: Column(
+                                  children: [
+                                    InkWell(
+                                      onTap: () {
+                                        setState(() {
+                                          _isButtonPress = false;
+                                          _isImage = false;
+                                          _cacDocument = "";
+                                        });
+                                      },
+                                      child: const Icon(
+                                        Remix.delete_bin_2_line,
+                                        size: 25,
+                                        color: redColor,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 15.0),
+                                    Text(
+                                      _cacDocument,
+                                      textScaleFactor: 1.0,
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                        color: secondaryColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                decoration: BoxDecoration(
+                                  border: Border.all(
+                                    color: appPrimaryColor.withOpacity(0.2),
+                                    width: 1,
+                                  ),
+                                  borderRadius: const BorderRadius.all(
+                                    Radius.circular(5.0),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ) : 
-                      Align(
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-                        width: MediaQuery.of(context).size.width / 3,
-                        height: MediaQuery.of(context).size.height / 7,
-                        child: Column(
-                          children: [
-                            InkWell(
-                              onTap: () {
-                                setState(() {
-                                  _isButtonPress = false;
-                                   _isImage = false;
-                                  _cacDocument = "";
-                                });
-                              },
-                              child: const Icon(
-                                Remix.delete_bin_2_line,
-                                size: 25,
-                                color: redColor,
-                              ),
-                            ),
-
-                            const SizedBox(height: 15.0),
-                            Text(
-                              _cacDocument,
-                              textScaleFactor: 1.0,
-                              textAlign: TextAlign.center,
-                              style: const TextStyle(
-                                color: secondaryColor,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: appPrimaryColor.withOpacity(0.2),
-                            width: 1,
-                          ),
-                          borderRadius: const BorderRadius.all(
-                            Radius.circular(5.0),
-                          ),
-                        ),
-                      ),
-                    ),
                       // Text(
                       //   _cacDocument,
                       //   textScaleFactor: 1.5,
@@ -395,45 +393,39 @@ class _CompanyDataState extends State<CompanyData> {
                       // ),
 
                       const SizedBox(height: 5.0),
-                      _isButtonPress && _cacDocument.isEmpty ?
-                      const Align(
-                        child: Text(
-                        " Upload your cac document",
-                          textScaleFactor: 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.red,
-                            // fontWeight: FontWeight.bold,
-                          )
-                        ),
-                      ): Container(),
+                      _isButtonPress && _cacDocument.isEmpty
+                          ? const Align(
+                              child: Text(" Upload your cac document",
+                                  textScaleFactor: 0.9,
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                  )),
+                            )
+                          : Container(),
 
                       const SizedBox(height: 40.0),
                       Align(
-                        alignment: Alignment.center,
-                        child: Button(
-                          text: 'Add',
-                          onPress: _onSubmit,
-                          // onPress: () {
-                          //   Navigator.of(context).pushNamed(PersonalData.id);
-                          // }, 
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: _loading,
-                          width: 350.0
-                        )
-                      ),
+                          alignment: Alignment.center,
+                          child: Button(
+                              text: 'Add',
+                              onPress: _onSubmit,
+                              // onPress: () {
+                              //   Navigator.of(context).pushNamed(PersonalData.id);
+                              // },
+                              color: appPrimaryColor,
+                              textColor: whiteColor,
+                              isLoading: _loading,
+                              width: 350.0)),
 
                       const SizedBox(height: 25.0),
-                      
                     ],
                   ),
                 ),
               ),
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 }

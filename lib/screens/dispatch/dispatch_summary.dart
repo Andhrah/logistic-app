@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
@@ -20,8 +20,7 @@ class DispatchSummary extends StatefulWidget {
 class _DispatchSummaryState extends State<DispatchSummary> {
 
   _onPressEdit() async {
-    var box = await Hive.openBox('routes');
-    await box.put('previousRoute', 'DispatchSummary');
+
 
     Navigator.of(context).pushNamed(ItemDetails.id, arguments: {
       "buttonText": "Save Changes",

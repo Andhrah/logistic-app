@@ -1,6 +1,6 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/utils/colors.dart';
@@ -18,7 +18,6 @@ class VehicleData extends StatefulWidget {
 }
 
 class _VehicleDataState extends State<VehicleData> {
-
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _vehicleNameController;
@@ -58,7 +57,7 @@ class _VehicleDataState extends State<VehicleData> {
   @override
   void initState() {
     super.initState();
-   
+
     _vehicleNameController = TextEditingController();
     _vehicleColorController = TextEditingController();
     _vehicleNumberController = TextEditingController();
@@ -73,10 +72,11 @@ class _VehicleDataState extends State<VehicleData> {
     setState(() {
       _isButtonPress = true;
     });
-    
-    final FormState? form = _formKey.currentState;
-    if(form!.validate() && _vehicleParticulars.isNotEmpty && _vehicleImageUrl.isNotEmpty){
 
+    final FormState? form = _formKey.currentState;
+    if (form!.validate() &&
+        _vehicleParticulars.isNotEmpty &&
+        _vehicleImageUrl.isNotEmpty) {
       form.save();
 
       var vehicleImage = {
@@ -92,43 +92,47 @@ class _VehicleDataState extends State<VehicleData> {
         "url": _driverLicence,
       };
 
-      var box = await Hive.openBox('userData');
-      var imgBox = await Hive.openBox('imgDocs');
+      var routeMap =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
 
-      await box.putAll({
+      routeMap.addAll({
         "vehicleName": _vehicleName,
         "vehicleColor": _vehicleColor,
         "vehicleNumber": _vehicleNumber,
         "vehicleCapacity": _vehicleCapacity,
         "vehicleModel": _vehicleModel,
       });
-      var imgDocs = await imgBox.get("riderDocs");
-      print('============ PRINTING IMAGES 000=============');
-      // imgDocs. (vehicleImage, vehicleParticular, driverLicence);
-      print('============ PRINTING IMAGES =============');
-      print(imgDocs);
-      await imgBox.put('riderDocs', [imgDocs[0], vehicleImage, vehicleParticular, driverLicence]);
-      print(imgBox.get("riderDocs"));
-      Navigator.of(context).pushNamed( NextOfKin.id);
+
+      Map<String, dynamic> imgDocs = routeMap['riderDocs'];
+
+      imgDocs.addAll({
+        'vehicleImage': vehicleImage,
+        'vehicleParticular': vehicleParticular,
+        'driverLicence': driverLicence
+      });
+
+      routeMap['riderDocs'] = imgDocs;
+
+      Navigator.of(context).pushNamed(NextOfKin.id);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
+        backgroundColor: whiteColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Column(
             children: [
               const SizedBox(height: 10.0),
               Row(
                 children: [
                   BackIcon(
-                    onPress: () {Navigator.pop(context);},
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-
                   Container(
                     margin: const EdgeInsets.only(left: 40.0),
                     alignment: Alignment.center,
@@ -148,9 +152,7 @@ class _VehicleDataState extends State<VehicleData> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30.0),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -160,15 +162,14 @@ class _VehicleDataState extends State<VehicleData> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                          'Vehicle data:',
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                            color: appPrimaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                        'Vehicle data:',
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.bold,
                         ),
-                        const SizedBox(height: 20.0),
-
+                      ),
+                      const SizedBox(height: 20.0),
                       InputField(
                         key: const Key('vehicleName'),
                         textController: _vehicleNameController,
@@ -185,12 +186,11 @@ class _VehicleDataState extends State<VehicleData> {
                           }
                           return "Enter a valid vehicle name";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _vehicleName = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('vehicleColor'),
@@ -208,12 +208,11 @@ class _VehicleDataState extends State<VehicleData> {
                           }
                           return "Enter a valid vehicle color";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _vehicleColor = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('vehicleNumber'),
@@ -231,12 +230,11 @@ class _VehicleDataState extends State<VehicleData> {
                           }
                           return "Enter a valid vehicle number";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _vehicleNumber = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('vehicleCapacity'),
@@ -254,12 +252,11 @@ class _VehicleDataState extends State<VehicleData> {
                           }
                           return "Enter a valid vehicle capacity";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _vehicleCapacity = value!.trim();
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('vehicleModel'),
@@ -277,261 +274,254 @@ class _VehicleDataState extends State<VehicleData> {
                           }
                           return "Enter a valid vehicle model";
                         },
-                        onSaved: (value){
+                        onSaved: (value) {
                           _vehicleModel = value!.trim();
                           return null;
                         },
                       ),
-                      
                       const SizedBox(height: 30.0),
-
-                      _isVehicleParticularsImage == false ? 
-                      InkWell(
-                        onTap: () async {
-                          final result = await FilePicker.platform.pickFiles();
-                          if(result != null) {
-                            // Open single file open
-                            final file = result.files.first;
-                            print("Image Name: ${file.name}");
-                             setState(() {
-                              _vehicleParticulars = file.name;
-                              _isVehicleParticularsImage = true;
-                            });
-                            return;
-                          }
-                        },
-                        child: Align(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.height / 7,
-                            child: Column(
-                              children: [
-                                const Icon(
-                                  Remix.upload_2_line,
-                                  size: 25,
+                      _isVehicleParticularsImage == false
+                          ? InkWell(
+                              onTap: () async {
+                                final result =
+                                    await FilePicker.platform.pickFiles();
+                                if (result != null) {
+                                  // Open single file open
+                                  final file = result.files.first;
+                                  print("Image Name: ${file.name}");
+                                  setState(() {
+                                    _vehicleParticulars = file.name;
+                                    _isVehicleParticularsImage = true;
+                                  });
+                                  return;
+                                }
+                              },
+                              child: Align(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 15.0),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height:
+                                      MediaQuery.of(context).size.height / 7,
+                                  child: Column(
+                                    children: [
+                                      const Icon(
+                                        Remix.upload_2_line,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(height: 15.0),
+                                      const Text(
+                                        'Upload vehicle particulars not more than 10kb',
+                                        textScaleFactor: 0.9,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: appPrimaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: appPrimaryColor.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                  ),
                                 ),
-
-                                const SizedBox(height: 15.0),
-                                const Text(
-                                  'Upload vehicle particulars not more than 10kb',
+                              ),
+                            )
+                          : Text(
+                              _vehicleParticulars,
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: secondaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                      const SizedBox(height: 5.0),
+                      _isButtonPress && _vehicleParticulars.isEmpty
+                          ? const Align(
+                              child: Text(
+                                  " Upload your vehicle image for verification",
                                   textScaleFactor: 0.9,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: appPrimaryColor,
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                  )),
+                            )
+                          : Container(),
+                      const SizedBox(height: 30.0),
+                      _isVehicleImage == false
+                          ? InkWell(
+                              onTap: () async {
+                                final result =
+                                    await FilePicker.platform.pickFiles();
+                                if (result != null) {
+                                  // Open single file open
+                                  final file = result.files.first;
+                                  print("Image Name: ${file.name}");
+                                  setState(() {
+                                    _vehicleImageUrl = file.name;
+                                    _isVehicleImage = true;
+                                  });
+                                  return;
+                                }
+                              },
+                              child: Align(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 15.0),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height:
+                                      MediaQuery.of(context).size.height / 7,
+                                  child: Column(
+                                    children: [
+                                      const Icon(
+                                        Remix.upload_2_line,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(height: 15.0),
+                                      const Text(
+                                        'Upload vehicle image',
+                                        textScaleFactor: 0.9,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: appPrimaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: appPrimaryColor.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: appPrimaryColor.withOpacity(0.2),
-                                width: 1,
                               ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5.0),
+                            )
+                          : Text(
+                              _vehicleImageUrl,
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: secondaryColor,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                        ),
-                      ) : Text(
-                          _vehicleParticulars,
-                          textScaleFactor: 1.5,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: secondaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
                       const SizedBox(height: 5.0),
-                      _isButtonPress && _vehicleParticulars.isEmpty ?
-                      const Align(
-                        child: Text(
-                        " Upload your vehicle image for verification",
-                          textScaleFactor: 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.red,
-                            // fontWeight: FontWeight.bold,
-                          )
-                        ),
-                      ): Container(),
-
-                      const SizedBox(height: 30.0),
-
-                      _isVehicleImage == false ? 
-                      InkWell(
-                        onTap: () async {
-                          final result = await FilePicker.platform.pickFiles();
-                          if(result != null) {
-                            // Open single file open
-                            final file = result.files.first;
-                            print("Image Name: ${file.name}");
-                             setState(() {
-                              _vehicleImageUrl = file.name;
-                              _isVehicleImage = true;
-                            });
-                            return;
-                          }
-                        },
-                        child: Align(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.height / 7,
-                            child: Column(
-                              children: [
-                                const Icon(
-                                  Remix.upload_2_line,
-                                  size: 25,
-                                ),
-
-                                const SizedBox(height: 15.0),
-                                const Text(
-                                  'Upload vehicle image',
+                      _isButtonPress && _vehicleImageUrl.isEmpty
+                          ? const Align(
+                              child: Text(" Upload vehicle image",
                                   textScaleFactor: 0.9,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: appPrimaryColor,
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                  )),
+                            )
+                          : Container(),
+                      const SizedBox(height: 30.0),
+                      _isDriverLicence == false
+                          ? InkWell(
+                              onTap: () async {
+                                final result =
+                                    await FilePicker.platform.pickFiles();
+                                if (result != null) {
+                                  // Open single file open
+                                  final file = result.files.first;
+                                  print("Image Name: ${file.name}");
+                                  setState(() {
+                                    _driverLicence = file.name;
+                                    _isDriverLicence = true;
+                                  });
+                                  return;
+                                }
+                              },
+                              child: Align(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 15.0),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height:
+                                      MediaQuery.of(context).size.height / 7,
+                                  child: Column(
+                                    children: [
+                                      const Icon(
+                                        Remix.upload_2_line,
+                                        size: 25,
+                                      ),
+                                      const SizedBox(height: 15.0),
+                                      const Text(
+                                        'Upload driver’s licence',
+                                        textScaleFactor: 0.9,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: appPrimaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: appPrimaryColor.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
                                   ),
                                 ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: appPrimaryColor.withOpacity(0.2),
-                                width: 1,
                               ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5.0),
+                            )
+                          : Text(
+                              _driverLicence,
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: secondaryColor,
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                          ),
-                        ),
-                      ) : Text(
-                          _vehicleImageUrl,
-                          textScaleFactor: 1.5,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: secondaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
                       const SizedBox(height: 5.0),
-                      _isButtonPress && _vehicleImageUrl.isEmpty ?
-                      const Align(
-                        child: Text(
-                        " Upload vehicle image",
-                          textScaleFactor: 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.red,
-                            // fontWeight: FontWeight.bold,
-                          )
-                        ),
-                      ): Container(),
-
-                      const SizedBox(height: 30.0),
-                      _isDriverLicence == false ? 
-                      InkWell(
-                        onTap: () async {
-                          final result = await FilePicker.platform.pickFiles();
-                          if(result != null) {
-                            // Open single file open
-                            final file = result.files.first;
-                            print("Image Name: ${file.name}");
-                             setState(() {
-                              _driverLicence = file.name;
-                              _isDriverLicence = true;
-                            });
-                            return;
-                          }
-                        },
-                        child: Align(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.height / 7,
-                            child: Column(
-                              children: [
-                                const Icon(
-                                  Remix.upload_2_line,
-                                  size: 25,
-                                ),
-
-                                const SizedBox(height: 15.0),
-                                const Text(
-                                  'Upload driver’s licence',
+                      _isButtonPress && _driverLicence.isEmpty
+                          ? const Align(
+                              child: Text(" Upload driver’s licence",
                                   textScaleFactor: 0.9,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: appPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: appPrimaryColor.withOpacity(0.2),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ) : Text(
-                          _driverLicence,
-                          textScaleFactor: 1.5,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: secondaryColor,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-
-                      const SizedBox(height: 5.0),
-                      _isButtonPress && _driverLicence.isEmpty ?
-                      const Align(
-                        child: Text(
-                        " Upload driver’s licence",
-                          textScaleFactor: 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.red,
-                            // fontWeight: FontWeight.bold,
-                          )
-                        ),
-                      ): Container(),
-
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                  )),
+                            )
+                          : Container(),
                       const SizedBox(height: 40.0),
                       Align(
-                        alignment: Alignment.center,
-                        child: Button(
-                          text: 'Next',
-                          onPress: _onNextPress,
-                          // onPress: () {
-                          //   Navigator.of(context).pushNamed(NextOfKin.id);
-                          // }, 
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: false,
-                          width: 350.0
-                        )
-                      ),
-
+                          alignment: Alignment.center,
+                          child: Button(
+                              text: 'Next',
+                              onPress: _onNextPress,
+                              // onPress: () {
+                              //   Navigator.of(context).pushNamed(NextOfKin.id);
+                              // },
+                              color: appPrimaryColor,
+                              textColor: whiteColor,
+                              isLoading: false,
+                              width: 350.0)),
                       const SizedBox(height: 40.0),
                     ],
                   ),
                 ),
               ),
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 }

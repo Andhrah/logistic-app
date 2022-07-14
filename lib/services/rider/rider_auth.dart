@@ -13,23 +13,22 @@ class RiderAuthService {
   Future<dynamic> authRequest(Map body, String url) async {
     print('body is $body');
     print('Encoded body ${json.encode(body)}');
-    var response = await http.post(
-      uriConverter(url),
-      headers: kHeaders(''),
-      body: json.encode(body)
-    );
+    var response = await http.post(uriConverter(url),
+        headers: kHeaders(''), body: json.encode(body));
     print(response.body);
     var decoded = jsonDecode(response.body);
     if (response.statusCode.toString().startsWith('2')) {
       print('data: $decoded');
       return decoded;
-    } else if(decoded['data']) {
-      print('reason is ...${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
-    }
-    else {
+    } else if (decoded['data']) {
+      print(
+          'reason is ...${response.reasonPhrase} message is ${decoded['data']}');
+      throw ApiFailureException(
+          decoded['data'][0]["message"] ?? response.reasonPhrase);
+    } else {
       print('reason is ${response.reasonPhrase} message is ${decoded['data']}');
-      throw ApiFailureException(decoded['data'][0]["message"] ?? response.reasonPhrase);
+      throw ApiFailureException(
+          decoded['data'][0]["message"] ?? response.reasonPhrase);
     }
   }
 
@@ -42,7 +41,6 @@ class RiderAuthService {
     String stateOfOrigin,
     String stateOfResidence,
     String residentialAddress,
-
     String vehicleName,
     String vehicleColor,
     String vehicleNumber,
@@ -50,14 +48,13 @@ class RiderAuthService {
     String vehicleModel,
     int vehicleTypeId,
     List documents,
-
     String kinFirstName,
     String kinLastName,
     String kinPhoneNumber,
     String kinEmail,
     String kinAddress,
     String kinRelationship,
-    ) async {
+  ) async {
     var body = {
       "user": {
         "firstName": firstName,

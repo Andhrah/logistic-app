@@ -1,7 +1,7 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:hive/hive.dart';
+
 import 'package:open_file/open_file.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:uploadcare_client/uploadcare_client.dart';
@@ -21,7 +21,6 @@ class PersonalData extends StatefulWidget {
 }
 
 class _PersonalDataState extends State<PersonalData> {
-
   var states = [
     "Choose State",
     "Abia",
@@ -70,13 +69,12 @@ class _PersonalDataState extends State<PersonalData> {
   FocusNode? _residentialAddressNode;
 
   String country = "Nigeria";
-  String _stateOfOrigin = 'Choose State';   
+  String _stateOfOrigin = 'Choose State';
   String _stateOfResidence = 'Choose State';
   String? _residentialAddress;
+
   // String _userPassport = "";
   String _userPassportUrl = "";
-
-  
 
   bool _isImage = false;
   bool _isButtonPress = false;
@@ -98,51 +96,42 @@ class _PersonalDataState extends State<PersonalData> {
     setState(() {
       _isButtonPress = true;
     });
-    
+
     final FormState? form = _formKey.currentState;
-    if(form!.validate() && 
-      _stateOfResidence != "Choose State" 
-      && _stateOfOrigin != "Choose State" &&
-      _userPassportUrl.isNotEmpty
-      ){
+    if (form!.validate() &&
+        _stateOfResidence != "Choose State" &&
+        _stateOfOrigin != "Choose State" &&
+        _userPassportUrl.isNotEmpty) {
       form.save();
 
-      var _riderPassport = {
-        "name": "userPassport",
-        "url": _userPassportUrl,
-      };
-      
-      var box = await Hive.openBox('userData');
-      var imgBox = await Hive.openBox('imgDocs');
-      await box.putAll({
+      Navigator.pushNamed(context, VehicleData.id, arguments: {
         "stateOfOrigin": _stateOfOrigin,
         "stateOfResidence": _stateOfResidence,
         "residentialAddress": _residentialAddress,
+        'riderDocs': {
+          "name": "userPassport",
+          "url": _userPassportUrl,
+        }
       });
-      
-      await imgBox.put('riderDocs', [_riderPassport]);
-      
-      Navigator.of(context).pushNamed(VehicleData.id);
     }
-   
   }
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
-      backgroundColor: whiteColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
+        backgroundColor: whiteColor,
+        body: SingleChildScrollView(
+          child: SafeArea(
+              child: Column(
             children: [
               const SizedBox(height: 10.0),
               Row(
                 children: [
                   BackIcon(
-                    onPress: () {Navigator.pop(context);},
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
                   ),
-
                   Container(
                     margin: const EdgeInsets.only(left: 40.0),
                     alignment: Alignment.center,
@@ -162,16 +151,14 @@ class _PersonalDataState extends State<PersonalData> {
                   ),
                 ],
               ),
-
               const SizedBox(height: 30.0),
-
               Container(
                 width: MediaQuery.of(context).size.width,
                 margin: const EdgeInsets.symmetric(horizontal: 30.0),
                 child: Form(
                   key: _formKey,
                   child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
                         'Address:',
@@ -182,7 +169,6 @@ class _PersonalDataState extends State<PersonalData> {
                         ),
                       ),
                       const SizedBox(height: 15.0),
-
                       const Text(
                         'Country',
                         textScaleFactor: 1.2,
@@ -191,10 +177,10 @@ class _PersonalDataState extends State<PersonalData> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-
                       const SizedBox(height: 5.0),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 8.0, vertical: 15.0),
                         width: MediaQuery.of(context).size.width,
                         child: Row(children: [
                           Image.asset(
@@ -202,9 +188,7 @@ class _PersonalDataState extends State<PersonalData> {
                             height: 20,
                             width: 20,
                           ),
-
                           const SizedBox(width: 8.0),
-
                           Text(
                             country,
                             textScaleFactor: 1.4,
@@ -223,7 +207,6 @@ class _PersonalDataState extends State<PersonalData> {
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 30.0),
                       const Text(
                         'State of origin',
@@ -233,54 +216,53 @@ class _PersonalDataState extends State<PersonalData> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-
                       const SizedBox(height: 5.0),
                       DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: appPrimaryColor.withOpacity(0.9),
-                            width: 0.3
-                          ), //border of dropdown button
-                          borderRadius: BorderRadius.circular(5.0), //border raiuds of dropdown button
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: DropdownButton<String>(
-                            value: _stateOfOrigin,
-                            icon: const Icon(Remix.arrow_down_s_line),
-                            elevation: 16,
-                            isExpanded: true, 
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.8),
-                              fontSize: 18.0,
-                            ),
-                            underline: Container(), //empty line
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _stateOfOrigin = newValue!;
-                              });
-                            },
-                            items: states.map((String value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: appPrimaryColor.withOpacity(0.9),
+                                width: 0.3), //border of dropdown button
+                            borderRadius: BorderRadius.circular(
+                                5.0), //border raiuds of dropdown button
                           ),
-                        )
-                      ),
-
-                       const SizedBox(height: 5.0),
-
-                      _isButtonPress && _stateOfOrigin == "Choose State" ? const Text(
-                        " Choose your state of origin",
-                        textScaleFactor: 0.9,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ) : Container(),
-
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: DropdownButton<String>(
+                              value: _stateOfOrigin,
+                              icon: const Icon(Remix.arrow_down_s_line),
+                              elevation: 16,
+                              isExpanded: true,
+                              style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.8),
+                                fontSize: 18.0,
+                              ),
+                              underline: Container(),
+                              //empty line
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _stateOfOrigin = newValue!;
+                                });
+                              },
+                              items: states.map((String value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )),
+                      const SizedBox(height: 5.0),
+                      _isButtonPress && _stateOfOrigin == "Choose State"
+                          ? const Text(
+                              " Choose your state of origin",
+                              textScaleFactor: 0.9,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            )
+                          : Container(),
                       const SizedBox(height: 30.0),
                       const Text(
                         'State of residence',
@@ -290,54 +272,53 @@ class _PersonalDataState extends State<PersonalData> {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-
                       const SizedBox(height: 5.0),
                       DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(
-                            color: appPrimaryColor.withOpacity(0.9),
-                            width: 0.3
-                          ), //border of dropdown button
-                          borderRadius: BorderRadius.circular(5.0), //border raiuds of dropdown button
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: DropdownButton<String>(
-                            value: _stateOfResidence,
-                            icon: const Icon(Remix.arrow_down_s_line),
-                            elevation: 16,
-                            isExpanded: true, 
-                            style: TextStyle(
-                              color: appPrimaryColor.withOpacity(0.8),
-                              fontSize: 18.0,
-                            ),
-                            underline: Container(), //empty line
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _stateOfResidence = newValue!;
-                              });
-                            },
-                            items: states.map((String value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                                color: appPrimaryColor.withOpacity(0.9),
+                                width: 0.3), //border of dropdown button
+                            borderRadius: BorderRadius.circular(
+                                5.0), //border raiuds of dropdown button
                           ),
-                        )
-                      ),
-
+                          child: Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 10.0),
+                            child: DropdownButton<String>(
+                              value: _stateOfResidence,
+                              icon: const Icon(Remix.arrow_down_s_line),
+                              elevation: 16,
+                              isExpanded: true,
+                              style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.8),
+                                fontSize: 18.0,
+                              ),
+                              underline: Container(),
+                              //empty line
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _stateOfResidence = newValue!;
+                                });
+                              },
+                              items: states.map((String value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                          )),
                       const SizedBox(height: 5.0),
-
-                      _isButtonPress && _stateOfResidence == "Choose State" ? const Text(
-                        " Choose your state of origin",
-                        textScaleFactor: 0.9,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.red,
-                        ),
-                      ) : Container(),
-
+                      _isButtonPress && _stateOfResidence == "Choose State"
+                          ? const Text(
+                              " Choose your state of origin",
+                              textScaleFactor: 0.9,
+                              textAlign: TextAlign.center,
+                              style: TextStyle(
+                                color: Colors.red,
+                              ),
+                            )
+                          : Container(),
                       const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('residentialAddress'),
@@ -365,106 +346,98 @@ class _PersonalDataState extends State<PersonalData> {
                           return null;
                         },
                       ),
-
                       const SizedBox(height: 30.0),
-
-                      _isImage == false ? 
-                      InkWell(
-                        onTap: () async {
-                          final result = await FilePicker.platform.pickFiles();
-                          if(result != null) {
-                            // Open single file open
-                            final file = result.files.first;
-                            print("============= PRINTING File ========");
-                            print(file);
-                             setState(() {
-                              _userPassportUrl = file.name;
-                              _isImage = true;
-                            });
-                            return;
-                          }
-                        },
-                        child: Align(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 15.0),
-                            width: MediaQuery.of(context).size.width / 3,
-                            height: MediaQuery.of(context).size.height / 7,
-                            child: Column(
-                              children: const [
-                                Icon(
-                                  Remix.upload_2_line,
-                                  size: 25,
+                      _isImage == false
+                          ? InkWell(
+                              onTap: () async {
+                                final result =
+                                    await FilePicker.platform.pickFiles();
+                                if (result != null) {
+                                  // Open single file open
+                                  final file = result.files.first;
+                                  print("============= PRINTING File ========");
+                                  print(file);
+                                  setState(() {
+                                    _userPassportUrl = file.name;
+                                    _isImage = true;
+                                  });
+                                  return;
+                                }
+                              },
+                              child: Align(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 8.0, vertical: 15.0),
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  height:
+                                      MediaQuery.of(context).size.height / 7,
+                                  child: Column(
+                                    children: const [
+                                      Icon(
+                                        Remix.upload_2_line,
+                                        size: 25,
+                                      ),
+                                      SizedBox(height: 15.0),
+                                      Text(
+                                        'Upload a clear passport not more than 5kb',
+                                        textScaleFactor: 0.9,
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          color: appPrimaryColor,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                      color: appPrimaryColor.withOpacity(0.2),
+                                      width: 1,
+                                    ),
+                                    borderRadius: const BorderRadius.all(
+                                      Radius.circular(5.0),
+                                    ),
+                                  ),
                                 ),
-
-                                SizedBox(height: 15.0),
-                                Text(
-                                  'Upload a clear passport not more than 5kb',
+                              ),
+                            )
+                          : Text(
+                              _userPassportUrl,
+                              textScaleFactor: 1.5,
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(
+                                color: secondaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                      const SizedBox(height: 5.0),
+                      _isButtonPress && _userPassportUrl.isEmpty
+                          ? const Align(
+                              child: Text(" Upload your passport",
                                   textScaleFactor: 0.9,
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: appPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            decoration: BoxDecoration(
-                              border: Border.all(
-                                color: appPrimaryColor.withOpacity(0.2),
-                                width: 1,
-                              ),
-                              borderRadius: const BorderRadius.all(
-                                Radius.circular(5.0),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ) : 
-                      Text(
-                        _userPassportUrl,
-                        textScaleFactor: 1.5,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: secondaryColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-
-                      const SizedBox(height: 5.0),
-                      _isButtonPress && _userPassportUrl.isEmpty ?
-                      const Align(
-                        child: Text(
-                        " Upload your passport",
-                          textScaleFactor: 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.red,
-                            // fontWeight: FontWeight.bold,
-                          )
-                        ),
-                      ): Container(),
-
+                                    color: Colors.red,
+                                    // fontWeight: FontWeight.bold,
+                                  )),
+                            )
+                          : Container(),
                       const SizedBox(height: 40.0),
                       Align(
-                        alignment: Alignment.center,
-                        child: Button(
-                          text: 'Next', 
-                          onPress: _onNextPress,
-                          color: appPrimaryColor, 
-                          textColor: whiteColor, 
-                          isLoading: false,
-                          width: 350.0
-                        )
-                      ),
-
+                          alignment: Alignment.center,
+                          child: Button(
+                              text: 'Next',
+                              onPress: _onNextPress,
+                              color: appPrimaryColor,
+                              textColor: whiteColor,
+                              isLoading: false,
+                              width: 350.0)),
                       const SizedBox(height: 30.0),
                     ],
                   ),
                 ),
               ),
             ],
-          )
-        ),
-      )
-    );
+          )),
+        ));
   }
 }

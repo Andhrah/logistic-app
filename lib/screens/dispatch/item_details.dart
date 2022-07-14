@@ -4,17 +4,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-import 'package:hive/hive.dart';
 import 'package:provider/provider.dart';
+import 'package:remixicon/remixicon.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/models/order/order.dart';
-import 'package:trakk/provider/auth/auth_provider.dart';
 import 'package:trakk/provider/order/order.dart';
-import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
 import 'package:trakk/widgets/input_field.dart';
-import 'package:remixicon/remixicon.dart';
 
 class ItemDetails extends StatefulWidget {
   static const String id = 'itemDetails';
@@ -62,8 +61,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
   String _itemImage = "";
   String? _pickUpDate;
   String? _dropOffDate;
-  dynamic _buttonText = "";
-  dynamic _previousRoute = "";
 
   late GooglePlace googlePlace;
   List<AutocompletePrediction> predictions = [];
@@ -75,7 +72,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
 
   bool _isItemImage = false;
   String _pickItem = "Food";
-
   var itemsCategory = ["Food", "Cloth", "Electronics", "others (specify)"];
 
   void autoCompleteSearch(String value) async {
@@ -89,15 +85,15 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
   }
 
   _getPreviousRoute() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.get('previousRoute');
-    });
+    // setState(() {
+    //   _previousRoute = box.get('previousRoute');
+    // });
   }
 
   @override
   void initState() {
     super.initState();
+
     String apiKey = "AIzaSyBvxkb0Gv6kwpiplPtmeQZhG4_V-KvLZ1U";
     googlePlace = GooglePlace(apiKey);
 
@@ -186,7 +182,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
   _onAddItemPress(BuildContext cxt) async {
-    
     final FormState? form = _formKey.currentState;
     // print(_itemDescription);
     // Order _orderProvider = Provider.of<Order>(cxt, listen: false);
@@ -220,28 +215,26 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
       print(_dropOff);
       Order _orderProvider = Provider.of<Order>(cxt, listen: false);
       _orderProvider.setOrder(OrderModel(
-        pickUpLocation: OrderLocation(
-          address: _pickUp.toString(),
-          latitude: 19,
-          longitude: 10,
-          isPickUp: false,
-          isDelivery: false,
-        ),
-        deliveryLocation: OrderLocation(
-          address: _pickUp.toString(),
-          latitude: 19,
-          longitude: 10,
-          isPickUp: false,
-          isDelivery: false,
-        ),
-        orderItem: OrderItem(
-          orderItemTypeId: 1,
-          description: _itemDescription,
-          imageReference: _itemImage,
-          weight: "none"
-        ),
-        notes: "Hello")
-        );
+          pickUpLocation: OrderLocation(
+            address: _pickUp.toString(),
+            latitude: 19,
+            longitude: 10,
+            isPickUp: false,
+            isDelivery: false,
+          ),
+          deliveryLocation: OrderLocation(
+            address: _pickUp.toString(),
+            latitude: 19,
+            longitude: 10,
+            isPickUp: false,
+            isDelivery: false,
+          ),
+          orderItem: OrderItem(
+              orderItemTypeId: 1,
+              description: _itemDescription,
+              imageReference: _itemImage,
+              weight: "none"),
+          notes: "Hello"));
       // var box = await Hive.openBox('userOrder');
       // box.putAll({
       //   "pickUp": _pickUp,
@@ -259,18 +252,14 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
   }
 
   _saveEdittedItem() async {
-    var box = await Hive.openBox('routes');
-    setState(() {
-      _previousRoute = box.delete('previousRoute');
-    });
     Navigator.pop(context);
   }
 
   _onButtonPress() async {
     // Navigator.of(context).pushNamed(PickRide.id);
     showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
+        context: context,
+        isScrollControlled: true,
         backgroundColor: Colors.transparent,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -440,13 +429,6 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
 
   @override
   Widget build(BuildContext context) {
-    Auth _authProvider = Provider.of<Auth>(context);
-    print('authProvider: ${_authProvider.user} token: ${_authProvider.token}');
-    if (_previousRoute == "DispatchSummary") {
-      final arg = ModalRoute.of(context)!.settings.arguments as Map;
-      _buttonText = arg["buttonText"];
-    }
-
     return Scaffold(
       body: SingleChildScrollView(
         child: SafeArea(
@@ -460,7 +442,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 32.0),
               decoration: const BoxDecoration(
-                image: DecorationImage(
+                  image: DecorationImage(
                 image: AssetImage("assets/images/empty_map.png"),
                 fit: BoxFit.fill,
               )),
@@ -490,7 +472,8 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                                   hintText: 'Pick Up',
                                   node: _pickUpNode,
                                   textController: _pickUpController,
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textHeight: 0.0,
                                   borderColor: appPrimaryColor.withOpacity(0.5),
                                   validator: (value) {
@@ -525,7 +508,8 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                                   hintText: 'Drop Off',
                                   node: _dropOffNode,
                                   textController: _dropOffController,
-                                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
                                   textHeight: 0,
                                   borderColor: appPrimaryColor.withOpacity(0.5),
                                   validator: (value) {
@@ -563,44 +547,49 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                   ),
 
                   ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: predictions.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        leading: const CircleAvatar(
-                          backgroundColor: appPrimaryColor,
-                          child: Icon(
-                            Remix.pin_distance_fill,
-                            color: secondaryColor,
+                      shrinkWrap: true,
+                      itemCount: predictions.length,
+                      itemBuilder: (context, index) {
+                        return ListTile(
+                          leading: const CircleAvatar(
+                            backgroundColor: appPrimaryColor,
+                            child: Icon(
+                              Remix.pin_distance_fill,
+                              color: secondaryColor,
+                            ),
                           ),
-                        ),
-                        title: Text(predictions[index].description.toString()),
-                        onTap: () async {
-                          final placeId = predictions[index].placeId!;
-                          final details = await googlePlace.details.get(placeId);
-                          if (details != null && details.result != null && mounted) {
-                            print("+++++++++++++++++++++++++++++");
-                            print(details.result!.addressComponents);
-                            if (_pickUpNode!.hasFocus) {
-                              setState(() {
-                                _pickUp =  details.result!.name!;
-                                print('******************************');
-                                print(_pickUp.runtimeType);
-                                _pickUpController.text = details.result!.name!;
-                                predictions = [];
-                              });
-                            } else {
-                              setState(() {
-                                _dropOff = details.result!.name!;
-                                _dropOffController.text = details.result!.name!;
-                                predictions = [];
-                              });
+                          title:
+                              Text(predictions[index].description.toString()),
+                          onTap: () async {
+                            final placeId = predictions[index].placeId!;
+                            final details =
+                                await googlePlace.details.get(placeId);
+                            if (details != null &&
+                                details.result != null &&
+                                mounted) {
+                              print("+++++++++++++++++++++++++++++");
+                              print(details.result!.addressComponents);
+                              if (_pickUpNode!.hasFocus) {
+                                setState(() {
+                                  _pickUp = details.result!.name!;
+                                  print('******************************');
+                                  print(_pickUp.runtimeType);
+                                  _pickUpController.text =
+                                      details.result!.name!;
+                                  predictions = [];
+                                });
+                              } else {
+                                setState(() {
+                                  _dropOff = details.result!.name!;
+                                  _dropOffController.text =
+                                      details.result!.name!;
+                                  predictions = [];
+                                });
+                              }
                             }
-                          }
-                        },
-                      );
-                    }
-                  ),
+                          },
+                        );
+                      }),
 
                   // InputField(
                   //   obscureText: false,
@@ -769,9 +758,9 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                             icon: Container(
                               padding: const EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
-                                 color: secondaryColor.withOpacity(0.2),
-                                borderRadius: const BorderRadius.all(Radius.circular(50))
-                              ),
+                                  color: secondaryColor.withOpacity(0.2),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50))),
                               child: const Icon(
                                 Remix.calendar_2_fill,
                                 size: 18.0,
@@ -806,45 +795,44 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                           suffixIcon: IconButton(
                             onPressed: () {
                               DatePicker.showDatePicker(context,
-                                showTitleActions: true,
-                                minTime: DateTime(2022, 3, 5),
-                                maxTime: DateTime(2100, 6, 7),
-                                theme: const DatePickerTheme(
-                                  headerColor: appPrimaryColor,
-                                  backgroundColor: whiteColor,
-                                  itemStyle: TextStyle(
-                                    color: appPrimaryColor,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18,
-                                  ),
-                                  doneStyle: TextStyle(
-                                    color: secondaryColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                  cancelStyle: TextStyle(
-                                    color: secondaryColor,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ), 
-                                onChanged: (date) {
-                                  print('change $date in time zone ' + date.timeZoneOffset.inHours.toString());
-                                }, 
-                                onConfirm: (date) {
-                                  print('confirm $date');
-                                _dropOffDateController.text = _parseDate(date.toString());
-                                },
-                                currentTime: DateTime.now(),
-                                locale: LocaleType.en
-                              );
+                                  showTitleActions: true,
+                                  minTime: DateTime(2022, 3, 5),
+                                  maxTime: DateTime(2100, 6, 7),
+                                  theme: const DatePickerTheme(
+                                    headerColor: appPrimaryColor,
+                                    backgroundColor: whiteColor,
+                                    itemStyle: TextStyle(
+                                      color: appPrimaryColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                    ),
+                                    doneStyle: TextStyle(
+                                      color: secondaryColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                    cancelStyle: TextStyle(
+                                      color: secondaryColor,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ), onChanged: (date) {
+                                print('change $date in time zone ' +
+                                    date.timeZoneOffset.inHours.toString());
+                              }, onConfirm: (date) {
+                                print('confirm $date');
+                                _dropOffDateController.text =
+                                    _parseDate(date.toString());
+                              },
+                                  currentTime: DateTime.now(),
+                                  locale: LocaleType.en);
                             },
                             icon: Container(
                               padding: const EdgeInsets.all(5.0),
                               decoration: BoxDecoration(
-                                 color: secondaryColor.withOpacity(0.2),
-                                borderRadius: const BorderRadius.all(Radius.circular(50))
-                              ),
+                                  color: secondaryColor.withOpacity(0.2),
+                                  borderRadius: const BorderRadius.all(
+                                      Radius.circular(50))),
                               child: const Icon(
                                 Remix.calendar_2_fill,
                                 size: 18.0,
@@ -869,9 +857,13 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
 
                   const SizedBox(height: 30.0),
 
-                  _authProvider.user == null && _authProvider.token != null
-                      ? Container(
-                          child: Column(
+                  StreamBuilder<AppSettings>(
+                      stream: appSettingsBloc.appSettings,
+                      builder: (context, snapshot) {
+                        if (snapshot.hasData &&
+                            (snapshot.data?.loginResponse?.data?.token ?? '')
+                                .isNotEmpty) {
+                          return Column(
                             children: [
                               const Text(
                                 'Sender’s Info',
@@ -941,9 +933,11 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
 
                               const SizedBox(height: 20.0),
                             ],
-                          ),
-                        )
-                      : Container(),
+                          );
+                        }
+                        return const SizedBox();
+                      }),
+
                   const Text(
                     'Receiver’s Info',
                     textScaleFactor: 1.2,
@@ -1024,10 +1018,10 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                               height: MediaQuery.of(context).size.height / 8.7,
                               child: Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(Remix.upload_2_line),
-                                    const SizedBox(height: 5.0),
-                                    const Text('Upload item image',
+                                  children: const [
+                                    Icon(Remix.upload_2_line),
+                                    SizedBox(height: 5.0),
+                                    Text('Upload item image',
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                             fontSize: 18.0,

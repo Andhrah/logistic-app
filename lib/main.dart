@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:hive_flutter/hive_flutter.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart' as pp;
-
-import 'package:trakk/models/auth/first_time_user.dart';
-import 'package:trakk/models/auth/is_logged_in.dart';
-import 'package:trakk/models/auth/user.dart';
+import 'package:pusher_client/pusher_client.dart';
 import 'package:trakk/provider/provider_list.dart';
 import 'package:trakk/screens/auth/forgot_password.dart';
 import 'package:trakk/screens/auth/forgot_password_pin.dart';
@@ -43,58 +40,52 @@ import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/polyline.dart';
-import 'package:trakk/screens/profile/profile_menu.dart';
-import 'package:trakk/screens/riders/pick_up.dart';
-import 'package:trakk/screens/support/help.dart';
-import 'package:trakk/screens/support/help_and_support.dart';
-import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
+import 'package:trakk/screens/profile/profile_menu.dart';
+import 'package:trakk/screens/profile/settings.dart';
+import 'package:trakk/screens/profile/user_dispatch_history.dart';
+import 'package:trakk/screens/riders/home/rider_home.dart';
+import 'package:trakk/screens/riders/pick_up.dart';
+import 'package:trakk/screens/riders/rider_order.dart';
+import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/wallet/all_cards.dart';
 import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
-import 'package:trakk/screens/profile/settings.dart';
-import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/wallet/payments.dart';
 import 'package:trakk/screens/wallet/qr_code_payment.dart';
 import 'package:trakk/screens/wallet/qr_payment.dart';
 import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/screens/wallet/wallet_history.dart';
-import 'package:pusher_client/pusher_client.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/singleton_data.dart';
+
 import 'screens/profile/profile_menu.dart';
 import 'screens/profile/user_dispatch_history.dart';
 
-
 void main() async {
+  SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
+  SingletonData.singletonData.initSsoURL('https://zebrrasso.herokuapp.com/');
+
   await _openHive();
-  
+
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
   // Ensure that the filename corresponds to the path in step 1 and 2.
- // await dotenv.load(fileName: ".env");
+  // await dotenv.load(fileName: ".env");
 
   await dotenv.load(fileName: ".env");
-
-
   //await dotenv.load(fileName: ".env");
-    
   runApp(const MyApp());
 }
 
 _openHive() async {
   WidgetsFlutterBinding.ensureInitialized();
-  var appDocDir = await pp.getApplicationDocumentsDirectory();
-  await Hive.initFlutter(appDocDir.path);
+
   // Register the generated adapter
-  Hive.registerAdapter(FirstTimeUserAdapter());
-  Hive.registerAdapter(UserAdapter());
-  Hive.registerAdapter(IsLoggedInAdapter());
 }
 
 class MyApp extends StatefulWidget {
-
   //final String _pusher = "ec680890477ff06ecb9a";
 
   const MyApp({Key? key}) : super(key: key);
@@ -104,7 +95,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   PusherOptions options = PusherOptions(
     host: "https://trakk-server.herokuapp.com",
     encrypted: false,
@@ -112,21 +102,20 @@ class _MyAppState extends State<MyApp> {
 
   @override
   void dispose() {
-    Hive.close();
     super.dispose();
   }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
+        const SystemUiOverlayStyle(statusBarColor: appPrimaryColor));
 
     return MultiProvider(
       providers: appProviders,
       child: OverlaySupport(
         child: MaterialApp(
+          navigatorKey: SingletonData.singletonData.navKey,
           title: 'Trakk',
           debugShowCheckedModeBanner: false,
           theme: ThemeData(
@@ -168,39 +157,64 @@ class _MyAppState extends State<MyApp> {
             NextOfKin.id: (context) => const NextOfKin(),
             PickUpScreen.id: (context) => const PickUpScreen(),
             CartScreen.id: (context) => const CartScreen(),
-            PolylineScreen.id: (context) => const PolylineScreen(),
+            // PolylineScreen.id: (context) => PolylineScreen(),
             UserOrderScreen.id: (context) => const UserOrderScreen(),
-            ProfileMenu.id:(context) => const ProfileMenu(),
-            EditProfile.id:(context) => const EditProfile(),
-            HelpAndSupport.id:(context) => const HelpAndSupport(),
-            FundWalletScreen.id: (context) => const FundWalletScreen(),
-            CompanyHome.id:(context) => const CompanyHome(),
-            Vehicles.id:(context) => const Vehicles(),
-            Riders.id:(context) => const Riders(),
-            DispatchHistory.id:(context) => const DispatchHistory(),
-            ListOfVehicles.id:(context) => const ListOfVehicles(),
-            RegisterNewVehicle.id:(context) => const RegisterNewVehicle(),
-            AddRider.id:(context) => const AddRider(),
-            ReferredRides.id:(context) => const ReferredRides(),
-            MerchantRiderProfile.id:(context) => const MerchantRiderProfile(),
-            ListOfRiders.id:(context) => const ListOfRiders(),
-            RejectedRides.id:(context) => const RejectedRides(),
-            FulfilledDispatch.id:(context) => const FulfilledDispatch(),
-            WalletScreen.id:(context) => const WalletScreen(),
-            UserDispatchHistory.id:(context) => const UserDispatchHistory(),
-            Settings.id:(context) =>  const Settings(),
-            Payments.id:(context) =>  const Payments(),
+            ProfileMenu.id: (context) => const ProfileMenu(),
             EditProfile.id: (context) => const EditProfile(),
-            RideIssues.id:(context) =>  const RideIssues(),
+            FundWalletScreen.id: (context) => const FundWalletScreen(),
+            CompanyHome.id: (context) => const CompanyHome(),
+            Vehicles.id: (context) => const Vehicles(),
+            Riders.id: (context) => const Riders(),
+            DispatchHistory.id: (context) => const DispatchHistory(),
+            ListOfVehicles.id: (context) => const ListOfVehicles(),
+            RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
+            AddRider.id: (context) => const AddRider(),
+            ReferredRides.id: (context) => const ReferredRides(),
+            MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
+            ListOfRiders.id: (context) => const ListOfRiders(),
+            RejectedRides.id: (context) => const RejectedRides(),
+            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
+            RiderOrderScreen.id: (context) => const RiderHomeScreen(),
+            PickUpScreen.id: (context) => const PickUpScreen(),
+            RejectedRides.id: (context) => const RejectedRides(),
+            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
+            RiderOrderScreen.id: (context) => const RiderHomeScreen(),
+            PickUpScreen.id: (context) => const PickUpScreen(),
+            RejectedRides.id: (context) => const RejectedRides(),
+            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
+            RiderHomeScreen.id: (context) => const RiderHomeScreen(),
+            RejectedRides.id: (context) => const RejectedRides(),
+            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
+
+            // MyDatePicker.id: (context) => MyDatePicker(),
+            // Country.id: (context) => const Country(),
+            ProfileMenu.id: (context) => const ProfileMenu(),
+            WalletScreen.id: (context) => const WalletScreen(),
+            UserDispatchHistory.id: (context) => const UserDispatchHistory(),
+            Settings.id: (context) => const Settings(),
+            Payments.id: (context) => const Payments(),
+            // RideIssues.id:(context) => const RideIssues(),
+            EditProfile.id: (context) => const EditProfile(),
+            FundWalletScreen.id: (context) => const FundWalletScreen(),
+            CompanyHome.id: (context) => const CompanyHome(),
+            Vehicles.id: (context) => const Vehicles(),
+            Riders.id: (context) => const Riders(),
+            DispatchHistory.id: (context) => const DispatchHistory(),
+            ListOfVehicles.id: (context) => const ListOfVehicles(),
+
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
-            Transfers.id:(context) => const Transfers(),
-            PayWithTransfer.id:(context) => const PayWithTransfer(),
-            AllCards.id: (context)  => const AllCards(),
-            BuyAirtime.id:(context) =>  const BuyAirtime(),
-            WalletHistory.id:(context) => const WalletHistory(),
-            QrPayment.id:(context) => const QrPayment(),
-            QrCodePayment.id:(context) => const QrCodePayment(),
+            ListOfRiders.id: (context) => const ListOfRiders(),
+            RejectedRides.id: (context) => const RejectedRides(),
+            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
+            WalletScreen.id: (context) => const WalletScreen(),
+            Transfers.id: (context) => const Transfers(),
+            PayWithTransfer.id: (context) => const PayWithTransfer(),
+            AllCards.id: (context) => const AllCards(),
+            BuyAirtime.id: (context) => const BuyAirtime(),
+            WalletHistory.id: (context) => const WalletHistory(),
+            QrPayment.id: (context) => const QrPayment(),
+            QrCodePayment.id: (context) => const QrCodePayment(),
             VerifiyAccountScreen.id: (context) => const VerifiyAccountScreen(),
             CompanyData.id: (context) => const CompanyData(),
           },
