@@ -2,7 +2,8 @@ enum UserType {
   user('user'),
   rider('rider'),
   guest('guest'),
-  merchant('merchant');
+  merchant('merchant'),
+  none('none');
 
   const UserType(this.value);
 

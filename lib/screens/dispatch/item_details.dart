@@ -7,10 +7,11 @@ import 'package:google_place/google_place.dart';
 import 'package:provider/provider.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
-import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/models/order/order.dart';
 import 'package:trakk/provider/order/order.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
 import 'package:trakk/widgets/input_field.dart';
@@ -184,7 +185,7 @@ class _ItemDetailsState extends State<ItemDetails>
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
-  _onAddItemPress(BuildContext cxt) async {
+  _onAddItemPress() async {
     final FormState? form = _formKey.currentState;
     // print(_itemDescription);
     // Order _orderProvider = Provider.of<Order>(cxt, listen: false);
@@ -216,7 +217,7 @@ class _ItemDetailsState extends State<ItemDetails>
       print(_itemDescription);
       print(_pickUp.toString());
       print(_dropOff);
-      Order _orderProvider = Provider.of<Order>(cxt, listen: false);
+      Order _orderProvider = Provider.of<Order>(context, listen: false);
       _orderProvider.setOrder(OrderModel(
           pickUpLocation: OrderLocation(
             address: _pickUp.toString(),
@@ -250,7 +251,7 @@ class _ItemDetailsState extends State<ItemDetails>
       //   "dropOffDate": _dropOffDate,
       //   "itemImage": _itemImage,
       // });
-      // Navigator.of(context).pushNamed( NextOfKin.id);
+      Navigator.of(context).pushNamed(PickRide.id);
     }
   }
 
@@ -849,12 +850,11 @@ class _ItemDetailsState extends State<ItemDetails>
 
                   const SizedBox(height: 30.0),
 
-                  StreamBuilder<AppSettings>(
-                      stream: appSettingsBloc.appSettings,
+                  FutureBuilder<UserType>(
+                      future: appSettingsBloc.getUserType,
                       builder: (context, snapshot) {
                         if (snapshot.hasData &&
-                            (snapshot.data?.loginResponse?.data?.token ?? '')
-                                .isNotEmpty) {
+                            (snapshot.data == UserType.guest)) {
                           return Column(
                             children: [
                               const Text(
@@ -1039,7 +1039,7 @@ class _ItemDetailsState extends State<ItemDetails>
                   Button(
                     // text: _buttonText.length < 1 ? 'Add Item' : _buttonText,
                     text: 'Proceed',
-                    onPress: _onButtonPress,
+                    onPress: _onAddItemPress,
                     // onPress: _buttonText.length < 1 ? () => _onAddItemPress(context) : () => _saveEdittedItem,
                     color: appPrimaryColor,
                     textColor: whiteColor,

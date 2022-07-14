@@ -89,7 +89,7 @@ class _AppSettingsBloc {
     var appSettings = await appSettingsProvider.fetchAppSettings();
 
     switch (appSettings.loginResponse?.data?.user?.userType ?? '') {
-      case 'user':
+      case 'customer':
         return UserType.user;
       case 'rider':
         return UserType.rider;
@@ -98,7 +98,7 @@ class _AppSettingsBloc {
       case 'guest':
         return UserType.guest;
       default:
-        return UserType.guest;
+        return UserType.none;
     }
   }
 }

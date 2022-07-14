@@ -92,10 +92,10 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                                     stream: streamSocket.behaviorSubject,
                                     dataBuilder: (context, data) {
                                       final String orderNo =
-                                          '${data.order?.id ?? ''}';
+                                          data.order?.orderRef ?? '';
 
                                       final String deliveryCode =
-                                          '${data.order?.deliveryCode ?? ''}';
+                                          data.order?.deliveryCode ?? '';
                                       final double pickupLatitude =
                                           data.order?.pickupLatitude ?? 0.0;
                                       final double pickupLongitude =

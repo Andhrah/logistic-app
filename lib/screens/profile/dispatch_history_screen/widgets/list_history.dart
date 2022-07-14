@@ -213,10 +213,10 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
                                       children: [
-                                        Text('${attributes?.pickup}'),
+                                        Text('${attributes.pickup}'),
                                         const SizedBox(height: 35.0),
                                         Text(
-                                          '${attributes?.destination}',
+                                          '${attributes.destination}',
                                           // style: TextStyle(
                                           //     fontSize: 16,
                                           //     fontWeight:
@@ -253,7 +253,7 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                                             width: 95,
                                           ),
                                           Text(
-                                            attributes?.itemName ?? '',
+                                            attributes.itemName ?? '',
                                             style: const TextStyle(
                                                 overflow: TextOverflow.ellipsis,
                                                 fontSize: 16,
@@ -292,7 +292,7 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                                                 CrossAxisAlignment.start,
                                             children: [
                                               Text(
-                                                attributes?.itemName ?? '',
+                                                attributes.itemName ?? '',
                                                 style: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight:
