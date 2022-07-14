@@ -7,6 +7,8 @@ import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/screens/merchant/dispatch_history.dart';
+import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/home/rider_home.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
@@ -62,11 +64,14 @@ class _TabsState extends State<Tabs> {
               return const SizedBox();
             });
       case 1:
+      currentTitle = 'Dispatch history';
+      return const UserDispatchHistory();
+      case 2:
         currentTitle = 'Wallet';
         return const WalletScreen();
-      case 2:
-        currentTitle = 'Cart';
-        return const CartScreen();
+      // case 2:
+      //   currentTitle = 'Cart';
+      //   return const CartScreen();
       default:
         currentTitle = 'More';
         return const ProfileMenu();
@@ -188,18 +193,18 @@ class _TabsState extends State<Tabs> {
                           label: 'Home',
                         ),
                         BottomNavigationBarItem(
-                          icon: Icon(Remix.wallet_2_line,
+                          icon: Icon(Remix.history_line,
                               color: _selectedIndex != 1
                                   ? appPrimaryColor
                                   : secondaryColor),
-                          label: 'Wallet',
+                          label: 'History',
                         ),
                         BottomNavigationBarItem(
-                          icon: SvgPicture.asset("assets/images/cart_icon.svg",
-                              color: _selectedIndex != 3
-                                  ? appPrimaryColor
-                                  : secondaryColor),
-                          label: 'Order',
+                          icon: Icon(
+                            Remix.wallet_2_line,
+                            color: _selectedIndex != 2 ? appPrimaryColor : secondaryColor 
+                          ),
+                          label: 'Wallet',
                         ),
                         BottomNavigationBarItem(
                           icon: SvgPicture.asset(

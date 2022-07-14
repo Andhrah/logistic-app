@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/wallet/all_cards.dart';
-import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
-import 'package:trakk/screens/wallet/payments.dart';
-import 'package:trakk/screens/wallet/qr_payment.dart';
 import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
@@ -27,25 +23,17 @@ class _WalletScreenState extends State<WalletScreen> {
         body: SafeArea(
       child: SingleChildScrollView(
         child: Column(children: [
-          Row(
-            children: [
-              BackIcon(
-                onPress: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 40.0),
-                alignment: Alignment.center,
-                child: const Text(
-                  'TRAKK WALLET',
-                  style: TextStyle(
-                      color: appPrimaryColor,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                ),
-              ),
-            ],
+          kSizeBox,kSizeBox,
+          Container(
+            margin: const EdgeInsets.only(left: 40.0),
+            alignment: Alignment.center,
+            child: const Text(
+              'TRAKK WALLET',
+              style: TextStyle(
+                  color: appPrimaryColor,
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
 
           Container(
