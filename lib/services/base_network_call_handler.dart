@@ -186,6 +186,8 @@ class BaseNetworkCallHandler with LogoutHelper {
         };
       }
 
+      print(header);
+
       Response response;
       if (httpRequestType == HttpRequestType.post) {
         response = await _post(url, body, header);
@@ -401,8 +403,6 @@ class BaseNetworkCallHandler with LogoutHelper {
 
       return true;
     } else if (response.statusCode == 500) {
-      await appSettingsBloc.setLogOut();
-
       //redirect To Homescreen
       logoutGlobal();
       return false;

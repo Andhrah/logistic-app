@@ -6,6 +6,7 @@ import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:intl/intl.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -200,4 +201,18 @@ Future<Uint8List?> getBytesFromAsset(String path, int width) async {
   return (await fi.image.toByteData(format: ui.ImageByteFormat.png))
       ?.buffer
       .asUint8List();
+}
+
+String getLongDate({String? dateValue, int? milliSecSinceEpoch}) {
+  if (milliSecSinceEpoch != null) {
+    var date = DateTime.fromMillisecondsSinceEpoch(milliSecSinceEpoch);
+
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+  if (dateValue != null) {
+    var date = DateTime.parse(dateValue);
+    return DateFormat('dd/MM/yyyy').format(date);
+  }
+
+  return 'dd/mm/yyyy';
 }

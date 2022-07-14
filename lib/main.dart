@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:pusher_client/pusher_client.dart';
@@ -39,11 +38,10 @@ import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
-import 'package:trakk/screens/polyline.dart';
+import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/profile/settings.dart';
-import 'package:trakk/screens/profile/user_dispatch_history.dart';
 import 'package:trakk/screens/riders/home/rider_home.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
@@ -60,8 +58,8 @@ import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
+import 'screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'screens/profile/profile_menu.dart';
-import 'screens/profile/user_dispatch_history.dart';
 
 void main() async {
   SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
