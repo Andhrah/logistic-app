@@ -131,8 +131,9 @@ class RiderMapProvider extends ChangeNotifier {
           'riderId': riderID,
           'currentLatitude': _loca.latitude.toString(),
           'currentLongitude': _loca.longitude.toString(),
-          'currentLocation': address
+          'currentLocation': address == '...' ? '' : address
         };
+        _location.removeWhere((key, value) => value == null);
 
         if (socket?.id != null) {
           streamSocket.updateSocketID(socket?.id ?? '');
@@ -148,7 +149,7 @@ class RiderMapProvider extends ChangeNotifier {
     miscBloc.fetchLocation();
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
-      sendData(riderID, _loca);
+      // sendData(riderID, _loca);
     });
   }
 }

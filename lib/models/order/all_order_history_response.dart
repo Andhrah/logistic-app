@@ -87,7 +87,7 @@
 //     this.userId,
 //   });
 //
-//   final int? deliveryCode;
+//   final String? deliveryCode;
 //   final String? pickup;
 //   final String? pickupLongitude;
 //   final String? pickupLatitude;
@@ -123,7 +123,7 @@
 //   factory OrderHistoryDatumAttributes.fromJson(Map<String, dynamic> json) =>
 //       OrderHistoryDatumAttributes(
 //         deliveryCode:
-//             json["deliveryCode"] == null ? null : json["deliveryCode"],
+//             json["deliveryCode"] == null ? null : json["deliveryCode"].toString(),
 //         pickup: json["pickup"] == null ? null : json["pickup"],
 //         pickupLongitude:
 //             json["pickupLongitude"] == null ? null : json["pickupLongitude"],

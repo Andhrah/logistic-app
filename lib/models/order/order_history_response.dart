@@ -144,7 +144,7 @@ class OrderHistoryDatumAttributes {
     this.userId,
   });
 
-  final int? deliveryCode;
+  final String? deliveryCode;
   final String? pickup;
   final String? pickupLongitude;
   final String? pickupLatitude;
@@ -179,8 +179,9 @@ class OrderHistoryDatumAttributes {
 
   factory OrderHistoryDatumAttributes.fromJson(Map<String, dynamic> json) =>
       OrderHistoryDatumAttributes(
-        deliveryCode:
-            json["deliveryCode"] == null ? null : json["deliveryCode"],
+        deliveryCode: json["deliveryCode"] == null
+            ? null
+            : json["deliveryCode"].toString(),
         pickup: json["pickup"] == null ? null : json["pickup"],
         pickupLongitude:
             json["pickupLongitude"] == null ? null : json["pickupLongitude"],
