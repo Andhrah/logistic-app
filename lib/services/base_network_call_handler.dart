@@ -83,6 +83,8 @@ class BaseNetworkCallHandler with LogoutHelper {
 
   Future<Operation> runAPI(String path, HttpRequestType httpRequestType,
       {Map<String, dynamic> body = const {},
+      Map<String, dynamic> header = const {},
+      bool useIsLoggedIn = true,
       String baseurl = '',
       OnResponse? onResponse,
       OnResponse? onNoDataResponse,
@@ -174,31 +176,36 @@ class BaseNetworkCallHandler with LogoutHelper {
 
       AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
 
-      Map<String, dynamic> header = {'Content-Type': 'application/json'};
+      Map<String, dynamic> masterHeader = header;
 
-      if (appSettings.isLoggedIn &&
-          appSettings.loginResponse != null &&
-          appSettings.loginResponse!.data != null &&
-          appSettings.loginResponse!.data!.token != null) {
-        header = {
-          'Authorization': 'Bearer ${appSettings.loginResponse!.data!.token}',
-          'Content-Type': 'application/json'
-        };
+      if (masterHeader.isEmpty) {
+        masterHeader = {'Content-Type': 'application/json'};
+
+        if (useIsLoggedIn &&
+            appSettings.isLoggedIn &&
+            appSettings.loginResponse != null &&
+            appSettings.loginResponse!.data != null &&
+            appSettings.loginResponse!.data!.token != null) {
+          masterHeader = {
+            'Authorization': 'Bearer ${appSettings.loginResponse!.data!.token}',
+            'Content-Type': 'application/json'
+          };
+        }
       }
 
-      print(header);
+      print(masterHeader);
 
       Response response;
       if (httpRequestType == HttpRequestType.post) {
-        response = await _post(url, body, header);
+        response = await _post(url, body, masterHeader);
       } else if (httpRequestType == HttpRequestType.get) {
-        response = await _get(url, header);
+        response = await _get(url, masterHeader);
       } else if (httpRequestType == HttpRequestType.patch) {
-        response = await _patch(url, body, header);
+        response = await _patch(url, body, masterHeader);
       } else if (httpRequestType == HttpRequestType.put) {
-        response = await _put(url, body, header);
+        response = await _put(url, body, masterHeader);
       } else if (httpRequestType == HttpRequestType.delete) {
-        response = await _delete(url, body, header);
+        response = await _delete(url, body, masterHeader);
       } else {
         if (onErrorResponse != null) {
           return onErrorResponse(json.decode(kNetworkGeneralError));

@@ -18,8 +18,6 @@ class ResetPassword extends StatefulWidget {
 
 class _ResetPasswordState extends State<ResetPassword>
     with ForgotPasswordHelper, ConnectivityHelper {
-  final _formKey = GlobalKey<FormState>();
-
   bool _loading = false;
   bool _hidePassword = true;
 
@@ -91,7 +89,7 @@ class _ResetPasswordState extends State<ResetPassword>
                   width: MediaQuery.of(context).size.width,
                   margin: const EdgeInsets.symmetric(horizontal: 30.0),
                   child: Form(
-                    key: _formKey,
+                    key: formKey,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [

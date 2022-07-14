@@ -232,7 +232,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
                             ),
                             1.flexSpacer(),
                             Text(
-                              '#${order?.id ?? ''}',
+                              '#${order?.orderRef ?? ''}',
                               textAlign: TextAlign.center,
                               style: theme.textTheme.bodyText1!
                                   .copyWith(fontWeight: kSemiBoldWeight),

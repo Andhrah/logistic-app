@@ -1,16 +1,14 @@
 import 'dart:ui';
 
 class AuthResponse {
-  AuthResponse({
-    this.data,
-  });
+  AuthResponse({this.data, this.message});
 
   final AuthData? data;
+  final String? message;
 
-  AuthResponse copyWith({AuthData? data}) {
+  AuthResponse copyWith({AuthData? data, String? message}) {
     return AuthResponse(
-      data: data ?? this.data,
-    );
+        data: data ?? this.data, message: message ?? this.message);
   }
 
   @override
@@ -19,11 +17,12 @@ class AuthResponse {
   }
 
   factory AuthResponse.fromJson(Map<String, dynamic> json) => AuthResponse(
-        data: json["data"] == null ? null : AuthData.fromJson(json["data"]),
-      );
+      data: json["data"] == null ? null : AuthData.fromJson(json["data"]),
+      message: json["message"] == null ? null : json["message"]);
 
   Map<String, dynamic> toJson() => {
         "data": data == null ? null : data!.toJson(),
+        'message': message == null ? null : message
       };
 }
 

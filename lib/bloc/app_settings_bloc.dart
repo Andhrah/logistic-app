@@ -7,7 +7,7 @@
 import 'package:rxdart/rxdart.dart';
 import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/models/auth_response.dart';
-import 'package:trakk/services/local_storage/app_settings_provider.dart';
+import 'package:trakk/services/local_storage/app_settings_data.dart';
 import 'package:trakk/utils/enums.dart';
 
 class _AppSettingsBloc {
@@ -60,7 +60,26 @@ class _AppSettingsBloc {
   Future<String> get getUserID async {
     var appSettings = await appSettingsProvider.fetchAppSettings();
 
-    String id = '${appSettings.loginResponse?.data?.user?.id ?? ''}';
+    String id = '';
+
+    UserType userType = await getUserType;
+
+    switch (userType) {
+      case UserType.user:
+        id = '${appSettings.loginResponse?.data?.user?.id ?? ''}';
+
+        break;
+      case UserType.rider:
+        id = '${appSettings.loginResponse?.data?.user?.rider?.id ?? ''}';
+
+        break;
+      case UserType.guest:
+        // TODO: Handle this case.
+        break;
+      case UserType.merchant:
+        // TODO: Handle this case.
+        break;
+    }
 
     return id;
   }
@@ -70,7 +89,7 @@ class _AppSettingsBloc {
     var appSettings = await appSettingsProvider.fetchAppSettings();
 
     switch (appSettings.loginResponse?.data?.user?.userType ?? '') {
-      case 'user':
+      case 'customer':
         return UserType.user;
       case 'rider':
         return UserType.rider;
@@ -79,7 +98,7 @@ class _AppSettingsBloc {
       case 'guest':
         return UserType.guest;
       default:
-        return UserType.guest;
+        return UserType.none;
     }
   }
 }

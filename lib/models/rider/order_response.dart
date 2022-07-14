@@ -56,7 +56,7 @@ class Order {
   });
 
   final int? id;
-  final int? deliveryCode;
+  final String? deliveryCode;
   final String? pickup;
   final double? pickupLongitude;
   final double? pickupLatitude;
@@ -93,8 +93,9 @@ class Order {
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
         id: json["id"] == null ? null : json["id"],
-        deliveryCode:
-            json["deliveryCode"] == null ? null : json["deliveryCode"],
+        deliveryCode: json["deliveryCode"] == null
+            ? null
+            : json["deliveryCode"].toString(),
         pickup: json["pickup"] == null ? null : json["pickup"],
         pickupLongitude: json["pickupLongitude"] == null
             ? null

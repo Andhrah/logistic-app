@@ -1,3 +1,4 @@
+import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/services/base_network_call_handler.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
@@ -28,6 +29,12 @@ class OrderAPI extends BaseNetworkCallHandler {
     return runAPI('api/orders/$orderID', HttpRequestType.put, body: {
       "data": {"status": "delivered"}
     });
+  }
+
+  Future<Operation> getOrderHistory() async {
+    String userID = await appSettingsBloc.getUserID;
+
+    return runAPI('api/riders/$userID?populate=*', HttpRequestType.get);
   }
 }
 

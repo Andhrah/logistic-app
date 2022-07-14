@@ -7,10 +7,11 @@ import 'package:google_place/google_place.dart';
 import 'package:provider/provider.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
-import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/models/order/order.dart';
 import 'package:trakk/provider/order/order.dart';
+import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
 import 'package:trakk/widgets/input_field.dart';
@@ -26,7 +27,8 @@ class ItemDetails extends StatefulWidget {
 
 /// AnimationControllers can be created with `vsync: this` because of TickerProviderStateMixin.
 
-class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin {
+class _ItemDetailsState extends State<ItemDetails>
+    with TickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
 
   late TextEditingController _pickUpController;
@@ -124,17 +126,17 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
     controller = AnimationController(
       vsync: this, // the TickerProviderStateMixin
       duration: const Duration(seconds: 5),
-
     );
 
     // animation = controller.drive(
     //   ColorTween(
-    //     begin: appPrimaryColor, 
+    //     begin: appPrimaryColor,
     //     end: secondaryColor,
     //   )
     // );
 
-    animation = ColorTween(begin: appPrimaryColor, end: secondaryColor).animate(controller);
+    animation = ColorTween(begin: appPrimaryColor, end: secondaryColor)
+        .animate(controller);
     controller.repeat();
     // controller.addListener(() {
     //   setState(() {});
@@ -142,7 +144,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
 
     // controller.forward();
 
-    // controller.addStatusListener((status) { 
+    // controller.addStatusListener((status) {
     //   if (status == AnimationStatus.completed){
     //   }
     // });
@@ -152,6 +154,8 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
   void dispose() {
     // TODO: implement dispose
     super.dispose();
+    _debounce?.cancel();
+    controller.dispose();
     _pickUpNode!.dispose();
     _dropOffNode!.dispose();
   }
@@ -181,7 +185,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
-  _onAddItemPress(BuildContext cxt) async {
+  _onAddItemPress() async {
     final FormState? form = _formKey.currentState;
     // print(_itemDescription);
     // Order _orderProvider = Provider.of<Order>(cxt, listen: false);
@@ -213,7 +217,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
       print(_itemDescription);
       print(_pickUp.toString());
       print(_dropOff);
-      Order _orderProvider = Provider.of<Order>(cxt, listen: false);
+      Order _orderProvider = Provider.of<Order>(context, listen: false);
       _orderProvider.setOrder(OrderModel(
           pickUpLocation: OrderLocation(
             address: _pickUp.toString(),
@@ -247,7 +251,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
       //   "dropOffDate": _dropOffDate,
       //   "itemImage": _itemImage,
       // });
-      // Navigator.of(context).pushNamed( NextOfKin.id);
+      Navigator.of(context).pushNamed(PickRide.id);
     }
   }
 
@@ -261,170 +265,160 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
         context: context,
         isScrollControlled: true,
         backgroundColor: Colors.transparent,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(30.0),
-          topRight: Radius.circular(30.0)
-        )
-      ),
-      builder: (context) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // TweenAnimationBuilder(
-            //   tween: Tween(begin: const Duration(minutes: 2), end: Duration.zero),
-            //   duration: const Duration(minutes: 3),
-            //   builder: (BuildContext context, Duration value, Widget? child) {
-            //     final minutes = value.inMinutes;
-            //     final seconds = value.inSeconds % 60;
-            //     return Container(
-            //       height: 150.0,
-            //       width: 150.0,
-            //       decoration: const BoxDecoration(
-            //         shape: BoxShape.circle,
-            //         color: appPrimaryColor,
-            //       ),
-            //       child: Column(
-            //         mainAxisAlignment: MainAxisAlignment.center,
-            //         children: [
-            //           Text(
-            //             '$minutes:$seconds',
-            //             textAlign: TextAlign.center,
-            //             style: const TextStyle(
-            //               color: secondaryColor,
-            //               fontWeight: FontWeight.bold,
-            //               fontSize: 30
-            //             )
-            //           )
-            //         ],
-            //       )
-            //     );
-            //   }
-            // ),
-            
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // TweenAnimationBuilder(
+              //   tween: Tween(begin: const Duration(minutes: 2), end: Duration.zero),
+              //   duration: const Duration(minutes: 3),
+              //   builder: (BuildContext context, Duration value, Widget? child) {
+              //     final minutes = value.inMinutes;
+              //     final seconds = value.inSeconds % 60;
+              //     return Container(
+              //       height: 150.0,
+              //       width: 150.0,
+              //       decoration: const BoxDecoration(
+              //         shape: BoxShape.circle,
+              //         color: appPrimaryColor,
+              //       ),
+              //       child: Column(
+              //         mainAxisAlignment: MainAxisAlignment.center,
+              //         children: [
+              //           Text(
+              //             '$minutes:$seconds',
+              //             textAlign: TextAlign.center,
+              //             style: const TextStyle(
+              //               color: secondaryColor,
+              //               fontWeight: FontWeight.bold,
+              //               fontSize: 30
+              //             )
+              //           )
+              //         ],
+              //       )
+              //     );
+              //   }
+              // ),
 
-            const SizedBox(height: 80.0),
-            Container(
-              padding: const EdgeInsetsDirectional.only(top: 20.0),
-              decoration: const BoxDecoration(
-                color: whiteColor,
-                // color: Colors.amber,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(30.0),
-                  topRight: Radius.circular(30.0),
-                ),
-              ),
-                child: Column(
-                children: [
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Searching for a rider',
-                    style: TextStyle(
-                      color: appPrimaryColor,
-                      fontSize: 22.0,
+              const SizedBox(height: 80.0),
+              Container(
+                  padding: const EdgeInsetsDirectional.only(top: 20.0),
+                  decoration: const BoxDecoration(
+                    color: whiteColor,
+                    // color: Colors.amber,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0),
                     ),
                   ),
-                  const SizedBox(height: 20.0),
-                  //   ListTile(
-                  //   leading: Container(
-                  //     height: 50.0,
-                  //     width: 50.0,
-                  //     decoration: BoxDecoration(
-                  //       shape: BoxShape.circle,
-                  //       color: Colors.grey.shade200
-                  //     ),
-                  //     child: const Icon(
-                  //       Remix.user_3_fill,
-                  //       size: 30.0,
-                  //       color: appPrimaryColor,
-                  //     ),
-                  //   ),
-                  //   title: Column(
-                  //     crossAxisAlignment: CrossAxisAlignment.start,
-                  //     children: [
-                  //       const Text(
-                  //         'Order ID',
-                  //         textScaleFactor: 1.2,
-                  //         style: TextStyle(
-                  //           color: appPrimaryColor,
-                  //           fontWeight: FontWeight.bold
-                  //         ),
-                  //       ),
+                  child: Column(children: [
+                    const SizedBox(height: 20.0),
+                    const Text(
+                      'Searching for a rider',
+                      style: TextStyle(
+                        color: appPrimaryColor,
+                        fontSize: 22.0,
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    //   ListTile(
+                    //   leading: Container(
+                    //     height: 50.0,
+                    //     width: 50.0,
+                    //     decoration: BoxDecoration(
+                    //       shape: BoxShape.circle,
+                    //       color: Colors.grey.shade200
+                    //     ),
+                    //     child: const Icon(
+                    //       Remix.user_3_fill,
+                    //       size: 30.0,
+                    //       color: appPrimaryColor,
+                    //     ),
+                    //   ),
+                    //   title: Column(
+                    //     crossAxisAlignment: CrossAxisAlignment.start,
+                    //     children: [
+                    //       const Text(
+                    //         'Order ID',
+                    //         textScaleFactor: 1.2,
+                    //         style: TextStyle(
+                    //           color: appPrimaryColor,
+                    //           fontWeight: FontWeight.bold
+                    //         ),
+                    //       ),
 
-                  //       const SizedBox(height: 10.0),
-                  //       Text(
-                  //         '#234516',
-                  //         textScaleFactor: 1.0,
-                  //         style: TextStyle(
-                  //           color: appPrimaryColor.withOpacity(0.5),
-                  //         ),
-                  //       ),
-                  //     ],
-                  //   ),
-                  //   onTap: () {
-                  //     Navigator.pop(context);
-                  //   },
-                  // ),
-                  Divider(
-                    color: appPrimaryColor.withOpacity(0.4),
-                  ),
+                    //       const SizedBox(height: 10.0),
+                    //       Text(
+                    //         '#234516',
+                    //         textScaleFactor: 1.0,
+                    //         style: TextStyle(
+                    //           color: appPrimaryColor.withOpacity(0.5),
+                    //         ),
+                    //       ),
+                    //     ],
+                    //   ),
+                    //   onTap: () {
+                    //     Navigator.pop(context);
+                    //   },
+                    // ),
+                    Divider(
+                      color: appPrimaryColor.withOpacity(0.4),
+                    ),
 
-                  const SizedBox(height: 20.0),
+                    const SizedBox(height: 20.0),
 
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        "Hold on while Trakk find you a rider",
-                        style: TextStyle(
-                          color: appPrimaryColor
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Hold on while Trakk find you a rider",
+                          style: TextStyle(color: appPrimaryColor),
                         ),
                       ),
                     ),
-                  ),
 
-                  const SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
 
-                  Stack(
-                    children: <Widget>[
-                      SizedBox(
-                        height: 80,
-                        width: 80,
-                        child: CircularProgressIndicator(
-                          // backgroundColor: Colors.pinkAccent,
-                          strokeWidth: 5.0,
-                          // value: 0.7,
-                          valueColor: animation,
-                          // valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
-                        ),
-                      ),
-                      Positioned(
-                        left: 25,
-                        top: 20,
-                        child: Center(
-                          child: SizedBox(
-                            height: 40,
-                            width: 40,
-                            child: Image.asset(
-                              "assets/images/rider_vehicle.png",
-                              // height: 60,
-                              // width: 60,
-                            ),
+                    Stack(
+                      children: <Widget>[
+                        SizedBox(
+                          height: 80,
+                          width: 80,
+                          child: CircularProgressIndicator(
+                            // backgroundColor: Colors.pinkAccent,
+                            strokeWidth: 5.0,
+                            // value: 0.7,
+                            valueColor: animation,
+                            // valueColor: AlwaysStoppedAnimation<Color>(Colors.black),
                           ),
-                        )
-                      )
-                    ],
-                  ),
-                  
-                  const SizedBox(height: 30.0),
-                ]
-              )
-            ),
-          ],
-        );
-      }
-    );
+                        ),
+                        Positioned(
+                            left: 25,
+                            top: 20,
+                            child: Center(
+                              child: SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: Image.asset(
+                                  "assets/images/rider_vehicle.png",
+                                  // height: 60,
+                                  // width: 60,
+                                ),
+                              ),
+                            ))
+                      ],
+                    ),
+
+                    const SizedBox(height: 30.0),
+                  ])),
+            ],
+          );
+        });
   }
 
   @override
@@ -620,7 +614,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                   //     ),
                   //     icon: const Icon(Remix.arrow_down_s_line),
                   //     elevation: 16,
-                  //     isExpanded: true, 
+                  //     isExpanded: true,
                   //     style: TextStyle(
                   //       color: appPrimaryColor.withOpacity(0.8),
                   //       fontSize: 18.0,
@@ -641,45 +635,44 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                   // ),
 
                   DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: appPrimaryColor.withOpacity(0.5),
-                        width: 0.3
-                      ), //border of dropdown button
-                      borderRadius: BorderRadius.circular(5.0), //border raiuds of dropdown button
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                      child: DropdownButton<String>(
-                        value: _pickItem,
-                        hint: Text(
-                          "choose category of item",
-                          style: TextStyle(
-                            color: appPrimaryColor.withOpacity(0.3)
-                          ),
-                        ),
-                        icon: const Icon(Remix.arrow_down_s_line),
-                        elevation: 16,
-                        isExpanded: true, 
-                        style: TextStyle(
-                          color: appPrimaryColor.withOpacity(0.8),
-                          fontSize: 18.0,
-                        ),
-                         underline: Container(), //empty line
-                        onChanged: (String? newValue) {
-                          setState(() {
-                            _pickItem = newValue!;
-                          });
-                        },
-                        items: itemsCategory.map((String value) {
-                          return DropdownMenuItem(
-                            value: value,
-                            child: Text(value),
-                          );
-                        }).toList(),
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                            color: appPrimaryColor.withOpacity(0.5),
+                            width: 0.3), //border of dropdown button
+                        borderRadius: BorderRadius.circular(
+                            5.0), //border raiuds of dropdown button
                       ),
-                    )
-                  ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                        child: DropdownButton<String>(
+                          value: _pickItem,
+                          hint: Text(
+                            "choose category of item",
+                            style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.3)),
+                          ),
+                          icon: const Icon(Remix.arrow_down_s_line),
+                          elevation: 16,
+                          isExpanded: true,
+                          style: TextStyle(
+                            color: appPrimaryColor.withOpacity(0.8),
+                            fontSize: 18.0,
+                          ),
+                          underline: Container(),
+                          //empty line
+                          onChanged: (String? newValue) {
+                            setState(() {
+                              _pickItem = newValue!;
+                            });
+                          },
+                          items: itemsCategory.map((String value) {
+                            return DropdownMenuItem(
+                              value: value,
+                              child: Text(value),
+                            );
+                          }).toList(),
+                        ),
+                      )),
 
                   InputField(
                     obscureText: false,
@@ -857,12 +850,11 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
 
                   const SizedBox(height: 30.0),
 
-                  StreamBuilder<AppSettings>(
-                      stream: appSettingsBloc.appSettings,
+                  FutureBuilder<UserType>(
+                      future: appSettingsBloc.getUserType,
                       builder: (context, snapshot) {
                         if (snapshot.hasData &&
-                            (snapshot.data?.loginResponse?.data?.token ?? '')
-                                .isNotEmpty) {
+                            (snapshot.data == UserType.guest)) {
                           return Column(
                             children: [
                               const Text(
@@ -1047,7 +1039,7 @@ class _ItemDetailsState extends State<ItemDetails> with TickerProviderStateMixin
                   Button(
                     // text: _buttonText.length < 1 ? 'Add Item' : _buttonText,
                     text: 'Proceed',
-                    onPress: _onButtonPress,
+                    onPress: _onAddItemPress,
                     // onPress: _buttonText.length < 1 ? () => _onAddItemPress(context) : () => _saveEdittedItem,
                     color: appPrimaryColor,
                     textColor: whiteColor,

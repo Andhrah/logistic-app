@@ -6,6 +6,7 @@ import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
 import 'package:trakk/utils/singleton_data.dart';
+import 'package:trakk/utils/styles.dart';
 
 class OrderHelper {
   final BuildContext _authContext =
@@ -15,7 +16,7 @@ class OrderHelper {
     showDialog(
         context: _authContext,
         builder: (context) => const Center(
-              child: CircularProgressIndicator(),
+              child: kCircularProgressIndicator,
             ));
 
     var operation = await orderAPI.acceptOrder(orderID);
@@ -42,9 +43,7 @@ class OrderHelper {
     Navigator.pop(_authContext);
     showDialog(
         context: _authContext,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
+        builder: (context) => const Center(child: kCircularProgressIndicator));
 
     var operation = await orderAPI.declineOrder(orderID);
 
@@ -68,9 +67,7 @@ class OrderHelper {
     Navigator.pop(_authContext);
     showDialog(
         context: _authContext,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
+        builder: (context) => const Center(child: kCircularProgressIndicator));
 
     var operation = await orderAPI.pickupOrder(orderID);
 
@@ -97,9 +94,7 @@ class OrderHelper {
     Navigator.pop(_authContext);
     showDialog(
         context: _authContext,
-        builder: (context) => const Center(
-              child: CircularProgressIndicator(),
-            ));
+        builder: (context) => const Center(child: kCircularProgressIndicator));
 
     var operation = await orderAPI.deliverOrder(orderID);
 

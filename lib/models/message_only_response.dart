@@ -7,14 +7,17 @@ class MessageOnlyResponse {
 
   MessageOnlyResponse({this.message, this.err}) {
     if (message == null && (err != null && err!.message != null)) {
-      message = err!.message;
+      message = err?.message ?? kNetworkGeneralText;
     }
   }
 
   factory MessageOnlyResponse.fromJson(Map<String, dynamic> json) =>
       MessageOnlyResponse(
-        message: json["message"] ?? kNetworkGeneralText,
-      );
+          message: json["message"] ??
+              (json["data"] != null && json["data"]['message'] != null
+                  ? json["data"]['message']
+                  : null),
+          err: json["error"] == null ? null : Err.fromJson(json["error"]));
 
   Map<String, dynamic> toJson() => {
         "message": message,

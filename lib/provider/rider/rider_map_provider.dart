@@ -11,6 +11,7 @@ import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/utils/enums.dart';
+import 'package:trakk/utils/helper_utils.dart';
 
 class RiderMapProvider extends ChangeNotifier {
   //final GetVehiclesListService _getVehiclesListService = GetVehiclesListService();
@@ -52,7 +53,7 @@ class RiderMapProvider extends ChangeNotifier {
     var appSettings = await appSettingsBloc.fetchAppSettings();
     String? token = appSettings.loginResponse?.data?.token ?? '';
     String? riderID =
-        '${appSettings.loginResponse?.data?.user?.rider?.id ?? ' '}';
+        '${appSettings.loginResponse?.data?.user?.rider?.id ?? ''}';
 
     print('token: $token');
 
@@ -67,9 +68,7 @@ class RiderMapProvider extends ChangeNotifier {
     socket?.onConnect((data) {
       if (socket?.id != null) streamSocket.updateSocketID(socket?.id ?? '');
 
-      startUpdatingUserLocation(
-          // userID
-          );
+      startUpdatingUserLocation(riderID);
 
       if (onConnected != null) onConnected();
       isNewConnection = true;
@@ -97,6 +96,10 @@ class RiderMapProvider extends ChangeNotifier {
   }
 
   _listeners(String riderID) async {
+    socket?.onAny((event, data) {
+      print('event: $event');
+      print('riderID: $riderID');
+    });
     socket?.on("rider_request_$riderID", (data) {
       log('rider_request_data ${jsonEncode(data)}');
       streamSocket.addResponseOnMove(OrderResponse.fromJson(data));
@@ -114,57 +117,39 @@ class RiderMapProvider extends ChangeNotifier {
     }
   }
 
-//   emit to riders_location
-//   with this payload
-//
-//   {
-//   riderId:  :id
-//   currentLongitude: currentLongitude,
-//   currentLatitude: currentLatitude,
-//   currentLocation: currentLocation
-// }
+  sendData(String riderID, Loca.LocationData? _loca) async {
+    if (_loca != null) {
+      if ((socket?.active ?? false) == true) {
+        double lat =
+            double.tryParse(_loca.longitude.toString().replaceAll(',', '')) ??
+                0.0;
+        double long =
+            double.tryParse(_loca.longitude.toString().replaceAll(',', '')) ??
+                0.0;
+        String address = await getAddressFromLatLng(lat, long);
+        Map<String, dynamic> _location = {
+          'riderId': riderID,
+          'currentLatitude': _loca.latitude.toString(),
+          'currentLongitude': _loca.longitude.toString(),
+          'currentLocation': address == '...' ? '' : address
+        };
+        _location.removeWhere((key, value) => value == null);
 
-  // rider_request_13
+        if (socket?.id != null) {
+          streamSocket.updateSocketID(socket?.id ?? '');
+        }
 
-  sendData(// String userID,
-      // Coord coord
-      ) {
-    if (socket?.id != null) {
-      streamSocket.updateSocketID(socket?.id ?? '');
+        socket?.emit('riders_location', _location);
+        print('emitted riders_location: ${socket?.id}\n$_location');
+      }
     }
-
-    socket?.emit('rider', {
-      // 'id': userID,
-      'socketId': '${socket?.id}',
-      // 'coords': coord.toJson(),
-      'timestamp': DateTime.now().toIso8601String()
-    });
-    print('emitted: ${socket?.id}');
   }
 
-  startUpdatingUserLocation(// String userID
-      ) async {
+  startUpdatingUserLocation(String riderID) async {
     miscBloc.fetchLocation();
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
-
-      if (_loca != null) {
-        // Coord coord = Coord(
-        //     accuracy: _loca.accuracy.toString(),
-        //     altitude: _loca.altitude.toString(),
-        //     altitudeAccuracy: _loca.altitude.toString(),
-        //     heading: _loca.heading.toString(),
-        //     latitude: _loca.latitude.toString(),
-        //     longitude: _loca.longitude.toString(),
-        //     speed: _loca.speed.toString());
-
-        if ((socket?.active ?? false) == true) {
-          sendData(
-              // userID,
-              // coord
-              );
-        }
-      }
+      // sendData(riderID, _loca);
     });
   }
 }
