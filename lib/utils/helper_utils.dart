@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:core';
+import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
@@ -204,15 +206,34 @@ Future<Uint8List?> getBytesFromAsset(String path, int width) async {
 }
 
 String getLongDate({String? dateValue, int? milliSecSinceEpoch}) {
-  if (milliSecSinceEpoch != null) {
-    var date = DateTime.fromMillisecondsSinceEpoch(milliSecSinceEpoch);
+  try {
+    if (milliSecSinceEpoch != null) {
+      var date = DateTime.fromMillisecondsSinceEpoch(milliSecSinceEpoch);
 
-    return DateFormat('dd/MM/yyyy').format(date);
+      return DateFormat('dd/MM/yyyy').format(date);
+    }
+    if (dateValue != null) {
+      var date = DateTime.parse(dateValue);
+      return DateFormat('dd/MM/yyyy').format(date);
+    }
+  } catch (err) {
+    return 'dd/mm/yyyy';
   }
-  if (dateValue != null) {
-    var date = DateTime.parse(dateValue);
-    return DateFormat('dd/MM/yyyy').format(date);
-  }
-
   return 'dd/mm/yyyy';
+}
+
+String convertFileToString(File file) {
+  String convertedFile = base64Encode(file.readAsBytesSync());
+
+  return convertedFile;
+}
+
+String formatMoney(double value) {
+  return NumberFormat('#,##0.##').format(value);
+}
+
+Uint8List createByteFromString(String base64Encoded) {
+  Uint8List bytes = base64.decode(base64Encoded);
+
+  return bytes;
 }

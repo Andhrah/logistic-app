@@ -5,7 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
-import 'package:trakk/mixins/order_helper.dart';
+import 'package:trakk/mixins/rider_order_helper.dart';
 import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
@@ -24,7 +24,8 @@ class RiderBottomSheet extends StatefulWidget {
   _RiderBottomSheetState createState() => _RiderBottomSheetState();
 }
 
-class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
+class _RiderBottomSheetState extends State<RiderBottomSheet>
+    with RiderOrderHelper {
   final _pageController = PageController();
 
   @override

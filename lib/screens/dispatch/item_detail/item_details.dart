@@ -1,0 +1,496 @@
+import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:trakk/mixins/customer_order_helper.dart';
+import 'package:trakk/models/order/available_rider_response.dart';
+import 'package:trakk/models/order/order.dart';
+import 'package:trakk/screens/dispatch/dispatch_summary.dart';
+import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_category_widget.dart';
+import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_date_widget.dart';
+import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_image_selector_widget.dart';
+import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_location_widget.dart';
+import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_participant_widget.dart';
+import 'package:trakk/utils/assets.dart';
+import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
+import 'package:trakk/utils/font.dart';
+import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/utils/padding.dart';
+import 'package:trakk/widgets/button.dart';
+import 'package:trakk/widgets/header.dart';
+
+class ItemDetails extends StatefulWidget {
+  static const String id = 'itemDetails';
+
+  const ItemDetails({Key? key}) : super(key: key);
+
+  @override
+  _ItemDetailsState createState() => _ItemDetailsState();
+}
+
+class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
+  final _formKey = GlobalKey<FormState>();
+
+  String _itemName = '';
+  String? _itemDescription;
+
+  String? _itemImage;
+
+  String? _pickupDate;
+  String? _dropOffDate;
+
+  OrderLocation? pickupOrderLocation;
+  OrderLocation? dropOffOrderLocation;
+  String? _senName;
+  String? _senPhone;
+  String? _recName;
+  String? _recPhone;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
+
+  _onAddItemPress() async {
+    final FormState? form = _formKey.currentState;
+
+    if (form!.validate()) {
+      form.save();
+
+      LatLng pickupLatLng = LatLng(pickupOrderLocation?.latitude ?? 0.0,
+          pickupOrderLocation?.longitude ?? 0.0);
+      LatLng dropOffLatLng = LatLng(dropOffOrderLocation?.latitude ?? 0.0,
+          dropOffOrderLocation?.longitude ?? 0.0);
+      OrderModel orderModel = OrderModel(
+          data: OrderModelData(
+              pickup: pickupOrderLocation?.address,
+              destination: dropOffOrderLocation?.address,
+              pickupLatitude: pickupLatLng.latitude.toString(),
+              pickupLongitude: pickupLatLng.longitude.toString(),
+              destinationLatitude: dropOffLatLng.latitude.toString(),
+              destinationLongitude: dropOffLatLng.longitude.toString(),
+              pickupDate: _pickupDate,
+              deliveryDate: _dropOffDate,
+              itemName: _itemName,
+              itemDescription: _itemDescription,
+              itemImage: _itemImage,
+              weight: '0kg',
+              senderName: _senName,
+              senderPhone: _senPhone,
+              receiverName: _recName,
+              receiverPhone: _recPhone));
+
+      doGetAvailableRiders(
+        pickupLatLng,
+        dropOffLatLng,
+        loadingModal: () => _showFetchingModal(),
+        closeModal: () {
+          Navigator.pop(context);
+        },
+        successfulModal: (List<AvailableRiderDataRider> riders) =>
+            _showRiders(orderModel, riders),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: SafeArea(
+            child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            kSizeBox,
+            const Header(
+              text: 'DISPATCH ITEM',
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              decoration: const BoxDecoration(
+                  image: DecorationImage(
+                image: AssetImage(Assets.empty_map_bg),
+                fit: BoxFit.fill,
+              )),
+              child: Form(
+                key: _formKey,
+                child: Column(children: [
+                  ItemDetailLocationWidget((OrderLocation? _pickupOrderLocation,
+                      OrderLocation? _dropOffOrderLocation) {
+                    pickupOrderLocation = _pickupOrderLocation;
+                    dropOffOrderLocation = _dropOffOrderLocation;
+                  }),
+                  ItemDetailCategoryWidget((itemName, description) {
+                    _itemName = itemName ?? '';
+                    _itemDescription = description;
+                  }),
+                  const SizedBox(height: 20.0),
+                  ItemDetailDateWidget((pickup, dropOff) {
+                    _pickupDate = pickup;
+                    _dropOffDate = dropOff;
+                  }),
+                  const SizedBox(height: 30.0),
+                  ItemDetailParticipantWidget((String senName, String senPhone,
+                      String recName, String recPhone) {
+                    _senName = senName;
+                    _senPhone = senPhone;
+                    _recName = recName;
+                    _recPhone = recPhone;
+                  }),
+                  const SizedBox(height: 20.0),
+                  ItemDetailImageSelectorWidget((String? convertedString) {
+                    _itemImage = convertedString;
+                  }),
+                  const SizedBox(height: 30.0),
+                  Button(
+                    text: 'Proceed',
+                    onPress: _onAddItemPress,
+                    color: appPrimaryColor,
+                    textColor: whiteColor,
+                    isLoading: false,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                  ),
+                  const SizedBox(height: 40.0),
+                ]),
+              ),
+            ),
+          ],
+        )),
+      ),
+    );
+    // );
+  }
+
+  _showFetchingModal() {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
+        builder: (context) {
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 80.0),
+              Container(
+                  padding: const EdgeInsetsDirectional.only(top: 20.0),
+                  decoration: const BoxDecoration(
+                    color: whiteColor,
+                    // color: Colors.amber,
+                    borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(30.0),
+                      topRight: Radius.circular(30.0),
+                    ),
+                  ),
+                  child: Column(children: [
+                    const SizedBox(height: 20.0),
+                    const Text(
+                      'Searching for a rider',
+                      style: TextStyle(
+                        color: appPrimaryColor,
+                        fontSize: 22.0,
+                      ),
+                    ),
+                    const SizedBox(height: 20.0),
+                    Divider(
+                      color: appPrimaryColor.withOpacity(0.4),
+                    ),
+                    const SizedBox(height: 20.0),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 20.0),
+                      child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Hold on while Trakk find you a rider",
+                          style: TextStyle(color: appPrimaryColor),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 30.0),
+                    Stack(
+                      children: <Widget>[
+                        const SizedBox(
+                          height: 80,
+                          width: 80,
+                          child: CircularProgressIndicator(
+                            strokeWidth: 5.0,
+                          ),
+                        ),
+                        Positioned(
+                            left: 25,
+                            top: 20,
+                            child: Center(
+                              child: SizedBox(
+                                height: 40,
+                                width: 40,
+                                child: Image.asset(
+                                  Assets.rider_vehicle,
+                                  // height: 60,
+                                  // width: 60,
+                                ),
+                              ),
+                            ))
+                      ],
+                    ),
+                    const SizedBox(height: 30.0),
+                  ])),
+            ],
+          );
+        });
+  }
+
+  _showRiders(OrderModel orderModel, List<AvailableRiderDataRider> riders) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
+        builder: (context) {
+          return Container(
+            decoration: const BoxDecoration(
+                color: whiteColor,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(35),
+                    topLeft: Radius.circular(35))),
+            padding: const EdgeInsets.only(
+                left: kDefaultLayoutPadding,
+                top: 34,
+                right: kDefaultLayoutPadding,
+                bottom: 24),
+            child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: Image.asset(
+                          "assets/images/ride.png",
+                          height: 50.0,
+                        ),
+                      ),
+                      Text(
+                          'Closest and suitable\nrider for item\n$naira${formatMoney(riders.first.cost ?? 0.0)}',
+                          style: const TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w500))
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: const Text(
+                          'Distance:',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      Text(
+                          '${((riders.first.distanceInKm ?? 0.0) ~/ kDistanceKMCoveredInAnHour).toInt()}mins away from\nitem’s location',
+                          style: const TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w500))
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: const Text(
+                          'Vehicle:',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      const Text('-',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: const Text(
+                          'Color:',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      const Text('-',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w500)),
+                    ],
+                  ),
+                  const SizedBox(height: 40.0),
+                  Button(
+                    text: 'Accept',
+                    onPress: () => _pickRider(orderModel, riders.first),
+                    color: appPrimaryColor,
+                    textColor: whiteColor,
+                    isLoading: false,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                  ),
+                  const SizedBox(height: 20.0),
+                  Button(
+                    text: 'Pick a preffered rider',
+                    onPress: () {
+                      Navigator.pop(context);
+                      _showAllRiders(orderModel, riders);
+                    },
+                    color: whiteColor,
+                    textColor: appPrimaryColor,
+                    isLoading: false,
+                    width: MediaQuery.of(context).size.width / 1.2,
+                  ),
+                  const SizedBox(height: 30.0),
+                ]),
+          );
+        });
+  }
+
+  _showAllRiders(OrderModel orderModel, List<AvailableRiderDataRider> riders) {
+    showModalBottomSheet(
+        context: context,
+        isScrollControlled: true,
+        backgroundColor: Colors.transparent,
+        constraints: BoxConstraints(maxHeight: safeAreaHeight(context, 50)),
+        shape: const RoundedRectangleBorder(
+            borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30.0),
+                topRight: Radius.circular(30.0))),
+        builder: (context) {
+          return Container(
+            decoration: const BoxDecoration(
+                color: whiteColor,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(35),
+                    topLeft: Radius.circular(35))),
+            padding: const EdgeInsets.only(top: 34, bottom: 24),
+            child: Column(
+                // mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  const Text('PICK YOUR PREFERRED DISPATCH',
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.w500)),
+                  const Divider(
+                    height: 44,
+                    thickness: 2.5,
+                  ),
+                  Expanded(
+                    child: ListView.separated(
+                      itemCount: riders.length,
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      itemBuilder: (context, index) {
+                        return Row(
+                          children: [
+                            Image.asset(
+                              Assets.ride,
+                              height: 50.0,
+                              width: 50,
+                            ),
+                            const SizedBox(
+                              width: 24,
+                            ),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  const Text('-',
+                                      style: TextStyle(
+                                          fontSize: 15.0,
+                                          color: appPrimaryColor,
+                                          fontWeight: kSemiBoldWeight)),
+                                  const SizedBox(height: 8.0),
+                                  Text(
+                                      '${((riders.elementAt(index).distanceInKm ?? 0.0) ~/ kDistanceKMCoveredInAnHour).toInt()}mins away',
+                                      style: const TextStyle(
+                                          fontSize: 12.0,
+                                          color: appPrimaryColor)),
+                                  const SizedBox(height: 12.0),
+                                  Text(
+                                      '$naira${formatMoney(riders.elementAt(index).cost ?? 0.0)}',
+                                      style: const TextStyle(
+                                          fontSize: 14.0,
+                                          color: appPrimaryColor,
+                                          fontWeight: kMediumWeight)),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 24,
+                            ),
+                            ConstrainedBox(
+                              constraints: const BoxConstraints(maxWidth: 90),
+                              child: Button(
+                                text: 'Pick',
+                                onPress: () => _pickRider(
+                                    orderModel, riders.elementAt(index)),
+                                color: deepGreen,
+                                textColor: whiteColor,
+                                height: 40,
+                                fontSize: 12,
+                                isLoading: false,
+                                width: MediaQuery.of(context).size.width / 1.2,
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                      separatorBuilder: (BuildContext context, int index) {
+                        return const Divider(
+                          height: 44,
+                          thickness: 2.5,
+                        );
+                      },
+                    ),
+                  ),
+                ]),
+          );
+        });
+  }
+
+  _pickRider(OrderModel orderModel, AvailableRiderDataRider rider) {
+    Navigator.pop(context);
+    Navigator.pushNamed(context, DispatchSummary.id, arguments: {
+      'orderModel': orderModel.toJson(),
+      'riderModel': rider.toJson(),
+    });
+  }
+}

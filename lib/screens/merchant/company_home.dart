@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
-import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/item_detail/item_details.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
 import 'package:trakk/screens/merchant/notifications.dart';

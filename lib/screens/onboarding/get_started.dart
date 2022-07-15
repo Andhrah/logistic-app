@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/item_detail/item_details.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/button.dart';
 
@@ -16,8 +15,7 @@ class GetStarted extends StatefulWidget {
 }
 
 class _GetStartedState extends State<GetStarted> {
-  _isFirstTimeUser() async {
-  }
+  _isFirstTimeUser() async {}
 
   @override
   void initState() {

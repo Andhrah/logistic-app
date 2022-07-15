@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-
-import 'package:trakk/screens/dispatch/checkout.dart';
-import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/models/order/available_rider_response.dart';
+import 'package:trakk/models/order/order.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
-import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
+import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/utils/padding.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
 
@@ -18,609 +19,515 @@ class DispatchSummary extends StatefulWidget {
 }
 
 class _DispatchSummaryState extends State<DispatchSummary> {
-
-  _onPressEdit() async {
-
-
-    Navigator.of(context).pushNamed(ItemDetails.id, arguments: {
-      "buttonText": "Save Changes",
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    OrderModel orderModel = OrderModel.fromJson(arg["orderModel"]);
+    AvailableRiderDataRider rider =
+        AvailableRiderDataRider.fromJson(arg["riderModel"]);
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            children: [
-              const SizedBox(height: 30.0),
-              const Header(
-                text: 'ITEM SUMMARY',
-              ),
-
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 30.0),
-                child: Column(
-                  children: [
-                    SingleChildScrollView(
-                      scrollDirection: Axis.horizontal,
-                      child: Row(
-                        children: [
-                          Card(
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                              width: MediaQuery.of(context).size.width/1.5,
-                              height: 120,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      margin: const EdgeInsets.only(right: 30.0),
-                                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                      child: Image.asset(
-                                        "assets/images/item_img.png",
-                                        height: 90.0,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.withOpacity(0.1),
-                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                      ),
-                                    ),
-                                  ),
-
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 12.0),
-                                      const Text(
-                                        'Black handbag',
-                                        style: TextStyle(
-                                          fontSize: 16.0, 
-                                          color: appPrimaryColor, 
-                                          fontWeight: FontWeight.w400
-                                        )
-                                      ),
-                                      const SizedBox(height: 30.0),
-                                      const Text(
-                                        '40Kg',
-                                        style: TextStyle(
-                                          fontSize: 16.0, 
-                                          color: appPrimaryColor, 
-                                          fontWeight: FontWeight.w400
-                                        )
-                                      )
-                                    ],
-                                  )
-                                ]
-                              ),
-                            ),
-                          ),
-
-                          Card(
-                            elevation: 0.0,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Container(
-                              margin: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                              width: MediaQuery.of(context).size.width/1.5,
-                              height: 120,
-                              child: Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      margin: const EdgeInsets.only(right: 30.0),
-                                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-                                      child: Image.asset(
-                                        "assets/images/item_img.png",
-                                        height: 90.0,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.withOpacity(0.1),
-                                        borderRadius: const BorderRadius.all(Radius.circular(10)),
-                                      ),
-                                    ),
-                                  ),
-
-                                  Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    children: [
-                                      const SizedBox(height: 12.0),
-                                      const Text(
-                                        'Black handbag',
-                                        style: TextStyle(
-                                          fontSize: 16.0, 
-                                          color: appPrimaryColor, 
-                                          fontWeight: FontWeight.w400
-                                        )
-                                      ),
-                                      const SizedBox(height: 30.0),
-                                      const Text(
-                                        '40Kg',
-                                        style: TextStyle(
-                                          fontSize: 16.0, 
-                                          color: appPrimaryColor, 
-                                          fontWeight: FontWeight.w400
-                                        )
-                                      )
-                                    ],
-                                  )
-                                ]
-                              ),
-                            ),
-                          ),
-                        ],
-                      )
-                    ),
-                    
-
-                    // const SizedBox(height: 30.0),
-
-                    // const Align(
-                    //   alignment: Alignment.centerLeft,
-                    //   child: Text(
-                    //     '  Sender’s Info',
-                    //     style: TextStyle(
-                    //       fontSize: 15.0, 
-                    //       color: appPrimaryColor, 
-                    //       fontWeight: FontWeight.w700
-                    //     ),
-                    //   ),
-                    // ),
-
-                    // const SizedBox(height: 5.0),
-
-                    // Card(
-                    //   elevation: 0.0,
-                    //   shape: RoundedRectangleBorder(
-                    //     side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
-                    //     borderRadius: BorderRadius.circular(10),
-                    //   ),
-                    //   child: Container(
-                    //     padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                    //     // height: 110,
-                    //     child: Column(
-                    //       children: [
-                    //         Row(
-                    //           children: [
-                    //             Container(
-                    //               alignment: Alignment.centerLeft,
-                    //               width: MediaQuery.of(context).size.width/3,
-                    //               child:const Text(
-                    //                 'Name:',
-                    //                 style: TextStyle(
-                    //                   fontSize: 15.0, 
-                    //                   color: appPrimaryColor, 
-                    //                   fontWeight: FontWeight.w700
-                    //                 ),
-                    //               ),
-                    //             ),
-                              
-                    //             const Text(
-                    //               'Alexandra Collins',
-                    //               style: TextStyle(
-                    //                 fontSize: 15.0, 
-                    //                 color: appPrimaryColor, 
-                    //                 fontWeight: FontWeight.w400
-                    //               )
-                    //             )
-                    //           ],
-                    //         ),
-
-                    //         const SizedBox(height: 10.0),
-
-                    //         Row(
-                    //           children: [
-                    //             Container(
-                    //               alignment: Alignment.centerLeft,
-                    //               width: MediaQuery.of(context).size.width/3,
-                    //               child:const Text(
-                    //                 'Email Address:',
-                    //                 style: TextStyle(
-                    //                   fontSize: 14.0, 
-                    //                   color: appPrimaryColor, 
-                    //                   fontWeight: FontWeight.w700
-                    //                 ),
-                    //               ),
-                    //             ),
-                              
-                    //             const Text(
-                    //               'alexandra@zebrra.com',
-                    //               style: TextStyle(
-                    //                 fontSize: 14.0, 
-                    //                 color: appPrimaryColor, 
-                    //                 fontWeight: FontWeight.w400
-                    //               )
-                    //             )
-                    //           ],
-                    //         ),
-
-                    //         const SizedBox(height: 10.0),
-
-                    //         Row(
-                    //           children: [
-                    //             Container(
-                    //               alignment: Alignment.centerLeft,
-                    //               width: MediaQuery.of(context).size.width/3,
-                    //               child:const Text(
-                    //                 'Phone Number:',
-                    //                 style: TextStyle(
-                    //                   fontSize: 14.0, 
-                    //                   color: appPrimaryColor, 
-                    //                   fontWeight: FontWeight.w700
-                    //                 ),
-                    //               ),
-                    //             ),
-                              
-                    //             const Text(
-                    //               '+234-698-942-96',
-                    //               style: TextStyle(
-                    //                 fontSize: 14.0, 
-                    //                 color: appPrimaryColor, 
-                    //                 fontWeight: FontWeight.w400
-                    //               )
-                    //             )
-                    //           ],
-                    //         ),
-                    //       ],
-                    //     )
-                    //   ),
-                    // ),
-
-                    const SizedBox(height: 30.0),
-
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '  Receiver’s Info',
-                        style: TextStyle(
-                          fontSize: 15.0, 
-                          color: appPrimaryColor, 
-                          fontWeight: FontWeight.w700
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 5.0),
-
-                    Card(
-                      elevation: 0.0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                        // height: 110,
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Name:',
-                                    style: TextStyle(
-                                      fontSize: 15.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                const Text(
-                                  'Alexandra Collins',
-                                  style: TextStyle(
-                                    fontSize: 15.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
-                                )
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Email Address:',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                Expanded(
-                                  child: const Text(
-                                    'alexandra@zebrra.com',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w400
-                                    )
-                                  ),
-                                )
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Phone Number:',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                const Text(
-                                  '+234-698-942-96',
-                                  style: TextStyle(
-                                    fontSize: 14.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
-                                )
-                              ],
-                            ),
-                          ],
-                        )
-                      ),
-                    ),
-
-                    const SizedBox(height: 5.0),
-
-                    Card(
-                      elevation: 0.0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                        // height: 110,
-                        child: Column(
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Pickup Date:',
-                                    style: TextStyle(
-                                      fontSize: 15.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                const Text(
-                                  '24/3/2022',
-                                  style: TextStyle(
-                                    fontSize: 15.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
-                                )
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Delivery Date:',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                const Text(
-                                  '26/3/2022',
-                                  style: TextStyle(
-                                    fontSize: 14.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
-                                )
-                              ],
-                            ),
-                          ],
-                        )
-                      ),
-                    ),
-
-                    const SizedBox(height: 35.0),
-
-                    const Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(
-                        '  Rider’s Info',
-                        style: TextStyle(
-                          fontSize: 15.0, 
-                          color: appPrimaryColor, 
-                          fontWeight: FontWeight.w700
-                        ),
-                      ),
-                    ),
-
-                    const SizedBox(height: 5.0),
-
-                    Card(
-                      elevation: 0.0,
-                      shape: RoundedRectangleBorder(
-                        side: BorderSide(color: appPrimaryColor.withOpacity(0.1), width: 1),
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-                        // height: 110,
-                        child: Column(
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Name:',
-                                    style: TextStyle(
-                                      fontSize: 15.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                const Text(
-                                  'Alexandra Collins',
-                                  style: TextStyle(
-                                    fontSize: 15.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
-                                )
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Email Address:',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                const Expanded(
-                                  child: Text(
-                                    'alexandra@zebrra.com',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w400
-                                    )
-                                  ),
-                                )
-                              ],
-                            ),
-
-                            const SizedBox(height: 10.0),
-
-                            Row(
-                              children: [
-                                Container(
-                                  alignment: Alignment.centerLeft,
-                                  width: MediaQuery.of(context).size.width/3,
-                                  child:const Text(
-                                    'Phone Number:',
-                                    style: TextStyle(
-                                      fontSize: 14.0, 
-                                      color: appPrimaryColor, 
-                                      fontWeight: FontWeight.w700
-                                    ),
-                                  ),
-                                ),
-                              
-                                const Text(
-                                  '+234-698-942-96',
-                                  style: TextStyle(
-                                    fontSize: 14.0, 
-                                    color: appPrimaryColor, 
-                                    fontWeight: FontWeight.w400
-                                  )
-                                )
-                              ],
-                            ),
-                          ],
-                        )
-                      ),
-                    ),
-
-                    const SizedBox(height: 50.0),
-                    const Text(
-                      'Total Cost: ₦2000',
-                      style: TextStyle(
-                        fontSize: 20.0, 
-                        color: appPrimaryColor, 
-                        fontWeight: FontWeight.w700
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              const SizedBox(height: 10.0),
-              Button(
-                text: 'Edit Order', 
-                // onPress: () {
-                //   Navigator.of(context).pushNamed(ItemDetails.id, arguments: {
-                //     "buttonText": "Save Changes",
-                //   });
-                // }, 
-                onPress: _onPressEdit,
-                color: appPrimaryColor, 
-                textColor: whiteColor, 
-                isLoading: false,
-                width: MediaQuery.of(context).size.width/1.2,
-              ),
-
-              // const SizedBox(height: 10.0),
-              // Button(
-              //   text: 'Edit', 
-              //   onPress: () {
-              //     Navigator.of(context).pushNamed(Checkout.id);
-              //   }, 
-              //   color: whiteColor, 
-              //   textColor: appPrimaryColor,
-              //   isLoading: false,
-              //   width: MediaQuery.of(context).size.width/1.2,
-              // )
-            ],
-          )
+        body: SafeArea(
+            child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SizedBox(height: 30.0),
+        const Header(
+          text: 'DETAIL SUMMARY',
+          padding: EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
         ),
-      )
-    );
+        const SizedBox(height: 12),
+        Expanded(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultLayoutPadding, vertical: 12),
+                  child: Text(
+                    'Kindly confirm your details  before proceeding',
+                    style: theme.textTheme.subtitle1!.copyWith(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                34.heightInPixel(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultLayoutPadding),
+                  child: Column(
+                    children: [
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Receiver’s Info',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      5.heightInPixel(),
+                      Card(
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: appPrimaryColor.withOpacity(0.1),
+                              width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: EdgeInsets.zero,
+                        child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 20.0),
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Name:',
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          orderModel.data?.receiverName ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 15.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                                14.heightInPixel(),
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Email Address:',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          orderModel.data?.receiverEmail ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                                14.heightInPixel(),
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Phone Number:',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          orderModel.data?.receiverPhone ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                      34.heightInPixel(),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Date',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      5.heightInPixel(),
+                      Card(
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: appPrimaryColor.withOpacity(0.1),
+                              width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: EdgeInsets.zero,
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 20.0),
+                            // height: 110,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Pickup Date:',
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          getLongDate(
+                                              dateValue:
+                                                  orderModel.data?.pickupDate ??
+                                                      ''),
+                                          style: const TextStyle(
+                                              fontSize: 15.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                                14.heightInPixel(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Delivery Date:',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          getLongDate(
+                                              dateValue: orderModel
+                                                      .data?.deliveryDate ??
+                                                  ''),
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                      34.heightInPixel(),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Items’ info',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      5.heightInPixel(),
+                      Card(
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: appPrimaryColor.withOpacity(0.1),
+                              width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: EdgeInsets.zero,
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 20.0),
+                            // height: 110,
+                            child: Column(
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Item Name:',
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          orderModel.data?.itemName ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 15.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                                14.heightInPixel(),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Description:',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          orderModel.data?.itemDescription ??
+                                              '',
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                34.heightInPixel(),
+                const Padding(
+                  padding:
+                      EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Image of item',
+                      style: TextStyle(
+                          fontSize: 15.0,
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+                5.heightInPixel(),
+                Card(
+                  elevation: 0.0,
+                  shape: RoundedRectangleBorder(
+                    side: BorderSide(
+                        color: appPrimaryColor.withOpacity(0.1), width: 1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  margin: const EdgeInsets.symmetric(
+                      horizontal: kDefaultLayoutPadding),
+                  child: Container(
+                    margin: const EdgeInsets.symmetric(
+                        horizontal: 10.0, vertical: 24.0),
+                    height: 170,
+                    width: MediaQuery.of(context).size.width,
+                    child: Image.memory(
+                      createByteFromString(orderModel.data?.itemImage ?? ''),
+                      height: 90.0,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultLayoutPadding),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 35.0),
+                      const Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          'Rider’s Info',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      const SizedBox(height: 5.0),
+                      Card(
+                        elevation: 0.0,
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: appPrimaryColor.withOpacity(0.1),
+                              width: 1),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        margin: EdgeInsets.zero,
+                        child: Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 15.0, vertical: 20.0),
+                            // height: 110,
+                            child: Column(
+                              children: [
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Name:',
+                                        style: TextStyle(
+                                            fontSize: 15.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(
+                                          '${rider.firstName ?? ''} ${rider.lastName ?? ''}',
+                                          style: const TextStyle(
+                                              fontSize: 15.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                                14.heightInPixel(),
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Email Address:',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(rider.email ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                                14.heightInPixel(),
+                                Row(
+                                  children: [
+                                    const Expanded(
+                                      flex: 2,
+                                      child: Text(
+                                        'Phone Number:',
+                                        style: TextStyle(
+                                            fontSize: 14.0,
+                                            color: appPrimaryColor,
+                                            fontWeight: FontWeight.w700),
+                                      ),
+                                    ),
+                                    Expanded(
+                                      flex: 3,
+                                      child: Text(rider.phone ?? '',
+                                          style: const TextStyle(
+                                              fontSize: 14.0,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400)),
+                                    )
+                                  ],
+                                ),
+                              ],
+                            )),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(vertical: 44),
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Total Cost: $naira${formatMoney(orderModel.data?.totalAmount ?? 0.0)}',
+                    style: const TextStyle(
+                        fontSize: 20.0,
+                        color: appPrimaryColor,
+                        fontWeight: FontWeight.w700),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultLayoutPadding),
+                  child: Button(
+                    text: 'Proceed to payment',
+                    onPress: () {
+                      orderModel = orderModel.copyWith(
+                          data: orderModel.data!.copyWith(riderId: rider.id));
+
+                      Navigator.pushNamed(context, Payment.id, arguments: {
+                        'orderModel': orderModel.toJson(),
+                      });
+                    },
+                    color: appPrimaryColor,
+                    textColor: whiteColor,
+                    isLoading: false,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+                34.heightInPixel(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: kDefaultLayoutPadding),
+                  child: Button(
+                    text: 'Go back and Edit',
+                    onPress: () {
+                      Navigator.pop(context);
+                      // Navigator.of(context).pushNamed(Payment.id);
+                    },
+                    color: whiteColor,
+                    textColor: appPrimaryColor,
+                    isLoading: false,
+                    width: MediaQuery.of(context).size.width,
+                  ),
+                ),
+                34.heightInPixel(),
+              ],
+            ),
+          ),
+        ),
+      ],
+    )));
   }
 }

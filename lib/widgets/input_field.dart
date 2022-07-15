@@ -1,28 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:trakk/utils/colors.dart';
 
 class InputField extends StatelessWidget {
-  const InputField({
-    Key? key,
-    this.textController,
-    FocusNode? node,
-    this.labelText,
-    this.hintText,
-    required this.text,
-    this.suffixIcon,
-    required this.textHeight,
-    required this.borderColor,
-    // this.maxLines,
-    this.area,
-    this.keyboardType,
-    this.validator,
-    this.onTap,
-    this.onSaved,
-    this.onChanged,
-    this.autovalidateMode,
-    required this.obscureText,
-    this.maxLines, this.textColor,
-  }) : _node = node, super(key: key);
+  const InputField(
+      {Key? key,
+      this.textController,
+      FocusNode? node,
+      this.labelText,
+      this.hintText,
+      required this.text,
+      this.suffixIcon,
+      required this.textHeight,
+      required this.borderColor,
+      this.enabled = true,
+      // this.maxLines,
+      this.area,
+      this.keyboardType,
+      this.validator,
+      this.onTap,
+      this.onSaved,
+      this.onChanged,
+      this.autovalidateMode,
+      required this.obscureText,
+      this.maxLines,
+      this.textColor,
+      this.inputFormatters})
+      : _node = node,
+        super(key: key);
 
   final TextEditingController? textController;
   final FocusNode? _node;
@@ -33,6 +38,8 @@ class InputField extends StatelessWidget {
   final double textHeight;
   final Color borderColor;
   final Color? textColor;
+  final bool enabled;
+
   // final double maxLines;
   final int? area;
   final TextInputType? keyboardType;
@@ -43,18 +50,17 @@ class InputField extends StatelessWidget {
   final AutovalidateMode? autovalidateMode;
   final bool obscureText;
   final int? maxLines;
-
+  final List<TextInputFormatter>? inputFormatters;
 
   @override
   Widget build(BuildContext context) {
-    return 
-    Column(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-         Text(
+        Text(
           text,
           textScaleFactor: 1.2,
-          style:  TextStyle(
+          style: TextStyle(
             color: textColor,
             fontWeight: FontWeight.w500,
           ),
@@ -63,6 +69,7 @@ class InputField extends StatelessWidget {
         TextFormField(
           controller: textController,
           focusNode: _node,
+          enabled: enabled,
           maxLines: maxLines ?? area,
           keyboardType: keyboardType,
           validator: validator,
@@ -70,10 +77,12 @@ class InputField extends StatelessWidget {
           onSaved: onSaved,
           onChanged: onChanged,
           autovalidateMode: autovalidateMode,
+          inputFormatters: inputFormatters,
           obscureText: obscureText,
           decoration: InputDecoration(
-            contentPadding: const EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
-            enabledBorder:  OutlineInputBorder(
+            contentPadding:
+                const EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
+            enabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: borderColor, width: 0.0),
             ),
             focusedBorder: OutlineInputBorder(
@@ -82,10 +91,19 @@ class InputField extends StatelessWidget {
             errorBorder: OutlineInputBorder(
               borderSide: BorderSide(color: redColor.withOpacity(0.8)),
             ),
+            disabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(color: borderColor, width: 0.0),
+            ),
             // labelText: labelText,
-            labelStyle: const TextStyle(fontSize: 18.0, color: Color(0xFF8C8C8C), fontWeight: FontWeight.w600),
+            labelStyle: const TextStyle(
+                fontSize: 18.0,
+                color: Color(0xFF8C8C8C),
+                fontWeight: FontWeight.w600),
             hintText: hintText,
-            hintStyle: const TextStyle(fontSize: 18.0, color: Color(0xFFBDBDBD), fontWeight: FontWeight.w400),
+            hintStyle: const TextStyle(
+                fontSize: 18.0,
+                color: Color(0xFFBDBDBD),
+                fontWeight: FontWeight.w400),
             suffixIcon: suffixIcon,
           ),
         )

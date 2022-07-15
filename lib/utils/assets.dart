@@ -26,4 +26,9 @@ class Assets {
       'assets/images/rider/rider_location_icon.png';
   static const String size_icon = 'assets/images/rider/size_icon.png';
   static const String time_outline = 'assets/images/rider/time_outline.png';
+
+//  customer
+  static const String ride = 'assets/images/ride.png';
+  static const String empty_map_bg = 'assets/images/empty_map.png';
+  static const String rider_vehicle = "assets/images/rider_vehicle.png";
 }

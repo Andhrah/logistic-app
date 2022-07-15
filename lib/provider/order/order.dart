@@ -8,13 +8,12 @@ class Order extends ChangeNotifier {
 
   // OrderModel = _orderDetails = null;
 
-
   // Order _activeOrder
   // constructor to initialize the
-  setOrder(OrderModel order){
+  setOrder(OrderModel order) {
     _orders.add(order);
-    print("{}{}{}{}{}{}{}{}{}{}{}{}}{}{}{}}");
-    print('order: ${_orders.map((e) => e.orderItem!.description)}');
+    // print("{}{}{}{}{}{}{}{}{}{}{}{}}{}{}{}}");
+    // print('order: ${_orders.map((e) => e.orderItem!.description)}');
     // send notification to the provider
     notifyListeners();
   }

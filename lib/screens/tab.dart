@@ -4,7 +4,7 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/screens/dispatch/cart.dart';
-import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/item_detail/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
