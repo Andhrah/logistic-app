@@ -41,8 +41,10 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
   OrderLocation? pickupOrderLocation;
   OrderLocation? dropOffOrderLocation;
   String? _senName;
+  String? _senEmail;
   String? _senPhone;
   String? _recName;
+  String? _recEmail;
   String? _recPhone;
 
   @override
@@ -80,10 +82,13 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
               itemImage: _itemImage,
               weight: '0kg',
               senderName: _senName,
+              senderEmail: _senEmail,
               senderPhone: _senPhone,
               receiverName: _recName,
+              receiverEmail: _recEmail,
               receiverPhone: _recPhone));
 
+      FocusScope.of(context).unfocus();
       doGetAvailableRiders(
         pickupLatLng,
         dropOffLatLng,
@@ -134,11 +139,17 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                     _dropOffDate = dropOff;
                   }),
                   const SizedBox(height: 30.0),
-                  ItemDetailParticipantWidget((String senName, String senPhone,
-                      String recName, String recPhone) {
+                  ItemDetailParticipantWidget((String senName,
+                      String senEmail,
+                      String senPhone,
+                      String recName,
+                      String recEmail,
+                      String recPhone) {
                     _senName = senName;
+                    _senEmail = senEmail;
                     _senPhone = senPhone;
                     _recName = recName;
+                    _recEmail = recEmail;
                     _recPhone = recPhone;
                   }),
                   const SizedBox(height: 20.0),

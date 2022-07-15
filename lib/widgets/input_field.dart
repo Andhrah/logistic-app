@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/font.dart';
 
 class InputField extends StatelessWidget {
   const InputField(
@@ -54,12 +55,13 @@ class InputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
           text,
-          textScaleFactor: 1.2,
           style: TextStyle(
             color: textColor,
             fontWeight: FontWeight.w500,
@@ -95,15 +97,11 @@ class InputField extends StatelessWidget {
               borderSide: BorderSide(color: borderColor, width: 0.0),
             ),
             // labelText: labelText,
-            labelStyle: const TextStyle(
-                fontSize: 18.0,
-                color: Color(0xFF8C8C8C),
-                fontWeight: FontWeight.w600),
+            labelStyle: theme.textTheme.bodyText2!.copyWith(
+                color: const Color(0xFF8C8C8C), fontWeight: kSemiBoldWeight),
             hintText: hintText,
-            hintStyle: const TextStyle(
-                fontSize: 18.0,
-                color: Color(0xFFBDBDBD),
-                fontWeight: FontWeight.w400),
+            hintStyle: theme.textTheme.bodyText2!
+                .copyWith(color: const Color(0xFFBDBDBD)),
             suffixIcon: suffixIcon,
           ),
         )

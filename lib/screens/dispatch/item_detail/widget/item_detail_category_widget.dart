@@ -38,6 +38,7 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Column(
       children: [
         DecoratedBox(
@@ -59,9 +60,8 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
                 icon: const Icon(Remix.arrow_down_s_line),
                 elevation: 16,
                 isExpanded: true,
-                style: TextStyle(
+                style: theme.textTheme.bodyText2!.copyWith(
                   color: appPrimaryColor.withOpacity(0.8),
-                  fontSize: 18.0,
                 ),
                 underline: Container(),
                 //empty line

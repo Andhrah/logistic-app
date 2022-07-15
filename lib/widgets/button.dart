@@ -30,14 +30,15 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return isLoading
         ? const CircularProgressIndicator(color: secondaryColor)
         : ElevatedButton(
             onPressed: onPress,
             child: Text(
               text,
-              style: TextStyle(
-                  fontSize: fontSize ?? 18.0,
+              style: theme.textTheme.button!.copyWith(
+                  fontSize: fontSize,
                   color: textColor,
                   fontWeight: FontWeight.w400),
             ),

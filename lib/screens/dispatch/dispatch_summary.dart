@@ -480,7 +480,7 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                   padding: const EdgeInsets.symmetric(vertical: 44),
                   alignment: Alignment.center,
                   child: Text(
-                    'Total Cost: $naira${formatMoney(orderModel.data?.totalAmount ?? 0.0)}',
+                    'Total Cost: $naira${formatMoney(rider.cost ?? 0.0)}',
                     style: const TextStyle(
                         fontSize: 20.0,
                         color: appPrimaryColor,
@@ -494,7 +494,10 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                     text: 'Proceed to payment',
                     onPress: () {
                       orderModel = orderModel.copyWith(
-                          data: orderModel.data!.copyWith(riderId: rider.id));
+                          data: orderModel.data!.copyWith(
+                              riderId: rider.id,
+                              amount: rider.cost,
+                              totalAmount: rider.cost));
 
                       Navigator.pushNamed(context, Payment.id, arguments: {
                         'orderModel': orderModel.toJson(),

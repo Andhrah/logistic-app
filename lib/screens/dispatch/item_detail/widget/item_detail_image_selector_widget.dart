@@ -49,6 +49,8 @@ class _ItemDetailImageSelectorWidgetState
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Column(
       children: [
         AnimatedCrossFade(
@@ -69,15 +71,13 @@ class _ItemDetailImageSelectorWidgetState
                 height: MediaQuery.of(context).size.height / 8.7,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Remix.upload_2_line),
-                      SizedBox(height: 5.0),
+                    children: [
+                      const Icon(Remix.upload_2_line),
+                      const SizedBox(height: 5.0),
                       Text('Upload item image',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.w400))
+                          style: theme.textTheme.caption!
+                              .copyWith(color: appPrimaryColor))
                     ]),
               ),
             ),

@@ -81,6 +81,7 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Column(
       children: [
         Row(
@@ -184,7 +185,10 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                     color: secondaryColor,
                   ),
                 ),
-                title: Text(predictions[index].description.toString()),
+                title: Text(
+                  predictions[index].description.toString(),
+                  style: theme.textTheme.bodyText2,
+                ),
                 onTap: () async {
                   final placeId = predictions[index].placeId!;
                   final details = await googlePlace.details.get(placeId);
