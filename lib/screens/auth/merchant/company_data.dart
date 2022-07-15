@@ -3,11 +3,13 @@
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/bloc/validation_bloc.dart';
 import 'package:trakk/provider/merchant/add_company_data_provider.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
+import 'package:trakk/utils/font.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/input_field.dart';
@@ -23,6 +25,7 @@ class CompanyData extends StatefulWidget {
 
 class _CompanyDataState extends State<CompanyData> {
   final _formKey = GlobalKey<FormState>();
+  ValidationBloc validationBloc = ValidationBloc();
 
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -39,6 +42,7 @@ class _CompanyDataState extends State<CompanyData> {
   String? _email;
   String? _phoneNumber;
   String? _rcNumber;
+
   // String? _cacDocument;
   String _cacDocument = "";
 
@@ -129,7 +133,14 @@ class _CompanyDataState extends State<CompanyData> {
   }
 
   @override
+  void dispose() {
+    validationBloc.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
         backgroundColor: whiteColor,
         body: SingleChildScrollView(
@@ -138,26 +149,26 @@ class _CompanyDataState extends State<CompanyData> {
             children: [
               kSizeBox,
               Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackIcon(
                     onPress: () {
                       Navigator.pop(context);
                     },
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40.0),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {},
-                      customBorder: const CircleBorder(),
-                      child: const Text(
-                        'ADD COMPANY\'S INFORMATION',
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                          color: appPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
-                        ),
+                  Text(
+                    "ADD COMPANY'S INFORMATION",
+                    style: theme.textTheme.subtitle1!.copyWith(
+                      color: appPrimaryColor,
+                      fontWeight: kBoldWeight,
+                      // decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  AbsorbPointer(
+                    child: Opacity(
+                      opacity: 0,
+                      child: BackIcon(
+                        onPress: () {},
                       ),
                     ),
                   ),
@@ -215,9 +226,7 @@ class _CompanyDataState extends State<CompanyData> {
                           size: 18.0,
                           color: Color(0xFF909090),
                         ),
-                        validator: (value) {
-                          return _validateEmail();
-                        },
+                        validator: validationBloc.emailValidator,
                         onSaved: (value) {
                           _email = value!.trim();
                           return null;

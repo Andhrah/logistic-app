@@ -12,6 +12,7 @@ import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/home/rider_home.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 
 class Tabs extends StatefulWidget {
   static const String id = 'tab';
@@ -118,109 +119,111 @@ class _TabsState extends State<Tabs> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<AppSettings>(
-        stream: appSettingsBloc.appSettings,
+    return FutureBuilder<UserType>(
+        future: appSettingsBloc.getUserType,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
+            if (snapshot.data == UserType.none) {
+              return const Scaffold(
+                body: SizedBox(),
+              );
+            }
             return Scaffold(
-              body: snapshot.data?.loginResponse?.data?.user?.userType ==
-                      "customer"
+              body: snapshot.data == UserType.customer
                   ? _currentUserPage(_selectedIndex)
                   : _currentOtherUserPage(_selectedIndex),
-              bottomNavigationBar:
-                  snapshot.data?.loginResponse?.data?.user?.userType ==
-                          "customer"
-                      ? BottomNavigationBar(
-                          showSelectedLabels: true,
-                          showUnselectedLabels: true,
-                          items: <BottomNavigationBarItem>[
-                            BottomNavigationBarItem(
-                              icon: Icon(Remix.home_7_line,
-                                  color: _selectedIndex != 0
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Home',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Icon(Remix.shopping_cart_2_line,
-                                  color: _selectedIndex != 1
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Cart',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Icon(Remix.file_list_fill,
-                                  color: _selectedIndex != 2
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Order',
-                            ),
-                            BottomNavigationBarItem(
-                              // icon: SvgPicture.asset("assets/images/cart_icon.svg",
-                              //   color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
-                              // ),
-                              icon: Icon(Remix.wallet_2_line,
-                                  color: _selectedIndex != 3
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Wallet',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: SvgPicture.asset(
-                                  "assets/images/profile_icon.svg",
-                                  color: _selectedIndex != 4
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Profile',
-                            ),
-                          ],
-                          currentIndex: _selectedIndex,
-                          selectedItemColor: secondaryColor,
-                          unselectedItemColor: appPrimaryColor,
-                          onTap: _onItemTapped,
-                        )
-                      : BottomNavigationBar(
-                          showSelectedLabels: true,
-                          showUnselectedLabels: true,
-                          items: <BottomNavigationBarItem>[
-                            BottomNavigationBarItem(
-                              //  icon: SvgPicture.asset("assets/images/home_icon.svg",
-                              //     color: _selectedIndex != 0 ? Colors.grey.withOpacity(0.3) : secondaryColor
-                              //   ),
-                              icon: Icon(Remix.home_7_line,
-                                  color: _selectedIndex != 0
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Home',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Icon(Remix.history_line,
-                                  color: _selectedIndex != 1
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'History',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Icon(Remix.wallet_2_line,
-                                  color: _selectedIndex != 2
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Wallet',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: SvgPicture.asset(
-                                  "assets/images/profile_icon.svg",
-                                  color: _selectedIndex != 3
-                                      ? appPrimaryColor
-                                      : secondaryColor),
-                              label: 'Profile',
-                            ),
-                          ],
-                          currentIndex: _selectedIndex,
-                          selectedItemColor: secondaryColor,
-                          unselectedItemColor: appPrimaryColor,
-                          onTap: _onItemTapped,
+              bottomNavigationBar: snapshot.data == UserType.customer
+                  ? BottomNavigationBar(
+                      showSelectedLabels: true,
+                      showUnselectedLabels: true,
+                      items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          icon: Icon(Remix.home_7_line,
+                              color: _selectedIndex != 0
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Home',
                         ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Remix.shopping_cart_2_line,
+                              color: _selectedIndex != 1
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Cart',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Remix.file_list_fill,
+                              color: _selectedIndex != 2
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Order',
+                        ),
+                        BottomNavigationBarItem(
+                          // icon: SvgPicture.asset("assets/images/cart_icon.svg",
+                          //   color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
+                          // ),
+                          icon: Icon(Remix.wallet_2_line,
+                              color: _selectedIndex != 3
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Wallet',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: SvgPicture.asset(
+                              "assets/images/profile_icon.svg",
+                              color: _selectedIndex != 4
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Profile',
+                        ),
+                      ],
+                      currentIndex: _selectedIndex,
+                      selectedItemColor: secondaryColor,
+                      unselectedItemColor: appPrimaryColor,
+                      onTap: _onItemTapped,
+                    )
+                  : BottomNavigationBar(
+                      showSelectedLabels: true,
+                      showUnselectedLabels: true,
+                      items: <BottomNavigationBarItem>[
+                        BottomNavigationBarItem(
+                          //  icon: SvgPicture.asset("assets/images/home_icon.svg",
+                          //     color: _selectedIndex != 0 ? Colors.grey.withOpacity(0.3) : secondaryColor
+                          //   ),
+                          icon: Icon(Remix.home_7_line,
+                              color: _selectedIndex != 0
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Home',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Remix.history_line,
+                              color: _selectedIndex != 1
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'History',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: Icon(Remix.wallet_2_line,
+                              color: _selectedIndex != 2
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Wallet',
+                        ),
+                        BottomNavigationBarItem(
+                          icon: SvgPicture.asset(
+                              "assets/images/profile_icon.svg",
+                              color: _selectedIndex != 3
+                                  ? appPrimaryColor
+                                  : secondaryColor),
+                          label: 'Profile',
+                        ),
+                      ],
+                      currentIndex: _selectedIndex,
+                      selectedItemColor: secondaryColor,
+                      unselectedItemColor: appPrimaryColor,
+                      onTap: _onItemTapped,
+                    ),
             );
           }
           return const SizedBox();

@@ -1,5 +1,5 @@
 enum UserType {
-  user('user'),
+  customer('customer'),
   rider('rider'),
   guest('guest'),
   merchant('merchant'),
@@ -25,3 +25,5 @@ enum RiderOrderState {
 enum HttpRequestType { get, post, put, patch, delete, head, request, download }
 
 enum AppToastType { success, failed }
+
+enum ValidationState { isEmpty, isValidateSuccess, isValidateFailed }

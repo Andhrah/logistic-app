@@ -5,6 +5,7 @@
     */
 
 import 'package:rxdart/rxdart.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/validators.dart';
 
 class PasswordValidationStage {
@@ -49,8 +50,11 @@ class ValidationBloc extends FormValidators {
   ///below are for function
 
   String? emailValidator(String? email, {String? response}) {
-    return validateEmail(email!)
+    ValidationState state = validateEmail(email!);
+    return state == ValidationState.isValidateSuccess
         ? null
-        : (response ?? "Please enter a valid email");
+        : state == ValidationState.isValidateFailed
+            ? (response ?? "Enter a valid email address")
+            : (response ?? "Email address cannot be empty");
   }
 }

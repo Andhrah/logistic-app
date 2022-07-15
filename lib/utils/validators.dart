@@ -6,16 +6,20 @@
 
 import 'dart:async';
 
+import 'package:trakk/utils/enums.dart';
+
 const String _kEmailRule = r"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$";
 
 class FormValidators {
-  bool validateEmail(String email) {
+  ValidationState validateEmail(String email) {
     final RegExp emailExp = RegExp(_kEmailRule);
     email = email.trim();
-    if (!emailExp.hasMatch(email) || email.isEmpty) {
-      return false;
+    if (email.isEmpty) {
+      return ValidationState.isEmpty;
+    } else if (emailExp.hasMatch(email)) {
+      return ValidationState.isValidateSuccess;
     } else {
-      return true;
+      return ValidationState.isValidateFailed;
     }
   }
 

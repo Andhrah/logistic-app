@@ -13,7 +13,6 @@ import 'package:trakk/screens/riders/home/widgets/home_map/rider_bottom_sheet.da
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/helper_utils.dart';
-import 'package:trakk/utils/map_style.dart';
 
 class RiderHomeMapScreen extends StatefulWidget {
   final MiscBloc locaBloc;
@@ -186,16 +185,16 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
   void _onMapCreated(GoogleMapController controller) async {
     _controller.complete(controller);
 
-    ThemeData theme = Theme.of(context);
-    final bool isDark = theme.brightness == Brightness.dark;
-    setState(() {
-      if (isDark) {
-        controller.setMapStyle(MapStyle().night);
-      } else {
-        controller.setMapStyle(MapStyle().aubergine);
-      }
-    });
-    // await miscBloc.fetchLocation();
+    // ThemeData theme = Theme.of(context);
+    // final bool isDark = theme.brightness == Brightness.dark;
+    // setState(() {
+    //   if (isDark) {
+    //     controller.setMapStyle(MapStyle().night);
+    //   } else {
+    //     controller.setMapStyle(MapStyle().retro);
+    //   }
+    // });
+    // // await miscBloc.fetchLocation();
 
     moveCameraToUser();
   }

@@ -11,6 +11,7 @@ typedef OnButtonClicked = Function(RiderOrderState data, String orderNo,
 
 class RiderBottomSheetContentOnGoing extends StatelessWidget {
   final RiderOrderState orderState;
+  final String orderId;
   final String orderNo;
   final String deliveryCode;
   final double pickupLatitude;
@@ -22,6 +23,7 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
   const RiderBottomSheetContentOnGoing(
       {Key? key,
       required this.orderState,
+      required this.orderId,
       required this.orderNo,
       required this.deliveryCode,
       required this.pickupLatitude,
@@ -166,7 +168,7 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
                                     : 'Done',
                 fontSize: 14,
                 onPress: () {
-                  onButtonClick(orderState, orderNo, deliveryCode,
+                  onButtonClick(orderState, orderId, deliveryCode,
                       pickupLatitude, pickupLongitude);
                 },
                 color: (orderState == RiderOrderState.isRequestAccepted ||
@@ -184,6 +186,7 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
 
 class RiderBottomSheetContentCompleted extends StatelessWidget {
   final RiderOrderState orderState;
+  final String orderId;
   final String orderNo;
   final String deliveryCode;
   final double pickupLatitude;
@@ -195,6 +198,7 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
   const RiderBottomSheetContentCompleted(
       {Key? key,
       required this.orderState,
+      required this.orderId,
       required this.orderNo,
       required this.deliveryCode,
       required this.pickupLatitude,
@@ -375,7 +379,7 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                 text: 'Item delivered',
                 fontSize: 14,
                 onPress: () {
-                  onButtonClick(orderState, orderNo, deliveryCode,
+                  onButtonClick(orderState, orderId, deliveryCode,
                       pickupLatitude, pickupLongitude);
                 },
                 color: deepGreen,

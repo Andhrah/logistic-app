@@ -24,28 +24,6 @@ class RiderMapProvider extends ChangeNotifier {
   bool isNewConnection = false;
   Socket? socket;
 
-  // void connect() async {
-  //   var appSettings = await appSettingsBloc.fetchAppSettings();
-  //   String? token = appSettings.loginResponse?.data?.token ?? '';
-  //
-  //   socket = IO.io("http://134.122.92.247:1440", <String, dynamic>{
-  //     "transports": ["websocket"],
-  //     "autoConnect": false,
-  //     'path': '/socket/v1/',
-  //     'auth': {
-  //       // put token here, it will be used to make authenticated calls
-  //       "token": token
-  //     }
-  //   });
-  //   socket?.connect();
-  //   socket?.onConnect((data) => print(" the sever is connected"));
-  //   // listenToRequest();
-  //   print("this is the socket response " + socket!.connected.toString());
-  //   //ride request with the rider id, so we will retrieve the rider's id and use it here
-  //
-  //   //socket.emit("message", "Test for riders");
-  // }
-
   connectAndListenToSocket(
       {String? responseID,
       Function()? onConnected,

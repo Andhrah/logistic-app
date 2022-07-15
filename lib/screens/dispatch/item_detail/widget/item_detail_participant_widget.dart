@@ -156,9 +156,7 @@ class _ItemDetailParticipantWidgetState
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),
-                      validator: (String? email) =>
-                          validationBloc.emailValidator(email,
-                              response: 'Enter a valid email'),
+                      validator: validationBloc.emailValidator,
                       onSaved: (value) {
                         doCallback();
                         return null;
@@ -249,8 +247,7 @@ class _ItemDetailParticipantWidgetState
             size: 18.0,
             color: Color(0xFF909090),
           ),
-          validator: (String? email) => validationBloc.emailValidator(email,
-              response: 'Enter a valid email'),
+          validator: validationBloc.emailValidator,
           onSaved: (value) {
             doCallback();
             return null;

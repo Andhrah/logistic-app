@@ -92,6 +92,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                         String>(
                                     stream: streamSocket.behaviorSubject,
                                     dataBuilder: (context, data) {
+                                      final String orderId =
+                                          '${data.order?.id ?? ''}';
                                       final String orderNo =
                                           data.order?.orderRef ?? '';
 
@@ -112,6 +114,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                           RiderOrderState.isOrderCompleted) {
                                         return RiderBottomSheetContentCompleted(
                                           orderState: orderState,
+                                          orderId: orderId,
                                           orderNo: orderNo,
                                           deliveryCode: deliveryCode,
                                           pickupLatitude: pickupLatitude,
@@ -123,6 +126,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                       }
                                       return RiderBottomSheetContentOnGoing(
                                         orderState: orderState,
+                                        orderId: orderId,
                                         orderNo: orderNo,
                                         deliveryCode: deliveryCode,
                                         pickupLatitude: pickupLatitude,
