@@ -8,7 +8,7 @@ import 'package:trakk/utils/operation.dart';
 import 'package:trakk/utils/singleton_data.dart';
 import 'package:trakk/utils/styles.dart';
 
-class OrderHelper {
+class RiderOrderHelper {
   final BuildContext _authContext =
       SingletonData.singletonData.navKey.currentState!.overlay!.context;
 

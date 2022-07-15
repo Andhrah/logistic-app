@@ -18,7 +18,7 @@ import 'package:trakk/screens/auth/verify_account.dart';
 import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
-import 'package:trakk/screens/dispatch/item_details.dart';
+import 'package:trakk/screens/dispatch/item_detail/item_details.dart';
 import 'package:trakk/screens/dispatch/order.dart';
 import 'package:trakk/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/screens/dispatch/payment.dart';

@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
-import 'package:trakk/models/payment_method.dart';
-import 'package:trakk/screens/dispatch/dispatch_summary.dart';
+import 'package:remixicon/remixicon.dart';
+import 'package:trakk/mixins/customer_order_helper.dart';
+import 'package:trakk/models/order/order.dart';
 import 'package:trakk/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
+import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/utils/padding.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/cancel_button.dart';
 import 'package:trakk/widgets/expandable_item.dart';
 import 'package:trakk/widgets/header.dart';
 import 'package:trakk/widgets/input_field.dart';
-import 'package:remixicon/remixicon.dart';
 
-// This is the stateful widget that the main application instantiates.
 class Payment extends StatefulWidget {
   static const String id = 'payment';
 
@@ -24,7 +25,7 @@ class Payment extends StatefulWidget {
 
 // This is the private State class that goes with MyStatefulWidget.
 
-class _PaymentState extends State<Payment> {
+class _PaymentState extends State<Payment> with CustomerOrderHelper {
   final _formKey = GlobalKey<FormState>();
 
   bool isVisible = false;
@@ -56,6 +57,7 @@ class _PaymentState extends State<Payment> {
     "XXXX-XXXX-2535",
     "Add new card",
   ];
+  bool _isLoading = false;
 
   @override
   void initState() {
@@ -66,6 +68,9 @@ class _PaymentState extends State<Payment> {
     _amountController = TextEditingController();
     _paymentViewController = PageController();
 
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      _paymentViewController.jumpToPage(2);
+    });
     // _confirmPasswordController = TextEditingController();
   }
 
@@ -87,7 +92,7 @@ class _PaymentState extends State<Payment> {
     'Zebrra',
     'Pay on delivery',
   ];
-  int radioValue = -1;
+  int radioValue = 3;
 
   void _handleRadioValueChanged(value) {
     setState(() {
@@ -98,7 +103,11 @@ class _PaymentState extends State<Payment> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     MediaQueryData mediaQuery = MediaQuery.of(context);
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    OrderModel orderModel = OrderModel.fromJson(arg["orderModel"]);
+
     return Scaffold(
         body: SingleChildScrollView(
       child: SafeArea(
@@ -110,56 +119,82 @@ class _PaymentState extends State<Payment> {
           ),
 
           const SizedBox(height: 30.0),
-
+          Padding(
+            padding: const EdgeInsets.symmetric(
+                horizontal: kDefaultLayoutPadding, vertical: 12),
+            child: Text(
+              'Choose preferred payment method',
+              style: theme.textTheme.subtitle1!.copyWith(
+                color: appPrimaryColor,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          34.heightInPixel(),
           // Column(
           //   children: paymentMethods.map<RadioListTile>((method) => {
           //   return Card()
           // })
           // )
-          PaymentButton(
-            child: RadioListTile(
-                activeColor: appPrimaryColor,
-                title: const Text("Pay with zebrra card and get 20% off"),
-                value: 0,
-                groupValue: radioValue,
-                onChanged: (dynamic value1) {
-                  setState(() {
-                    radioValue = value1;
-                    _paymentViewController.jumpToPage(0);
-                    //isVisible = true;
-                    print(radioValue);
-                  });
-                }),
+          AbsorbPointer(
+            child: Opacity(
+              opacity: 0.5,
+              child: PaymentButton(
+                child: RadioListTile(
+                    activeColor: appPrimaryColor,
+                    title: const Text("Pay with zebrra card and get 20% off"),
+                    value: 0,
+                    groupValue: radioValue,
+                    onChanged: (dynamic value1) {
+                      setState(() {
+                        radioValue = value1;
+                        _paymentViewController.jumpToPage(0);
+                        //isVisible = true;
+                        print(radioValue);
+                      });
+                    }),
+              ),
+            ),
           ),
           const SizedBox(
             height: 15,
           ),
-          PaymentButton(
-            child: RadioListTile(
-                activeColor: appPrimaryColor,
-                title: const Text("Pay with transfer"),
-                value: 1,
-                groupValue: radioValue,
-                onChanged: (value) {
-                  Navigator.of(context).pushNamed(PayWithTransfer.id);
-                }),
+          AbsorbPointer(
+            child: Opacity(
+              opacity: 0.5,
+              child: PaymentButton(
+                child: RadioListTile(
+                    activeColor: appPrimaryColor,
+                    title: const Text("Pay with transfer"),
+                    value: 1,
+                    groupValue: radioValue,
+                    onChanged: (value) {
+                      Navigator.of(context).pushNamed(PayWithTransfer.id);
+                    }),
+              ),
+            ),
           ),
           const SizedBox(
             height: 15,
           ),
-          PaymentButton(
-            child: RadioListTile(
-                activeColor: appPrimaryColor,
-                title: const Text("Pay with your card"),
-                value: 2,
-                groupValue: radioValue,
-                onChanged: (dynamic value) {
-                  setState(() {
-                    radioValue = value;
-                    _paymentViewController.jumpToPage(1);
-                    print(radioValue);
-                  });
-                }),
+          AbsorbPointer(
+            child: Opacity(
+              opacity: 0.5,
+              child: PaymentButton(
+                child: RadioListTile(
+                    activeColor: appPrimaryColor,
+                    title: const Text("Pay with your card"),
+                    value: 2,
+                    groupValue: radioValue,
+                    onChanged: (dynamic value) {
+                      setState(() {
+                        radioValue = value;
+                        _paymentViewController.jumpToPage(1);
+                        print(radioValue);
+                      });
+                    }),
+              ),
+            ),
           ),
           const SizedBox(
             height: 15,
@@ -182,20 +217,25 @@ class _PaymentState extends State<Payment> {
           const SizedBox(
             height: 15,
           ),
-          PaymentButton(
-            child: RadioListTile(
-                activeColor: appPrimaryColor,
-                title: const Text("Pay with wallet"),
-                value: 4,
-                groupValue: radioValue,
-                onChanged: (dynamic value1) {
-                  setState(() {
-                    radioValue = value1;
-                    _paymentViewController.jumpToPage(3);
-                    //isVisible = true;
-                    print(radioValue);
-                  });
-                }),
+          AbsorbPointer(
+            child: Opacity(
+              opacity: 0.5,
+              child: PaymentButton(
+                child: RadioListTile(
+                    activeColor: appPrimaryColor,
+                    title: const Text("Pay with wallet"),
+                    value: 4,
+                    groupValue: radioValue,
+                    onChanged: (dynamic value1) {
+                      setState(() {
+                        radioValue = value1;
+                        _paymentViewController.jumpToPage(3);
+                        //isVisible = true;
+                        print(radioValue);
+                      });
+                    }),
+              ),
+            ),
           ),
 
           const SizedBox(height: 10.0),
@@ -560,7 +600,8 @@ class _PaymentState extends State<Payment> {
                                     color: whiteColor,
                                     border: Border.all(
                                         color: appPrimaryColor.withOpacity(0.9),
-                                        width: 0.3), //border of dropdown button
+                                        width: 0.3),
+                                    //border of dropdown button
                                     borderRadius: BorderRadius.circular(
                                         5.0), //border raiuds of dropdown button
                                   ),
@@ -576,7 +617,8 @@ class _PaymentState extends State<Payment> {
                                         color: appPrimaryColor.withOpacity(0.8),
                                         fontSize: 18.0,
                                       ),
-                                      underline: Container(), //empty line
+                                      underline: Container(),
+                                      //empty line
                                       onChanged: (String? newValue) {
                                         setState(() {
                                           _cards = newValue!;
@@ -924,15 +966,17 @@ class _PaymentState extends State<Payment> {
                         padding: const EdgeInsets.symmetric(horizontal: 20),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: const [
-                            Text(
+                          children: [
+                            const Text(
                               "Amount:",
                               textScaleFactor: 1.3,
                               style: TextStyle(fontWeight: FontWeight.w700),
                             ),
-                            Text("₦2000",
+                            Text(
+                                "$naira${formatMoney(orderModel.data?.totalAmount ?? 0.0)}",
                                 textScaleFactor: 1.3,
-                                style: TextStyle(fontWeight: FontWeight.w700)),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.w700)),
                           ],
                         ),
                       ),
@@ -941,11 +985,16 @@ class _PaymentState extends State<Payment> {
                       ),
                       Button(
                           text: "Order and trakk delivery",
-                          onPress: () {},
+                          onPress: () {
+                            doCreateOrder(
+                                orderModel,
+                                () => setState(() => _isLoading = true),
+                                () => setState(() => _isLoading = false));
+                          },
                           color: appPrimaryColor,
                           width: 308,
                           textColor: whiteColor,
-                          isLoading: false),
+                          isLoading: _isLoading),
                     ],
                   ),
                 )),
@@ -1210,6 +1259,7 @@ class _PaymentState extends State<Payment> {
 
 class PaymentButton extends StatelessWidget {
   final Widget child;
+
   const PaymentButton({
     Key? key,
     required this.child,
@@ -1218,9 +1268,10 @@ class PaymentButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 0),
+      margin: const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
       height: 50,
-      width: 300,
+      width: double.infinity,
+      alignment: Alignment.center,
       decoration: BoxDecoration(
         border: Border.all(color: grayColor),
         color: whiteColor,

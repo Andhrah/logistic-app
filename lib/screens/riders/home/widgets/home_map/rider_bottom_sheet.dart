@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
-import 'package:trakk/mixins/order_helper.dart';
+import 'package:trakk/mixins/rider_order_helper.dart';
 import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/screens/riders/home/widgets/home_map/rider_bottom_sheet_content.dart';
 import 'package:trakk/utils/app_toast.dart';
@@ -24,7 +24,8 @@ class RiderBottomSheet extends StatefulWidget {
   State<RiderBottomSheet> createState() => _RiderBottomSheetState();
 }
 
-class _RiderBottomSheetState extends State<RiderBottomSheet> with OrderHelper {
+class _RiderBottomSheetState extends State<RiderBottomSheet>
+    with RiderOrderHelper {
   DraggableScrollableController draggableScrollableController =
       DraggableScrollableController();
 
