@@ -94,7 +94,8 @@ class RiderMapProvider extends ChangeNotifier {
     }
   }
 
-  sendData(String riderID, Loca.LocationData? _loca) async {
+  sendData(String riderID, Loca.LocationData? _loca, int? orderId) async {
+    print('trying to emit');
     if (_loca != null) {
       if ((socket?.active ?? false) == true) {
         double lat =
@@ -106,11 +107,13 @@ class RiderMapProvider extends ChangeNotifier {
         String address = await getAddressFromLatLng(lat, long);
         Map<String, dynamic> _location = {
           'riderId': riderID,
+          'orderId': orderId,
           'currentLatitude': _loca.latitude.toString(),
           'currentLongitude': _loca.longitude.toString(),
           'currentLocation': address == '...' ? '' : address
         };
 
+        print(_location);
         _location.removeWhere((key, value) => value == null);
 
         if (socket?.id != null) {
@@ -127,7 +130,13 @@ class RiderMapProvider extends ChangeNotifier {
     miscBloc.fetchLocation();
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
-      sendData(riderID, _loca);
+      print('loation has changed');
+      sendData(
+          riderID,
+          _loca,
+          riderStreamSocket.behaviorSubject.hasValue
+              ? riderStreamSocket.behaviorSubject.value.model?.order?.id
+              : null);
     });
   }
 }
