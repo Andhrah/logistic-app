@@ -1,3 +1,4 @@
+import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -25,6 +26,8 @@ import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
+import 'package:trakk/screens/merchant/add_rider1.dart';
+import 'package:trakk/screens/merchant/add_rider2.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
 import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';
@@ -61,6 +64,8 @@ import 'package:trakk/utils/singleton_data.dart';
 
 import 'screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'screens/profile/profile_menu.dart';
+
+final cloudinary = Cloudinary.basic(cloudName: 'cloudName');
 
 void main() async {
   SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
@@ -168,6 +173,8 @@ class _MyAppState extends State<MyApp> {
             ListOfVehicles.id: (context) => const ListOfVehicles(),
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             AddRider.id: (context) => const AddRider(),
+            AddRider1.id: (context) => const AddRider1(),
+            AddRider2.id: (context) => const AddRider2(),
             ReferredRides.id: (context) => const ReferredRides(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             ListOfRiders.id: (context) => const ListOfRiders(),

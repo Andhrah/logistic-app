@@ -1,40 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
-import 'package:trakk/widgets/button.dart';
 
-typedef OnButtonClicked = Function(RiderOrderState data, String orderNo,
-    String deliveryCode, double pickupLatitude, double pickupLongitude);
+typedef OnButtonClicked = Function();
 
 class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
-  final RiderOrderState orderState;
-  final String orderId;
-  final String orderNo;
-  final String deliveryCode;
-  final double pickupLatitude;
-  final double pickupLongitude;
-  final double deliveryLatitude;
-  final double deliveryLongitude;
   final OnButtonClicked onButtonClick;
 
   const CustomerTrackBottomSheetContentOnGoing(
-      {Key? key,
-      required this.orderState,
-      required this.orderId,
-      required this.orderNo,
-      required this.deliveryCode,
-      required this.pickupLatitude,
-      required this.pickupLongitude,
-      required this.deliveryLatitude,
-      required this.deliveryLongitude,
-      required this.onButtonClick})
+      {Key? key, required this.onButtonClick})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var arg = ModalRoute.of(context)!.settings.arguments;
+
+    final model = UserOrderHistoryDatum.fromJson(arg as Map<String, dynamic>);
+
     var theme = Theme.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
@@ -50,7 +35,7 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
             ),
             1.flexSpacer(),
             Text(
-              '#$orderNo',
+              '#${model.attributes?.orderRef ?? ''}',
               textAlign: TextAlign.center,
               style: theme.textTheme.bodyText1!
                   .copyWith(fontWeight: kSemiBoldWeight),
@@ -59,12 +44,13 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
         ),
         34.heightInPixel(),
         SizedBox(
-          height: 110,
+          height: 130,
           child: Row(
             children: [
               Image.asset(
                 Assets.pickup_route,
-                height: 90,
+                height: 130,
+                fit: BoxFit.fitHeight,
               ),
               12.widthInPixel(),
               Expanded(
@@ -80,7 +66,8 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                     4.heightInPixel(),
                     FutureBuilder<String>(
                         future: getAddressFromLatLng(
-                            pickupLatitude, pickupLongitude),
+                            model.attributes?.pickupLatitude ?? 0.0,
+                            model.attributes?.pickupLongitude ?? 0.0),
                         builder: (context, snapshot) {
                           String address = '';
                           if (snapshot.hasData) {
@@ -89,7 +76,7 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                           return Text(
                             address,
                             textAlign: TextAlign.start,
-                            style: theme.textTheme.bodyText1!
+                            style: theme.textTheme.caption!
                                 .copyWith(fontWeight: kMediumWeight),
                           );
                         }),
@@ -103,7 +90,8 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                     4.heightInPixel(),
                     FutureBuilder<String>(
                         future: getAddressFromLatLng(
-                            deliveryLatitude, deliveryLongitude),
+                            model.attributes?.destinationLatitude ?? 0.0,
+                            model.attributes?.destinationLongitude ?? 0.0),
                         builder: (context, snapshot) {
                           String pickupAddress = '';
                           String deliveryAddress = '';
@@ -115,22 +103,22 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                             textAlign: TextAlign.start,
                             text: TextSpan(
                                 text: 'From ',
-                                style: theme.textTheme.bodyText1!
+                                style: theme.textTheme.caption!
                                     .copyWith(fontWeight: kLightWeight),
                                 children: [
                                   TextSpan(
                                     text: '$pickupAddress ',
-                                    style: theme.textTheme.bodyText1!
+                                    style: theme.textTheme.caption!
                                         .copyWith(fontWeight: kMediumWeight),
                                   ),
                                   TextSpan(
                                     text: 'to ',
-                                    style: theme.textTheme.bodyText1!
+                                    style: theme.textTheme.caption!
                                         .copyWith(fontWeight: kLightWeight),
                                   ),
                                   TextSpan(
                                     text: '$deliveryAddress ',
-                                    style: theme.textTheme.bodyText1!
+                                    style: theme.textTheme.caption!
                                         .copyWith(fontWeight: kMediumWeight),
                                   ),
                                 ]),
@@ -142,250 +130,39 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
             ],
           ),
         ),
-        44.heightInPixel(),
-        ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
-            child: Button(
-                text: (orderState == RiderOrderState.isRequestAccepted ||
-                        orderState == RiderOrderState.isAlmostAtPickupLocation)
-                    ? 'Confirm Pickup'
-                    :
-                    // (orderState == RiderOrderState.isItemPickedUpLocationAndEnRoute)
-                    //         ? 'Go to Delivery'
-                    //         :
-                    (orderState ==
-                            RiderOrderState.isItemPickedUpLocationAndEnRoute)
-                        ? 'Delivery in progress'
-                        : (orderState ==
-                                RiderOrderState.isAlmostAtDestinationLocation)
-                            ? 'Arrived at destination'
-                            : (orderState ==
-                                    RiderOrderState.isAtDestinationLocation)
-                                ? 'Confirm delivery'
-                                : (orderState ==
-                                        RiderOrderState.isOrderCompleted)
-                                    ? 'Item delivered'
-                                    : 'Done',
-                fontSize: 14,
-                onPress: () {
-                  onButtonClick(orderState, orderId, deliveryCode,
-                      pickupLatitude, pickupLongitude);
-                },
-                color: (orderState == RiderOrderState.isRequestAccepted ||
-                        // orderState == RiderOrderState.isItemPickedUpLocation ||
-                        orderState == RiderOrderState.isAtDestinationLocation)
-                    ? kTextColor
-                    : deepGreen,
-                width: double.infinity,
-                textColor: whiteColor,
-                isLoading: false))
-      ],
-    );
-  }
-}
-
-class CustomerTrackBottomSheetContentCompleted extends StatelessWidget {
-  final RiderOrderState orderState;
-  final String orderId;
-  final String orderNo;
-  final String deliveryCode;
-  final double pickupLatitude;
-  final double pickupLongitude;
-  final double deliveryLatitude;
-  final double deliveryLongitude;
-  final OnButtonClicked onButtonClick;
-
-  const CustomerTrackBottomSheetContentCompleted(
-      {Key? key,
-      required this.orderState,
-      required this.orderId,
-      required this.orderNo,
-      required this.deliveryCode,
-      required this.pickupLatitude,
-      required this.pickupLongitude,
-      required this.deliveryLatitude,
-      required this.deliveryLongitude,
-      required this.onButtonClick})
-      : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    var theme = Theme.of(context);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        14.heightInPixel(),
+        24.heightInPixel(),
         Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'ORDER ID:',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(fontWeight: kSemiBoldWeight, color: deepGreen),
+            Expanded(
+              child: Text(
+                'Share your track order link to the recipient to the track the item with you',
+                style: theme.textTheme.bodyText2!.copyWith(),
+              ),
             ),
-            1.flexSpacer(),
-            Text(
-              '#$orderNo',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(fontWeight: kSemiBoldWeight),
-            ),
+            24.widthInPixel(),
+            Image.asset(
+              Assets.share_icon,
+              height: 20,
+              width: 20,
+            )
           ],
         ),
+        44.heightInPixel(),
+        // ConstrainedBox(
+        //     constraints: const BoxConstraints(maxWidth: 450),
+        //     child: Button(
+        //         text: 'Cancel Ride',
+        //         fontSize: 14,
+        //         onPress: () {
+        //           onButtonClick();
+        //         },
+        //         color: kTextColor,
+        //         width: double.infinity,
+        //         textColor: whiteColor,
+        //         isLoading: false))
+
         34.heightInPixel(),
-        Row(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.black),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                Assets.time_outline,
-                width: 24,
-                height: 24,
-              ),
-            ),
-            12.widthInPixel(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'PICKUP TIME',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText1!.copyWith(
-                      fontWeight: kSemiBoldWeight, color: dividerColor),
-                ),
-                4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
-              ],
-            )
-          ],
-        ),
-        24.heightInPixel(),
-        Row(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.black),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                Assets.time_outline,
-                width: 24,
-                height: 24,
-              ),
-            ),
-            12.widthInPixel(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'DELIVERY TIME',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText1!.copyWith(
-                      fontWeight: kSemiBoldWeight, color: dividerColor),
-                ),
-                4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
-              ],
-            )
-          ],
-        ),
-        24.heightInPixel(),
-        Row(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle, color: Colors.black),
-              alignment: Alignment.center,
-              padding: const EdgeInsets.all(10),
-              child: Image.asset(
-                Assets.location_outline,
-                width: 24,
-                height: 24,
-              ),
-            ),
-            12.widthInPixel(),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'DELIVERY LOCATION',
-                  textAlign: TextAlign.center,
-                  style: theme.textTheme.bodyText1!.copyWith(
-                      fontWeight: kSemiBoldWeight, color: dividerColor),
-                ),
-                4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
-              ],
-            )
-          ],
-        ),
-        44.heightInPixel(),
-        Center(
-          child: Image.asset(
-            Assets.check_success,
-            width: 54,
-            height: 54,
-          ),
-        ),
-        24.heightInPixel(),
-        ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 450),
-            child: Button(
-                text: 'Item delivered',
-                fontSize: 14,
-                onPress: () {
-                  onButtonClick(orderState, orderId, deliveryCode,
-                      pickupLatitude, pickupLongitude);
-                },
-                color: deepGreen,
-                width: double.infinity,
-                textColor: whiteColor,
-                isLoading: false))
       ],
     );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/provider/customer/customer_map_provider.dart';
@@ -32,40 +31,26 @@ class _CustomerTrackScreenState extends State<CustomerTrackScreen> {
 
   init() async {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      final arg = UserOrderHistoryDatum.fromJson(
-          (ModalRoute.of(context)!.settings.arguments) as Map<String, dynamic>);
+      var arg = ModalRoute.of(context)!.settings.arguments;
+      if (arg != null) {
+        final model =
+            UserOrderHistoryDatum.fromJson(arg as Map<String, dynamic>);
 
-      if (arg.id != null) {
-        injector = CustomerMapProvider.customerMapProvider(context);
-        // injector.connect();
-        injector?.connectAndListenToSocket(
-            orderID: arg.id.toString(),
-            onConnected: () {
-              // var model = customerStreamSocket.behaviorSubject.value.model;
-              var arg = ModalRoute.of(context)!.settings.arguments;
-              if (arg != null) {
-                final model = UserOrderHistoryDatum.fromJson(
-                    (ModalRoute.of(context)!.settings.arguments)
-                        as Map<String, dynamic>);
-
-                if (model.attributes != null) {
-                  mapExtraUIBloc.updateMarkersWithCircle([
-                    LatLng(
-                      model.attributes?.destinationLatitude ?? 0.0,
-                      model.attributes?.destinationLongitude ?? 0.0,
-                    )
-                  ], 'Destination', true, true,
-                      fromLatLng: LatLng(
-                        model.attributes?.pickupLatitude ?? 0.0,
-                        model.attributes?.pickupLongitude ?? 0.0,
-                      ));
-                }
-              }
-            },
-            onConnectionError: () {
-              injector?.disconnectSocket();
-              // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
-            });
+        if (model.id != null) {
+          injector = CustomerMapProvider.customerMapProvider(context);
+          // injector.connect();
+          injector?.connectAndListenToSocket(
+              toLatLng: LatLng(
+                model.attributes?.destinationLatitude ?? 0.0,
+                model.attributes?.destinationLongitude ?? 0.0,
+              ),
+              orderID: model.id.toString(),
+              onConnected: () {},
+              onConnectionError: () {
+                injector?.disconnectSocket();
+                // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
+              });
+        }
       }
     });
   }

@@ -4,10 +4,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/helper_utils.dart';
 
 class ItemDetailImageSelectorWidget extends StatefulWidget {
-  final Function(String? fileConverted) callback;
+  final Function(String? itemImagePath) callback;
 
   const ItemDetailImageSelectorWidget(this.callback, {Key? key})
       : super(key: key);
@@ -44,8 +43,7 @@ class _ItemDetailImageSelectorWidgetState
     }
   }
 
-  doCallback() =>
-      widget.callback(file != null ? convertFileToString(file!) : null);
+  doCallback() => widget.callback(file != null ? file!.path : null);
 
   @override
   Widget build(BuildContext context) {

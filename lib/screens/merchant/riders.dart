@@ -1,11 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
-import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/list_of_riders.dart';
-import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/default_container.dart';
 
@@ -55,18 +52,22 @@ class _RidersState extends State<Riders> {
               height: 30,
             ),
             InkWell(
-              onTap: () {
-                Navigator.of(context).pushNamed(ListOfRiders.id);
-              },
-              child: const DefaultContainer(title: 'View all riders',)),
+                onTap: () {
+                  Navigator.of(context).pushNamed(ListOfRiders.id);
+                },
+                child: const DefaultContainer(
+                  title: 'View all riders',
+                )),
             const SizedBox(
               height: 30,
             ),
             InkWell(
-              onTap: () {
-                Navigator.of(context).pushNamed(AddRider.id);
-              },
-              child: const DefaultContainer(title: 'Regster new rider',)),
+                onTap: () {
+                  Navigator.of(context).pushNamed(AddRider.id);
+                },
+                child: const DefaultContainer(
+                  title: 'Register new rider',
+                )),
             const SizedBox(
               height: 30,
             ),
@@ -74,5 +75,3 @@ class _RidersState extends State<Riders> {
         )));
   }
 }
-
-

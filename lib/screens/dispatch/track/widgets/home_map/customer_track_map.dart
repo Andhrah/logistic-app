@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location/location.dart';
+import 'package:trakk/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/models/order/user_order_history_response.dart';
@@ -56,66 +56,50 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
               image: AssetImage(Assets.rider_home_bg), fit: BoxFit.cover)),
       child: Stack(
         children: [
-          StreamBuilder<LocationData>(
-              stream: widget.locaBloc.location.onLocationChanged,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return SizedBox(
-                      height: safeAreaHeight(context, 100),
-                      child: StreamBuilder<BaseModel<MapExtraUI, String>>(
-                          stream: mapExtraUIBloc.behaviorSubject,
-                          builder: (context, snapshot) {
-                            Set<Marker> _markers =
-                                snapshot.data?.model?.marker ?? {};
+          SizedBox(
+              height: safeAreaHeight(context, 100),
+              child: StreamBuilder<BaseModel<MapExtraUI, String>>(
+                  stream: mapExtraUIBloc.behaviorSubject,
+                  builder: (context, snapshot) {
+                    Set<Marker> _markers = snapshot.data?.model?.marker ?? {};
 
-                            Set<Polyline> _polyLines =
-                                snapshot.data?.model?.polyline ?? {};
+                    Set<Polyline> _polyLines =
+                        snapshot.data?.model?.polyline ?? {};
 
-                            return GoogleMap(
-                                onMapCreated: _onMapCreated,
-                                myLocationEnabled: true,
-                                zoomGesturesEnabled: true,
-                                onCameraMove: (CameraPosition pos) {},
-                                gestureRecognizers: {}..addAll([
-                                    Factory<PanGestureRecognizer>(
-                                        () => PanGestureRecognizer()),
-                                    Factory<VerticalDragGestureRecognizer>(
-                                        () => VerticalDragGestureRecognizer()),
-                                    Factory<HorizontalDragGestureRecognizer>(
-                                        () => HorizontalDragGestureRecognizer())
-                                  ]),
-                                markers: _markers,
-                                polylines: _polyLines,
-                                initialCameraPosition:
-                                    const CameraPosition(target: LatLng(0, 0)));
-                          }));
-                }
-                return const SizedBox();
-              }),
+                    return GoogleMap(
+                        onMapCreated: _onMapCreated,
+                        myLocationEnabled: true,
+                        zoomGesturesEnabled: true,
+                        onCameraMove: (CameraPosition pos) {},
+                        gestureRecognizers: {}..addAll([
+                            Factory<PanGestureRecognizer>(
+                                () => PanGestureRecognizer()),
+                            Factory<VerticalDragGestureRecognizer>(
+                                () => VerticalDragGestureRecognizer()),
+                            Factory<HorizontalDragGestureRecognizer>(
+                                () => HorizontalDragGestureRecognizer())
+                          ]),
+                        markers: _markers,
+                        polylines: _polyLines,
+                        initialCameraPosition:
+                            const CameraPosition(target: LatLng(0, 0)));
+                  })),
           const CustomerBottomSheet(),
         ],
       ),
     );
   }
 
-  void moveCameraToUser() async {
-    final loca = await miscBloc.fetchLocation();
-    if (loca != null) {
-      final latitude = loca.latitude ?? 0;
-      final longitude = loca.longitude ?? 0;
-      final center = LatLng(latitude, longitude);
+  void moveCameraToUser(LatLng riderLatLng) async {
+    final GoogleMapController controller = await _controller.future;
 
-      final GoogleMapController controller = await _controller.future;
-
-      setState(() {
-        controller.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: center, zoom: 15.0)));
-      });
-    } else {
-      // await miscBloc.fetchLocation();
-      moveCameraToUser();
-    }
+    setState(() {
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: riderLatLng, zoom: 15.0)));
+    });
   }
+
+  bool isLoadedAtLeastOnce = false;
 
   void _onMapCreated(GoogleMapController controller) async {
     _controller.complete(controller);
@@ -131,6 +115,12 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
     // });
     // // await miscBloc.fetchLocation();
 
-    moveCameraToUser();
+    customerStreamSocket.behaviorSubject.listen((value) {
+      if (value.model != null && !isLoadedAtLeastOnce) {
+        moveCameraToUser(value.model!);
+
+        isLoadedAtLeastOnce = true;
+      }
+    });
   }
 }

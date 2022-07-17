@@ -11,9 +11,12 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:trakk/.env.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/singleton_data.dart';
 import 'package:trakk/widgets/button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -277,4 +280,26 @@ Uint8List createByteFromString(String base64Encoded) {
   Uint8List bytes = base64.decode(base64Encoded);
 
   return bytes;
+}
+
+urlLauncher(String url,
+    {UrlLaunchType urlLaunchType = UrlLaunchType.call,
+    bool forceWebView = false,
+    bool forceSafariVC = false}) async {
+  Uri urlString = Uri.parse(url);
+  if (urlLaunchType == UrlLaunchType.call) {
+    urlString = Uri.parse('tel://$url');
+  }
+
+  if (urlString.toString().isNotEmpty) {
+    try {
+      if (await canLaunchUrl(urlString)) {
+        await launchUrl(urlString);
+      }
+    } catch (err) {
+      appToast('Cannot process');
+    }
+  } else {
+    appToast('Cannot process');
+  }
 }

@@ -58,7 +58,7 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
 
   updateMarkersWithCircle(
       List<LatLng> latLng, String snippet, bool createRoute, bool refreshMarker,
-      {LatLng? fromLatLng}) async {
+      {LatLng? fromLatLng, String? destinationDefaultMarker}) async {
     stopFetchingRoute();
 
     print('updateMarkersWithCircle');
@@ -73,7 +73,9 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
       // );
 
       final Uint8List? markerIcon = await getBytesFromAsset(
-          snippet == 'Pickup' ? Assets.marker_icon : Assets.marker_icon, 55);
+          destinationDefaultMarker ??
+              (snippet == 'Pickup' ? Assets.marker_icon : Assets.marker_icon),
+          55);
       BitmapDescriptor? markerbitmap =
           markerIcon == null ? null : BitmapDescriptor.fromBytes(markerIcon);
       if (refreshMarker) _markers = {};

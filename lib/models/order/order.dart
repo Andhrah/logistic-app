@@ -69,7 +69,7 @@ class OrderModelData {
   final String? senderPhone;
   final String? itemName;
   final String? itemDescription;
-  final String? itemImage;
+  String? itemImage;
   final String? weight;
   final double? amount;
   final String? destination;

@@ -27,3 +27,7 @@ enum HttpRequestType { get, post, put, patch, delete, head, request, download }
 enum AppToastType { success, failed }
 
 enum ValidationState { isEmpty, isValidateSuccess, isValidateFailed }
+
+enum PaymentType { payOnDelivery, card, bankTransfer }
+
+enum UrlLaunchType { call, email, sms, web }

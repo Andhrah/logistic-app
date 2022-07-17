@@ -61,7 +61,6 @@ dependencies:
   flutter_datetime_picker: ^1.5.1
   socket_io_client: ^2.0.0-beta.4-nullsafety.0
   uploadcare_client: ^5.0.1
-  cloudinary_public: ^0.11.0
   flutter_switch: ^0.3.2
 
   pin_code_text_field: ^1.8.0
@@ -80,6 +79,9 @@ dependencies:
   connectivity: ^3.0.6
   cached_network_image:
   intl:
+  share_plus: ^2.1.4
+  url_launcher:
+  cloudinary_sdk: ^4.0.2+10
 
 dev_dependencies:
   flutter_test:
@@ -119,6 +121,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/rider/
+    - assets/images/customer/
     - assets/
     - assets/states.json
     - .env

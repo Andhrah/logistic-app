@@ -193,6 +193,8 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
   final double pickupLongitude;
   final double deliveryLatitude;
   final double deliveryLongitude;
+  final String deliveryDate;
+  final String pickupDate;
   final OnButtonClicked onButtonClick;
 
   const RiderBottomSheetContentCompleted(
@@ -205,6 +207,8 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
       required this.pickupLongitude,
       required this.deliveryLatitude,
       required this.deliveryLongitude,
+      required this.deliveryDate,
+      required this.pickupDate,
       required this.onButtonClick})
       : super(key: key);
 
@@ -257,21 +261,12 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                       fontWeight: kSemiBoldWeight, color: dividerColor),
                 ),
                 4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
+                Text(
+                  pickupDate,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyText1!
+                      .copyWith(fontWeight: kMediumWeight),
+                )
               ],
             )
           ],
@@ -301,21 +296,12 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                       fontWeight: kSemiBoldWeight, color: dividerColor),
                 ),
                 4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
+                Text(
+                  deliveryDate,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyText1!
+                      .copyWith(fontWeight: kMediumWeight),
+                )
               ],
             )
           ],
@@ -346,8 +332,8 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                 ),
                 4.heightInPixel(),
                 FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
+                    future: getAddressFromLatLng(
+                        deliveryLatitude, deliveryLongitude),
                     builder: (context, snapshot) {
                       String address = '';
                       if (snapshot.hasData) {
@@ -367,7 +353,7 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
         44.heightInPixel(),
         Center(
           child: Image.asset(
-            Assets.check_success,
+            Assets.check_success_outline,
             width: 54,
             height: 54,
           ),

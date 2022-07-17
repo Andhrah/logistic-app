@@ -133,7 +133,7 @@ class _ItemDetailParticipantWidgetState
                         }
                         return "Enter a valid name";
                       },
-                      onSaved: (value) {
+                      onChanged: (value) {
                         doCallback();
                         return null;
                       },
@@ -157,7 +157,7 @@ class _ItemDetailParticipantWidgetState
                         color: Color(0xFF909090),
                       ),
                       validator: validationBloc.emailValidator,
-                      onSaved: (value) {
+                      onChanged: (value) {
                         doCallback();
                         return null;
                       },
@@ -186,7 +186,7 @@ class _ItemDetailParticipantWidgetState
                         }
                         return "Enter a valid phone number";
                       },
-                      onSaved: (value) {
+                      onChanged: (value) {
                         doCallback();
                         return null;
                       },
@@ -226,7 +226,7 @@ class _ItemDetailParticipantWidgetState
             }
             return "Enter a valid name";
           },
-          onSaved: (value) {
+          onChanged: (value) {
             doCallback();
             return null;
           },
@@ -248,7 +248,7 @@ class _ItemDetailParticipantWidgetState
             color: Color(0xFF909090),
           ),
           validator: validationBloc.emailValidator,
-          onSaved: (value) {
+          onChanged: (value) {
             doCallback();
             return null;
           },
@@ -276,7 +276,7 @@ class _ItemDetailParticipantWidgetState
             }
             return "Enter a valid phone number";
           },
-          onSaved: (value) {
+          onChanged: (value) {
             doCallback();
             return null;
           },

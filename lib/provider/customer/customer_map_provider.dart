@@ -3,10 +3,13 @@ import 'dart:developer';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/bloc/customer/customer_map_socket.dart';
+import 'package:trakk/bloc/map_ui_extras_bloc.dart';
+import 'package:trakk/models/customer/customer_order_listener_response.dart';
 
 class CustomerMapProvider extends ChangeNotifier {
   static CustomerMapProvider customerMapProvider(BuildContext context,
@@ -18,11 +21,13 @@ class CustomerMapProvider extends ChangeNotifier {
   Socket? socket;
 
   connectAndListenToSocket(
-      {required String orderID,
+      {required LatLng toLatLng,
+      required String orderID,
       Function()? onConnected,
       Function()? onConnectionError}) async {
     var appSettings = await appSettingsBloc.fetchAppSettings();
     String? token = appSettings.loginResponse?.data?.token ?? '';
+    // orderID = '355';
 
     if (kDebugMode) {
       print('token: $token');
@@ -73,19 +78,30 @@ class CustomerMapProvider extends ChangeNotifier {
       }
     });
 
-    _listeners(orderID);
+    _listeners(toLatLng, orderID);
   }
 
-  _listeners(String orderID) {
+  _listeners(LatLng toLatLng, String orderID) {
     socket?.onAny((event, data) {
       if (kDebugMode) {
         print('event: $event');
         print('orderID: $orderID');
       }
     });
+
     socket?.on("customer_order_$orderID", (data) {
       log('order_request_data ${jsonEncode(data)}');
-      // customerStreamSocket.addResponseOnMove(OrderResponse.fromJson(data));
+
+      CustomerOrderListenerResponse response =
+          CustomerOrderListenerResponse.fromJson(data);
+      LatLng fromLatLng = LatLng(
+          double.tryParse(response.info?.currentLatitude ?? '0.0') ?? 0.0,
+          (double.tryParse(response.info?.currentLocation ?? '0.0') ?? 0.0));
+      mapExtraUIBloc.updateMarkersWithCircle(
+          [toLatLng], 'Destination', true, true,
+          fromLatLng: fromLatLng);
+
+      customerStreamSocket.addResponseOnMove(fromLatLng);
     });
   }
 

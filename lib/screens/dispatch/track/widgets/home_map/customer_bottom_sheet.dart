@@ -1,17 +1,15 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:trakk/bloc/rider/rider_map_socket.dart';
-import 'package:trakk/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/bloc/rider/rider_rating_bloc.dart';
 import 'package:trakk/mixins/rider_order_helper.dart';
-import 'package:trakk/models/rider/order_response.dart';
+import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/screens/dispatch/track/widgets/home_map/cutomer_track_bottom_sheet_content.dart';
-import 'package:trakk/utils/app_toast.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
-import 'package:trakk/utils/styles.dart';
 
 class CustomerBottomSheet extends StatefulWidget {
   const CustomerBottomSheet({Key? key}) : super(key: key);
@@ -41,11 +39,15 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
 
   @override
   Widget build(BuildContext context) {
+    var arg = ModalRoute.of(context)!.settings.arguments;
+
+    final model = UserOrderHistoryDatum.fromJson(arg as Map<String, dynamic>);
+
     var theme = Theme.of(context);
     return DraggableScrollableSheet(
-        initialChildSize: 0.5,
-        maxChildSize: 0.5,
-        minChildSize: 0.1,
+        initialChildSize: 0.6,
+        maxChildSize: safeAreaHeight(context, 50) > 390 ? 0.6 : 0.8,
+        minChildSize: 0.25,
         controller: draggableScrollableController,
         builder: (BuildContext context, ScrollController scrollController) {
           return Container(
@@ -58,7 +60,7 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                     blurRadius: 8.0,
                   ),
                 ],
-                color: whiteColor,
+                color: Colors.black,
                 borderRadius: const BorderRadius.only(
                     topRight: Radius.circular(50),
                     topLeft: Radius.circular(50))),
@@ -68,144 +70,146 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                   borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(50),
                       topLeft: Radius.circular(50)),
-                  child: SingleChildScrollView(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal:
-                            kDefaultLayoutPadding + kDefaultLayoutPadding,
-                        vertical: 34),
-                    controller: scrollController,
-                    child: CustomStreamBuilder<RiderOrderState, String>(
-                        stream: riderHomeStateBloc.behaviorSubject,
-                        dataBuilder: (context, orderState) {
-                          return CustomStreamBuilder<OrderResponse, String>(
-                              stream: riderStreamSocket.behaviorSubject,
-                              dataBuilder: (context, data) {
-                                final String orderId =
-                                    '${data.order?.id ?? ''}';
-                                final String orderNo =
-                                    data.order?.orderRef ?? '';
-
-                                final String deliveryCode =
-                                    data.order?.deliveryCode ?? '';
-                                final double pickupLatitude =
-                                    data.order?.pickupLatitude ?? 0.0;
-                                final double pickupLongitude =
-                                    data.order?.pickupLongitude ?? 0.0;
-                                final double deliveryLatitude =
-                                    data.order?.destinationLatitude ?? 0.0;
-                                final double deliveryLongitude =
-                                    data.order?.destinationLongitude ?? 0.0;
-
-                                if (orderState ==
-                                    RiderOrderState.isOrderCompleted) {
-                                  return CustomerTrackBottomSheetContentCompleted(
-                                    orderState: orderState,
-                                    orderId: orderId,
-                                    orderNo: orderNo,
-                                    deliveryCode: deliveryCode,
-                                    pickupLatitude: pickupLatitude,
-                                    pickupLongitude: pickupLongitude,
-                                    deliveryLatitude: deliveryLatitude,
-                                    deliveryLongitude: deliveryLongitude,
-                                    onButtonClick: _onButtonClick,
-                                  );
-                                }
-                                return CustomerTrackBottomSheetContentOnGoing(
-                                  orderState: orderState,
-                                  orderId: orderId,
-                                  orderNo: orderNo,
-                                  deliveryCode: deliveryCode,
-                                  pickupLatitude: pickupLatitude,
-                                  pickupLongitude: pickupLongitude,
-                                  deliveryLatitude: deliveryLatitude,
-                                  deliveryLongitude: deliveryLongitude,
-                                  onButtonClick: _onButtonClick,
-                                );
-                              },
-                              loadingBuilder: (context) {
-                                return Column(
-                                  children: [
-                                    LoadingDataStyle(
-                                      height: 12,
-                                      width: 120,
-                                      bgColor: Colors.black45,
-                                    )
-                                  ],
-                                );
-                              },
-                              errorBuilder: (context, err) {
-                                return Column(
-                                  children: [
-                                    LoadingDataStyle(
-                                      height: 12,
-                                      width: 120,
-                                      bgColor: Colors.black45,
-                                    )
-                                  ],
-                                );
-                              });
-                        }),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 24.0, horizontal: 24),
+                        child: Row(
+                          children: [
+                            ClipOval(
+                              child: CachedNetworkImage(
+                                imageUrl: model.attributes?.riderId?.data
+                                        ?.attributes?.avatar ??
+                                    '',
+                                height: 60,
+                                width: 60,
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) => Image.asset(
+                                  Assets.dummy_avatar,
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                                errorWidget: (context, url, err) => Image.asset(
+                                  Assets.dummy_avatar,
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            12.widthInPixel(),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    model.attributes?.riderId?.data?.attributes
+                                            ?.firstName ??
+                                        '',
+                                    style: theme.textTheme.bodyText2!
+                                        .copyWith(color: whiteColor),
+                                  ),
+                                  8.heightInPixel(),
+                                  CustomStreamBuilder<int, String>(
+                                      stream:
+                                          getRiderRatingBloc.behaviorSubject,
+                                      dataBuilder: (context, data) {
+                                        return Row(children: [
+                                          ...List.generate(
+                                              data,
+                                              (index) => Row(
+                                                    children: [
+                                                      const Icon(
+                                                        Icons.star,
+                                                        color: secondaryColor,
+                                                        size: 13,
+                                                      ),
+                                                      2.widthInPixel(),
+                                                    ],
+                                                  )),
+                                          5.widthInPixel(),
+                                          Text(
+                                            data >= 4
+                                                ? 'Very Good'
+                                                : data < 3
+                                                    ? 'Not Good'
+                                                    : 'Good',
+                                            style: theme.textTheme.caption!
+                                                .copyWith(
+                                                    color: whiteColor,
+                                                    fontSize: 8),
+                                          ),
+                                        ]);
+                                      }),
+                                ],
+                              ),
+                            ),
+                            12.widthInPixel(),
+                            Row(
+                              children: [
+                                Image.asset(
+                                  Assets.track_chat_icon,
+                                  height: 24,
+                                  width: 24,
+                                ),
+                                10.widthInPixel(),
+                                GestureDetector(
+                                  onTap: () => urlLauncher(
+                                      model.attributes?.riderId?.data
+                                              ?.attributes?.phone ??
+                                          '',
+                                      urlLaunchType: UrlLaunchType.call),
+                                  child: Image.asset(
+                                    Assets.track_call_icon,
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                      Expanded(
+                        child: ClipRRect(
+                          borderRadius: const BorderRadius.only(
+                              topRight: Radius.circular(50),
+                              topLeft: Radius.circular(50)),
+                          child: Container(
+                            color: whiteColor,
+                            child: SingleChildScrollView(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: kDefaultLayoutPadding +
+                                      kDefaultLayoutPadding,
+                                  vertical: 24),
+                              controller: scrollController,
+                              child: CustomerTrackBottomSheetContentOnGoing(
+                                onButtonClick: _onButtonClick,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 )),
           );
         });
   }
 
-  _onButtonClick(RiderOrderState data, String orderNo, String deliveryCode,
-      double pickupLatitude, double pickupLongitude) {
-    if (data == RiderOrderState.isRequestAccepted ||
-        data == RiderOrderState.isAlmostAtPickupLocation) {
-      modalDialog(
-        context,
-        title: 'Are you sure you have picked up item?',
-        positiveLabel: 'Yes',
-        onPositiveCallback: () {
-          doPickupOrder(orderNo);
-        },
-        negativeLabel: 'No',
-        onNegativeCallback: () => Navigator.pop(context),
-      );
-    } else if (data == RiderOrderState.isItemPickedUpLocationAndEnRoute) {
-      riderHomeStateBloc
-          .updateState(RiderOrderState.isAlmostAtDestinationLocation);
-    } else if (data == RiderOrderState.isAlmostAtDestinationLocation) {
-      riderHomeStateBloc.updateState(RiderOrderState.isAtDestinationLocation);
-    } else if (data == RiderOrderState.isAtDestinationLocation) {
-      modalDialog(
-        context,
-        title: 'Enter delivery code',
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _controller,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: InputDecoration(
-                labelText: 'Code',
-                labelStyle:
-                    const TextStyle(fontSize: 18.0, color: Color(0xFFCDCDCD)),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: darkerPurple.withOpacity(0.3), width: 0.0),
-                ),
-              ),
-            )
-          ],
-        ),
-        positiveLabel: 'Confirm',
-        onPositiveCallback: () {
-          if (_controller.text == deliveryCode) {
-            doDeliverOrder(orderNo);
-            return;
-          }
-
-          appToast('Invalid Code', appToastType: AppToastType.failed);
-        },
-        negativeLabel: 'Cancel',
-        onNegativeCallback: () => Navigator.pop(context),
-      );
-    } else if (data == RiderOrderState.isOrderCompleted) {
-      riderHomeStateBloc.updateState(RiderOrderState.isHomeScreen);
-    }
+  _onButtonClick() {
+    modalDialog(
+      context,
+      title: 'Are you sure you want to cancel delivery?',
+      positiveLabel: 'Yes',
+      onPositiveCallback: () {
+        Navigator.pop(context);
+        // doPickupOrder('orderNo');
+      },
+      negativeLabel: 'No',
+      onNegativeCallback: () => Navigator.pop(context),
+    );
   }
 }

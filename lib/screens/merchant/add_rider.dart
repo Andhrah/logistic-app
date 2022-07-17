@@ -1,21 +1,19 @@
 // ignore_for_file: unnecessary_null_comparison
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-
 import 'package:remixicon/remixicon.dart';
-
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/rider/personal_data.dart';
+import 'package:trakk/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/screens/merchant/add_rider1.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/font.dart';
+import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/utils/padding.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/elevated_container.dart';
 import 'package:trakk/widgets/input_field.dart';
 
 class AddRider extends StatefulWidget {
-  static const String id = 'addrider';
+  static const String id = 'addRider';
 
   const AddRider({Key? key}) : super(key: key);
 
@@ -38,7 +36,8 @@ class _AddRiderState extends State<AddRider> {
   FocusNode? _phoneNumberNode;
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
-  // FocusNode? _confirmPasswordNode;
+
+  FocusNode? _confirmPasswordNode;
 
   String? _firstName;
   String? _lastName;
@@ -52,6 +51,7 @@ class _AddRiderState extends State<AddRider> {
   bool _passwordIsValid = false;
   bool _confirmPasswordIsValid = false;
   bool _hidePassword = true;
+  bool _hideConfirmPassword = true;
   bool _autoValidate = false;
   bool _emailIsValid = false;
 
@@ -63,7 +63,7 @@ class _AddRiderState extends State<AddRider> {
     _emailController = TextEditingController();
     _phoneNumberController = TextEditingController();
     _passwordController = TextEditingController();
-    // _confirmPasswordController = TextEditingController();
+    _confirmPasswordController = TextEditingController();
   }
 
   _validateEmail() {
@@ -87,58 +87,69 @@ class _AddRiderState extends State<AddRider> {
     }
   }
 
-  isConfirmPasswordValid() {
-    setState(() {
-      _confirmPasswordIsValid = _confirmPasswordController.text != null &&
-          _confirmPasswordController.text == _passwordController.text;
-    });
+  bool isConfirmPasswordValid() {
+    return _confirmPasswordIsValid =
+        _confirmPasswordController.text == _passwordController.text;
   }
 
   @override
   Widget build(BuildContext context) {
-    final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    //userType = arg["userType"];
-
-    print('================================');
-    print(userType);
+    var theme = Theme.of(context);
 
     return Scaffold(
         backgroundColor: whiteColor,
-        body: SingleChildScrollView(
-          child: SafeArea(
-              child: Column(
-            children: [
-              const SizedBox(height: 10.0),
-              Row(
+        body: SafeArea(
+            child: Column(
+          children: [
+            const SizedBox(height: 10.0),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackIcon(
+                    padding: EdgeInsets.zero,
                     onPress: () {
                       Navigator.pop(context);
                     },
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(left: 40.0),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {},
-                      customBorder: const CircleBorder(),
-                      child: const Text(
-                        'ADD RIDER',
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                          color: appPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
-                        ),
+                  InkWell(
+                    onTap: () {},
+                    customBorder: const CircleBorder(),
+                    child: Text(
+                      'ADD RIDER',
+                      style: theme.textTheme.subtitle1!.copyWith(
+                        color: appPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        // decoration: TextDecoration.underline,
                       ),
                     ),
                   ),
+                  BackIcon(
+                    padding: EdgeInsets.zero,
+                    isPlaceHolder: true,
+                    onPress: () {},
+                  ),
                 ],
               ),
-              const SizedBox(height: 30.0),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+            ),
+            30.heightInPixel(),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+              child: Text('Personal data :',
+                  style: theme.textTheme.subtitle1!.copyWith(
+                    color: appPrimaryColor,
+                    fontWeight: kBoldWeight,
+                    // decoration: TextDecoration.underline,
+                  )),
+            ),
+            24.heightInPixel(),
+            Expanded(
+              child: SingleChildScrollView(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultLayoutPadding),
                 child: Form(
                   key: _formKey,
                   child: Column(
@@ -287,120 +298,75 @@ class _AddRiderState extends State<AddRider> {
                         },
                       ),
                       const SizedBox(height: 40.0),
-                      Align(
-                          alignment: Alignment.center,
-                          child: Button(
-                              text: "Next",
-                              //onPress: _onSubmit,
-                              onPress: () {
-                                Navigator.of(context).pushNamed(AddRider1.id);
-                              },
-                              color: appPrimaryColor,
-                              textColor: whiteColor,
-                              isLoading: _loading,
-                              width: 350.0)),
-                      const SizedBox(height: 15.0),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(Login.id);
-                        },
-                        child: Align(
-                          child: RichText(
-                            textScaleFactor: 0.9,
-                            text: const TextSpan(
-                              text: 'Already have an account? ',
-                              style: TextStyle(
-                                color: appPrimaryColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: 'Log in',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: secondaryColor)),
-                              ],
-                            ),
+                      InputField(
+                        key: const Key('confirm'),
+                        textController: _confirmPasswordController,
+                        node: _confirmPasswordNode,
+                        obscureText: _hidePassword,
+                        maxLines: 1,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        text: 'Confirm Password',
+                        hintText: 'confirm password',
+                        textHeight: 5.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _hideConfirmPassword == false
+                                ? Remix.eye_fill
+                                : Remix.eye_close_line,
+                            size: 18.0,
+                            color: const Color(0xFF909090),
                           ),
+                          onPressed: () {
+                            setState(() {
+                              _hideConfirmPassword = !_hidePassword;
+                            });
+                          },
                         ),
+                        validator: (value) {
+                          if (_confirmPasswordController.text.length < 8 ||
+                              _passwordController.text !=
+                                  _confirmPasswordController.text) {
+                            return "Password do not match";
+                          }
+                          return null;
+                        },
+                        onSaved: (value) {
+                          _password = value!.trim();
+                          return null;
+                        },
                       ),
-                      const SizedBox(height: 25.0),
-                      Row(
-                        children: const [
-                          Expanded(
-                            child: Divider(
-                              color: appPrimaryColor,
-                            ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Text(
-                              'Or continue with',
-                              textScaleFactor: 1.2,
-                              style: TextStyle(
-                                  color: appPrimaryColor,
-                                  fontWeight: FontWeight.w400),
-                            ),
-                          ),
-                          Expanded(
-                            child: Divider(
-                              color: appPrimaryColor,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: ElevatedContainer(
-                              onPress: () {},
-                              radius: 5.0,
-                              color: whiteColor,
-                              height: 55.0,
-                              width: 55.0,
-                              child: Image.asset(
-                                'assets/images/google_icon.png',
-                                height: 15,
-                                width: 15,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ElevatedContainer(
-                              onPress: () {},
-                              radius: 5.0,
-                              color: whiteColor,
-                              height: 55.0,
-                              width: 55.0,
-                              child: Image.asset(
-                                'assets/images/apple_icon.png',
-                                height: 20,
-                                width: 20,
-                              ),
-                            ),
-                          ),
-                          Expanded(
-                            child: ElevatedContainer(
-                              onPress: () {},
-                              radius: 5.0,
-                              color: whiteColor,
-                              height: 55.0,
-                              width: 55.0,
-                              child: Image.asset(
-                                'assets/images/facebook_icon.png',
-                                height: 18,
-                                width: 18,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      const SizedBox(height: 40.0),
+                      Button(
+                          text: "Next",
+                          //onPress: _onSubmit,
+                          onPress: () {
+                            if (_formKey.currentState!.validate()) {
+                              AddRiderToMerchantModel model =
+                                  AddRiderToMerchantModel(
+                                      data: AddRiderToMerchantModelData(
+                                          firstName: _firstNameController.text,
+                                          lastName: _lastNameController.text,
+                                          email: _emailController.text,
+                                          phone: _phoneNumberController.text,
+                                          password: _passwordController.text));
+                              Navigator.of(context).pushNamed(AddRider1.id,
+                                  arguments: {
+                                    'rider_bio_data': model.toJson()
+                                  });
+                            }
+                          },
+                          color: appPrimaryColor,
+                          textColor: whiteColor,
+                          isLoading: _loading,
+                          width: double.infinity),
+                      24.heightInPixel()
                     ],
                   ),
                 ),
               ),
-            ],
-          )),
-        ));
+            ),
+          ],
+        )));
   }
 }

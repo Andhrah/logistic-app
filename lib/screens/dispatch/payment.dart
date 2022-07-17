@@ -5,10 +5,12 @@ import 'package:trakk/mixins/customer_order_helper.dart';
 import 'package:trakk/models/order/order.dart';
 import 'package:trakk/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
+import 'package:trakk/utils/styles.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/expandable_item.dart';
 import 'package:trakk/widgets/header.dart';
@@ -455,8 +457,7 @@ class _PaymentState extends State<Payment> with CustomerOrderHelper {
                                   SizedBox(
                                     height: 10,
                                   ),
-                                  Image.asset(
-                                      "assets/images/confirmPayment.png"),
+                                  Image.asset(Assets.check_success_outline),
                                   SizedBox(
                                     height: 10,
                                   ),
@@ -804,7 +805,7 @@ class _PaymentState extends State<Payment> with CustomerOrderHelper {
                                           height: 10,
                                         ),
                                         Image.asset(
-                                            "assets/images/confirmPayment.png"),
+                                            Assets.check_success_outline),
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -1069,141 +1070,7 @@ class _PaymentState extends State<Payment> with CustomerOrderHelper {
                         ),
                         Button(
                             text: "Pay",
-                            onPress: () => showDialog<String>(
-                                  // barrierDismissible: true,
-                                  context: context,
-                                  builder: (BuildContext context) =>
-                                      AlertDialog(
-                                    // title: const Text('AlertDialog Title'),
-                                    // contentPadding:
-                                    //     const EdgeInsets
-                                    //             .symmetric(
-                                    //         horizontal: 50.0,
-                                    //         vertical: 50.0),
-                                    content: SizedBox(
-                                      height: mediaQuery.size.height * 0.6,
-                                      child: Column(children: [
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Image.asset(
-                                            "assets/images/confirmPayment.png"),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        const SizedBox(
-                                          width: 250,
-                                          child: Text(
-                                            "Payment successful",
-                                            // maxLines: 2,
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              color: Color(0xff23710F),
-                                              fontWeight: FontWeight.w400,
-                                            ),
-                                            textAlign: TextAlign.center,
-                                          ),
-                                        ),
-                                        const SizedBox(
-                                          height: 20,
-                                        ),
-                                        Container(
-                                            padding: EdgeInsets.symmetric(
-                                                horizontal: 10, vertical: 15),
-                                            height:
-                                                mediaQuery.size.height * 0.2,
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xffCA9E04),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(8)),
-                                            ),
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                const Text(
-                                                    "Your delivery code is"),
-                                                const SizedBox(
-                                                  height: 20,
-                                                ),
-                                                Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment
-                                                          .spaceBetween,
-                                                  children: [
-                                                    const Text(
-                                                      "ID: #00556",
-                                                      textScaleFactor: 1,
-                                                      style: TextStyle(
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    Row(
-                                                      children: const [
-                                                        Icon(Remix
-                                                            .file_copy_line),
-                                                        Text(
-                                                          "Copy",
-                                                          textScaleFactor: 1,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                    Row(
-                                                      children: const [
-                                                        Icon(Remix.share_line),
-                                                        Text(
-                                                          "Share",
-                                                          textScaleFactor: 1,
-                                                          style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  ],
-                                                ),
-                                              ],
-                                            )),
-                                        const SizedBox(
-                                          height: 14,
-                                        ),
-                                        const SizedBox(height: 10.0),
-                                        Button(
-                                          text: 'Track item',
-                                          onPress: () {
-                                            Navigator.of(context)
-                                                .pushNamed(WalletScreen.id);
-                                          },
-                                          color: appPrimaryColor,
-                                          textColor: whiteColor,
-                                          isLoading: false,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.3,
-                                        ),
-                                        Button(
-                                          text: 'Cancel',
-                                          onPress: () {
-                                            Navigator.pop(context);
-                                          },
-                                          color: whiteColor,
-                                          textColor: appPrimaryColor,
-                                          isLoading: false,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width /
-                                              1.3,
-                                        ),
-                                      ]),
-                                    ),
-                                  ),
-                                ),
+                            onPress: () => dialogOrderPaymentSuccess(),
                             color: appPrimaryColor,
                             width: 308,
                             textColor: whiteColor,

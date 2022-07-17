@@ -112,6 +112,10 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
 
                                       if (orderState ==
                                           RiderOrderState.isOrderCompleted) {
+                                        final String deliveryDate =
+                                            data.order?.deliveryDate ?? '';
+                                        final String pickupDate =
+                                            data.order?.pickupDate ?? '';
                                         return RiderBottomSheetContentCompleted(
                                           orderState: orderState,
                                           orderId: orderId,
@@ -121,6 +125,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                           pickupLongitude: pickupLongitude,
                                           deliveryLatitude: deliveryLatitude,
                                           deliveryLongitude: deliveryLongitude,
+                                          deliveryDate: deliveryDate,
+                                          pickupDate: pickupDate,
                                           onButtonClick: _onButtonClick,
                                         );
                                       }

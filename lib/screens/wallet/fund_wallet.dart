@@ -1,19 +1,15 @@
 import 'dart:ui';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
-
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';
 import 'package:trakk/widgets/custom_input_field.dart';
-import 'package:trakk/widgets/input_field.dart';
 
 enum ProfileOptions {
   ZebrraWallet,
@@ -481,7 +477,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                                           height: 10,
                                         ),
                                         Image.asset(
-                                            "assets/images/confirmPayment.png"),
+                                            Assets.check_success_outline),
                                         const SizedBox(
                                           height: 10,
                                         ),
@@ -792,7 +788,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                                       height: 10,
                                     ),
                                     Image.asset(
-                                        "assets/images/confirmPayment.png"),
+                                        Assets.check_success_outline),
                                     SizedBox(
                                       height: 10,
                                     ),

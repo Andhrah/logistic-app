@@ -1,20 +1,16 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
-
+import 'package:trakk/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/screens/merchant/add_rider2.dart';
-import 'package:trakk/screens/merchant/company_home.dart';
-import 'package:trakk/screens/merchant/list_of_vehicles.dart';
-import 'package:trakk/screens/merchant/vehicles.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/cancel_button.dart';
 import 'package:trakk/widgets/input_field.dart';
 
 class AddRider1 extends StatefulWidget {
-  static String id = "addrider1";
+  static String id = "addRider1";
 
   const AddRider1({Key? key}) : super(key: key);
 
@@ -26,93 +22,12 @@ class _AddRider1State extends State<AddRider1> {
   static String userType = "user";
   final _formKey = GlobalKey<FormState>();
 
-  String _stateOfOrigin = 'State of origin';
-  String _stateOfResidence = 'State of residence';
+  String? _stateOfOrigin;
+  String? _stateOfResidence;
 
   String? residentialAddress;
 
   bool _isButtonPress = false;
-
-  var states = [
-    "State of origin",
-    "Abia",
-    "Adamawa",
-    "Akwa Ibom",
-    "Anambra",
-    "Bauchi",
-    "Bayelsa",
-    "Benue",
-    "Borno",
-    "Cross River",
-    "Delta",
-    "Ebonyi",
-    "Edo",
-    "Ekiti",
-    "Enugu",
-    "FCT - Abuja",
-    "Gombe",
-    "Imo",
-    "Jigawa",
-    "Kaduna",
-    "Kano",
-    "Katsina",
-    "Kebbi",
-    "Kogi",
-    "Kwara",
-    "Lagos",
-    "Nasarawa",
-    "Niger",
-    "Ogun",
-    "Ondo",
-    "Osun",
-    "Oyo",
-    "Plateau",
-    "Rivers",
-    "Sokoto",
-    "Taraba",
-    "Yobe",
-    "Zamfara"
-  ];
-  var states1 = [
-    "State of residence",
-    "Abia",
-    "Adamawa",
-    "Akwa Ibom",
-    "Anambra",
-    "Bauchi",
-    "Bayelsa",
-    "Benue",
-    "Borno",
-    "Cross River",
-    "Delta",
-    "Ebonyi",
-    "Edo",
-    "Ekiti",
-    "Enugu",
-    "FCT - Abuja",
-    "Gombe",
-    "Imo",
-    "Jigawa",
-    "Kaduna",
-    "Kano",
-    "Katsina",
-    "Kebbi",
-    "Kogi",
-    "Kwara",
-    "Lagos",
-    "Nasarawa",
-    "Niger",
-    "Ogun",
-    "Ondo",
-    "Osun",
-    "Oyo",
-    "Plateau",
-    "Rivers",
-    "Sokoto",
-    "Taraba",
-    "Yobe",
-    "Zamfara"
-  ];
 
   late TextEditingController _stateOfOriginController;
   late TextEditingController _vehicleColorController;
@@ -193,6 +108,10 @@ class _AddRider1State extends State<AddRider1> {
 
   @override
   Widget build(BuildContext context) {
+    final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    AddRiderToMerchantModel model =
+        AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -253,7 +172,6 @@ class _AddRider1State extends State<AddRider1> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                       
                         const SizedBox(height: 5.0),
                         DecoratedBox(
                             decoration: BoxDecoration(
@@ -270,12 +188,14 @@ class _AddRider1State extends State<AddRider1> {
                                 value: _stateOfOrigin,
                                 icon: const Icon(Remix.arrow_down_s_line),
                                 elevation: 16,
+                                hint: Text('State of origin'),
                                 isExpanded: true,
                                 style: TextStyle(
                                   color: appPrimaryColor.withOpacity(0.8),
                                   fontSize: 18.0,
                                 ),
-                                underline: Container(), //empty line
+                                underline: Container(),
+                                //empty line
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     _stateOfOrigin = newValue!;
@@ -289,9 +209,7 @@ class _AddRider1State extends State<AddRider1> {
                                 }).toList(),
                               ),
                             )),
-
                         const SizedBox(height: 5.0),
-
                         _isButtonPress && _stateOfOrigin == "State of origin"
                             ? const Text(
                                 " Choose your State of origin",
@@ -305,7 +223,7 @@ class _AddRider1State extends State<AddRider1> {
                         SizedBox(
                           height: 20,
                         ),
-                         const Text(
+                        const Text(
                           'State of residence',
                           textScaleFactor: 1.2,
                           style: TextStyle(
@@ -313,8 +231,6 @@ class _AddRider1State extends State<AddRider1> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-
-
                         const SizedBox(height: 20.0),
                         DecoratedBox(
                             decoration: BoxDecoration(
@@ -331,18 +247,20 @@ class _AddRider1State extends State<AddRider1> {
                                 value: _stateOfResidence,
                                 icon: const Icon(Remix.arrow_down_s_line),
                                 elevation: 16,
+                                hint: Text('State of residence'),
                                 isExpanded: true,
                                 style: TextStyle(
                                   color: appPrimaryColor.withOpacity(0.8),
                                   fontSize: 18.0,
                                 ),
-                                underline: Container(), //empty line
+                                underline: Container(),
+                                //empty line
                                 onChanged: (String? newValue) {
                                   setState(() {
                                     _stateOfResidence = newValue!;
                                   });
                                 },
-                                items: states1.map((String value) {
+                                items: states.map((String value) {
                                   return DropdownMenuItem(
                                     value: value,
                                     child: Text(value),
@@ -350,10 +268,9 @@ class _AddRider1State extends State<AddRider1> {
                                 }).toList(),
                               ),
                             )),
-
                         const SizedBox(height: 5.0),
-
-                        _isButtonPress && _stateOfResidence == "State of residence"
+                        _isButtonPress &&
+                                _stateOfResidence == "State of residence"
                             ? const Text(
                                 " Choose your State of residence",
                                 textScaleFactor: 0.9,
@@ -366,9 +283,7 @@ class _AddRider1State extends State<AddRider1> {
                         SizedBox(
                           height: 20,
                         ),
-
-                        
-                      InputField(
+                        InputField(
                           key: const Key('residentialAddress'),
                           textController: _residentialAddressController,
                           node: _residentialAddressNode,
@@ -394,7 +309,6 @@ class _AddRider1State extends State<AddRider1> {
                             return null;
                           },
                         ),
-                        
                         const SizedBox(
                           height: 50,
                         ),
@@ -404,9 +318,29 @@ class _AddRider1State extends State<AddRider1> {
                               text: 'Next',
                               //onPress:// _onSubmit,
                               onPress: () {
-                                Navigator.of(context).pushNamed(AddRider2.id);
+                                if (_formKey.currentState!.validate()) {
+                                  if (_stateOfResidence == null) {
+                                    appToast('State of residence is required');
+                                    return;
+                                  }
+                                  if (_stateOfOrigin == null) {
+                                    appToast('State of origin is required');
+                                    return;
+                                  }
+                                  model = model.copyWith(
+                                      data: model.data!.copyWith(
+                                          stateOfOrigin: _stateOfOrigin,
+                                          stateOfResidence: _stateOfResidence,
+                                          residentialAddress:
+                                              _residentialAddressController
+                                                  .text));
+
+                                  Navigator.of(context).pushNamed(AddRider2.id,
+                                      arguments: {
+                                        'rider_bio_data': model.toJson()
+                                      });
+                                }
                               },
-                                  
                               color: appPrimaryColor,
                               textColor: whiteColor,
                               isLoading: _loading,
@@ -422,47 +356,6 @@ class _AddRider1State extends State<AddRider1> {
             //   ],
             // ),
           ]),
-        ),
-      ),
-    );
-  }
-}
-
-class EditProfileContainer extends StatelessWidget {
-  const EditProfileContainer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 30.0, right: 30, bottom: 17),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                top: 8,
-                bottom: 12,
-              ),
-              height: 80,
-              width: 80,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/image.png'))),
-            ),
-            const Text(
-              'Malik Johnson',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-            ),
-            const Text('+234816559234'),
-            const SizedBox(
-              height: 8,
-            ),
-            Text('malhohn11@gmail.com'),
-          ],
         ),
       ),
     );

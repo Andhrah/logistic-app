@@ -27,7 +27,7 @@ class _DispatchSummaryState extends State<DispatchSummary> {
     OrderModel orderModel = OrderModel.fromJson(arg["orderModel"]);
     AvailableRiderDataRider rider =
         AvailableRiderDataRider.fromJson(arg["riderModel"]);
-
+    print('orderModel 2: ${orderModel.toJson()}');
     return Scaffold(
         body: SafeArea(
             child: Column(

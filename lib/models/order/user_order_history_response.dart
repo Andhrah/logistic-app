@@ -91,7 +91,7 @@ class OrderHistoryDatumAttributes {
   final String? pickup;
   final double? pickupLongitude;
   final double? pickupLatitude;
-  final int? totalAmount;
+  final double? totalAmount;
   final String? pickupDate;
   final String? receiverName;
   final String? receiverPhone;
@@ -103,7 +103,7 @@ class OrderHistoryDatumAttributes {
   final String? itemDescription;
   final String? itemImage;
   final String? weight;
-  final int? amount;
+  final double? amount;
   final String? destination;
   final double? destinationLatitude;
   final double? destinationLongitude;
@@ -132,7 +132,8 @@ class OrderHistoryDatumAttributes {
         pickupLatitude: json["pickupLatitude"] == null
             ? null
             : double.tryParse(json["pickupLatitude"].toString()) ?? 0.0,
-        totalAmount: json["totalAmount"] == null ? null : json["totalAmount"],
+        totalAmount:
+            json["totalAmount"] == null ? null : json["totalAmount"].toDouble(),
         pickupDate: json["pickupDate"] == null ? null : json["pickupDate"],
         receiverName:
             json["receiverName"] == null ? null : json["receiverName"],
@@ -148,7 +149,7 @@ class OrderHistoryDatumAttributes {
             json["itemDescription"] == null ? null : json["itemDescription"],
         itemImage: json["itemImage"] == null ? null : json["itemImage"],
         weight: json["weight"] == null ? null : json["weight"],
-        amount: json["amount"] == null ? null : json["amount"],
+        amount: json["amount"] == null ? null : json["amount"].toDouble(),
         destination: json["destination"] == null ? null : json["destination"],
         destinationLatitude: json["destinationLatitude"] == null
             ? null
@@ -268,6 +269,8 @@ class OrderHistoryDatumAttributesRiderIdData {
 class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
   OrderHistoryDatumAttributesRiderIdDataPurpleAttributes({
     this.avatar,
+    this.firstName,
+    this.lastName,
     this.dateOfBirth,
     this.currentLocation,
     this.currentLongitude,
@@ -284,6 +287,8 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
   });
 
   final String? avatar;
+  final String? firstName;
+  final String? lastName;
   final String? dateOfBirth;
   final String? currentLocation;
   final double? currentLongitude;
@@ -302,6 +307,8 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
           Map<String, dynamic> json) =>
       OrderHistoryDatumAttributesRiderIdDataPurpleAttributes(
         avatar: json["avatar"] == null ? null : json["avatar"],
+        firstName: json["firstName"] == null ? null : json["firstName"],
+        lastName: json["lastName"] == null ? null : json["lastName"],
         dateOfBirth: json["dateOfBirth"] == null ? null : json["dateOfBirth"],
         currentLocation:
             json["currentLocation"] == null ? null : json["currentLocation"],
@@ -334,6 +341,8 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
 
   Map<String, dynamic> toJson() => {
         "avatar": avatar == null ? null : avatar,
+        "firstName": firstName == null ? null : firstName,
+        "lastName": lastName == null ? null : lastName,
         "dateOfBirth": dateOfBirth == null ? null : dateOfBirth,
         "currentLocation": currentLocation == null ? null : currentLocation,
         "currentLongitude": currentLongitude == null ? null : currentLongitude,

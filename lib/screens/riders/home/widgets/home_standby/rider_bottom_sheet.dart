@@ -399,7 +399,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                                   fontWeight: kSemiBoldWeight),
                                         ),
                                         TextSpan(
-                                          text: '${order?.amount ?? '-'}',
+                                          text:
+                                              formatMoney(order?.amount ?? 0.0),
                                           style: theme.textTheme.bodyText1!
                                               .copyWith(
                                                   fontFamily:

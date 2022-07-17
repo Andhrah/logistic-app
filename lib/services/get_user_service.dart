@@ -17,6 +17,10 @@ class ProfileService extends BaseNetworkCallHandler {
     return runAPI('api/users/$id', HttpRequestType.put,
         body: updateProfile.toJson());
   }
+
+  Future<Operation> getRiderRatings() async {
+    return runAPI('api/ratings', HttpRequestType.get);
+  }
 }
 
 final profileService = ProfileService();

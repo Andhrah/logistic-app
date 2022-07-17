@@ -43,8 +43,8 @@ class OrderAPI extends BaseNetworkCallHandler {
 
   Future<Operation> getNearbyRiders(LatLng pickup, LatLng dropOff) async {
     return runAPI(
-        'api/nearest-riders?latitude=6.43647509542&longitude=3.44761820108&pickUp=6.43647509542%7C3.44761820108&dropOff=6.603160%7C3.239020',
-        // 'api/nearest-riders?latitude=${pickup.latitude}&longitude=${pickup.longitude}&pickUp=${pickup.latitude}|${pickup.longitude}&dropOff=${dropOff.latitude}|${dropOff.longitude}',
+        // 'api/nearest-riders?latitude=6.43647509542&longitude=3.44761820108&pickUp=6.43647509542%7C3.44761820108&dropOff=6.603160%7C3.239020',
+        'api/nearest-riders?latitude=${pickup.latitude}&longitude=${pickup.longitude}&pickUp=${pickup.latitude}|${pickup.longitude}&dropOff=${dropOff.latitude}|${dropOff.longitude}',
         HttpRequestType.get);
   }
 
@@ -54,7 +54,10 @@ class OrderAPI extends BaseNetworkCallHandler {
   }
 
   Future<Operation> getCustomerOrders() async {
-    return runAPI('api/orders?populate=*', HttpRequestType.get);
+    String userID = await appSettingsBloc.getUserID;
+
+    return runAPI('api/orders?populate=*&filters[userId][id][\$eq]=$userID',
+        HttpRequestType.get);
   }
 }
 

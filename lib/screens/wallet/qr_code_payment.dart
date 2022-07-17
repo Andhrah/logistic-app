@@ -1,25 +1,17 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/auth/signup.dart';
-import 'package:trakk/screens/wallet/all_cards.dart';
-import 'package:trakk/screens/wallet/buy_airtime.dart';
-import 'package:trakk/screens/wallet/fund_wallet.dart';
-import 'package:trakk/screens/wallet/payments.dart';
-import 'package:trakk/screens/wallet/transfers.dart';
-
 import 'package:trakk/screens/wallet/wallet.dart';
-import 'dart:math' as math;
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';
-import 'package:trakk/widgets/icon_container.dart';
 import 'package:trakk/widgets/input_field.dart';
 import 'package:trakk/widgets/qr_box_tab.dart';
-import 'package:trakk/widgets/qr_code_line.dart';
 
 class QrCodePayment extends StatefulWidget {
   static const String id = "qrcodePayment";
@@ -547,7 +539,7 @@ class _QrCodePaymentState extends State<QrCodePayment> {
                                                 height: 10,
                                               ),
                                               // Image.asset(
-                                              //     "assets/images/confirmPayment.png"),
+                                              //   Assets.check_success_outline),
                                               SizedBox(
                                                 height: 10,
                                               ),
@@ -702,7 +694,7 @@ class _QrCodePaymentState extends State<QrCodePayment> {
                                                                             Column(
                                                                           children: [
                                                                             Image.asset(
-                                                                              "assets/images/confirmPayment.png",
+                                                                              Assets.check_success_outline,
                                                                               height: 40,
                                                                               width: 40,
                                                                             ),
@@ -821,7 +813,7 @@ class _QrCodePaymentState extends State<QrCodePayment> {
                                                                                                 child: Column(
                                                                                                   children: [
                                                                                                     Image.asset(
-                                                                                                      "assets/images/confirmPayment.png",
+                                                                                                      Assets.check_success_outline,
                                                                                                       height: 40,
                                                                                                       width: 40,
                                                                                                     ),
@@ -1262,7 +1254,7 @@ class _QrCodePaymentState extends State<QrCodePayment> {
                                                   height: 10,
                                                 ),
                                                 // Image.asset(
-                                                //     "assets/images/confirmPayment.png"),
+                                                //    Assets.check_success_outline),
                                                 SizedBox(
                                                   height: 10,
                                                 ),
