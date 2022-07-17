@@ -1,8 +1,8 @@
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
-import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
+import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/utils/assets.dart';
@@ -40,7 +40,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
         dataBuilder: (context, data) {
           if (data == RiderOrderState.isNewRequestIncoming) {
             return StreamBuilder<BaseModel<OrderResponse, String>>(
-                stream: streamSocket.behaviorSubject,
+                stream: riderStreamSocket.behaviorSubject,
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.model != null) {
                     return cardWithNewRequest(context);

@@ -33,7 +33,7 @@ class OrderAPI extends BaseNetworkCallHandler {
     });
   }
 
-  Future<Operation> getOrderHistory() async {
+  Future<Operation> getRiderOrderHistory() async {
     String userID = await appSettingsBloc.getUserID;
 
     return runAPI('api/riders/$userID?populate=*', HttpRequestType.get);
@@ -51,6 +51,10 @@ class OrderAPI extends BaseNetworkCallHandler {
   Future<Operation> createOrder(OrderModel orderModel) async {
     return runAPI('api/orders?populate=*', HttpRequestType.post,
         body: orderModel.toJson());
+  }
+
+  Future<Operation> getCustomerOrders() async {
+    return runAPI('api/orders?populate=*', HttpRequestType.get);
   }
 }
 

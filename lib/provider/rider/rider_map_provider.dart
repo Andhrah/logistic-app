@@ -6,16 +6,14 @@ import 'package:location/location.dart' as Loca;
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
-import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
+import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/helper_utils.dart';
 
 class RiderMapProvider extends ChangeNotifier {
-  //final GetVehiclesListService _getVehiclesListService = GetVehiclesListService();
-
   static RiderMapProvider riderMapProvider(BuildContext context,
       {bool listen = false}) {
     return Provider.of<RiderMapProvider>(context, listen: listen);
@@ -44,7 +42,8 @@ class RiderMapProvider extends ChangeNotifier {
 
     if (onConnected != null) onConnected();
     socket?.onConnect((data) {
-      if (socket?.id != null) streamSocket.updateSocketID(socket?.id ?? '');
+      if (socket?.id != null)
+        riderStreamSocket.updateSocketID(socket?.id ?? '');
 
       startUpdatingUserLocation(riderID);
 
@@ -80,7 +79,7 @@ class RiderMapProvider extends ChangeNotifier {
     });
     socket?.on("rider_request_$riderID", (data) {
       log('rider_request_data ${jsonEncode(data)}');
-      streamSocket.addResponseOnMove(OrderResponse.fromJson(data));
+      riderStreamSocket.addResponseOnMove(OrderResponse.fromJson(data));
       riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
     });
 
@@ -99,7 +98,7 @@ class RiderMapProvider extends ChangeNotifier {
     if (_loca != null) {
       if ((socket?.active ?? false) == true) {
         double lat =
-            double.tryParse(_loca.longitude.toString().replaceAll(',', '')) ??
+            double.tryParse(_loca.latitude.toString().replaceAll(',', '')) ??
                 0.0;
         double long =
             double.tryParse(_loca.longitude.toString().replaceAll(',', '')) ??
@@ -111,10 +110,11 @@ class RiderMapProvider extends ChangeNotifier {
           'currentLongitude': _loca.longitude.toString(),
           'currentLocation': address == '...' ? '' : address
         };
+
         _location.removeWhere((key, value) => value == null);
 
         if (socket?.id != null) {
-          streamSocket.updateSocketID(socket?.id ?? '');
+          riderStreamSocket.updateSocketID(socket?.id ?? '');
         }
 
         socket?.emit('riders_location', _location);
@@ -127,7 +127,7 @@ class RiderMapProvider extends ChangeNotifier {
     miscBloc.fetchLocation();
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
-      // sendData(riderID, _loca);
+      sendData(riderID, _loca);
     });
   }
 }

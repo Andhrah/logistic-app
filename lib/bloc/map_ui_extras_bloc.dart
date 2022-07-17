@@ -56,8 +56,9 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
     }
   }
 
-  updateMarkersWithCircle(List<LatLng> latLng, String snippet, bool createRoute,
-      bool refreshMarker) async {
+  updateMarkersWithCircle(
+      List<LatLng> latLng, String snippet, bool createRoute, bool refreshMarker,
+      {LatLng? fromLatLng}) async {
     stopFetchingRoute();
 
     print('updateMarkersWithCircle');
@@ -93,7 +94,7 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
       print('MapExtraUI');
       addToModel(MapExtraUI(marker: _markers, polyline: _polyLines));
 
-      if (createRoute) sendRequest(latLng.first);
+      if (createRoute) sendRequest(latLng.first, fromLatLng: fromLatLng);
     }
   }
 
@@ -102,18 +103,21 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
     setAsLoading();
   }
 
-  void sendRequest(LatLng destination) async {
+  void sendRequest(LatLng destination, {LatLng? fromLatLng}) async {
     Loca.LocationData? currentLocation;
-    var location = Loca.Location();
-    try {
-      currentLocation = await location.getLocation();
-    } on Exception {
-      currentLocation = null;
+    if (fromLatLng == null) {
+      var location = Loca.Location();
+      try {
+        currentLocation = await location.getLocation();
+      } on Exception {
+        currentLocation = null;
 
-      return null;
+        return null;
+      }
     }
-    LatLng myLocation = LatLng(
-        currentLocation.latitude ?? 0.0, currentLocation.longitude ?? 0.0);
+    LatLng myLocation = fromLatLng ??
+        LatLng(currentLocation?.latitude ?? 0.0,
+            currentLocation?.longitude ?? 0.0);
 
     print('sendRequest');
     String? route =

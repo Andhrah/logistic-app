@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:trakk/bloc/order_history_bloc.dart';
+import 'package:trakk/bloc/rider/rider_order_history_bloc.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/widgets/date_widget.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/widgets/list_history.dart';
 import 'package:trakk/utils/colors.dart';
@@ -23,7 +23,7 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
   @override
   void initState() {
     super.initState();
-    getOrderHistoryBloc.fetchCurrent();
+    getRiderOrderHistoryBloc.fetchCurrent();
   }
 
   @override

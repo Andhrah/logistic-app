@@ -180,9 +180,11 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
               return ListTile(
                 leading: const CircleAvatar(
                   backgroundColor: appPrimaryColor,
+                  radius: 20,
                   child: Icon(
                     Remix.pin_distance_fill,
                     color: secondaryColor,
+                    size: 18,
                   ),
                 ),
                 title: Text(

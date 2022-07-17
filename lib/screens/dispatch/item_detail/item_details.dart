@@ -88,6 +88,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
               receiverEmail: _recEmail,
               receiverPhone: _recPhone));
 
+      print(orderModel.toJson());
       FocusScope.of(context).unfocus();
       doGetAvailableRiders(
         pickupLatLng,
@@ -113,9 +114,11 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
             kSizeBox,
             const Header(
               text: 'DISPATCH ITEM',
+              padding: EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
             ),
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
               decoration: const BoxDecoration(
                   image: DecorationImage(
                 image: AssetImage(Assets.empty_map_bg),

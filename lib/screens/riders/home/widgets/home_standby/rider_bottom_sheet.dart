@@ -3,7 +3,7 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
-import 'package:trakk/bloc/map_socket.dart';
+import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/mixins/rider_order_helper.dart';
 import 'package:trakk/models/rider/order_response.dart';
@@ -49,7 +49,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
         dataBuilder: (context, data) {
           if (data == RiderOrderState.isNewRequestClicked) {
             return StreamBuilder<BaseModel<OrderResponse, String>>(
-                stream: streamSocket.behaviorSubject,
+                stream: riderStreamSocket.behaviorSubject,
                 builder: (context, snapshot) {
                   if (snapshot.hasData && snapshot.data!.model != null) {
                     return _incomingRequest(snapshot.data!.model!);

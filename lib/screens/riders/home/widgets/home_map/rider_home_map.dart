@@ -6,9 +6,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart';
-import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
+import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/screens/riders/home/widgets/home_map/rider_bottom_sheet.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/enums.dart';
@@ -44,6 +44,7 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
     if (widget.orderState == RiderOrderState.isOrderCompleted) {
       maxSize = 0.7;
     }
+    updateRoute();
   }
 
   @override
@@ -59,7 +60,7 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
   }
 
   updateRoute() {
-    var model = streamSocket.behaviorSubject.value.model;
+    var model = riderStreamSocket.behaviorSubject.value.model;
     if (model != null && model.order != null) {
       if (model.order!.destinationLatitude != null &&
               model.order!.destinationLongitude != null &&
@@ -78,25 +79,27 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
         //   speakIsCloseOnce = false;
       }
     }
-
-    if (widget.orderState == RiderOrderState.isRequestAccepted ||
-        widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {
-      mapExtraUIBloc.updateMarkersWithCircle([
-        LatLng(model?.order?.pickupLatitude ?? 0.0,
-            model?.order?.pickupLongitude ?? 0.0)
-      ], 'Pickup', true, true);
-    }
-    if (widget.orderState == RiderOrderState.isItemPickedUpLocationAndEnRoute ||
-        widget.orderState == RiderOrderState.isAlmostAtDestinationLocation) {
-      mapExtraUIBloc.updateMarkersWithCircle([
-        LatLng(model?.order?.destinationLatitude ?? 0.0,
-            model?.order?.destinationLongitude ?? 0.0)
-      ], 'Destination', true, true);
-    }
-    if (widget.orderState == RiderOrderState.isAtDestinationLocation ||
-        widget.orderState == RiderOrderState.isOrderCompleted) {
-      mapExtraUIBloc.stopFetchingRoute();
-    }
+    miscBloc.location.onLocationChanged.listen((loca) {
+      if (widget.orderState == RiderOrderState.isRequestAccepted ||
+          widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {
+        mapExtraUIBloc.updateMarkersWithCircle([
+          LatLng(model?.order?.pickupLatitude ?? 0.0,
+              model?.order?.pickupLongitude ?? 0.0)
+        ], 'Pickup', true, true);
+      }
+      if (widget.orderState ==
+              RiderOrderState.isItemPickedUpLocationAndEnRoute ||
+          widget.orderState == RiderOrderState.isAlmostAtDestinationLocation) {
+        mapExtraUIBloc.updateMarkersWithCircle([
+          LatLng(model?.order?.destinationLatitude ?? 0.0,
+              model?.order?.destinationLongitude ?? 0.0)
+        ], 'Destination', true, true);
+      }
+      if (widget.orderState == RiderOrderState.isAtDestinationLocation ||
+          widget.orderState == RiderOrderState.isOrderCompleted) {
+        mapExtraUIBloc.stopFetchingRoute();
+      }
+    });
   }
 
   @override

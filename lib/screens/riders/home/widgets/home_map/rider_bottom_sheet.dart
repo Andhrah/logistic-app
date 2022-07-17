@@ -1,7 +1,7 @@
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trakk/bloc/map_socket.dart';
+import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/mixins/rider_order_helper.dart';
 import 'package:trakk/models/rider/order_response.dart';
@@ -90,7 +90,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                               dataBuilder: (context, orderState) {
                                 return CustomStreamBuilder<OrderResponse,
                                         String>(
-                                    stream: streamSocket.behaviorSubject,
+                                    stream: riderStreamSocket.behaviorSubject,
                                     dataBuilder: (context, data) {
                                       final String orderId =
                                           '${data.order?.id ?? ''}';

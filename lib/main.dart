@@ -19,10 +19,11 @@ import 'package:trakk/screens/dispatch/cart.dart';
 import 'package:trakk/screens/dispatch/checkout.dart';
 import 'package:trakk/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/screens/dispatch/item_detail/item_details.dart';
-import 'package:trakk/screens/dispatch/order.dart';
+import 'package:trakk/screens/dispatch/order/order.dart';
 import 'package:trakk/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/screens/dispatch/pick_ride.dart';
+import 'package:trakk/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
@@ -173,20 +174,11 @@ class _MyAppState extends State<MyApp> {
             RejectedRides.id: (context) => const RejectedRides(),
             FulfilledDispatch.id: (context) => const FulfilledDispatch(),
             RiderOrderScreen.id: (context) => const RiderHomeScreen(),
-            PickUpScreen.id: (context) => const PickUpScreen(),
-            RejectedRides.id: (context) => const RejectedRides(),
-            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
-            RiderOrderScreen.id: (context) => const RiderHomeScreen(),
-            PickUpScreen.id: (context) => const PickUpScreen(),
-            RejectedRides.id: (context) => const RejectedRides(),
-            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
             RiderHomeScreen.id: (context) => const RiderHomeScreen(),
-            RejectedRides.id: (context) => const RejectedRides(),
-            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
+            CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
 
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
-            ProfileMenu.id: (context) => const ProfileMenu(),
             WalletScreen.id: (context) => const WalletScreen(),
             UserDispatchHistory.id: (context) => const UserDispatchHistory(),
             Settings.id: (context) => const Settings(),
@@ -194,18 +186,9 @@ class _MyAppState extends State<MyApp> {
             // RideIssues.id:(context) => const RideIssues(),
             EditProfile.id: (context) => const EditProfile(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
-            CompanyHome.id: (context) => const CompanyHome(),
-            Vehicles.id: (context) => const Vehicles(),
-            Riders.id: (context) => const Riders(),
-            DispatchHistory.id: (context) => const DispatchHistory(),
-            ListOfVehicles.id: (context) => const ListOfVehicles(),
 
             RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
-            ListOfRiders.id: (context) => const ListOfRiders(),
-            RejectedRides.id: (context) => const RejectedRides(),
-            FulfilledDispatch.id: (context) => const FulfilledDispatch(),
-            WalletScreen.id: (context) => const WalletScreen(),
             Transfers.id: (context) => const Transfers(),
             PayWithTransfer.id: (context) => const PayWithTransfer(),
             AllCards.id: (context) => const AllCards(),

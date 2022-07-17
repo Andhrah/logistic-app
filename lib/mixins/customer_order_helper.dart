@@ -67,7 +67,8 @@ class CustomerOrderHelper {
 
     if (operation.code == 200 || operation.code == 201) {
       Navigator.pushNamedAndRemoveUntil(
-          _authContext, Tabs.id, ModalRoute.withName(Tabs.id));
+          _authContext, Tabs.id, ModalRoute.withName(Tabs.id),
+          arguments: {'_selectedIndex': 2});
       appToast('Order placed', appToastType: AppToastType.success);
 
       //  todo: route to map and trakking

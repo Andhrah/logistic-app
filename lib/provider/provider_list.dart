@@ -1,5 +1,6 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:trakk/provider/customer/customer_map_provider.dart';
 import 'package:trakk/provider/merchant/add_company_data_provider.dart';
 import 'package:trakk/provider/order/order.dart';
 import 'package:trakk/provider/rider/rider.dart';
@@ -28,4 +29,6 @@ List<SingleChildWidget> appProviders = [
   //     create: (_) => RiderProfileProvider()),
   // ChangeNotifierProvider<VehiclesProvider>(create: (_) => VehiclesProvider()),
   ChangeNotifierProvider<RiderMapProvider>(create: (_) => RiderMapProvider()),
+  ChangeNotifierProvider<CustomerMapProvider>(
+      create: (_) => CustomerMapProvider()),
 ];

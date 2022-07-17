@@ -14,6 +14,8 @@ import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/font.dart';
+import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/profile_list.dart';
@@ -58,32 +60,28 @@ class _ProfileMenuState extends State<ProfileMenu>
       body: SafeArea(
         child: Column(
           children: [
+            12.heightInPixel(),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BackIcon(
                   onPress: () {
                     Navigator.pop(context);
                   },
                 ),
-                Container(
-                  margin: const EdgeInsets.only(left: 60.0),
-                  alignment: Alignment.center,
-                  child: InkWell(
-                    onTap: () {},
-                    customBorder: const CircleBorder(),
-                    child: const Text(
-                      'PROFILE MENU',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
-                      ),
-                    ),
+                Text(
+                  'PROFILE MENU',
+                  style: theme.textTheme.subtitle1!.copyWith(
+                    fontWeight: kBoldWeight,
+                    // decoration: TextDecoration.underline,
                   ),
+                ),
+                const BackIcon(
+                  isPlaceHolder: true,
                 ),
               ],
             ),
+            12.heightInPixel(),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -139,27 +137,10 @@ class _ProfileMenuState extends State<ProfileMenu>
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            firstName,
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            lastName,
-                                            style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
+                                      Text(
+                                        '$firstName $lastName',
+                                        style: theme.textTheme.headline6!
+                                            .copyWith(fontWeight: kBoldWeight),
                                       ),
                                       Row(
                                         mainAxisAlignment:
@@ -169,12 +150,14 @@ class _ProfileMenuState extends State<ProfileMenu>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(phone),
-                                              const SizedBox(
-                                                height: 8,
+                                              Text(
+                                                phone,
+                                                style: theme.textTheme.caption,
                                               ),
+                                              2.heightInPixel(),
                                               Text(
                                                 email,
+                                                style: theme.textTheme.caption,
                                               ),
                                             ],
                                           ),
@@ -309,49 +292,49 @@ class _ProfileMenuState extends State<ProfileMenu>
                       const SizedBox(
                         height: 50,
                       ),
-                      Container(
-                        padding: const EdgeInsets.only(left: 30),
-                        height: 48,
-                        decoration: const BoxDecoration(
-                          color: whiteColor,
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 2,
-                              color: Color.fromARGB(255, 235, 235, 235),
-                              offset: Offset(2.0, 2.0), //(x,y)
-                              blurRadius: 16,
-                            ),
-                          ],
-                        ),
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/images/Logout.svg',
-                                  color: redColor,
-                                ),
-                                const SizedBox(
-                                  width: 22,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    logout(context, completeLogout: () {
-                                      Navigator.popUntil(context,
-                                          ModalRoute.withName(GetStarted.id));
-                                      Navigator.of(context).pushNamed(Login.id);
-                                    });
-                                  },
-                                  child: const Text(
+                      InkWell(
+                        onTap: () {
+                          logout(context, completeLogout: () {
+                            Navigator.popUntil(
+                                context, ModalRoute.withName(GetStarted.id));
+                            Navigator.of(context).pushNamed(Login.id);
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 30),
+                          height: 48,
+                          decoration: const BoxDecoration(
+                            color: whiteColor,
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2,
+                                color: Color.fromARGB(255, 235, 235, 235),
+                                offset: Offset(2.0, 2.0), //(x,y)
+                                blurRadius: 16,
+                              ),
+                            ],
+                          ),
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/Logout.svg',
+                                    color: redColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 22,
+                                  ),
+                                  const Text(
                                     "Log out",
                                     style: TextStyle(
                                         color: redColor,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                   ),
-                                ),
-                              ],
-                            )),
+                                ],
+                              )),
+                        ),
                       ),
                       const SizedBox(
                         height: 45,
