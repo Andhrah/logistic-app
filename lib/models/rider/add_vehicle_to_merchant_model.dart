@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class AddVehicleToMerchantModel {
   AddVehicleToMerchantModel({
     this.data,
@@ -22,19 +24,25 @@ class AddVehicleToMerchantModel {
   Map<String, dynamic> toJson() => {
         "data": data == null ? null : data!.toJson(),
       };
+  Map<String, dynamic> toAddDocJson() => {
+        "data": data == null ? null : data!.toJson(),
+      };
 }
 
 class AddRiderToMerchantData {
-  AddRiderToMerchantData({
-    this.riderId,
-    this.name,
-    this.color,
-    this.number,
-    this.capacity,
-    this.image,
-    this.model,
-    this.deliveryBox,
-  });
+  AddRiderToMerchantData(
+      {this.riderId,
+      this.name,
+      this.color,
+      this.number,
+      this.capacity,
+      this.image,
+      this.model,
+      this.deliveryBox,
+      this.files,
+
+      //  doc
+      this.docs});
 
   final String? riderId;
   final String? name;
@@ -44,17 +52,23 @@ class AddRiderToMerchantData {
   final String? image;
   final String? model;
   final bool? deliveryBox;
+  final Map<String, String>? files;
 
-  AddRiderToMerchantData copyWith({
-    String? riderId,
-    String? name,
-    String? color,
-    String? number,
-    String? capacity,
-    String? image,
-    String? model,
-    bool? deliveryBox,
-  }) =>
+  //add doc
+  List<AddVehicleDocToMerchantModel>? docs;
+
+  AddRiderToMerchantData copyWith(
+          {String? riderId,
+          String? name,
+          String? color,
+          String? number,
+          String? capacity,
+          String? image,
+          String? model,
+          bool? deliveryBox,
+          String? vehicleId,
+          String? documentName,
+          String? documentUrl}) =>
       AddRiderToMerchantData(
         riderId: riderId ?? this.riderId,
         name: name ?? this.name,
@@ -63,7 +77,6 @@ class AddRiderToMerchantData {
         capacity: capacity ?? this.capacity,
         image: image ?? this.image,
         model: model ?? this.model,
-        deliveryBox: deliveryBox ?? this.deliveryBox,
       );
 
   factory AddRiderToMerchantData.fromJson(Map<String, dynamic> json) =>
@@ -87,5 +100,23 @@ class AddRiderToMerchantData {
         "image": image == null ? null : image,
         "model": model == null ? null : model,
         "deliveryBox": deliveryBox == null ? null : deliveryBox,
+      };
+}
+
+class AddVehicleDocToMerchantModel {
+  AddVehicleDocToMerchantModel({
+    this.vehicleId,
+    this.documentName,
+    this.documentUrl,
+  });
+
+  final String? vehicleId;
+  final String? documentName;
+  final String? documentUrl;
+
+  Map<String, dynamic> toAddDocJson() => {
+        "vehicleId": vehicleId == null ? null : vehicleId,
+        "documentName": documentName == null ? null : documentName,
+        "documentUrl": documentUrl == null ? null : documentUrl,
       };
 }
