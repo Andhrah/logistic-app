@@ -35,8 +35,8 @@ import 'package:trakk/screens/merchant/list_of_riders.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/referred_rides.dart';
-import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/screens/merchant/rejected_rides.dart';
+import 'package:trakk/screens/merchant/rider_profile.dart';
 import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/screens/merchant/vehicles.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
@@ -172,7 +172,7 @@ class _MyAppState extends State<MyApp> {
             Riders.id: (context) => const Riders(),
             DispatchHistory.id: (context) => const DispatchHistory(),
             ListOfVehicles.id: (context) => const ListOfVehicles(),
-            RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
+            // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             AddRider.id: (context) => const AddRider(),
             AddRider1.id: (context) => const AddRider1(),
             AddRider2.id: (context) => const AddRider2(),
@@ -184,6 +184,7 @@ class _MyAppState extends State<MyApp> {
             RiderOrderScreen.id: (context) => const RiderHomeScreen(),
             RiderHomeScreen.id: (context) => const RiderHomeScreen(),
             CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
+            RiderProfile.id: (context) => const RiderProfile(),
 
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
@@ -195,7 +196,7 @@ class _MyAppState extends State<MyApp> {
             EditProfile.id: (context) => const EditProfile(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
 
-            RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
+            // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             Transfers.id: (context) => const Transfers(),
             PayWithTransfer.id: (context) => const PayWithTransfer(),

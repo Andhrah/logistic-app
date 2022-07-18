@@ -7,6 +7,8 @@ import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/radii.dart';
 
+const vehicleImageKey = 'vehicle_image';
+
 class AddRiderVehicleDocSelectorWidget extends StatefulWidget {
   final Function(Map<String, String> files) callback;
 
@@ -21,6 +23,7 @@ class AddRiderVehicleDocSelectorWidget extends StatefulWidget {
 class _AddRiderVehicleDocSelectorWidgetState
     extends State<AddRiderVehicleDocSelectorWidget> {
   Map<String, String> files = {
+    vehicleImageKey: '',
     'driver_license': '',
     'road_worthiness': '',
     'haulage_report': '',
@@ -64,7 +67,7 @@ class _AddRiderVehicleDocSelectorWidgetState
                   children: [
                     AnimatedCrossFade(
                       duration: const Duration(milliseconds: 300),
-                      crossFadeState: files.values.elementAt(index) == null
+                      crossFadeState: files.values.elementAt(index).isEmpty
                           ? CrossFadeState.showFirst
                           : CrossFadeState.showSecond,
                       firstChild: InkWell(

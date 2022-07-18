@@ -1,16 +1,17 @@
 import 'dart:ui';
 
+import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/merchant/active_Container.dart';
-import 'package:trakk/screens/merchant/all_vehicle_container.dart';
-import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
+import 'package:trakk/bloc/merchant/get_riders_list_bloc.dart';
+import 'package:trakk/models/merchant/get_riders_for_merchant_response.dart';
 import 'package:trakk/screens/merchant/inactive_vehicle.dart';
+import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
 import 'package:trakk/screens/merchant/rider_list_container.dart';
 import 'package:trakk/screens/merchant/rider_profile.dart';
-import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/styles.dart';
 import 'package:trakk/widgets/button.dart';
 
 import '../../widgets/back_icon.dart';
@@ -60,6 +61,13 @@ class _ListOfRidersState extends State<ListOfRiders> {
   final List<Item> _data = generateItems(1);
   bool isActive = false;
   bool showAll = true;
+
+  @override
+  void initState() {
+    super.initState();
+
+    getRidersListBloc.fetchCurrent();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -169,29 +177,42 @@ class _ListOfRidersState extends State<ListOfRiders> {
             ),
             SizedBox(
               height: mediaQuery.size.height,
-              child: ListView.separated(
-                  physics: ScrollPhysics(),
-                  separatorBuilder: (context, index) => const SizedBox(
-                        height: 24,
-                      ),
-                  itemCount: 5,
-                  itemBuilder: (BuildContext context, int index) {
-                    //return RiderListContainer();
-                    if (showAll) {
-                      return InkWell(
-                          onTap: () {
-                            Navigator.of(context).pushNamed(RiderProfile.id);
-                          },
-                          child: RiderListContainer());
-                    } else if (isActive) {
-                      return ActiveContainer();
-                    } else if (!isActive) {
-                      return InactiveContainer();
-                    }
-                    //return AllVehicleContainer();
-                    return SizedBox();
-                    //return isActive ? ActiveContainer() : InactiveContainer();
-                  }),
+              child: CustomStreamBuilder<
+                  List<GetRidersForMerchantResponseDatum>, String>(
+                stream: getRidersListBloc.behaviorSubject,
+                dataBuilder: (context, data) {
+                  return ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(
+                            height: 24,
+                          ),
+                      itemCount: data.length,
+                      itemBuilder: (BuildContext context, int index) {
+                        //return RiderListContainer();
+                        if (showAll) {
+                          return InkWell(
+                              onTap: () {
+                                Navigator.of(context)
+                                    .pushNamed(RiderProfile.id, arguments: {
+                                  'rider_datum':
+                                      data.elementAt(index).attributes!.toJson()
+                                });
+                              },
+                              child: RiderListContainer(data.elementAt(index)));
+                        } else if (isActive) {
+                          return ActiveContainer();
+                        } else if (!isActive) {
+                          return InactiveContainer();
+                        }
+                        //return AllVehicleContainer();
+                        return SizedBox();
+                        //return isActive ? ActiveContainer() : InactiveContainer();
+                      });
+                },
+                loadingBuilder: (context) => const Center(
+                  child: kCircularProgressIndicator,
+                ),
+                errorBuilder: (context, err) => Center(child: Text(err)),
+              ),
             )
           ],
         ),
