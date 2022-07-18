@@ -65,7 +65,7 @@ class _AppSettingsBloc {
     UserType userType = await getUserType;
 
     switch (userType) {
-      case UserType.user:
+      case UserType.customer:
         id = '${appSettings.loginResponse?.data?.user?.id ?? ''}';
 
         break;
@@ -77,6 +77,10 @@ class _AppSettingsBloc {
         // TODO: Handle this case.
         break;
       case UserType.merchant:
+        id = '${appSettings.loginResponse?.data?.user?.merchant?.id ?? ''}';
+
+        break;
+      case UserType.none:
         // TODO: Handle this case.
         break;
     }
@@ -90,7 +94,7 @@ class _AppSettingsBloc {
 
     switch (appSettings.loginResponse?.data?.user?.userType ?? '') {
       case 'customer':
-        return UserType.user;
+        return UserType.customer;
       case 'rider':
         return UserType.rider;
       case 'merchant':

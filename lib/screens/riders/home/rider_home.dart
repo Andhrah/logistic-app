@@ -2,6 +2,7 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
+import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/provider/rider/rider_map_provider.dart';
 import 'package:trakk/screens/riders/home/widgets/home_map/rider_home_map.dart';
@@ -38,11 +39,12 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
       var injector = RiderMapProvider.riderMapProvider(context);
       // injector.connect();
       injector.connectAndListenToSocket(
-          onConnected: () {},
-          onConnectionError: () {
-            injector.disconnectSocket();
-            // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
-          });
+        onConnected: () {},
+        onConnectionError: () {
+          injector.disconnectSocket();
+          // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
+        },
+      );
     });
   }
 
@@ -58,6 +60,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
 
     return Scaffold(
       backgroundColor: Colors.transparent,
+      resizeToAvoidBottomInset: false,
       body: Container(
         constraints: const BoxConstraints.expand(),
         decoration: const BoxDecoration(
@@ -66,8 +69,6 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
         child: CustomStreamBuilder<RiderOrderState, String>(
           stream: riderHomeStateBloc.behaviorSubject,
           dataBuilder: (context, data) {
-            print('riderHome');
-            print(data);
             if (data == RiderOrderState.isHomeScreen ||
                 data == RiderOrderState.isNewRequestIncoming ||
                 data == RiderOrderState.isNewRequestClicked) {

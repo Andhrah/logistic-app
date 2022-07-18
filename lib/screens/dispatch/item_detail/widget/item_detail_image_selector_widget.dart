@@ -4,10 +4,9 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/helper_utils.dart';
 
 class ItemDetailImageSelectorWidget extends StatefulWidget {
-  final Function(String? fileConverted) callback;
+  final Function(String? itemImagePath) callback;
 
   const ItemDetailImageSelectorWidget(this.callback, {Key? key})
       : super(key: key);
@@ -44,11 +43,12 @@ class _ItemDetailImageSelectorWidgetState
     }
   }
 
-  doCallback() =>
-      widget.callback(file != null ? convertFileToString(file!) : null);
+  doCallback() => widget.callback(file != null ? file!.path : null);
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Column(
       children: [
         AnimatedCrossFade(
@@ -69,15 +69,13 @@ class _ItemDetailImageSelectorWidgetState
                 height: MediaQuery.of(context).size.height / 8.7,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Remix.upload_2_line),
-                      SizedBox(height: 5.0),
+                    children: [
+                      const Icon(Remix.upload_2_line),
+                      const SizedBox(height: 5.0),
                       Text('Upload item image',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
-                              fontSize: 18.0,
-                              color: appPrimaryColor,
-                              fontWeight: FontWeight.w400))
+                          style: theme.textTheme.caption!
+                              .copyWith(color: appPrimaryColor))
                     ]),
               ),
             ),

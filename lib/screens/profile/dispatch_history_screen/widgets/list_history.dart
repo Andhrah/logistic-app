@@ -1,6 +1,6 @@
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:trakk/bloc/order_history_bloc.dart';
+import 'package:trakk/bloc/rider/rider_order_history_bloc.dart';
 import 'package:trakk/models/order/order_history_response.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/helper_utils.dart';
@@ -21,7 +21,7 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
     var theme = Theme.of(context);
 
     return CustomStreamBuilder<List<OrderHistoryDatum>, String>(
-      stream: getOrderHistoryBloc.behaviorSubject,
+      stream: getRiderOrderHistoryBloc.behaviorSubject,
       dataBuilder: (context, data) {
         return ListView.separated(
             separatorBuilder: (context, index) {
@@ -95,7 +95,6 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                   if (dateValue != null)
                     Text(
                       "$dateValue delivery",
-                      textScaleFactor: 1.2,
                       style: const TextStyle(
                         color: appPrimaryColor,
                         fontWeight: FontWeight.bold,
@@ -322,12 +321,20 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 8,
+                  ),
                 ],
               );
             });
       },
       loadingBuilder: (context) =>
           const Center(child: kCircularProgressIndicator),
+      errorBuilder: (context, err) => Center(
+        child: Text(
+          err,
+        ),
+      ),
     );
   }
 }

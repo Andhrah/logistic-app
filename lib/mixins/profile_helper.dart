@@ -18,12 +18,11 @@ typedef _ProfileFetchSuccess = Function(AuthData authData);
 
 class ProfileHelper {
   doGetProfileOperation(
-      {String? authToken,
-      Function()? onShowLoader,
+      {Function()? onShowLoader,
       Function()? onCloseLoader,
       _ProfileFetchSuccess? profileFetchSuccess}) async {
     if (onShowLoader != null) onShowLoader();
-    profileService.getProfile(authToken).then(
+    profileService.getProfile().then(
         (value) => _completeGet(value, onCloseLoader, profileFetchSuccess));
   }
 

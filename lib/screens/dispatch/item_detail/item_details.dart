@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/mixins/customer_order_helper.dart';
 import 'package:trakk/models/order/available_rider_response.dart';
 import 'package:trakk/models/order/order.dart';
@@ -32,8 +34,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
 
   String _itemName = '';
   String? _itemDescription;
+  String? _itemWeight;
 
-  String? _itemImage;
+  String? _itemImagePath;
 
   String? _pickupDate;
   String? _dropOffDate;
@@ -41,8 +44,10 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
   OrderLocation? pickupOrderLocation;
   OrderLocation? dropOffOrderLocation;
   String? _senName;
+  String? _senEmail;
   String? _senPhone;
   String? _recName;
+  String? _recEmail;
   String? _recPhone;
 
   @override
@@ -57,7 +62,6 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
 
   _onAddItemPress() async {
     final FormState? form = _formKey.currentState;
-
     if (form!.validate()) {
       form.save();
 
@@ -65,25 +69,36 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
           pickupOrderLocation?.longitude ?? 0.0);
       LatLng dropOffLatLng = LatLng(dropOffOrderLocation?.latitude ?? 0.0,
           dropOffOrderLocation?.longitude ?? 0.0);
+
+      // print('pickupLatLng latitude');
+      // print(pickupLatLng.latitude);
+      String userId = await appSettingsBloc.getUserID;
       OrderModel orderModel = OrderModel(
           data: OrderModelData(
+              userId: int.tryParse(userId),
               pickup: pickupOrderLocation?.address,
               destination: dropOffOrderLocation?.address,
               pickupLatitude: pickupLatLng.latitude.toString(),
               pickupLongitude: pickupLatLng.longitude.toString(),
               destinationLatitude: dropOffLatLng.latitude.toString(),
               destinationLongitude: dropOffLatLng.longitude.toString(),
+              distance:
+                  '${(Geolocator.distanceBetween(pickupLatLng.latitude, pickupLatLng.longitude, dropOffLatLng.latitude, dropOffLatLng.longitude).round() / 1000).toStringAsFixed(2)} km',
               pickupDate: _pickupDate,
               deliveryDate: _dropOffDate,
               itemName: _itemName,
               itemDescription: _itemDescription,
-              itemImage: _itemImage,
-              weight: '0kg',
+              itemImage: _itemImagePath,
+              weight: _itemWeight,
               senderName: _senName,
+              senderEmail: _senEmail,
               senderPhone: _senPhone,
               receiverName: _recName,
+              receiverEmail: _recEmail,
               receiverPhone: _recPhone));
 
+      // print(orderModel.toJson());
+      FocusScope.of(context).unfocus();
       doGetAvailableRiders(
         pickupLatLng,
         dropOffLatLng,
@@ -100,67 +115,81 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        child: SafeArea(
-            child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            kSizeBox,
-            const Header(
-              text: 'DISPATCH ITEM',
-            ),
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 32.0),
-              decoration: const BoxDecoration(
-                  image: DecorationImage(
-                image: AssetImage(Assets.empty_map_bg),
-                fit: BoxFit.fill,
-              )),
-              child: Form(
-                key: _formKey,
-                child: Column(children: [
-                  ItemDetailLocationWidget((OrderLocation? _pickupOrderLocation,
-                      OrderLocation? _dropOffOrderLocation) {
-                    pickupOrderLocation = _pickupOrderLocation;
-                    dropOffOrderLocation = _dropOffOrderLocation;
-                  }),
-                  ItemDetailCategoryWidget((itemName, description) {
-                    _itemName = itemName ?? '';
-                    _itemDescription = description;
-                  }),
-                  const SizedBox(height: 20.0),
-                  ItemDetailDateWidget((pickup, dropOff) {
-                    _pickupDate = pickup;
-                    _dropOffDate = dropOff;
-                  }),
-                  const SizedBox(height: 30.0),
-                  ItemDetailParticipantWidget((String senName, String senPhone,
-                      String recName, String recPhone) {
-                    _senName = senName;
-                    _senPhone = senPhone;
-                    _recName = recName;
-                    _recPhone = recPhone;
-                  }),
-                  const SizedBox(height: 20.0),
-                  ItemDetailImageSelectorWidget((String? convertedString) {
-                    _itemImage = convertedString;
-                  }),
-                  const SizedBox(height: 30.0),
-                  Button(
-                    text: 'Proceed',
-                    onPress: _onAddItemPress,
-                    color: appPrimaryColor,
-                    textColor: whiteColor,
-                    isLoading: false,
-                    width: MediaQuery.of(context).size.width / 1.2,
-                  ),
-                  const SizedBox(height: 40.0),
-                ]),
+      body: SafeArea(
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          kSizeBox,
+          const Header(
+            text: 'DISPATCH ITEM',
+            padding: EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+            showBackButton: false,
+          ),
+          Expanded(
+            child: SingleChildScrollView(
+              child: Container(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultLayoutPadding),
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                  image: AssetImage(Assets.empty_map_bg),
+                  fit: BoxFit.fill,
+                )),
+                child: Form(
+                  key: _formKey,
+                  child: Column(children: [
+                    ItemDetailLocationWidget(
+                        (OrderLocation? _pickupOrderLocation,
+                            OrderLocation? _dropOffOrderLocation) {
+                      pickupOrderLocation = _pickupOrderLocation;
+                      dropOffOrderLocation = _dropOffOrderLocation;
+                    }),
+                    ItemDetailCategoryWidget(
+                        (String? itemName, String description, String weight) {
+                      _itemName = itemName ?? '';
+                      _itemDescription = description;
+                      _itemWeight = weight;
+                    }),
+                    const SizedBox(height: 20.0),
+                    ItemDetailDateWidget((pickup, dropOff) {
+                      _pickupDate = pickup;
+                      _dropOffDate = dropOff;
+                    }),
+                    const SizedBox(height: 30.0),
+                    ItemDetailParticipantWidget((String senName,
+                        String senEmail,
+                        String senPhone,
+                        String recName,
+                        String recEmail,
+                        String recPhone) {
+                      _senName = senName;
+                      _senEmail = senEmail;
+                      _senPhone = senPhone;
+                      _recName = recName;
+                      _recEmail = recEmail;
+                      _recPhone = recPhone;
+                    }),
+                    const SizedBox(height: 20.0),
+                    ItemDetailImageSelectorWidget((String? itemImagePath) {
+                      _itemImagePath = itemImagePath;
+                    }),
+                    const SizedBox(height: 30.0),
+                    Button(
+                      text: 'Proceed',
+                      onPress: _onAddItemPress,
+                      color: appPrimaryColor,
+                      textColor: whiteColor,
+                      isLoading: false,
+                      width: double.infinity,
+                    ),
+                    const SizedBox(height: 40.0),
+                  ]),
+                ),
               ),
             ),
-          ],
-        )),
-      ),
+          ),
+        ],
+      )),
     );
     // );
   }

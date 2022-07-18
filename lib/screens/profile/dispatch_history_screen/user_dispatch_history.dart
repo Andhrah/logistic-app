@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:trakk/bloc/order_history_bloc.dart';
+import 'package:trakk/bloc/rider/rider_order_history_bloc.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/widgets/date_widget.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/widgets/list_history.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 
 import '../../../widgets/back_icon.dart';
@@ -19,11 +20,14 @@ class UserDispatchHistory extends StatefulWidget {
 
 class _UserDispatcHistoryState extends State<UserDispatchHistory> {
   bool isExpanded = false;
+  String startDate =
+      DateTime.now().subtract(const Duration(days: 1)).toIso8601String();
+  String endDate = DateTime.now().toIso8601String();
 
   @override
   void initState() {
     super.initState();
-    getOrderHistoryBloc.fetchCurrent();
+    getRiderOrderHistoryBloc.fetchCurrent(startDate, endDate);
   }
 
   @override
@@ -81,12 +85,13 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                     horizontal: kDefaultLayoutPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    DateDispatchHistory(),
-                    SizedBox(
-                      height: 24,
+                  children: [
+                    DateDispatchHistory(
+                      startDate: startDate,
+                      endDate: endDate,
                     ),
-                    ListDispatchHistory()
+                    24.heightInPixel(),
+                    const ListDispatchHistory()
                   ],
                 ),
               ),

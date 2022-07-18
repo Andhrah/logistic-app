@@ -5,12 +5,18 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui' as ui;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
+import 'package:trakk/.env.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
+import 'package:trakk/utils/singleton_data.dart';
 import 'package:trakk/widgets/button.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -104,13 +110,34 @@ extension SizedboxUitls on num {
 Future<String> getAddressFromLatLng(double lat, double long) async {
   try {
     List<Placemark> p =
-        await GeocodingPlatform.instance.placemarkFromCoordinates(lat, long);
+        await placemarkFromCoordinates(lat, long, localeIdentifier: 'en_US');
     Placemark place = p[0];
 
     return "${place.street}, ${place.name}, ${place.country}";
   } catch (e) {
     return '...';
   }
+}
+
+getAddressFromLatLngWithMap(double lat, double lng) async {
+  String _host = 'https://maps.google.com/maps/api/geocode/json';
+  final url = '$_host?key=$googleAPIKey&language=en&latlng=$lat,$lng';
+
+  var response = await SingletonData.singletonData.dio.get(url);
+  if (kDebugMode) {
+    print(response.data);
+  }
+  if (response.statusCode == 200 &&
+      response.data['results'] != null &&
+      (response.data['results'] as List).isNotEmpty) {
+    Map data = response.data;
+    String _formattedAddress = data["results"][0]["formatted_address"];
+    if (kDebugMode) {
+      print("response ==== $_formattedAddress");
+    }
+    return _formattedAddress;
+  }
+  return null;
 }
 
 String greetWithTime() {
@@ -222,6 +249,23 @@ String getLongDate({String? dateValue, int? milliSecSinceEpoch}) {
   return 'dd/mm/yyyy';
 }
 
+String getTimeFromDate({String? dateValue, int? milliSecSinceEpoch}) {
+  try {
+    if (milliSecSinceEpoch != null) {
+      var date = DateTime.fromMillisecondsSinceEpoch(milliSecSinceEpoch);
+
+      return DateFormat('hh:mm').format(date);
+    }
+    if (dateValue != null) {
+      var date = DateTime.parse(dateValue);
+      return DateFormat('hh:mm').format(date);
+    }
+  } catch (err) {
+    return 'hh:mm';
+  }
+  return 'hh:mm';
+}
+
 String convertFileToString(File file) {
   String convertedFile = base64Encode(file.readAsBytesSync());
 
@@ -236,4 +280,36 @@ Uint8List createByteFromString(String base64Encoded) {
   Uint8List bytes = base64.decode(base64Encoded);
 
   return bytes;
+}
+
+urlLauncher(String url,
+    {UrlLaunchType urlLaunchType = UrlLaunchType.call,
+    bool forceWebView = false,
+    bool forceSafariVC = false}) async {
+  Uri urlString = Uri.parse(url);
+  if (urlLaunchType == UrlLaunchType.call) {
+    urlString = Uri.parse('tel://$url');
+  }
+
+  if (urlString.toString().isNotEmpty) {
+    try {
+      if (await canLaunchUrl(urlString)) {
+        await launchUrl(urlString);
+      }
+    } catch (err) {
+      appToast('Cannot process');
+    }
+  } else {
+    appToast('Cannot process');
+  }
+}
+
+String camelCase(String? input) {
+  if (input == null) {
+    return '';
+  }
+  if (input.length < 2) {
+    return input;
+  }
+  return input[0].toUpperCase() + input.substring(1);
 }

@@ -153,7 +153,7 @@ class User {
   final List<dynamic>? beneficiaries;
   Rider? rider;
   final List<dynamic>? orders;
-  final dynamic merchant;
+  final Merchant? merchant;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -199,7 +199,9 @@ class User {
         orders: json["orders"] == null
             ? null
             : List<dynamic>.from(json["orders"].map((x) => x)),
-        merchant: json["merchant"],
+        merchant: json["merchant"] == null
+            ? null
+            : Merchant.fromJson(json["merchant"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -238,7 +240,7 @@ class User {
         "rider": rider == null ? null : rider!.toJson(),
         "orders":
             orders == null ? null : List<dynamic>.from(orders!.map((x) => x)),
-        "merchant": merchant,
+        "merchant": merchant == null ? null : merchant!.toJson(),
       };
 }
 
@@ -353,5 +355,101 @@ class Vehicles {
   Map<String, dynamic> toJson() => {
         "name": name,
         "number": number,
+      };
+}
+
+class Merchant {
+  Merchant({
+    this.id,
+    this.name,
+    this.email,
+    this.phoneNumber,
+    this.rcNumber,
+    this.cacDocument,
+    this.createdAt,
+    this.updatedAt,
+    this.publishedAt,
+    this.amountPerKm,
+    this.baseFare,
+    this.priceCap,
+  });
+
+  final int? id;
+  final String? name;
+  final String? email;
+  final String? phoneNumber;
+  final String? rcNumber;
+  final String? cacDocument;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+  final DateTime? publishedAt;
+  final dynamic amountPerKm;
+  final dynamic baseFare;
+  final dynamic priceCap;
+
+  Merchant copyWith({
+    int? id,
+    String? name,
+    String? email,
+    String? phoneNumber,
+    String? rcNumber,
+    String? cacDocument,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? publishedAt,
+    dynamic amountPerKm,
+    dynamic baseFare,
+    dynamic priceCap,
+  }) =>
+      Merchant(
+        id: id ?? this.id,
+        name: name ?? this.name,
+        email: email ?? this.email,
+        phoneNumber: phoneNumber ?? this.phoneNumber,
+        rcNumber: rcNumber ?? this.rcNumber,
+        cacDocument: cacDocument ?? this.cacDocument,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        publishedAt: publishedAt ?? this.publishedAt,
+        amountPerKm: amountPerKm ?? this.amountPerKm,
+        baseFare: baseFare ?? this.baseFare,
+        priceCap: priceCap ?? this.priceCap,
+      );
+
+  factory Merchant.fromJson(Map<String, dynamic> json) => Merchant(
+        id: json["id"] == null ? null : json["id"],
+        name: json["name"] == null ? null : json["name"],
+        email: json["email"] == null ? null : json["email"],
+        phoneNumber: json["phoneNumber"] == null ? null : json["phoneNumber"],
+        rcNumber: json["rcNumber"] == null ? null : json["rcNumber"],
+        cacDocument: json["cacDocument"] == null ? null : json["cacDocument"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+        publishedAt: json["publishedAt"] == null
+            ? null
+            : DateTime.parse(json["publishedAt"]),
+        amountPerKm: json["amountPerKm"],
+        baseFare: json["baseFare"],
+        priceCap: json["priceCap"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id == null ? null : id,
+        "name": name == null ? null : name,
+        "email": email == null ? null : email,
+        "phoneNumber": phoneNumber == null ? null : phoneNumber,
+        "rcNumber": rcNumber == null ? null : rcNumber,
+        "cacDocument": cacDocument == null ? null : cacDocument,
+        "createdAt": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updatedAt": updatedAt == null ? null : updatedAt!.toIso8601String(),
+        "publishedAt":
+            publishedAt == null ? null : publishedAt!.toIso8601String(),
+        "amountPerKm": amountPerKm,
+        "baseFare": baseFare,
+        "priceCap": priceCap,
       };
 }

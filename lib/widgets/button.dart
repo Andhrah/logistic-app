@@ -5,7 +5,7 @@ class Button extends StatelessWidget {
   const Button({
     Key? key,
     required this.text,
-    required this.onPress,
+    this.onPress,
     required this.color,
     required this.width,
     this.height,
@@ -18,7 +18,7 @@ class Button extends StatelessWidget {
   }) : super(key: key);
 
   final String text;
-  final VoidCallback onPress;
+  final VoidCallback? onPress;
   final Color color;
   final double width;
   final double? height;
@@ -30,14 +30,15 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return isLoading
         ? const CircularProgressIndicator(color: secondaryColor)
         : ElevatedButton(
             onPressed: onPress,
             child: Text(
               text,
-              style: TextStyle(
-                  fontSize: fontSize ?? 18.0,
+              style: theme.textTheme.button!.copyWith(
+                  fontSize: fontSize,
                   color: textColor,
                   fontWeight: FontWeight.w400),
             ),

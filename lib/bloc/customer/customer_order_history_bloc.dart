@@ -8,32 +8,28 @@ import 'package:async/async.dart';
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/models/message_only_response.dart';
-import 'package:trakk/models/order/order_history_response.dart';
+import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/services/base_network_call_handler.dart';
 import 'package:trakk/services/order/order_api.dart';
 
-class GetOrderHistoryBloc
-    with BaseBloc<List<OrderHistoryDatum>, String>, ConnectivityHelper {
+class GetCustomersOrderHistoryBloc
+    with BaseBloc<List<UserOrderHistoryDatum>, String>, ConnectivityHelper {
   CancelableOperation? _cancelableOperation;
 
   fetchCurrent() async {
     setAsLoading();
     checkInternetConnection(
         hasInternetCallback: () async {
-          var operation = await orderAPI.getOrderHistory();
+          var operation = await orderAPI.getCustomerOrders();
 
           if (operation.code == 200 || operation.code == 201) {
-            OrderHistoryResponse response =
-                OrderHistoryResponse.fromJson(operation.result);
+            UserOrderHistoryResponse response =
+                UserOrderHistoryResponse.fromJson(operation.result);
 
-            if (response.data != null &&
-                response.data!.attributes != null &&
-                response.data!.attributes!.attributes != null &&
-                response.data!.attributes!.attributes!.data != null &&
-                response.data!.attributes!.attributes!.data!.isNotEmpty) {
-              response.data!.attributes!.attributes!.data!.sort((a, b) =>
+            if (response.data != null && response.data!.isNotEmpty) {
+              response.data!.sort((a, b) =>
                   b.attributes!.createdAt!.compareTo(a.attributes!.createdAt!));
-              addToModel(response.data!.attributes!.attributes!.data!);
+              addToModel(response.data!);
             } else {
               addToError("History not found");
             }
@@ -57,4 +53,4 @@ class GetOrderHistoryBloc
   }
 }
 
-final getOrderHistoryBloc = GetOrderHistoryBloc();
+final getCustomersOrderHistoryBloc = GetCustomersOrderHistoryBloc();

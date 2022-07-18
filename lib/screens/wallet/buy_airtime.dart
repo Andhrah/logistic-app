@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_switch/flutter_switch.dart';
+import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';
 import 'package:trakk/widgets/input_field.dart';
-import 'package:pin_code_text_field/pin_code_text_field.dart';
 
 class BuyAirtime extends StatefulWidget {
   static const String id = "buyAirtime";
@@ -19,7 +18,6 @@ class BuyAirtime extends StatefulWidget {
 }
 
 class _BuyAirtimeState extends State<BuyAirtime> {
-
   String? _phoneNumber;
 
   late TextEditingController _nubanController;
@@ -28,16 +26,12 @@ class _BuyAirtimeState extends State<BuyAirtime> {
 
   FocusNode? _phoneNumberNode;
 
-
-   @override
+  @override
   void initState() {
     super.initState();
-   _phoneNumberController = TextEditingController();
-
+    _phoneNumberController = TextEditingController();
   }
 
-
-  
   bool _isButtonPress = false;
   bool _isToggled = false;
 
@@ -46,13 +40,11 @@ class _BuyAirtimeState extends State<BuyAirtime> {
   String _airtimeCategory = 'Airtime';
   String _airtimeNetwork = 'MTN';
 
-
   var airtimeNetwork = [
     "MTN",
     "GLO",
     "9MOBILE",
   ];
-
 
   var sourceWallets = [
     "Select Source Wallet",
@@ -62,11 +54,8 @@ class _BuyAirtimeState extends State<BuyAirtime> {
 
   var airtimeTypes = [
     "VTU (Airtime or Data)",
-
   ];
-  var airtimeCategory = [
-   "Airtime"
-  ];
+  var airtimeCategory = ["Airtime"];
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
@@ -346,36 +335,33 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                   },
                 ),
                 const SizedBox(height: 25.0),
-               InputField(
-                        key: const Key('mobileNumber'),
-                        textController: _phoneNumberController,
-                        keyboardType: TextInputType.phone,
-                        node: _phoneNumberNode,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        obscureText: false,
-                        text: 'Input Mobile Number',
-                        hintText: 'Mobile number',
-                        textHeight: 5.0,
-                        borderColor: appPrimaryColor.withOpacity(0.9),
-                        suffixIcon: const Icon(
-                          Remix.phone_line,
-                          size: 18.0,
-                          color: Color(0xFF909090),
-                        ),
-                        validator: (value) {
-                          if (value!.trim().length == 11) {
-                            return null;
-                          }
-                          return "Enter a valid phone number";
-                        },
-                        onSaved: (value) {
-                          _phoneNumber = value!.trim();
-                          return null;
-                        },
-                      ),
-
-               
-                
+                InputField(
+                  key: const Key('mobileNumber'),
+                  textController: _phoneNumberController,
+                  keyboardType: TextInputType.phone,
+                  node: _phoneNumberNode,
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  obscureText: false,
+                  text: 'Input Mobile Number',
+                  hintText: 'Mobile number',
+                  textHeight: 5.0,
+                  borderColor: appPrimaryColor.withOpacity(0.9),
+                  suffixIcon: const Icon(
+                    Remix.phone_line,
+                    size: 18.0,
+                    color: Color(0xFF909090),
+                  ),
+                  validator: (value) {
+                    if (value!.trim().length == 11) {
+                      return null;
+                    }
+                    return "Enter a valid phone number";
+                  },
+                  onSaved: (value) {
+                    _phoneNumber = value!.trim();
+                    return null;
+                  },
+                ),
                 const SizedBox(
                   height: 40,
                 ),
@@ -402,7 +388,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                   height: 10,
                                 ),
                                 // Image.asset(
-                                //     "assets/images/confirmPayment.png"),
+                                //     Assets.check_success_outline),
                                 SizedBox(
                                   height: 10,
                                 ),
@@ -431,9 +417,7 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                         ),
                                         //recognizer: _longPressRecognizer,
                                       ),
-                                      TextSpan(
-                                          text:
-                                              " o phone number"),
+                                      TextSpan(text: " o phone number"),
                                       TextSpan(
                                         text: "\" 08105319288\" ",
                                         style: TextStyle(
@@ -525,37 +509,49 @@ class _BuyAirtimeState extends State<BuyAirtime> {
                                                   mediaQuery.size.height * 0.4,
                                               width: 350,
                                               child: Column(children: [
-                                                Row(crossAxisAlignment: CrossAxisAlignment.end,
-                                                mainAxisAlignment: MainAxisAlignment.end,
+                                                Row(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.end,
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
                                                   children: [
-                                                  CancelButton(),
-                                                ],),
+                                                    CancelButton(),
+                                                  ],
+                                                ),
                                                 SizedBox(
-                                    height: 10,
-                                  ),
-                                  Image.asset(
-                                      "assets/images/confirmPayment.png"),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  const SizedBox(
-                                    width: 250,
-                                    child: Text(
-                                      "You have successfully recharged the sum of ₦200 on 08063225964",
-                                      // maxLines: 2,
-                                      style: TextStyle(
-                                        fontSize: 14,
-                                        color: Color(0xff23710F),
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                      textAlign: TextAlign.center,
-                                    ),
-                                  ),
-                                  const SizedBox(
-                                    height: 20,
-                                  ),
-                                  Button(text: "Back to Wallet", onPress: (){}, color: appPrimaryColor, 
-                                  width: mediaQuery.size.width * 0.4, textColor: whiteColor, isLoading: false)
+                                                  height: 10,
+                                                ),
+                                                Image.asset(Assets
+                                                    .check_success_outline),
+                                                SizedBox(
+                                                  height: 10,
+                                                ),
+                                                const SizedBox(
+                                                  width: 250,
+                                                  child: Text(
+                                                    "You have successfully recharged the sum of ₦200 on 08063225964",
+                                                    // maxLines: 2,
+                                                    style: TextStyle(
+                                                      fontSize: 14,
+                                                      color: Color(0xff23710F),
+                                                      fontWeight:
+                                                          FontWeight.w400,
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                  ),
+                                                ),
+                                                const SizedBox(
+                                                  height: 20,
+                                                ),
+                                                Button(
+                                                    text: "Back to Wallet",
+                                                    onPress: () {},
+                                                    color: appPrimaryColor,
+                                                    width:
+                                                        mediaQuery.size.width *
+                                                            0.4,
+                                                    textColor: whiteColor,
+                                                    isLoading: false)
                                                 //add the transaction receipt
                                               ]),
                                             ),

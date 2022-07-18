@@ -4,7 +4,7 @@ import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/input_field.dart';
 
 class ItemDetailCategoryWidget extends StatefulWidget {
-  final Function(String? itemName, String description) callback;
+  final Function(String? itemName, String description, String weight) callback;
 
   const ItemDetailCategoryWidget(this.callback, {Key? key}) : super(key: key);
 
@@ -19,8 +19,10 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
 
   final TextEditingController _itemDescriptionController =
       TextEditingController();
+  final TextEditingController _itemWeightCC = TextEditingController();
 
   final FocusNode _itemDescriptionNode = FocusNode();
+  final FocusNode _itemWeightND = FocusNode();
 
   @override
   void initState() {
@@ -32,12 +34,16 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
     super.dispose();
     _itemDescriptionController.dispose();
     _itemDescriptionNode.dispose();
+    _itemWeightCC.dispose();
+    _itemWeightND.dispose();
   }
 
-  doCallback() => widget.callback(_pickItem, _itemDescriptionController.text);
+  doCallback() => widget.callback(
+      _pickItem, _itemDescriptionController.text, _itemWeightCC.text);
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Column(
       children: [
         DecoratedBox(
@@ -59,9 +65,8 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
                 icon: const Icon(Remix.arrow_down_s_line),
                 elevation: 16,
                 isExpanded: true,
-                style: TextStyle(
+                style: theme.textTheme.bodyText2!.copyWith(
                   color: appPrimaryColor.withOpacity(0.8),
-                  fontSize: 18.0,
                 ),
                 underline: Container(),
                 //empty line
@@ -96,7 +101,28 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
             }
             return "Enter a valid item description";
           },
-          onSaved: (value) {
+          onChanged: (value) {
+            doCallback();
+            return null;
+          },
+        ),
+        InputField(
+          obscureText: false,
+          text: '',
+          hintText: 'Item Weight',
+          textHeight: 0,
+          node: _itemWeightND,
+          textController: _itemWeightCC,
+          autovalidateMode: AutovalidateMode.onUserInteraction,
+          borderColor: appPrimaryColor.withOpacity(0.5),
+          area: null,
+          validator: (value) {
+            if (value!.trim().length > 1) {
+              return null;
+            }
+            return "Enter a valid item weight";
+          },
+          onChanged: (value) {
             doCallback();
             return null;
           },

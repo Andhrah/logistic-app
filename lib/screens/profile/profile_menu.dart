@@ -1,7 +1,9 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/mixins/logout_helper.dart';
@@ -13,7 +15,12 @@ import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_hist
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/settings.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
+import 'package:trakk/utils/app_toast.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
+import 'package:trakk/utils/font.dart';
+import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/profile_list.dart';
@@ -58,32 +65,28 @@ class _ProfileMenuState extends State<ProfileMenu>
       body: SafeArea(
         child: Column(
           children: [
+            12.heightInPixel(),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 BackIcon(
                   onPress: () {
                     Navigator.pop(context);
                   },
                 ),
-                Container(
-                  margin: const EdgeInsets.only(left: 60.0),
-                  alignment: Alignment.center,
-                  child: InkWell(
-                    onTap: () {},
-                    customBorder: const CircleBorder(),
-                    child: const Text(
-                      'PROFILE MENU',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
-                      ),
-                    ),
+                Text(
+                  'PROFILE MENU',
+                  style: theme.textTheme.subtitle1!.copyWith(
+                    fontWeight: kBoldWeight,
+                    // decoration: TextDecoration.underline,
                   ),
+                ),
+                const BackIcon(
+                  isPlaceHolder: true,
                 ),
               ],
             ),
+            12.heightInPixel(),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
@@ -101,12 +104,16 @@ class _ProfileMenuState extends State<ProfileMenu>
                             StreamBuilder<AppSettings>(
                                 stream: appSettingsBloc.appSettings,
                                 builder: (context, snapshot) {
+                                  String avatar = '';
                                   String firstName = '';
                                   String lastName = '';
                                   String phone = '';
                                   String email = '';
 
                                   if (snapshot.hasData) {
+                                    avatar = snapshot.data?.loginResponse?.data
+                                            ?.user?.avatar ??
+                                        '';
                                     firstName = snapshot.data?.loginResponse
                                             ?.data?.user?.firstName ??
                                         '';
@@ -125,41 +132,36 @@ class _ProfileMenuState extends State<ProfileMenu>
                                     crossAxisAlignment:
                                         CrossAxisAlignment.start,
                                     children: [
+                                      12.heightInPixel(),
                                       Expanded(
-                                        child: Container(
-                                          height: 78,
-                                          width: 80,
-                                          alignment: Alignment.centerLeft,
-                                          decoration: const BoxDecoration(
-                                              image: DecorationImage(
-                                                  image: AssetImage(
-                                                      'assets/images/ladySmiling.png'),
-                                                  fit: BoxFit.contain),
-                                              shape: BoxShape.circle),
+                                        child: ClipOval(
+                                          child: CachedNetworkImage(
+                                            imageUrl: avatar,
+                                            height: 70,
+                                            width: 70,
+                                            fit: BoxFit.cover,
+                                            placeholder: (context, url) =>
+                                                Image.asset(
+                                              Assets.dummy_avatar,
+                                              height: 70,
+                                              width: 70,
+                                              fit: BoxFit.cover,
+                                            ),
+                                            errorWidget: (context, url, err) =>
+                                                Image.asset(
+                                              Assets.dummy_avatar,
+                                              height: 70,
+                                              width: 70,
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                       const SizedBox(height: 8),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            firstName,
-                                            style: TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                          const SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            lastName,
-                                            style: const TextStyle(
-                                                fontSize: 24,
-                                                fontWeight: FontWeight.w600),
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
+                                      Text(
+                                        '$firstName $lastName',
+                                        style: theme.textTheme.headline6!
+                                            .copyWith(fontWeight: kBoldWeight),
                                       ),
                                       Row(
                                         mainAxisAlignment:
@@ -169,12 +171,14 @@ class _ProfileMenuState extends State<ProfileMenu>
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
                                             children: [
-                                              Text(phone),
-                                              const SizedBox(
-                                                height: 8,
+                                              Text(
+                                                phone,
+                                                style: theme.textTheme.caption,
                                               ),
+                                              2.heightInPixel(),
                                               Text(
                                                 email,
+                                                style: theme.textTheme.caption,
                                               ),
                                             ],
                                           ),
@@ -191,6 +195,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                                               },
                                               color: Colors.black,
                                               width: 80.0,
+                                              height: 40,
                                               textColor: whiteColor,
                                               isLoading: false),
                                         ],
@@ -238,10 +243,32 @@ class _ProfileMenuState extends State<ProfileMenu>
                                 ),
                               ],
                             ),
-                            trailing: const Icon(
-                              Remix.share_line,
-                              color: appPrimaryColor,
-                            ),
+                            trailing: StreamBuilder<AppSettings>(
+                                stream: appSettingsBloc.appSettings,
+                                builder: (context, snapshot) {
+                                  String code = '';
+
+                                  if (snapshot.hasData) {
+                                    // code = snapshot.data?.loginResponse?.data
+                                    //   ?.user?.code ??
+                                    // '';
+                                  }
+                                  return GestureDetector(
+                                    onTap: () {
+                                      try {
+                                        Share.share(code,
+                                            subject: 'Delivery Code');
+                                      } catch (err) {
+                                        appToast('Could not share empty text',
+                                            appToastType: AppToastType.failed);
+                                      }
+                                    },
+                                    child: const Icon(
+                                      Remix.share_line,
+                                      color: appPrimaryColor,
+                                    ),
+                                  );
+                                }),
                           ),
                         ),
                       ),
@@ -309,49 +336,49 @@ class _ProfileMenuState extends State<ProfileMenu>
                       const SizedBox(
                         height: 50,
                       ),
-                      Container(
-                        padding: const EdgeInsets.only(left: 30),
-                        height: 48,
-                        decoration: const BoxDecoration(
-                          color: whiteColor,
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 2,
-                              color: Color.fromARGB(255, 235, 235, 235),
-                              offset: Offset(2.0, 2.0), //(x,y)
-                              blurRadius: 16,
-                            ),
-                          ],
-                        ),
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Row(
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/images/Logout.svg',
-                                  color: redColor,
-                                ),
-                                const SizedBox(
-                                  width: 22,
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    logout(context, completeLogout: () {
-                                      Navigator.popUntil(context,
-                                          ModalRoute.withName(GetStarted.id));
-                                      Navigator.of(context).pushNamed(Login.id);
-                                    });
-                                  },
-                                  child: const Text(
+                      InkWell(
+                        onTap: () {
+                          logout(context, completeLogout: () {
+                            Navigator.popUntil(
+                                context, ModalRoute.withName(GetStarted.id));
+                            Navigator.of(context).pushNamed(Login.id);
+                          });
+                        },
+                        child: Container(
+                          padding: const EdgeInsets.only(left: 30),
+                          height: 48,
+                          decoration: const BoxDecoration(
+                            color: whiteColor,
+                            boxShadow: [
+                              BoxShadow(
+                                spreadRadius: 2,
+                                color: Color.fromARGB(255, 235, 235, 235),
+                                offset: Offset(2.0, 2.0), //(x,y)
+                                blurRadius: 16,
+                              ),
+                            ],
+                          ),
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Row(
+                                children: [
+                                  SvgPicture.asset(
+                                    'assets/images/Logout.svg',
+                                    color: redColor,
+                                  ),
+                                  const SizedBox(
+                                    width: 22,
+                                  ),
+                                  const Text(
                                     "Log out",
                                     style: TextStyle(
                                         color: redColor,
                                         fontSize: 14,
                                         fontWeight: FontWeight.w400),
                                   ),
-                                ),
-                              ],
-                            )),
+                                ],
+                              )),
+                        ),
                       ),
                       const SizedBox(
                         height: 45,
@@ -374,81 +401,6 @@ class _ProfileMenuState extends State<ProfileMenu>
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class MenuContainer extends StatelessWidget {
-  const MenuContainer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      height: 160,
-      child: Padding(
-        padding:
-            const EdgeInsets.only(left: 35.0, right: 35.0, top: 0, bottom: 0),
-        child: Stack(children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Container(
-                  height: 78,
-                  width: 80,
-                  alignment: Alignment.centerLeft,
-                  decoration: const BoxDecoration(
-                      image: DecorationImage(
-                          image: AssetImage('assets/images/ladySmiling.png'),
-                          fit: BoxFit.contain),
-                      shape: BoxShape.circle),
-                ),
-              ),
-              const SizedBox(height: 8),
-              const Text(
-                'Malik Johnson',
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-              ),
-              const SizedBox(
-                height: 8,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text('+234816559234'),
-                      SizedBox(
-                        height: 8,
-                      ),
-                      Text('malhohn11@gmail.com'),
-                    ],
-                  ),
-                  Button(
-                      text: 'Edit profile',
-                      onPress: () {
-                        // var box =  Hive.box('userData');
-                        // String name = box.get('token');
-                        // dynamic id = box.get('id');
-
-                        // print("This is the token " + name);
-                        // print("This is the user id " + id.toString());
-
-                        Navigator.of(context).pushNamed(EditProfile.id);
-                      },
-                      color: Colors.black,
-                      width: 80.0,
-                      textColor: whiteColor,
-                      isLoading: false),
-                ],
-              ),
-            ],
-          ),
-        ]),
       ),
     );
   }

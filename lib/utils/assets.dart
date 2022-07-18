@@ -1,9 +1,10 @@
 class Assets {
   //general
   static const String marker_icon = 'assets/images/rider/dummy_avatar.png';
+  static const String check_success_outline =
+      'assets/images/check_success_outline.png';
 
   //rider
-  static const String check_success = 'assets/images/rider/check_success.png';
   static const String distance_icon = 'assets/images/rider/distance_icon.png';
   static const String dummy_avatar = 'assets/images/rider/dummy_avatar.png';
   static const String rider_home_bg = 'assets/images/rider/home_bg.png';
@@ -28,7 +29,13 @@ class Assets {
   static const String time_outline = 'assets/images/rider/time_outline.png';
 
 //  customer
-  static const String ride = 'assets/images/ride.png';
-  static const String empty_map_bg = 'assets/images/empty_map.png';
-  static const String rider_vehicle = "assets/images/rider_vehicle.png";
+  static const String ride = 'assets/images/customer/ride.png';
+  static const String empty_map_bg = 'assets/images/customer/empty_map.png';
+  static const String rider_vehicle =
+      "assets/images/customer/rider_vehicle.png";
+  static const String track_call_icon =
+      "assets/images/customer/track_call_icon.png";
+  static const String track_chat_icon =
+      "assets/images/customer/track_chat_icon.png";
+  static const String share_icon = "assets/images/customer/share_icon.png";
 }

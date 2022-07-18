@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:trakk/models/order/available_rider_response.dart';
 import 'package:trakk/models/order/order.dart';
@@ -27,7 +29,7 @@ class _DispatchSummaryState extends State<DispatchSummary> {
     OrderModel orderModel = OrderModel.fromJson(arg["orderModel"]);
     AvailableRiderDataRider rider =
         AvailableRiderDataRider.fromJson(arg["riderModel"]);
-
+    print('orderModel 2: ${orderModel.toJson()}');
     return Scaffold(
         body: SafeArea(
             child: Column(
@@ -362,8 +364,8 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                         horizontal: 10.0, vertical: 24.0),
                     height: 170,
                     width: MediaQuery.of(context).size.width,
-                    child: Image.memory(
-                      createByteFromString(orderModel.data?.itemImage ?? ''),
+                    child: Image.file(
+                      File(orderModel.data?.itemImage ?? ''),
                       height: 90.0,
                     ),
                   ),
@@ -480,7 +482,7 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                   padding: const EdgeInsets.symmetric(vertical: 44),
                   alignment: Alignment.center,
                   child: Text(
-                    'Total Cost: $naira${formatMoney(orderModel.data?.totalAmount ?? 0.0)}',
+                    'Total Cost: $naira${formatMoney(rider.cost ?? 0.0)}',
                     style: const TextStyle(
                         fontSize: 20.0,
                         color: appPrimaryColor,
@@ -494,7 +496,10 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                     text: 'Proceed to payment',
                     onPress: () {
                       orderModel = orderModel.copyWith(
-                          data: orderModel.data!.copyWith(riderId: rider.id));
+                          data: orderModel.data!.copyWith(
+                              riderId: rider.id,
+                              amount: rider.cost,
+                              totalAmount: rider.cost));
 
                       Navigator.pushNamed(context, Payment.id, arguments: {
                         'orderModel': orderModel.toJson(),

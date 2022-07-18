@@ -11,6 +11,7 @@ typedef OnButtonClicked = Function(RiderOrderState data, String orderNo,
 
 class RiderBottomSheetContentOnGoing extends StatelessWidget {
   final RiderOrderState orderState;
+  final String orderId;
   final String orderNo;
   final String deliveryCode;
   final double pickupLatitude;
@@ -22,6 +23,7 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
   const RiderBottomSheetContentOnGoing(
       {Key? key,
       required this.orderState,
+      required this.orderId,
       required this.orderNo,
       required this.deliveryCode,
       required this.pickupLatitude,
@@ -166,7 +168,7 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
                                     : 'Done',
                 fontSize: 14,
                 onPress: () {
-                  onButtonClick(orderState, orderNo, deliveryCode,
+                  onButtonClick(orderState, orderId, deliveryCode,
                       pickupLatitude, pickupLongitude);
                 },
                 color: (orderState == RiderOrderState.isRequestAccepted ||
@@ -184,23 +186,29 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
 
 class RiderBottomSheetContentCompleted extends StatelessWidget {
   final RiderOrderState orderState;
+  final String orderId;
   final String orderNo;
   final String deliveryCode;
   final double pickupLatitude;
   final double pickupLongitude;
   final double deliveryLatitude;
   final double deliveryLongitude;
+  final String deliveryDate;
+  final String pickupDate;
   final OnButtonClicked onButtonClick;
 
   const RiderBottomSheetContentCompleted(
       {Key? key,
       required this.orderState,
+      required this.orderId,
       required this.orderNo,
       required this.deliveryCode,
       required this.pickupLatitude,
       required this.pickupLongitude,
       required this.deliveryLatitude,
       required this.deliveryLongitude,
+      required this.deliveryDate,
+      required this.pickupDate,
       required this.onButtonClick})
       : super(key: key);
 
@@ -253,21 +261,12 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                       fontWeight: kSemiBoldWeight, color: dividerColor),
                 ),
                 4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
+                Text(
+                  pickupDate,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyText1!
+                      .copyWith(fontWeight: kMediumWeight),
+                )
               ],
             )
           ],
@@ -297,21 +296,12 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                       fontWeight: kSemiBoldWeight, color: dividerColor),
                 ),
                 4.heightInPixel(),
-                FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
-                    builder: (context, snapshot) {
-                      String address = '';
-                      if (snapshot.hasData) {
-                        address = snapshot.data ?? '';
-                      }
-                      return Text(
-                        address,
-                        textAlign: TextAlign.center,
-                        style: theme.textTheme.bodyText1!
-                            .copyWith(fontWeight: kMediumWeight),
-                      );
-                    }),
+                Text(
+                  deliveryDate,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.bodyText1!
+                      .copyWith(fontWeight: kMediumWeight),
+                )
               ],
             )
           ],
@@ -342,8 +332,8 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                 ),
                 4.heightInPixel(),
                 FutureBuilder<String>(
-                    future:
-                        getAddressFromLatLng(pickupLatitude, pickupLongitude),
+                    future: getAddressFromLatLng(
+                        deliveryLatitude, deliveryLongitude),
                     builder: (context, snapshot) {
                       String address = '';
                       if (snapshot.hasData) {
@@ -363,7 +353,7 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
         44.heightInPixel(),
         Center(
           child: Image.asset(
-            Assets.check_success,
+            Assets.check_success_outline,
             width: 54,
             height: 54,
           ),
@@ -375,7 +365,7 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
                 text: 'Item delivered',
                 fontSize: 14,
                 onPress: () {
-                  onButtonClick(orderState, orderNo, deliveryCode,
+                  onButtonClick(orderState, orderId, deliveryCode,
                       pickupLatitude, pickupLongitude);
                 },
                 color: deepGreen,

@@ -14,7 +14,9 @@ class OrderHistoryResponse {
         status: json["status"] == null ? null : json["status"],
         data: json["data"] == null
             ? null
-            : OrderHistoryResponseData.fromJson(json["data"]),
+            : json["data"] is List
+                ? null
+                : OrderHistoryResponseData.fromJson(json["data"]),
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
       );
 
@@ -148,7 +150,7 @@ class OrderHistoryDatumAttributes {
   final String? pickup;
   final String? pickupLongitude;
   final String? pickupLatitude;
-  final int? totalAmount;
+  final double? totalAmount;
   final String? pickupDate;
   final String? receiverName;
   final String? receiverPhone;
@@ -160,7 +162,7 @@ class OrderHistoryDatumAttributes {
   final String? itemDescription;
   final String? itemImage;
   final String? weight;
-  final int? amount;
+  final double? amount;
   final String? destination;
   final String? destinationLatitude;
   final String? destinationLongitude;
@@ -187,7 +189,8 @@ class OrderHistoryDatumAttributes {
             json["pickupLongitude"] == null ? null : json["pickupLongitude"],
         pickupLatitude:
             json["pickupLatitude"] == null ? null : json["pickupLatitude"],
-        totalAmount: json["totalAmount"] == null ? null : json["totalAmount"],
+        totalAmount:
+            json["totalAmount"] == null ? null : json["totalAmount"].toDouble(),
         pickupDate: json["pickupDate"] == null ? null : json["pickupDate"],
         receiverName:
             json["receiverName"] == null ? null : json["receiverName"],
@@ -203,7 +206,7 @@ class OrderHistoryDatumAttributes {
             json["itemDescription"] == null ? null : json["itemDescription"],
         itemImage: json["itemImage"] == null ? null : json["itemImage"],
         weight: json["weight"] == null ? null : json["weight"],
-        amount: json["amount"] == null ? null : json["amount"],
+        amount: json["amount"] == null ? null : json["amount"].toDouble(),
         destination: json["destination"] == null ? null : json["destination"],
         destinationLatitude: json["destinationLatitude"] == null
             ? null

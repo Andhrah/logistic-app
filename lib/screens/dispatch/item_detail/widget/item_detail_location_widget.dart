@@ -81,6 +81,7 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Column(
       children: [
         Row(
@@ -179,12 +180,17 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
               return ListTile(
                 leading: const CircleAvatar(
                   backgroundColor: appPrimaryColor,
+                  radius: 20,
                   child: Icon(
                     Remix.pin_distance_fill,
                     color: secondaryColor,
+                    size: 18,
                   ),
                 ),
-                title: Text(predictions[index].description.toString()),
+                title: Text(
+                  predictions[index].description.toString(),
+                  style: theme.textTheme.bodyText2,
+                ),
                 onTap: () async {
                   final placeId = predictions[index].placeId!;
                   final details = await googlePlace.details.get(placeId);

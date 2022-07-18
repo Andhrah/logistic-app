@@ -6,16 +6,14 @@ import 'package:location/location.dart' as Loca;
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
-import 'package:trakk/bloc/map_socket.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
+import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/models/rider/order_response.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/helper_utils.dart';
 
 class RiderMapProvider extends ChangeNotifier {
-  //final GetVehiclesListService _getVehiclesListService = GetVehiclesListService();
-
   static RiderMapProvider riderMapProvider(BuildContext context,
       {bool listen = false}) {
     return Provider.of<RiderMapProvider>(context, listen: listen);
@@ -23,28 +21,6 @@ class RiderMapProvider extends ChangeNotifier {
 
   bool isNewConnection = false;
   Socket? socket;
-
-  // void connect() async {
-  //   var appSettings = await appSettingsBloc.fetchAppSettings();
-  //   String? token = appSettings.loginResponse?.data?.token ?? '';
-  //
-  //   socket = IO.io("http://134.122.92.247:1440", <String, dynamic>{
-  //     "transports": ["websocket"],
-  //     "autoConnect": false,
-  //     'path': '/socket/v1/',
-  //     'auth': {
-  //       // put token here, it will be used to make authenticated calls
-  //       "token": token
-  //     }
-  //   });
-  //   socket?.connect();
-  //   socket?.onConnect((data) => print(" the sever is connected"));
-  //   // listenToRequest();
-  //   print("this is the socket response " + socket!.connected.toString());
-  //   //ride request with the rider id, so we will retrieve the rider's id and use it here
-  //
-  //   //socket.emit("message", "Test for riders");
-  // }
 
   connectAndListenToSocket(
       {String? responseID,
@@ -66,7 +42,8 @@ class RiderMapProvider extends ChangeNotifier {
 
     if (onConnected != null) onConnected();
     socket?.onConnect((data) {
-      if (socket?.id != null) streamSocket.updateSocketID(socket?.id ?? '');
+      if (socket?.id != null)
+        riderStreamSocket.updateSocketID(socket?.id ?? '');
 
       startUpdatingUserLocation(riderID);
 
@@ -102,7 +79,7 @@ class RiderMapProvider extends ChangeNotifier {
     });
     socket?.on("rider_request_$riderID", (data) {
       log('rider_request_data ${jsonEncode(data)}');
-      streamSocket.addResponseOnMove(OrderResponse.fromJson(data));
+      riderStreamSocket.addResponseOnMove(OrderResponse.fromJson(data));
       riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
     });
 
@@ -117,11 +94,12 @@ class RiderMapProvider extends ChangeNotifier {
     }
   }
 
-  sendData(String riderID, Loca.LocationData? _loca) async {
+  sendData(String riderID, Loca.LocationData? _loca, int? orderId) async {
+    print('trying to emit');
     if (_loca != null) {
       if ((socket?.active ?? false) == true) {
         double lat =
-            double.tryParse(_loca.longitude.toString().replaceAll(',', '')) ??
+            double.tryParse(_loca.latitude.toString().replaceAll(',', '')) ??
                 0.0;
         double long =
             double.tryParse(_loca.longitude.toString().replaceAll(',', '')) ??
@@ -129,14 +107,17 @@ class RiderMapProvider extends ChangeNotifier {
         String address = await getAddressFromLatLng(lat, long);
         Map<String, dynamic> _location = {
           'riderId': riderID,
+          'orderId': orderId,
           'currentLatitude': _loca.latitude.toString(),
           'currentLongitude': _loca.longitude.toString(),
           'currentLocation': address == '...' ? '' : address
         };
+
+        print(_location);
         _location.removeWhere((key, value) => value == null);
 
         if (socket?.id != null) {
-          streamSocket.updateSocketID(socket?.id ?? '');
+          riderStreamSocket.updateSocketID(socket?.id ?? '');
         }
 
         socket?.emit('riders_location', _location);
@@ -149,7 +130,13 @@ class RiderMapProvider extends ChangeNotifier {
     miscBloc.fetchLocation();
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
-      // sendData(riderID, _loca);
+      print('loation has changed');
+      sendData(
+          riderID,
+          _loca,
+          riderStreamSocket.behaviorSubject.hasValue
+              ? riderStreamSocket.behaviorSubject.value.model?.order?.id
+              : null);
     });
   }
 }

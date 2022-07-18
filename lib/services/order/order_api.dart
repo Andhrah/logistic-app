@@ -33,24 +33,34 @@ class OrderAPI extends BaseNetworkCallHandler {
     });
   }
 
-  Future<Operation> getOrderHistory() async {
+  Future<Operation> getRiderOrderHistory(
+      String startDate, String endDate) async {
     String userID = await appSettingsBloc.getUserID;
 
-    return runAPI('api/riders/$userID?populate=*', HttpRequestType.get);
+    return runAPI(
+        'api/orders?populate=*&filters[pickupDate][\$gt]=$startDate&filters[pickupDate][\$lte]=$endDate&filters[userId][id][\$eq]=$userID',
+        HttpRequestType.get);
   }
 
   ///  below are for customers
 
   Future<Operation> getNearbyRiders(LatLng pickup, LatLng dropOff) async {
     return runAPI(
-        'api/nearest-riders?latitude=6.43647509542&longitude=3.44761820108&pickUp=6.43647509542%7C3.44761820108&dropOff=6.603160%7C3.239020',
-        // 'api/nearest-riders?latitude=${pickup.latitude}&longitude=${pickup.longitude}&pickUp=${pickup.latitude}|${pickup.longitude}&dropOff=${dropOff.latitude}|${dropOff.longitude}',
+        // 'api/nearest-riders?latitude=6.43647509542&longitude=3.44761820108&pickUp=6.43647509542%7C3.44761820108&dropOff=6.603160%7C3.239020',
+        'api/nearest-riders?latitude=${pickup.latitude}&longitude=${pickup.longitude}&pickUp=${pickup.latitude}|${pickup.longitude}&dropOff=${dropOff.latitude}|${dropOff.longitude}',
         HttpRequestType.get);
   }
 
   Future<Operation> createOrder(OrderModel orderModel) async {
     return runAPI('api/orders?populate=*', HttpRequestType.post,
         body: orderModel.toJson());
+  }
+
+  Future<Operation> getCustomerOrders() async {
+    String userID = await appSettingsBloc.getUserID;
+
+    return runAPI('api/orders?populate=*&filters[userId][id][\$eq]=$userID',
+        HttpRequestType.get);
   }
 }
 

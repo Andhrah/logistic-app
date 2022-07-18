@@ -6,8 +6,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/provider/rider/rider_map_provider.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
 typedef CompleteLogout();
@@ -24,6 +26,12 @@ class LogoutHelper {
   }
 
   _doLogout() async {
+    UserType userType = await appSettingsBloc.getUserType;
+    if (userType == UserType.merchant) {
+      var injector = RiderMapProvider.riderMapProvider(
+          SingletonData.singletonData.navKey.currentState!.context);
+      injector.disconnectSocket();
+    }
     await appSettingsBloc.setLogOut();
   }
 

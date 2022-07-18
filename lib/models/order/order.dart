@@ -69,7 +69,7 @@ class OrderModelData {
   final String? senderPhone;
   final String? itemName;
   final String? itemDescription;
-  final String? itemImage;
+  String? itemImage;
   final String? weight;
   final double? amount;
   final String? destination;
@@ -165,7 +165,7 @@ class OrderModelData {
         itemName: json["itemName"] == null ? null : json["itemName"],
         itemDescription:
             json["itemDescription"] == null ? null : json["itemDescription"],
-        // itemImage: json["itemImage"] == null ? null : json["itemImage"],
+        itemImage: json["itemImage"] == null ? null : json["itemImage"],
         weight: json["weight"] == null ? null : json["weight"],
         amount: json["amount"] == null ? null : json["amount"].toDouble(),
         destination: json["destination"] == null ? null : json["destination"],

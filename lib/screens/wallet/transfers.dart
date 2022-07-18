@@ -1,15 +1,12 @@
 import 'dart:ui';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:remixicon/remixicon.dart';
-
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/wallet/qr_code_payment.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -169,7 +166,6 @@ class _TransferWidgetState extends State<TransferWidget> {
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
-
 
   @override
   Widget build(BuildContext context) {
@@ -766,7 +762,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                               height: 10,
                             ),
                             // Image.asset(
-                            //     "assets/images/confirmPayment.png"),
+                            //    Assets.check_success_outline),
                             SizedBox(
                               height: 10,
                             ),
@@ -879,8 +875,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                                         context: context,
                                         builder: (BuildContext context) =>
                                             AlertDialog(
-                                              content: 
-                                              SizedBox(
+                                              content: SizedBox(
                                                 height: 600,
                                                 child: Column(
                                                   children: [
@@ -900,7 +895,8 @@ class _TransferWidgetState extends State<TransferWidget> {
                                                       child: Column(
                                                         children: [
                                                           Image.asset(
-                                                            "assets/images/confirmPayment.png",
+                                                            Assets
+                                                                .check_success_outline,
                                                             height: 40,
                                                             width: 40,
                                                           ),
@@ -948,7 +944,8 @@ class _TransferWidgetState extends State<TransferWidget> {
                                                     Container(
                                                       padding:
                                                           EdgeInsets.symmetric(
-                                                              horizontal: 10,),
+                                                        horizontal: 10,
+                                                      ),
                                                       margin: EdgeInsets.only(
                                                           top: 30, bottom: 20),
                                                       height: 80,
@@ -1007,7 +1004,9 @@ class _TransferWidgetState extends State<TransferWidget> {
                                                         ],
                                                       ),
                                                     ),
-                                                    const SizedBox(height: 20,),
+                                                    const SizedBox(
+                                                      height: 20,
+                                                    ),
                                                     Row(
                                                       children: [
                                                         Expanded(
@@ -1040,7 +1039,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                                                                               child: Column(
                                                                                 children: [
                                                                                   Image.asset(
-                                                                                    "assets/images/confirmPayment.png",
+                                                                                    Assets.check_success_outline,
                                                                                     height: 40,
                                                                                     width: 40,
                                                                                   ),
@@ -1455,7 +1454,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                               height: 10,
                             ),
                             // Image.asset(
-                            //     "assets/images/confirmPayment.png"),
+                            //    Assets.check_success_outline),
                             const SizedBox(
                               height: 10,
                             ),
@@ -1709,5 +1708,3 @@ class _Transfers extends State<Transfers> {
     );
   }
 }
-
-
