@@ -22,6 +22,10 @@ class AddRiderToMerchantModel {
   Map<String, dynamic> toJson() => {
         "data": data == null ? null : data!.toJson(),
       };
+
+  Map<String, dynamic> toAddRiderToServerJson() => {
+        "data": data == null ? null : data!.toAddRiderToServerJson(),
+      };
 }
 
 class AddRiderToMerchantModelData {
@@ -146,4 +150,24 @@ class AddRiderToMerchantModelData {
         "currentLatitude": currentLatitude == null ? null : currentLatitude,
         "currentLongitude": currentLongitude == null ? null : currentLongitude,
       };
+
+  Map<String, dynamic> toAddRiderToServerJson() {
+    Map<String, dynamic> map = {
+      "userId": userId == null ? null : userId,
+      "merchantId": merchantId == null ? null : merchantId,
+      "avatar": avatar == null ? null : avatar,
+      "dateOfBirth": dateOfBirth == null ? null : dateOfBirth,
+      "currentLocation": currentLocation == null ? null : currentLocation,
+      "stateOfOrigin": stateOfOrigin == null ? null : stateOfOrigin,
+      "stateOfResidence": stateOfResidence == null ? null : stateOfResidence,
+      "residentialAddress":
+          residentialAddress == null ? null : residentialAddress,
+      "phone": phone == null ? null : phone,
+      "status": status == null ? null : status,
+      "currentLatitude": currentLatitude == null ? null : currentLatitude,
+      "currentLongitude": currentLongitude == null ? null : currentLongitude,
+    };
+    map.removeWhere((key, value) => value == null);
+    return map;
+  }
 }

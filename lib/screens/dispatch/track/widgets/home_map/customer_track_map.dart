@@ -8,7 +8,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trakk/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
-import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/screens/dispatch/track/widgets/home_map/customer_bottom_sheet.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/helper_utils.dart';
@@ -46,8 +45,8 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    final arg = UserOrderHistoryDatum.fromJson(
-        (ModalRoute.of(context)!.settings.arguments) as Map<String, dynamic>);
+    // final datum = UserOrderHistoryDatum.fromJson(
+    //     (ModalRoute.of(context)!.settings.arguments) as Map<String, dynamic>);
 
     return Container(
       constraints: const BoxConstraints.expand(),

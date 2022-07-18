@@ -1,11 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/models/rider/add_vehicle_to_merchant_model.dart';
 import 'package:trakk/screens/merchant/add_rider_2/widgets/doc_selector_widget.dart';
+import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
@@ -24,8 +24,9 @@ class AddRider2 extends StatefulWidget {
   State<AddRider2> createState() => _AddRider2State();
 }
 
-class _AddRider2State extends State<AddRider2> {
-  Map<String, File?> _files = {};
+class _AddRider2State extends State<AddRider2>
+    with MerchantAddRiderAndVehicleHelper {
+  Map<String, String> _files = {};
 
   bool _isButtonPress = false;
 
@@ -81,11 +82,14 @@ class _AddRider2State extends State<AddRider2> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    AddRiderToMerchantModel model =
-        AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
+    final arg = ModalRoute.of(context)!.settings.arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as Map
+        : null;
 
-    print(model.toJson());
+    AddRiderToMerchantModel? model = arg == null
+        ? null
+        : AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -283,13 +287,13 @@ class _AddRider2State extends State<AddRider2> {
                       return null;
                     },
                   ),
-                  44.heightInPixel(),
-                  AddRiderVehicleDocSelectorWidget((Map<String, File?> files) {
-                    _files = files;
-                  }),
                   24.heightInPixel(),
                   _DeliverBoxWidget((bool _deliveryBox) {
                     deliveryBox = deliveryBox;
+                  }),
+                  24.heightInPixel(),
+                  AddRiderVehicleDocSelectorWidget((Map<String, String> files) {
+                    _files = files;
                   }),
                   const SizedBox(height: 40.0),
                   Align(
@@ -299,12 +303,7 @@ class _AddRider2State extends State<AddRider2> {
                         //onPress:// _onSubmit,
                         onPress: () async {
                           String merchantId = await appSettingsBloc.getUserID;
-                          model = model.copyWith(
-                              data: model.data!.copyWith(
-                            merchantId: merchantId,
-                          ));
-
-                          AddVehicleToMerchantModel vehicle =
+                          AddVehicleToMerchantModel vehicleModel =
                               AddVehicleToMerchantModel(
                                   data: AddRiderToMerchantData(
                                       name: _vehicleNameController.text,
@@ -312,65 +311,32 @@ class _AddRider2State extends State<AddRider2> {
                                       number: _vehicleNumberController.text,
                                       model: _vehicleModelController.text,
                                       capacity: _vehicleCapacityController.text,
-                                      deliveryBox: deliveryBox));
-                          // showDialog<String>(
-                          //   // barrierDismissible: true,
-                          //   context: context,
-                          //   builder: (BuildContext context) => AlertDialog(
-                          //     // title: const Text('AlertDialog Title'),
-                          //     contentPadding: const EdgeInsets.symmetric(
-                          //         horizontal: 24.0, vertical: 10.0),
-                          //     content: SizedBox(
-                          //       height: 250.0,
-                          //       child: Column(children: [
-                          //         Row(
-                          //           mainAxisAlignment: MainAxisAlignment.end,
-                          //           children: [
-                          //             InkWell(
-                          //                 onTap: () {
-                          //                   Navigator.of(context)
-                          //                       .pushNamed(CompanyHome.id);
-                          //                 },
-                          //                 child: const CancelButton())
-                          //           ],
-                          //         ),
-                          //         20.heightInPixel(),
-                          //         Align(
-                          //           alignment: Alignment.center,
-                          //           child: Column(
-                          //             children: [
-                          //               const Text(
-                          //                 'Suzuki No. 889 has been added to vehicle lists',
-                          //                 style: TextStyle(
-                          //                     fontSize: 18,
-                          //                     fontWeight: FontWeight.w400),
-                          //               ),
-                          //               const SizedBox(height: 30),
-                          //               Button(
-                          //                   text: 'View all vehicles',
-                          //                   onPress: () {
-                          //                     // Navigator.of(context)
-                          //                     //     .pushNamed(ListOfVehicles.id);
-                          //                   },
-                          //                   color: appPrimaryColor,
-                          //                   textColor: whiteColor,
-                          //                   isLoading: false,
-                          //                   width: 300
-                          //                   //MediaQuery.of(context).size.width/1.6,
-                          //                   ),
-                          //             ],
-                          //           ),
-                          //         ),
-                          //       ]),
-                          //     ),
-                          //   ),
-                          // );
+                                      deliveryBox: deliveryBox,
+                                      files: _files));
+
+                          if (model != null) {
+                            ///This flow is for when the user is from add ride
+                            model = model!.copyWith(
+                                data: model!.data!.copyWith(
+                              merchantId: merchantId,
+                            ));
+
+                            doCreateRider(model!, vehicleModel,
+                                onSuccess: () => Navigator.popUntil(
+                                    context, ModalRoute.withName(Riders.id)));
+                          } else {
+                            ///  This flow is for direct add vehicle only
+                            addVehicle(vehicleModel,
+                                onSuccessCallback: () =>
+                                    Navigator.pop(context));
+                          }
                         },
                         color: appPrimaryColor,
                         textColor: whiteColor,
                         isLoading: _loading,
                         width: double.infinity),
                   ),
+                  24.heightInPixel(),
                 ],
               ),
             ),
