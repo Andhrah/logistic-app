@@ -68,7 +68,8 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
 
                     return GoogleMap(
                         onMapCreated: _onMapCreated,
-                        myLocationEnabled: true,
+                        myLocationEnabled: false,
+                        myLocationButtonEnabled: false,
                         zoomGesturesEnabled: true,
                         onCameraMove: (CameraPosition pos) {},
                         gestureRecognizers: {}..addAll([

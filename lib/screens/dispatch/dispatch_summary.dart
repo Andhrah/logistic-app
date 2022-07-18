@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:trakk/models/order/available_rider_response.dart';
 import 'package:trakk/models/order/order.dart';
@@ -362,8 +364,8 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                         horizontal: 10.0, vertical: 24.0),
                     height: 170,
                     width: MediaQuery.of(context).size.width,
-                    child: Image.memory(
-                      createByteFromString(orderModel.data?.itemImage ?? ''),
+                    child: Image.file(
+                      File(orderModel.data?.itemImage ?? ''),
                       height: 90.0,
                     ),
                   ),

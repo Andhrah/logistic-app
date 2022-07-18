@@ -13,6 +13,7 @@ import 'package:trakk/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/services/order/order_api.dart';
 import 'package:trakk/utils/app_toast.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
 import 'package:trakk/utils/singleton_data.dart';
@@ -66,7 +67,7 @@ class CustomerOrderHelper {
       String? filePath, Function({String? imageUrl}) callback) async {
     ///This checks if the image exist and upload, the proceeds to create order.
     ///If image is null, it proceeds to image order
-    if (filePath != null) {
+    if (filePath != null && cloudinaryUploadPreset.isNotEmpty) {
       File file = File(filePath);
       showDialog(
           context: _authContext,
@@ -77,7 +78,7 @@ class CustomerOrderHelper {
 
       final response =
           await cloudinary.unsignedUploadResource(CloudinaryUploadResource(
-              uploadPreset: '',
+              uploadPreset: cloudinaryUploadPreset,
               filePath: file.path,
               fileBytes: file.readAsBytesSync(),
               resourceType: CloudinaryResourceType.image,

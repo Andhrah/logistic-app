@@ -83,7 +83,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
               destinationLatitude: dropOffLatLng.latitude.toString(),
               destinationLongitude: dropOffLatLng.longitude.toString(),
               distance:
-                  '${(Geolocator.distanceBetween(pickupLatLng.latitude, pickupLatLng.longitude, dropOffLatLng.latitude, dropOffLatLng.longitude).round() / 1000)} km',
+                  '${(Geolocator.distanceBetween(pickupLatLng.latitude, pickupLatLng.longitude, dropOffLatLng.latitude, dropOffLatLng.longitude).round() / 1000).toStringAsFixed(2)} km',
               pickupDate: _pickupDate,
               deliveryDate: _dropOffDate,
               itemName: _itemName,

@@ -60,12 +60,13 @@ import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
 import 'screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'screens/profile/profile_menu.dart';
 
-final cloudinary = Cloudinary.basic(cloudName: 'cloudName');
+final cloudinary = Cloudinary.basic(cloudName: cloudinaryCloudName);
 
 void main() async {
   SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');

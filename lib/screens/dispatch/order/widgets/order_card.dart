@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/screens/dispatch/track/customer_track_screen.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/font.dart';
@@ -10,14 +11,37 @@ import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/widgets/button.dart';
 
-class UserOrderCard extends StatelessWidget {
+class UserOrderCard extends StatefulWidget {
   final UserOrderHistoryDatum datum;
 
-  const UserOrderCard(this.datum, {Key? key}) : super(key: key);
+  UserOrderCard(this.datum, {Key? key}) : super(key: key);
+
+  @override
+  State<UserOrderCard> createState() => _UserOrderCardState();
+}
+
+class _UserOrderCardState extends State<UserOrderCard> {
+  final GlobalKey _key = GlobalKey();
+  double height = 50;
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      Future.delayed(const Duration(milliseconds: 100), () {
+        final renderbox = _key.currentContext!.findRenderObject()! as RenderBox;
+
+        setState(() => height = renderbox.size.height);
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    bool isOrderCompleted =
+        (widget.datum.attributes?.deliveryDate ?? '') == 'completed';
 
     return Card(
       color: whiteColor,
@@ -46,7 +70,7 @@ class UserOrderCard extends StatelessWidget {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '#${datum.attributes?.orderRef ?? ''}',
+                  '#${widget.datum.attributes?.orderRef ?? ''}',
                   textScaleFactor: 1.0,
                   style: TextStyle(
                     color: appPrimaryColor.withOpacity(0.3),
@@ -63,13 +87,17 @@ class UserOrderCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 const SizedBox(width: 20.0),
-                Image.asset(
-                  'assets/images/order_highlighter2.png',
-                  height: 100,
-                  width: 13,
+                AnimatedContainer(
+                  duration: const Duration(milliseconds: 300),
+                  height: height,
+                  width: 30,
+                  child: Image.asset(
+                    Assets.pickup_route,
+                  ),
                 ),
                 const SizedBox(width: 20.0),
                 Flexible(
+                  key: _key,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -83,7 +111,7 @@ class UserOrderCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 8.0),
                       Text(
-                        datum.attributes?.pickup ?? '',
+                        widget.datum.attributes?.pickup ?? '',
                         style: theme.textTheme.subtitle1!.copyWith(
                             color: appPrimaryColor, fontWeight: kBoldWeight),
                       ),
@@ -97,7 +125,7 @@ class UserOrderCard extends StatelessWidget {
                       ),
                       const SizedBox(height: 10.0),
                       Text(
-                        datum.attributes?.destination ?? '',
+                        widget.datum.attributes?.destination ?? '',
                         style: theme.textTheme.subtitle1!.copyWith(
                             color: appPrimaryColor, fontWeight: kBoldWeight),
                       ),
@@ -113,6 +141,7 @@ class UserOrderCard extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
             child: Row(children: [
               Expanded(
+                flex: 2,
                 child: Row(
                   children: [
                     const Icon(
@@ -120,7 +149,27 @@ class UserOrderCard extends StatelessWidget {
                       color: secondaryColor,
                     ),
                     Text(
-                      '$naira${formatMoney(datum.attributes?.amount ?? 0.0)}',
+                      '$naira${formatMoney(widget.datum.attributes?.amount ?? 0.0)}',
+                      style: theme.textTheme.subtitle2!.copyWith(
+                          color: secondaryColor, fontWeight: kBoldWeight),
+                    ),
+                  ],
+                ),
+              ),
+              Expanded(
+                flex: 3,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(
+                      Remix.time_fill,
+                      color: secondaryColor,
+                    ),
+                    Text(
+                      (widget.datum.attributes?.deliveryDate ?? '').isEmpty
+                          ? ''
+                          : getTimeFromDate(
+                              dateValue: widget.datum.attributes?.deliveryDate),
                       style: theme.textTheme.subtitle2!.copyWith(
                           color: secondaryColor, fontWeight: kBoldWeight),
                     ),
@@ -130,32 +179,13 @@ class UserOrderCard extends StatelessWidget {
               Expanded(
                 flex: 2,
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Remix.time_fill,
-                      color: secondaryColor,
-                    ),
-                    Text(
-                      (datum.attributes?.deliveryDate ?? '').isEmpty
-                          ? ''
-                          : getTimeFromDate(
-                              dateValue: datum.attributes?.deliveryDate),
-                      style: theme.textTheme.subtitle2!.copyWith(
-                          color: secondaryColor, fontWeight: kBoldWeight),
-                    ),
-                  ],
-                ),
-              ),
-              Expanded(
-                child: Row(
                   children: [
                     const Icon(
                       Remix.pin_distance_fill,
                       color: secondaryColor,
                     ),
                     Text(
-                      datum.attributes?.distance ?? '',
+                      widget.datum.attributes?.distance ?? '',
                       textScaleFactor: 1.0,
                       style: theme.textTheme.subtitle2!.copyWith(
                           color: secondaryColor, fontWeight: kBoldWeight),
@@ -191,7 +221,7 @@ class UserOrderCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 10.0, vertical: 10.0),
                 child: CachedNetworkImage(
-                  imageUrl: datum.attributes?.itemImage ?? '',
+                  imageUrl: widget.datum.attributes?.itemImage ?? '',
                   height: 90.0,
                   width: 90,
                   placeholder: (context, url) => const SizedBox(
@@ -216,12 +246,14 @@ class UserOrderCard extends StatelessWidget {
                 const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
             constraints: const BoxConstraints(maxWidth: 450),
             child: Button(
-              text: 'TRACK YOUR ORDER',
-              onPress: () {
-                Navigator.pushNamed(context, CustomerTrackScreen.id,
-                    arguments: datum.toJson());
-              },
-              color: appPrimaryColor,
+              text: isOrderCompleted ? 'ORDER COMPLETED' : 'TRACK YOUR ORDER',
+              onPress: isOrderCompleted
+                  ? null
+                  : () {
+                      Navigator.pushNamed(context, CustomerTrackScreen.id,
+                          arguments: widget.datum.toJson());
+                    },
+              color: isOrderCompleted ? green : appPrimaryColor,
               textColor: whiteColor,
               isLoading: false,
               width: double.infinity,

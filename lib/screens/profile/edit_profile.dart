@@ -1,11 +1,8 @@
-import 'package:another_flushbar/flushbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
-
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
@@ -21,18 +18,16 @@ class EditProfile extends StatefulWidget {
 }
 
 class _EditProfileState extends State<EditProfile> {
-  static String userType = "user";
-
   final _formKey = GlobalKey<FormState>();
 
   UpdateProfileService updateProfileService = UpdateProfileService();
 
   // this controller keeps track of what the user is typing in th textField
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneNumberController;
-  late TextEditingController _addressController;
+  TextEditingController _firstNameController = TextEditingController();
+  late TextEditingController _lastNameController = TextEditingController();
+  late TextEditingController _emailController = TextEditingController();
+  late TextEditingController _phoneNumberController = TextEditingController();
+  late TextEditingController _addressController = TextEditingController();
 
   FocusNode? _firstNameNode;
   FocusNode? _lastNameNode;
@@ -65,12 +60,13 @@ class _EditProfileState extends State<EditProfile> {
     var user =
         (await appSettingsBloc.fetchAppSettings()).loginResponse?.data?.user;
 
-    _firstNameController = TextEditingController(text: user?.firstName ?? '');
-    _lastNameController = TextEditingController(text: user?.lastName ?? '');
-    _emailController = TextEditingController(text: user?.email ?? '');
-    _phoneNumberController =
-        TextEditingController(text: user?.phoneNumber ?? '');
-    _addressController = TextEditingController(text: user?.address ?? '');
+    setState(() {
+      _firstNameController.text = user?.firstName ?? '';
+      _lastNameController.text = user?.lastName ?? '';
+      _emailController.text = user?.email ?? '';
+      _phoneNumberController.text = user?.phoneNumber ?? '';
+      _addressController.text = user?.address ?? '';
+    });
   }
 
   _validateEmail() {

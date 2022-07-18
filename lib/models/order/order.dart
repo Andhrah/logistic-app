@@ -165,7 +165,7 @@ class OrderModelData {
         itemName: json["itemName"] == null ? null : json["itemName"],
         itemDescription:
             json["itemDescription"] == null ? null : json["itemDescription"],
-        // itemImage: json["itemImage"] == null ? null : json["itemImage"],
+        itemImage: json["itemImage"] == null ? null : json["itemImage"],
         weight: json["weight"] == null ? null : json["weight"],
         amount: json["amount"] == null ? null : json["amount"].toDouble(),
         destination: json["destination"] == null ? null : json["destination"],
