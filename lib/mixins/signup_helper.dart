@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/mixins/profile_helper.dart';
+import 'package:trakk/models/auth/signup_model.dart';
 import 'package:trakk/models/auth_response.dart';
 import 'package:trakk/models/message_only_response.dart';
 import 'package:trakk/screens/auth/merchant/company_data.dart';
@@ -37,12 +38,14 @@ class SignupHelper with ProfileHelper, ConnectivityHelper {
       onShowLoader();
       signupService
           .doSignUp(
-              firstNameController.text.trim(),
-              lastNameController.text.trim(),
-              emailController.text.trim(),
-              phoneNumberController.text.trim(),
-              passwordController.text,
-              userType)
+            SignupModel(
+                firstName: firstNameController.text.trim(),
+                lastName: lastNameController.text.trim(),
+                email: emailController.text.trim(),
+                phoneNumber: phoneNumberController.text.trim(),
+                password: passwordController.text,
+                userType: userType),
+          )
           .then((value) => _completeLogin(value, userType, onCloseLoader));
     }
   }
