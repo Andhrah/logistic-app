@@ -33,13 +33,13 @@ class _TabsState extends State<Tabs> {
       case 0:
         currentTitle = 'Home';
         return const ItemDetails();
+      // case 1:
+      //   currentTitle = 'Cart';
+      //   return const CartScreen();
       case 1:
-        currentTitle = 'Cart';
-        return const CartScreen();
-      case 2:
         currentTitle = 'Order';
         return const UserOrderScreen();
-      case 3:
+      case 2:
         currentTitle = 'Wallet';
         return const WalletScreen();
       default:
@@ -167,27 +167,27 @@ class _TabsState extends State<Tabs> {
                             ),
                             label: 'Home',
                           ),
-                          BottomNavigationBarItem(
-                            icon: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(vertical: 3.5),
-                              child: Icon(
-                                Remix.shopping_cart_2_line,
-                                color: _selectedIndex != 1
-                                    ? appPrimaryColor
-                                    : secondaryColor,
-                                size: 24,
-                              ),
-                            ),
-                            label: 'Cart',
-                          ),
+                          // BottomNavigationBarItem(
+                          //   icon: Padding(
+                          //     padding:
+                          //         const EdgeInsets.symmetric(vertical: 3.5),
+                          //     child: Icon(
+                          //       Remix.shopping_cart_2_line,
+                          //       color: _selectedIndex != 1
+                          //           ? appPrimaryColor
+                          //           : secondaryColor,
+                          //       size: 24,
+                          //     ),
+                          //   ),
+                          //   label: 'Cart',
+                          // ),
                           BottomNavigationBarItem(
                             icon: Padding(
                               padding:
                                   const EdgeInsets.symmetric(vertical: 3.5),
                               child: Icon(
                                 Remix.file_list_fill,
-                                color: _selectedIndex != 2
+                                color: _selectedIndex != 1
                                     ? appPrimaryColor
                                     : secondaryColor,
                                 size: 24,
@@ -204,7 +204,7 @@ class _TabsState extends State<Tabs> {
                                   const EdgeInsets.symmetric(vertical: 3.5),
                               child: Icon(
                                 Remix.wallet_2_line,
-                                color: _selectedIndex != 3
+                                color: _selectedIndex != 2
                                     ? appPrimaryColor
                                     : secondaryColor,
                                 size: 24,
@@ -218,7 +218,7 @@ class _TabsState extends State<Tabs> {
                                   const EdgeInsets.symmetric(vertical: 3.5),
                               child: SvgPicture.asset(
                                 "assets/images/profile_icon.svg",
-                                color: _selectedIndex != 4
+                                color: _selectedIndex != 3
                                     ? appPrimaryColor
                                     : secondaryColor,
                                 width: 24,
