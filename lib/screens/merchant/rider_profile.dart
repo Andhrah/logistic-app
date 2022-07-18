@@ -1,16 +1,12 @@
-import 'package:another_flushbar/flushbar.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:remixicon/remixicon.dart';
-
-import 'package:trakk/screens/auth/login.dart';
-import 'package:trakk/screens/auth/signup.dart';
+import 'package:trakk/models/merchant/get_riders_for_merchant_response.dart';
+import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
-import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/input_field.dart';
 
 class RiderProfile extends StatefulWidget {
-  static String id = "mriderprofile";
+  static String id = "riderProfile";
 
   const RiderProfile({Key? key}) : super(key: key);
 
@@ -99,6 +95,13 @@ class _RiderProfile extends State<RiderProfile> {
   @override
   Widget build(BuildContext context) {
     MediaQueryData mediaQuery = MediaQuery.of(context);
+
+    var arg =
+        (ModalRoute.of(context)!.settings.arguments) as Map<String, dynamic>;
+
+    final model =
+        GetRidersForMerchantPurpleAttributes.fromJson(arg['rider_datum']);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SingleChildScrollView(
@@ -106,7 +109,6 @@ class _RiderProfile extends State<RiderProfile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           
             SizedBox(
               child: Padding(
                 padding:
@@ -128,22 +130,25 @@ class _RiderProfile extends State<RiderProfile> {
                       children: [
                         Column(
                           children: [
-                            Container(
-                              margin: const EdgeInsets.only(
-                                top: 30,
-                                bottom: 12,
-                              ),
+                            CachedNetworkImage(
+                              imageUrl:
+                                  model.userId?.data?.attributes?.avatar ?? '',
                               height: 80,
                               width: 80,
-                              decoration: const BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  image: DecorationImage(
-                                      image: AssetImage(
-                                          'assets/images/malik.png'))),
+                              placeholder: (context, url) => Image.asset(
+                                Assets.dummy_avatar,
+                                height: 80,
+                                width: 80,
+                              ),
+                              errorWidget: (context, url, err) => Image.asset(
+                                Assets.dummy_avatar,
+                                height: 80,
+                                width: 80,
+                              ),
                             ),
-                            const Text(
-                              'Malik Johnson',
-                              style: TextStyle(
+                            Text(
+                              '${model.userId?.data?.attributes?.firstName ?? ''} ${model.userId?.data?.attributes?.lastName ?? ''}',
+                              style: const TextStyle(
                                   fontSize: 24, fontWeight: FontWeight.w600),
                             ),
                           ],
@@ -154,7 +159,6 @@ class _RiderProfile extends State<RiderProfile> {
                 ),
               ),
             ),
-
             SingleChildScrollView(
               child: Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -205,8 +209,7 @@ class _RiderProfile extends State<RiderProfile> {
                                   child: TabBarView(children: [
                                     SingleChildScrollView(
                                       //shrinkWrap: true,
-                                      child: 
-                                      Column(
+                                      child: Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
                                         children: const [
@@ -217,24 +220,35 @@ class _RiderProfile extends State<RiderProfile> {
                                             height: 10,
                                           ),
                                           detailsBox(),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           detailsBox(),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           detailsBox(),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           detailsBox(),
-                                           const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           detailsBox(),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           detailsBox(),
-                                          const SizedBox(height: 10,),
+                                          const SizedBox(
+                                            height: 10,
+                                          ),
                                           detailsBox(),
                                           SizedBox(
-                                        height: 0,
-                                      ),
+                                            height: 0,
+                                          ),
                                         ],
                                       ),
-                                      
                                     ),
                                     ListView(
                                       // crossAxisAlignment: CrossAxisAlignment.start,
@@ -280,8 +294,6 @@ class _RiderProfile extends State<RiderProfile> {
                 ),
               ),
             )
-
-           
           ],
         ),
       )),
@@ -303,7 +315,9 @@ class detailsBox extends StatelessWidget {
           'Activity',
           style: TextStyle(fontSize: 16),
         ),
-        SizedBox(height: 10,),
+        SizedBox(
+          height: 10,
+        ),
         Container(
           height: 56,
           width: 344,

@@ -162,7 +162,7 @@ modalDialog(BuildContext context,
   var theme = Theme.of(context);
   MediaQueryData mediaQuery = MediaQuery.of(context);
 
-  showBottomSheet(
+  showModalBottomSheet(
       context: context,
       backgroundColor: Colors.transparent,
       builder: (context) => Container(
