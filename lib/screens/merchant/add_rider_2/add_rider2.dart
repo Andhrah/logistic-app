@@ -1,12 +1,11 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
-import 'package:trakk/mixins/merchant_add_rider_helper.dart';
+import 'package:trakk/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/models/rider/add_vehicle_to_merchant_model.dart';
 import 'package:trakk/screens/merchant/add_rider_2/widgets/doc_selector_widget.dart';
+import 'package:trakk/screens/merchant/riders.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
@@ -25,7 +24,8 @@ class AddRider2 extends StatefulWidget {
   State<AddRider2> createState() => _AddRider2State();
 }
 
-class _AddRider2State extends State<AddRider2> with MerchantAddRiderHelper {
+class _AddRider2State extends State<AddRider2>
+    with MerchantAddRiderAndVehicleHelper {
   Map<String, String> _files = {};
 
   bool _isButtonPress = false;
@@ -82,11 +82,14 @@ class _AddRider2State extends State<AddRider2> with MerchantAddRiderHelper {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    final arg = ModalRoute.of(context)!.settings.arguments as Map;
-    AddRiderToMerchantModel model =
-        AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
+    final arg = ModalRoute.of(context)!.settings.arguments != null
+        ? ModalRoute.of(context)!.settings.arguments as Map
+        : null;
 
-    print(model.toJson());
+    AddRiderToMerchantModel? model = arg == null
+        ? null
+        : AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -300,12 +303,7 @@ class _AddRider2State extends State<AddRider2> with MerchantAddRiderHelper {
                         //onPress:// _onSubmit,
                         onPress: () async {
                           String merchantId = await appSettingsBloc.getUserID;
-                          model = model.copyWith(
-                              data: model.data!.copyWith(
-                            merchantId: merchantId,
-                          ));
-
-                          AddVehicleToMerchantModel vehicle =
+                          AddVehicleToMerchantModel vehicleModel =
                               AddVehicleToMerchantModel(
                                   data: AddRiderToMerchantData(
                                       name: _vehicleNameController.text,
@@ -315,10 +313,23 @@ class _AddRider2State extends State<AddRider2> with MerchantAddRiderHelper {
                                       capacity: _vehicleCapacityController.text,
                                       deliveryBox: deliveryBox,
                                       files: _files));
-                          print(model.toJson());
-                          print(vehicle.toJson());
 
-                          doCreateRider(model, vehicle);
+                          if (model != null) {
+                            ///This flow is for when the user is from add ride
+                            model = model!.copyWith(
+                                data: model!.data!.copyWith(
+                              merchantId: merchantId,
+                            ));
+
+                            doCreateRider(model!, vehicleModel,
+                                onSuccess: () => Navigator.popUntil(
+                                    context, ModalRoute.withName(Riders.id)));
+                          } else {
+                            ///  This flow is for direct add vehicle only
+                            addVehicle(vehicleModel,
+                                onSuccessCallback: () =>
+                                    Navigator.pop(context));
+                          }
                         },
                         color: appPrimaryColor,
                         textColor: whiteColor,

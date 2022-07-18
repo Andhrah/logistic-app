@@ -1,9 +1,8 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:trakk/screens/auth/rider/personal_data.dart';
+import 'package:trakk/screens/merchant/add_rider_2/add_rider2.dart';
 import 'package:trakk/screens/merchant/list_of_vehicles.dart';
-import 'package:trakk/screens/merchant/register_new_vehicle.dart';
 import 'package:trakk/utils/colors.dart';
 
 import '../../widgets/back_icon.dart';
@@ -51,27 +50,36 @@ class _VehiclesState extends State<Vehicles> {
             const SizedBox(
               height: 30,
             ),
-             InkWell(onTap: () {
-               Navigator.of(context).pushNamed(ListOfVehicles.id);
-             },
-               child: const DefaultContainer(title: 'View all vehicles',),),
+            InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(ListOfVehicles.id);
+              },
+              child: const DefaultContainer(
+                title: 'View all vehicles',
+              ),
+            ),
             const SizedBox(
               height: 30,
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(RegisterNewVehicle.id);
+                Navigator.of(context).pushNamed(AddRider2.id);
               },
-              child: const DefaultContainer(title: 'Register new vehicle',),),
+              child: const DefaultContainer(
+                title: 'Register new vehicle',
+              ),
+            ),
             const SizedBox(
               height: 30,
             ),
             InkWell(
               onTap: () {
-                 Navigator.of(context).pushNamed(ListOfVehicles.id);
-
+                Navigator.of(context).pushNamed(ListOfVehicles.id);
               },
-              child: const DefaultContainer(title: 'Remove vehicle from list',),),
+              child: const DefaultContainer(
+                title: 'Remove vehicle from list',
+              ),
+            ),
           ],
         )));
   }
@@ -80,28 +88,27 @@ class _VehiclesState extends State<Vehicles> {
 class DefaultContainer extends StatelessWidget {
   final String title;
   const DefaultContainer({
-    Key? key, required this.title,
+    Key? key,
+    required this.title,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       height: 100,
-      decoration: const BoxDecoration(
-        color: whiteColor,
-        boxShadow: [
-          BoxShadow(
-    color: Color.fromARGB(255, 230, 230, 230),
-    spreadRadius: 1,
-    offset: Offset(1.8, 2.0), //(x,y)
-    blurRadius: 5.0,
-          ),
-        ]
-      ),
+      decoration: const BoxDecoration(color: whiteColor, boxShadow: [
+        BoxShadow(
+          color: Color.fromARGB(255, 230, 230, 230),
+          spreadRadius: 1,
+          offset: Offset(1.8, 2.0), //(x,y)
+          blurRadius: 5.0,
+        ),
+      ]),
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
-        child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children:  [
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
             Text(
               title,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 class AddVehicleToMerchantModel {
   AddVehicleToMerchantModel({
     this.data,
@@ -22,9 +20,6 @@ class AddVehicleToMerchantModel {
       );
 
   Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data!.toJson(),
-      };
-  Map<String, dynamic> toAddDocJson() => {
         "data": data == null ? null : data!.toJson(),
       };
 }
@@ -68,16 +63,18 @@ class AddRiderToMerchantData {
           bool? deliveryBox,
           String? vehicleId,
           String? documentName,
-          String? documentUrl}) =>
+          String? documentUrl,
+          Map<String, String>? files}) =>
       AddRiderToMerchantData(
-        riderId: riderId ?? this.riderId,
-        name: name ?? this.name,
-        color: color ?? this.color,
-        number: number ?? this.number,
-        capacity: capacity ?? this.capacity,
-        image: image ?? this.image,
-        model: model ?? this.model,
-      );
+          riderId: riderId ?? this.riderId,
+          name: name ?? this.name,
+          color: color ?? this.color,
+          number: number ?? this.number,
+          capacity: capacity ?? this.capacity,
+          image: image ?? this.image,
+          model: model ?? this.model,
+          deliveryBox: deliveryBox ?? this.deliveryBox,
+          files: files ?? this.files);
 
   factory AddRiderToMerchantData.fromJson(Map<String, dynamic> json) =>
       AddRiderToMerchantData(
@@ -91,16 +88,21 @@ class AddRiderToMerchantData {
         deliveryBox: json["deliveryBox"] == null ? null : json["deliveryBox"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "riderId": riderId == null ? null : riderId,
-        "name": name == null ? null : name,
-        "color": color == null ? null : color,
-        "number": number == null ? null : number,
-        "capacity": capacity == null ? null : capacity,
-        "image": image == null ? null : image,
-        "model": model == null ? null : model,
-        "deliveryBox": deliveryBox == null ? null : deliveryBox,
-      };
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> map = {
+      "riderId": riderId == null ? null : riderId,
+      "name": name == null ? null : name,
+      "color": color == null ? null : color,
+      "number": number == null ? null : number,
+      "capacity": capacity == null ? null : capacity,
+      "image": image == null ? null : image,
+      "model": model == null ? null : model,
+      "deliveryBox": deliveryBox == null ? null : deliveryBox,
+    };
+
+    map.removeWhere((key, value) => value == null);
+    return map;
+  }
 }
 
 class AddVehicleDocToMerchantModel {

@@ -9,8 +9,12 @@ import 'package:trakk/models/auth_response.dart';
 import 'package:trakk/models/message_only_response.dart';
 import 'package:trakk/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/models/rider/add_vehicle_to_merchant_model.dart';
+import 'package:trakk/screens/merchant/add_rider_2/widgets/doc_selector_widget.dart';
+import 'package:trakk/screens/merchant/list_of_riders.dart';
+import 'package:trakk/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/services/auth/signup_service.dart';
-import 'package:trakk/services/get_user_service.dart';
+import 'package:trakk/services/merchant/add_rider_service.dart';
+import 'package:trakk/services/merchant/vehicle_list_service.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
@@ -22,7 +26,7 @@ import 'package:trakk/utils/styles.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';
 
-class MerchantAddRiderHelper {
+class MerchantAddRiderAndVehicleHelper {
   final BuildContext _authContext =
       SingletonData.singletonData.navKey.currentState!.context;
   final BuildContext _authContextOverLay =
@@ -33,7 +37,8 @@ class MerchantAddRiderHelper {
 
   ///step 1a
   doCreateRider(AddRiderToMerchantModel addRiderToMerchantModel,
-      AddVehicleToMerchantModel vehicleModel) async {
+      AddVehicleToMerchantModel vehicleModel,
+      {Function()? onSuccess}) async {
     _riderToMerchantModel = addRiderToMerchantModel;
     _vehicleModel = vehicleModel;
 
@@ -53,26 +58,40 @@ class MerchantAddRiderHelper {
           userType: 'rider'),
     );
 
-    _completeCreateRiderOperation(operation, onRetry: () => doCreateRider);
+    _completeCreateRiderOperation(operation,
+        onSuccess: onSuccess,
+        onRetry: () => doCreateRider(addRiderToMerchantModel, vehicleModel,
+            onSuccess: onSuccess));
     // });
   }
 
   ///step 1b
   _completeCreateRiderOperation(Operation operation,
-      {Function()? onRetry}) async {
+      {Function()? onSuccess, Function()? onRetry}) async {
     Navigator.pop(_authContext);
     if (operation.code == 200 || operation.code == 201) {
       AuthResponse authResponse = AuthResponse.fromJson(operation.result);
       _riderToMerchantModel = _riderToMerchantModel!.copyWith(
           data: _riderToMerchantModel!.data!
-              .copyWith(userId: '${authResponse.data?.user?.rider?.id ?? ''}'));
+              .copyWith(userId: '${authResponse.data?.user?.id ?? ''}'));
 
-      addRiderBioData(_riderToMerchantModel!, _vehicleModel!);
+      addRiderBioData(_riderToMerchantModel!, _vehicleModel!,
+          onSuccessCallback: onSuccess);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
           appToastType: AppToastType.failed);
-      //  do retry
+      modalDialog(_authContext,
+          title: 'Failed!. Retry?',
+          positiveLabel: 'Yes',
+          onPositiveCallback: () {
+            Navigator.pop(_authContext);
+            if (onRetry != null) onRetry();
+          },
+          negativeLabel: 'No',
+          onNegativeCallback: () {
+            Navigator.pop(_authContext);
+          });
     }
   }
 
@@ -89,10 +108,12 @@ class MerchantAddRiderHelper {
               child: kCircularProgressIndicator,
             ));
 
-    profileService.addRiderToMerchant(_riderToMerchantModel!).then((value) =>
+    addRiderService.addRiderToMerchant(_riderToMerchantModel!).then((value) =>
         _completeAddRiderOperation(value,
             onSuccessCallback: onSuccessCallback,
-            onRetry: () => addRiderBioData));
+            onRetry: () => addRiderBioData(
+                addRiderToMerchantModel, vehicleModel,
+                onSuccessCallback: onSuccessCallback)));
   }
 
   ///step 2b
@@ -104,13 +125,23 @@ class MerchantAddRiderHelper {
           data: _vehicleModel!.data!
               .copyWith(riderId: _riderToMerchantModel!.data!.userId));
       addVehicle(_vehicleModel!,
-          addRiderToMerchantModel: _riderToMerchantModel);
+          addRiderToMerchantModel: _riderToMerchantModel,
+          onSuccessCallback: onSuccessCallback);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
           appToastType: AppToastType.failed);
-
-      //  do retry
+      modalDialog(_authContext,
+          title: 'Failed!. Retry?',
+          positiveLabel: 'Yes',
+          onPositiveCallback: () {
+            Navigator.pop(_authContext);
+            if (onRetry != null) onRetry();
+          },
+          negativeLabel: 'No',
+          onNegativeCallback: () {
+            Navigator.pop(_authContext);
+          });
     }
   }
 
@@ -157,7 +188,7 @@ class MerchantAddRiderHelper {
     }
   }
 
-  ///step 4a
+  ///step 4a, Note: This is also used for direct/single add vehicle only
   addVehicle(
     AddVehicleToMerchantModel vehicleModel, {
     Function()? onSuccessCallback,
@@ -168,15 +199,27 @@ class MerchantAddRiderHelper {
 
     uploadToCloudinary(_vehicleModel!.data!.files, (
         {Map<String, String>? images}) async {
+      if (images != null) {
+        _vehicleModel = _vehicleModel!.copyWith(
+            data:
+                _vehicleModel!.data!.copyWith(image: images[vehicleImageKey]));
+
+        images.removeWhere((key, value) => key == vehicleImageKey);
+      }
+      _vehicleModel = _vehicleModel!
+          .copyWith(data: _vehicleModel!.data!.copyWith(files: images));
       showDialog(
           context: _authContext,
           builder: (context) => const Center(
                 child: kCircularProgressIndicator,
               ));
 
-      profileService.addVehicleToRider(_vehicleModel!).then((value) =>
+      vehiclesListService.addVehicleToRider(_vehicleModel!).then((value) =>
           _completeAddVehicleOperation(value,
-              onSuccessCallback: onSuccessCallback, onRetry: () => addVehicle));
+              onSuccessCallback: onSuccessCallback,
+              onRetry: () => addVehicle(vehicleModel,
+                  onSuccessCallback: onSuccessCallback,
+                  addRiderToMerchantModel: addRiderToMerchantModel)));
     });
   }
 
@@ -187,46 +230,94 @@ class MerchantAddRiderHelper {
     if (operation.code == 200 || operation.code == 201) {
       log('vehicle added: ${operation.result}');
 
-      profileService
-          .addVehicleDocument(operation.result['data']['attributes']['id'],
-              _vehicleModel!.data!.files!)
-          .then((value) => (operation) async {
-                if (operation.code == 200 || operation.code == 201) {
-                  if (_riderToMerchantModel != null) {
-                    await _showSuccessfulDialog(
-                        '${_riderToMerchantModel?.data?.firstName ?? ''} has been added to rider list',
-                        'View All Riders',
-                        () {}, nextAction: () async {
-                      await _showSuccessfulDialog(
-                          '${_vehicleModel?.data?.name ?? ''} has been added to vehicle list',
-                          'View All Vehicles',
-                          () {});
-                    });
-                  } else {
-                    await _showSuccessfulDialog(
-                        '${_vehicleModel?.data?.name ?? ''} has been added to vehicle list',
-                        'View All Vehicles',
-                        () {});
-                  }
+      if ((_vehicleModel?.data?.files?.length ?? 0) > 0) {
+        final operations = await Future.wait(_vehicleModel!.data!.files!.keys
+            .map((key) => vehiclesListService.addVehicleDocument(
+                operation.result['data']['id'].toString(),
+                key,
+                _vehicleModel!.data!.files![key] ?? '')));
 
-                  appToast('Rider added successfully',
-                      appToastType: AppToastType.success);
-                } else {
-                  Navigator.pop(_authContext);
+        if (operations.any((element) => element.code != 200)) {
+          //  show retry popup
+          appToast('Could not process request at the moment.\nPlease try again',
+              appToastType: AppToastType.failed);
+          return;
+        }
+      }
 
-                  MessageOnlyResponse messageOnlyResponse = operation.result;
-                  appToast(messageOnlyResponse.message ?? '',
-                      appToastType: AppToastType.failed);
-
-                  //  do retry
-                }
-              });
+      _finalStep(
+          operation,
+          onSuccessCallback,
+          () => _completeAddVehicleOperation(operation,
+              onSuccessCallback: onSuccessCallback, onRetry: onRetry));
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
           appToastType: AppToastType.failed);
+      modalDialog(_authContext,
+          title: 'Failed!. Retry?',
+          positiveLabel: 'Yes',
+          onPositiveCallback: () {
+            Navigator.pop(_authContext);
+            if (onRetry != null) onRetry();
+          },
+          negativeLabel: 'No',
+          onNegativeCallback: () {
+            Navigator.pop(_authContext);
+          });
+    }
+  }
 
-      //  do retry
+  ///step 4c: finalStep of submitting doc
+  _finalStep(
+      operation, Function()? onSuccessCallback, Function()? onRetry) async {
+    if (operation.code == 200 || operation.code == 201) {
+      if (_riderToMerchantModel != null) {
+        await _showSuccessfulDialog(
+            '${_riderToMerchantModel?.data?.firstName ?? ''} has been added to rider list',
+            'View All Riders', () {
+          Navigator.pop(_authContext);
+          if (onSuccessCallback != null) onSuccessCallback();
+          Navigator.pushNamed(_authContext, ListOfRiders.id);
+        }, nextAction: () async {
+          Navigator.pop(_authContext);
+          await _showSuccessfulDialog(
+              '${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle list',
+              'View All Vehicles', () {
+            Navigator.pop(_authContext);
+            if (onSuccessCallback != null) onSuccessCallback();
+            Navigator.pushNamed(_authContext, ListOfVehicles.id);
+          });
+        });
+      } else {
+        await _showSuccessfulDialog(
+            '${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle list',
+            'View All Vehicles', () {
+          Navigator.pop(_authContext);
+          if (onSuccessCallback != null) onSuccessCallback();
+          Navigator.pushNamed(_authContext, ListOfVehicles.id);
+        });
+      }
+
+      appToast('Rider added successfully', appToastType: AppToastType.success);
+    } else {
+      Navigator.pop(_authContext);
+
+      MessageOnlyResponse messageOnlyResponse = operation.result;
+      appToast(messageOnlyResponse.message ?? '',
+          appToastType: AppToastType.failed);
+
+      modalDialog(_authContext,
+          title: 'Failed!. Retry?',
+          positiveLabel: 'Yes',
+          onPositiveCallback: () {
+            Navigator.pop(_authContext);
+            if (onRetry != null) onRetry();
+          },
+          negativeLabel: 'No',
+          onNegativeCallback: () {
+            Navigator.pop(_authContext);
+          });
     }
   }
 
