@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:trakk/bloc/rider/rider_order_history_bloc.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/helper_utils.dart';
 
 class DateDispatchHistory extends StatefulWidget {
-  const DateDispatchHistory({Key? key}) : super(key: key);
+  String startDate;
+  String endDate;
+
+  DateDispatchHistory(
+      {Key? key, required this.startDate, required this.endDate})
+      : super(key: key);
 
   @override
   State<DateDispatchHistory> createState() => _UserDispatcHistoryState();
 }
 
 class _UserDispatcHistoryState extends State<DateDispatchHistory> {
-  String startDate =
-      DateTime.now().subtract(const Duration(days: 1)).toIso8601String();
-  String endDate = DateTime.now().toIso8601String();
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -44,9 +46,9 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                   onTap: () {
                     _selectDate(
                         onSelected: (String date) {
-                          setState(() => startDate = date);
+                          setState(() => widget.startDate = date);
                         },
-                        previousValue: startDate);
+                        previousValue: widget.startDate);
                   },
                   child: Container(
                     height: 45,
@@ -60,7 +62,7 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            getLongDate(dateValue: startDate),
+                            getLongDate(dateValue: widget.startDate),
                             style: theme.textTheme.bodyText2!.copyWith(
                                 fontSize: 16, fontWeight: FontWeight.w400),
                           ),
@@ -83,9 +85,9 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                     _selectDate(
                         isStart: false,
                         onSelected: (String date) {
-                          setState(() => endDate = date);
+                          setState(() => widget.endDate = date);
                         },
-                        previousValue: endDate);
+                        previousValue: widget.endDate);
                   },
                   child: Container(
                     height: 45,
@@ -99,7 +101,7 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            getLongDate(dateValue: endDate),
+                            getLongDate(dateValue: widget.endDate),
                             style: theme.textTheme.bodyText2!.copyWith(
                                 fontSize: 16, fontWeight: FontWeight.w400),
                           ),
@@ -160,13 +162,17 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
         onSelected(date.toIso8601String());
       }
 
-      if (DateTime.parse(startDate).isAfter(DateTime.parse(endDate))) {
+      if (DateTime.parse(widget.startDate)
+          .isAfter(DateTime.parse(widget.endDate))) {
         if (onSelected != null) {
           onSelected(previousValue);
         }
         appToast('End date must be greater than start date',
             appToastType: AppToastType.failed);
+        return;
       }
+
+      getRiderOrderHistoryBloc.fetchCurrent(widget.startDate, widget.endDate);
     }, currentTime: maxTime, locale: LocaleType.en);
   }
 }

@@ -16,11 +16,12 @@ class GetRiderOrderHistoryBloc
     with BaseBloc<List<OrderHistoryDatum>, String>, ConnectivityHelper {
   CancelableOperation? _cancelableOperation;
 
-  fetchCurrent() async {
+  fetchCurrent(String startDate, String endDate) async {
     setAsLoading();
     checkInternetConnection(
         hasInternetCallback: () async {
-          var operation = await orderAPI.getRiderOrderHistory();
+          var operation =
+              await orderAPI.getRiderOrderHistory(startDate, endDate);
 
           if (operation.code == 200 || operation.code == 201) {
             OrderHistoryResponse response =

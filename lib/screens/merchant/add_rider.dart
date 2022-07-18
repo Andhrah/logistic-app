@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/bloc/validation_bloc.dart';
 import 'package:trakk/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/screens/merchant/add_rider1.dart';
 import 'package:trakk/utils/colors.dart';
@@ -23,6 +24,7 @@ class AddRider extends StatefulWidget {
 
 class _AddRiderState extends State<AddRider> {
   final _formKey = GlobalKey<FormState>();
+  ValidationBloc validationBloc = ValidationBloc();
 
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
@@ -39,21 +41,8 @@ class _AddRiderState extends State<AddRider> {
 
   FocusNode? _confirmPasswordNode;
 
-  String? _firstName;
-  String? _lastName;
-  String? _email;
-  String? _phoneNumber;
-  String? _password;
-  String? _confirmPassword;
-  String? userType;
-
-  bool _loading = false;
-  bool _passwordIsValid = false;
-  bool _confirmPasswordIsValid = false;
   bool _hidePassword = true;
   bool _hideConfirmPassword = true;
-  bool _autoValidate = false;
-  bool _emailIsValid = false;
 
   @override
   void initState() {
@@ -66,30 +55,10 @@ class _AddRiderState extends State<AddRider> {
     _confirmPasswordController = TextEditingController();
   }
 
-  _validateEmail() {
-    RegExp regex;
-    String pattern =
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    String email = _emailController.text;
-    if (email.trim().isEmpty) {
-      setState(() {
-        _emailIsValid = false;
-      });
-      return "Email address cannot be empty";
-    } else {
-      regex = RegExp(pattern);
-      setState(() {
-        _emailIsValid = regex.hasMatch(email);
-      });
-      if (_emailIsValid == false) {
-        return "Enter a valid email address";
-      }
-    }
-  }
-
-  bool isConfirmPasswordValid() {
-    return _confirmPasswordIsValid =
-        _confirmPasswordController.text == _passwordController.text;
+  @override
+  void dispose() {
+    validationBloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -100,8 +69,9 @@ class _AddRiderState extends State<AddRider> {
         backgroundColor: whiteColor,
         body: SafeArea(
             child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const SizedBox(height: 10.0),
+            10.heightInPixel(),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
@@ -177,7 +147,6 @@ class _AddRiderState extends State<AddRider> {
                           return "Enter a valid first name";
                         },
                         onSaved: (value) {
-                          _firstName = value!.trim();
                           return null;
                         },
                       ),
@@ -204,7 +173,6 @@ class _AddRiderState extends State<AddRider> {
                           return "Enter a valid last name";
                         },
                         onSaved: (value) {
-                          _lastName = value!.trim();
                           return null;
                         },
                       ),
@@ -224,11 +192,8 @@ class _AddRiderState extends State<AddRider> {
                           size: 18.0,
                           color: Color(0xFF909090),
                         ),
-                        validator: (value) {
-                          return _validateEmail();
-                        },
+                        validator: validationBloc.emailValidator,
                         onSaved: (value) {
-                          _email = value!.trim();
                           return null;
                         },
                       ),
@@ -256,7 +221,6 @@ class _AddRiderState extends State<AddRider> {
                           return "Enter a valid phone number";
                         },
                         onSaved: (value) {
-                          _phoneNumber = value!.trim();
                           return null;
                         },
                       ),
@@ -293,7 +257,6 @@ class _AddRiderState extends State<AddRider> {
                           return null;
                         },
                         onSaved: (value) {
-                          _password = value!.trim();
                           return null;
                         },
                       ),
@@ -302,7 +265,7 @@ class _AddRiderState extends State<AddRider> {
                         key: const Key('confirm'),
                         textController: _confirmPasswordController,
                         node: _confirmPasswordNode,
-                        obscureText: _hidePassword,
+                        obscureText: _hideConfirmPassword,
                         maxLines: 1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         text: 'Confirm Password',
@@ -319,7 +282,7 @@ class _AddRiderState extends State<AddRider> {
                           ),
                           onPressed: () {
                             setState(() {
-                              _hideConfirmPassword = !_hidePassword;
+                              _hideConfirmPassword = !_hideConfirmPassword;
                             });
                           },
                         ),
@@ -332,7 +295,6 @@ class _AddRiderState extends State<AddRider> {
                           return null;
                         },
                         onSaved: (value) {
-                          _password = value!.trim();
                           return null;
                         },
                       ),
@@ -358,7 +320,7 @@ class _AddRiderState extends State<AddRider> {
                           },
                           color: appPrimaryColor,
                           textColor: whiteColor,
-                          isLoading: _loading,
+                          isLoading: false,
                           width: double.infinity),
                       24.heightInPixel()
                     ],

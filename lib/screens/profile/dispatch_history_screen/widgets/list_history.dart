@@ -95,7 +95,6 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                   if (dateValue != null)
                     Text(
                       "$dateValue delivery",
-                      textScaleFactor: 1.2,
                       style: const TextStyle(
                         color: appPrimaryColor,
                         fontWeight: FontWeight.bold,
@@ -322,12 +321,20 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                       ),
                     ],
                   ),
+                  const SizedBox(
+                    height: 8,
+                  ),
                 ],
               );
             });
       },
       loadingBuilder: (context) =>
           const Center(child: kCircularProgressIndicator),
+      errorBuilder: (context, err) => Center(
+        child: Text(
+          err,
+        ),
+      ),
     );
   }
 }

@@ -27,7 +27,7 @@ import 'package:trakk/screens/dispatch/pick_ride.dart';
 import 'package:trakk/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/screens/merchant/add_rider.dart';
 import 'package:trakk/screens/merchant/add_rider1.dart';
-import 'package:trakk/screens/merchant/add_rider2.dart';
+import 'package:trakk/screens/merchant/add_rider_2/add_rider2.dart';
 import 'package:trakk/screens/merchant/company_home.dart';
 import 'package:trakk/screens/merchant/dispatch_history.dart';
 import 'package:trakk/screens/merchant/fulfilled_dispatch.dart';

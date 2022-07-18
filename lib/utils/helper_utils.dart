@@ -303,3 +303,13 @@ urlLauncher(String url,
     appToast('Cannot process');
   }
 }
+
+String camelCase(String? input) {
+  if (input == null) {
+    return '';
+  }
+  if (input.length < 2) {
+    return input;
+  }
+  return input[0].toUpperCase() + input.substring(1);
+}

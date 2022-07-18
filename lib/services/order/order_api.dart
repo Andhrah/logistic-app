@@ -33,10 +33,13 @@ class OrderAPI extends BaseNetworkCallHandler {
     });
   }
 
-  Future<Operation> getRiderOrderHistory() async {
+  Future<Operation> getRiderOrderHistory(
+      String startDate, String endDate) async {
     String userID = await appSettingsBloc.getUserID;
 
-    return runAPI('api/riders/$userID?populate=*', HttpRequestType.get);
+    return runAPI(
+        'api/orders?populate=*&filters[pickupDate][\$gt]=$startDate&filters[pickupDate][\$lte]=$endDate&filters[userId][id][\$eq]=$userID',
+        HttpRequestType.get);
   }
 
   ///  below are for customers

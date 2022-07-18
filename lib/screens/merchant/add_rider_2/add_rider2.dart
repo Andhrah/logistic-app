@@ -1,14 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/rider/add_rider_to_merchant_model.dart';
-import 'package:trakk/screens/merchant/company_home.dart';
+import 'package:trakk/models/rider/add_vehicle_to_merchant_model.dart';
+import 'package:trakk/screens/merchant/add_rider_2/widgets/doc_selector_widget.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
+import 'package:trakk/utils/radii.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/cancel_button.dart';
 import 'package:trakk/widgets/input_field.dart';
 
 class AddRider2 extends StatefulWidget {
@@ -21,21 +25,12 @@ class AddRider2 extends StatefulWidget {
 }
 
 class _AddRider2State extends State<AddRider2> {
-  static String userType = "user";
+  Map<String, File?> _files = {};
 
   bool _isButtonPress = false;
 
-  var colors = [
-    "Color of vehicle",
-    "black",
-    "white",
-    "gold",
-    "grey",
-    "ash",
-    "blue",
-    "red"
-  ];
-  String _colorsTypes = "Color of vehicle";
+  var colors = ["black", "white", "gold", "grey", "ash", "blue", "red"];
+  String? _colorsTypes;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -68,11 +63,7 @@ class _AddRider2State extends State<AddRider2> {
   String? _vehicleModel;
 
   bool _loading = false;
-  bool _passwordIsValid = false;
-  bool _confirmPasswordIsValid = false;
-  bool _hidePassword = true;
-  bool _autoValidate = false;
-  bool _emailIsValid = false;
+  bool deliveryBox = false;
 
   @override
   void initState() {
@@ -86,36 +77,6 @@ class _AddRider2State extends State<AddRider2> {
     _confirmPasswordController = TextEditingController();
   }
 
-  _validateEmail() {
-    RegExp regex;
-    String pattern =
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    String email = _emailController.text;
-    if (email.trim().isEmpty) {
-      setState(() {
-        _emailIsValid = false;
-      });
-      return "Email address cannot be empty";
-    } else {
-      regex = RegExp(pattern);
-      setState(() {
-        _emailIsValid = regex.hasMatch(email);
-        print(_emailIsValid);
-      });
-      if (_emailIsValid == false) {
-        return "Enter a valid email address";
-      }
-    }
-  }
-
-  isConfirmPasswordValid() {
-    setState(() {
-      _confirmPasswordIsValid = _confirmPasswordController.text != null &&
-          _confirmPasswordController.text == _passwordController.text;
-      print(_confirmPasswordIsValid);
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -124,6 +85,7 @@ class _AddRider2State extends State<AddRider2> {
     AddRiderToMerchantModel model =
         AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
 
+    print(model.toJson());
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -210,9 +172,9 @@ class _AddRider2State extends State<AddRider2> {
                     },
                   ),
                   20.heightInPixel(),
-                  const Text(
+                  Text(
                     'Color of vehicle',
-                    style: TextStyle(
+                    style: theme.textTheme.bodyText1!.copyWith(
                       fontWeight: kMediumWeight,
                     ),
                   ),
@@ -232,6 +194,11 @@ class _AddRider2State extends State<AddRider2> {
                           icon: const Icon(Remix.arrow_down_s_line),
                           elevation: 16,
                           isExpanded: true,
+                          hint: Text(
+                            'Color of vehicle',
+                            style: theme.textTheme.bodyText2!
+                                .copyWith(color: const Color(0xFFBDBDBD)),
+                          ),
                           style: TextStyle(
                             color: appPrimaryColor.withOpacity(0.8),
                             fontSize: 18.0,
@@ -302,79 +269,102 @@ class _AddRider2State extends State<AddRider2> {
                   ),
                   const SizedBox(height: 20.0),
                   InputField(
-                    key: const Key('vehicleEngineCapacity'),
+                    key: const Key('vehicleCapacity'),
                     textController: _vehicleCapacityController,
                     keyboardType: TextInputType.text,
                     node: _vehicleCapacityNode,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     obscureText: false,
-                    text: 'Vehicle Model',
-                    hintText: 'Vehicle model',
+                    text: 'Vehicle Capacity',
+                    hintText: 'Vehicle capacity',
                     textHeight: 10.0,
                     borderColor: appPrimaryColor.withOpacity(0.9),
                     onSaved: (value) {
                       return null;
                     },
                   ),
+                  44.heightInPixel(),
+                  AddRiderVehicleDocSelectorWidget((Map<String, File?> files) {
+                    _files = files;
+                  }),
+                  24.heightInPixel(),
+                  _DeliverBoxWidget((bool _deliveryBox) {
+                    deliveryBox = deliveryBox;
+                  }),
                   const SizedBox(height: 40.0),
                   Align(
                     alignment: Alignment.center,
                     child: Button(
                         text: 'Register',
                         //onPress:// _onSubmit,
-                        onPress: () {
-                          showDialog<String>(
-                            // barrierDismissible: true,
-                            context: context,
-                            builder: (BuildContext context) => AlertDialog(
-                              // title: const Text('AlertDialog Title'),
-                              contentPadding: const EdgeInsets.symmetric(
-                                  horizontal: 24.0, vertical: 10.0),
-                              content: SizedBox(
-                                height: 250.0,
-                                child: Column(children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      InkWell(
-                                          onTap: () {
-                                            Navigator.of(context)
-                                                .pushNamed(CompanyHome.id);
-                                          },
-                                          child: const CancelButton())
-                                    ],
-                                  ),
-                                  20.heightInPixel(),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Column(
-                                      children: [
-                                        const Text(
-                                          'Suzuki No. 889 has been added to vehicle lists',
-                                          style: TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.w400),
-                                        ),
-                                        const SizedBox(height: 30),
-                                        Button(
-                                            text: 'View all vehicles',
-                                            onPress: () {
-                                              // Navigator.of(context)
-                                              //     .pushNamed(ListOfVehicles.id);
-                                            },
-                                            color: appPrimaryColor,
-                                            textColor: whiteColor,
-                                            isLoading: false,
-                                            width: 300
-                                            //MediaQuery.of(context).size.width/1.6,
-                                            ),
-                                      ],
-                                    ),
-                                  ),
-                                ]),
-                              ),
-                            ),
-                          );
+                        onPress: () async {
+                          String merchantId = await appSettingsBloc.getUserID;
+                          model = model.copyWith(
+                              data: model.data!.copyWith(
+                            merchantId: merchantId,
+                          ));
+
+                          AddVehicleToMerchantModel vehicle =
+                              AddVehicleToMerchantModel(
+                                  data: AddRiderToMerchantData(
+                                      name: _vehicleNameController.text,
+                                      color: _colorsTypes,
+                                      number: _vehicleNumberController.text,
+                                      model: _vehicleModelController.text,
+                                      capacity: _vehicleCapacityController.text,
+                                      deliveryBox: deliveryBox));
+                          // showDialog<String>(
+                          //   // barrierDismissible: true,
+                          //   context: context,
+                          //   builder: (BuildContext context) => AlertDialog(
+                          //     // title: const Text('AlertDialog Title'),
+                          //     contentPadding: const EdgeInsets.symmetric(
+                          //         horizontal: 24.0, vertical: 10.0),
+                          //     content: SizedBox(
+                          //       height: 250.0,
+                          //       child: Column(children: [
+                          //         Row(
+                          //           mainAxisAlignment: MainAxisAlignment.end,
+                          //           children: [
+                          //             InkWell(
+                          //                 onTap: () {
+                          //                   Navigator.of(context)
+                          //                       .pushNamed(CompanyHome.id);
+                          //                 },
+                          //                 child: const CancelButton())
+                          //           ],
+                          //         ),
+                          //         20.heightInPixel(),
+                          //         Align(
+                          //           alignment: Alignment.center,
+                          //           child: Column(
+                          //             children: [
+                          //               const Text(
+                          //                 'Suzuki No. 889 has been added to vehicle lists',
+                          //                 style: TextStyle(
+                          //                     fontSize: 18,
+                          //                     fontWeight: FontWeight.w400),
+                          //               ),
+                          //               const SizedBox(height: 30),
+                          //               Button(
+                          //                   text: 'View all vehicles',
+                          //                   onPress: () {
+                          //                     // Navigator.of(context)
+                          //                     //     .pushNamed(ListOfVehicles.id);
+                          //                   },
+                          //                   color: appPrimaryColor,
+                          //                   textColor: whiteColor,
+                          //                   isLoading: false,
+                          //                   width: 300
+                          //                   //MediaQuery.of(context).size.width/1.6,
+                          //                   ),
+                          //             ],
+                          //           ),
+                          //         ),
+                          //       ]),
+                          //     ),
+                          //   ),
+                          // );
                         },
                         color: appPrimaryColor,
                         textColor: whiteColor,
@@ -386,8 +376,6 @@ class _AddRider2State extends State<AddRider2> {
             ),
           )),
 
-          const SizedBox(height: 15.0),
-          const SizedBox(height: 25.0),
           //   ],
           // ),
         ]),
@@ -396,43 +384,65 @@ class _AddRider2State extends State<AddRider2> {
   }
 }
 
-class EditProfileContainer extends StatelessWidget {
-  const EditProfileContainer({
-    Key? key,
-  }) : super(key: key);
+class _DeliverBoxWidget extends StatefulWidget {
+  const _DeliverBoxWidget(Function(bool _deliveryBox) function, {Key? key})
+      : super(key: key);
+
+  @override
+  State<_DeliverBoxWidget> createState() => _DeliverBoxWidgetState();
+}
+
+class _DeliverBoxWidgetState extends State<_DeliverBoxWidget> {
+  int radioValue = 1;
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 30.0, right: 30, bottom: 17),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                top: 8,
-                bottom: 12,
-              ),
-              height: 80,
-              width: 80,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/image.png'))),
-            ),
-            const Text(
-              'Malik Johnson',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-            ),
-            const Text('+234816559234'),
-            const SizedBox(
-              height: 8,
-            ),
-            Text('malhohn11@gmail.com'),
-          ],
+    var theme = Theme.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          'Do you have a delivery box ?',
+          style: theme.textTheme.bodyText1!.copyWith(
+            fontWeight: kMediumWeight,
+          ),
         ),
-      ),
+        10.heightInPixel(),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(color: grayColor),
+            color: whiteColor,
+            borderRadius: Radii.k8pxRadius,
+          ),
+          child: Column(
+            children: [
+              RadioListTile(
+                  activeColor: appPrimaryColor,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  title: const Text("Yes"),
+                  value: 1,
+                  groupValue: radioValue,
+                  onChanged: (int? value) {
+                    if (value != null) {
+                      setState(() => radioValue = value);
+                    }
+                  }),
+              RadioListTile(
+                  activeColor: appPrimaryColor,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8),
+                  title: const Text("No"),
+                  value: 0,
+                  groupValue: radioValue,
+                  onChanged: (int? value) {
+                    if (value != null) {
+                      setState(() => radioValue = value);
+                    }
+                  }),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

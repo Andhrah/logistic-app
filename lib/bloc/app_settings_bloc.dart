@@ -77,7 +77,7 @@ class _AppSettingsBloc {
         // TODO: Handle this case.
         break;
       case UserType.merchant:
-        id = '${appSettings.loginResponse?.data?.user?.rider?.id ?? ''}';
+        id = '${appSettings.loginResponse?.data?.user?.merchant?.id ?? ''}';
 
         break;
       case UserType.none:
