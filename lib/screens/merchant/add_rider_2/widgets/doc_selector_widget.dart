@@ -8,7 +8,7 @@ import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/radii.dart';
 
 class AddRiderVehicleDocSelectorWidget extends StatefulWidget {
-  final Function(Map<String, File?> files) callback;
+  final Function(Map<String, String> files) callback;
 
   const AddRiderVehicleDocSelectorWidget(this.callback, {Key? key})
       : super(key: key);
@@ -20,10 +20,10 @@ class AddRiderVehicleDocSelectorWidget extends StatefulWidget {
 
 class _AddRiderVehicleDocSelectorWidgetState
     extends State<AddRiderVehicleDocSelectorWidget> {
-  Map<String, File?> files = {
-    'driver_license': null,
-    'road_worthiness': null,
-    'haulage_report': null,
+  Map<String, String> files = {
+    'driver_license': '',
+    'road_worthiness': '',
+    'haulage_report': '',
   };
 
   @override
@@ -42,7 +42,7 @@ class _AddRiderVehicleDocSelectorWidgetState
         result.files.isNotEmpty &&
         result.files.first.path != null) {
       setState(() {
-        files[files.keys.elementAt(index)] = File(result.files.first.path!);
+        files[files.keys.elementAt(index)] = result.files.first.path!;
       });
 
       doCallback();
@@ -101,7 +101,7 @@ class _AddRiderVehicleDocSelectorWidgetState
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8),
-                              child: files.values.elementAt(index) == null
+                              child: files.values.elementAt(index).isNotEmpty
                                   ? SizedBox(
                                       width: MediaQuery.of(context).size.width /
                                           3.4,
@@ -112,7 +112,7 @@ class _AddRiderVehicleDocSelectorWidgetState
                                   : ClipRRect(
                                       borderRadius: Radii.k10pxRadius,
                                       child: Image.file(
-                                        files.values.elementAt(index)!,
+                                        File(files.values.elementAt(index)),
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 3.4,
@@ -128,8 +128,7 @@ class _AddRiderVehicleDocSelectorWidgetState
                               child: InkWell(
                                 onTap: () {
                                   setState(() =>
-                                      files[files.keys.elementAt(index)] =
-                                          null);
+                                      files[files.keys.elementAt(index)] = '');
                                   doCallback();
                                 },
                                 child: const Icon(

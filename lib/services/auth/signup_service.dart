@@ -1,18 +1,12 @@
+import 'package:trakk/models/auth/signup_model.dart';
 import 'package:trakk/services/base_network_call_handler.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
 
 class SignupService extends BaseNetworkCallHandler {
-  Future<Operation> doSignUp(String firstName, String lastName, String email,
-      String phoneNumber, String password, String userType) async {
-    return runAPI('api/user/register', HttpRequestType.post, body: {
-      "firstName": firstName,
-      "lastName": lastName,
-      "email": email,
-      "phoneNumber": phoneNumber,
-      "password": password,
-      "userType": userType,
-    });
+  Future<Operation> doSignUp(SignupModel signupModel) async {
+    return runAPI('api/user/register', HttpRequestType.post,
+        body: signupModel.toJson());
   }
 
   Future<Operation> doVerify(String code, String email) async {
