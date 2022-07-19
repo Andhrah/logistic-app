@@ -2,14 +2,18 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
+import 'package:trakk/bloc/validation_bloc.dart';
+import 'package:trakk/mixins/profile_helper.dart';
 import 'package:trakk/models/app_settings.dart';
+import 'package:trakk/models/update_profile/update_profile.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/input_field.dart';
 
 class EditProfile extends StatefulWidget {
-  static String id = "editprofile";
+  static String id = "editProfile";
 
   const EditProfile({Key? key}) : super(key: key);
 
@@ -17,78 +21,48 @@ class EditProfile extends StatefulWidget {
   State<EditProfile> createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> {
+class _EditProfileState extends State<EditProfile> with ProfileHelper {
   final _formKey = GlobalKey<FormState>();
 
-  UpdateProfileService updateProfileService = UpdateProfileService();
+  ValidationBloc validationBloc = ValidationBloc();
 
-  // this controller keeps track of what the user is typing in th textField
-  TextEditingController _firstNameController = TextEditingController();
-  late TextEditingController _lastNameController = TextEditingController();
-  late TextEditingController _emailController = TextEditingController();
-  late TextEditingController _phoneNumberController = TextEditingController();
-  late TextEditingController _addressController = TextEditingController();
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _addressController = TextEditingController();
 
-  FocusNode? _firstNameNode;
-  FocusNode? _lastNameNode;
-  FocusNode? _phoneNumberNode;
-  FocusNode? _emailNode;
-  FocusNode? _passwordNode;
-  FocusNode? _addressNode;
+  final FocusNode _firstNameNode = FocusNode();
+  final FocusNode _lastNameNode = FocusNode();
+  final FocusNode _phoneNumberNode = FocusNode();
+  final FocusNode _emailNode = FocusNode();
+  final FocusNode _addressNode = FocusNode();
 
-  String? _firstName;
-  String? _lastName;
-  String? _email;
-  String? _phoneNumber;
-  String? _password;
-  String _address = "";
-  String? firstName = "";
   String? _itemImage = "";
 
   bool _loading = false;
-  bool _passwordIsValid = false;
-  bool _confirmPasswordIsValid = false;
-  bool _emailIsValid = false;
   bool _isItemImage = false;
 
   @override
   void initState() {
     super.initState();
+    init();
   }
 
   init() async {
     var user =
         (await appSettingsBloc.fetchAppSettings()).loginResponse?.data?.user;
 
+    UserType userType = await appSettingsBloc.getUserType;
     setState(() {
       _firstNameController.text = user?.firstName ?? '';
       _lastNameController.text = user?.lastName ?? '';
       _emailController.text = user?.email ?? '';
       _phoneNumberController.text = user?.phoneNumber ?? '';
-      _addressController.text = user?.address ?? '';
+      _addressController.text = userType == UserType.rider
+          ? (user?.rider?.residentialAddress ?? '')
+          : user?.address ?? '';
     });
-  }
-
-  _validateEmail() {
-    RegExp regex;
-    String pattern =
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    String email = _emailController.text;
-    if (email.trim().isEmpty) {
-      setState(() {
-        _emailIsValid = false;
-      });
-      return "Email address cannot be empty";
-    } else {
-      regex = RegExp(pattern);
-      setState(() {
-        _emailIsValid = regex.hasMatch(email);
-        print(_emailIsValid);
-      });
-      if (_emailIsValid == false) {
-        return "Enter a valid email address";
-      }
-    }
   }
 
   uploadItemImage() async {
@@ -105,34 +79,15 @@ class _EditProfileState extends State<EditProfile> {
     }
   }
 
-  /*
-   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
-  */
-  _onSubmit() async {
-    setState(() {
-      _loading = true;
-    });
-    print(" saves called");
-    try {
-      var response = await updateProfileService.updateProfile(
-          firstName: _firstNameController.text,
-          lastName: _lastNameController.text,
-          phoneNumber: _phoneNumberController.text,
-          email: _emailController.text,
-          address: _addressController.text);
-      if (response == true) {
-        //  var box = await Hive.openBox('userDetails');
-        //  box.put('firstname', _firstName);
-        //  print(response.toString());
-        Navigator.of(context).pop();
-      }
-    } catch (err) {
-      print("error saving details >>>" + err.toString());
-    } finally {
-      setState(() {
-        _loading = false;
-      });
-    }
+  @override
+  void dispose() {
+    validationBloc.dispose();
+    _firstNameController.dispose();
+    _lastNameController.dispose();
+    _emailController.dispose();
+    _phoneNumberController.dispose();
+    _addressController.dispose();
+    super.dispose();
   }
 
   @override
@@ -280,7 +235,6 @@ class _EditProfileState extends State<EditProfile> {
                               return "Enter a valid first  name";
                             },
                             onSaved: (value) {
-                              _firstName = value!.trim();
                               return null;
                             },
                           ),
@@ -288,7 +242,7 @@ class _EditProfileState extends State<EditProfile> {
                           InputField(
                             key: const Key('Last name'),
                             textController: _lastNameController,
-                            node: _firstNameNode,
+                            node: _lastNameNode,
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             obscureText: false,
@@ -308,7 +262,6 @@ class _EditProfileState extends State<EditProfile> {
                               return "Enter a valid last  name";
                             },
                             onSaved: (value) {
-                              _firstName = value!.trim();
                               return null;
                             },
                           ),
@@ -337,7 +290,6 @@ class _EditProfileState extends State<EditProfile> {
                               return "Enter a valid phone number";
                             },
                             onSaved: (value) {
-                              _phoneNumber = value!.trim();
                               return null;
                             },
                           ),
@@ -354,11 +306,8 @@ class _EditProfileState extends State<EditProfile> {
                             textHeight: 10.0,
                             borderColor: appPrimaryColor.withOpacity(0.9),
 
-                            validator: (value) {
-                              return _validateEmail();
-                            },
+                            validator: validationBloc.emailValidator,
                             onSaved: (value) {
-                              _email = value!.trim();
                               return null;
                             },
                           ),
@@ -376,7 +325,6 @@ class _EditProfileState extends State<EditProfile> {
                             textHeight: 10.0,
                             borderColor: appPrimaryColor.withOpacity(0.9),
                             onSaved: (value) {
-                              _address = value!.trim();
                               return null;
                             },
                           ),
@@ -386,7 +334,18 @@ class _EditProfileState extends State<EditProfile> {
                               child: Button(
                                   text: 'Save',
                                   //onPress:// _onSubmit,
-                                  onPress: _onSubmit,
+                                  onPress: () => doUpdateProfileOperation(
+                                        UpdateProfile(
+                                            firstName:
+                                                _firstNameController.text,
+                                            lastName: _lastNameController.text,
+                                            phoneNumber:
+                                                _phoneNumberController.text,
+                                            email: _emailController.text,
+                                            address: _addressController.text),
+                                        () => setState(() => _loading = true),
+                                        () => setState(() => _loading = false),
+                                      ),
                                   color: appPrimaryColor,
                                   textColor: whiteColor,
                                   isLoading: _loading,
@@ -400,60 +359,6 @@ class _EditProfileState extends State<EditProfile> {
                 ],
               )),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class UpdateProfileService {
-  //Wrong method need to pull the correct one
-  updateProfile(
-      {String? firstName,
-      String? lastName,
-      String? phoneNumber,
-      String? email,
-      String? address}) {}
-//wrong class
-}
-
-class EditProfileContainer extends StatelessWidget {
-  String? firstName;
-
-  EditProfileContainer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 30.0, right: 30, bottom: 17),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              margin: EdgeInsets.only(
-                top: 8,
-                bottom: 12,
-              ),
-              height: 80,
-              width: 80,
-              decoration: const BoxDecoration(
-                  shape: BoxShape.circle,
-                  image: DecorationImage(
-                      image: AssetImage('assets/images/image.png'))),
-            ),
-            Text(
-              firstName ?? "",
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.w600),
-            ),
-            const Text('+234816559234'),
-            const SizedBox(
-              height: 8,
-            ),
-            Text('malhohn11@gmail.com'),
           ],
         ),
       ),

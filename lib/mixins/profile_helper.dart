@@ -34,14 +34,16 @@ class ProfileHelper {
       AuthData authData = AuthData.fromJsonWithData(operation.result);
 
       var appSettings = await appSettingsBloc.fetchAppSettings();
-      if (!appSettings.isLoggedIn) {}
+      if (!appSettings.isLoggedIn) {
+        return;
+      }
       AuthData user =
           appSettings.loginResponse?.data?.copyWith(user: authData.user) ??
               authData;
 
-      // await appSettingsBloc.saveLoginDetails(
-      //     appSettings.loginResponse?.copyWith(data: user) ??
-      //         AuthResponse(data: authData));
+      await appSettingsBloc.saveLoginDetails(
+          appSettings.loginResponse?.copyWith(data: user) ??
+              AuthResponse(data: authData));
 
       if (profileFetchSuccess != null) profileFetchSuccess(user);
     } else {
@@ -51,11 +53,11 @@ class ProfileHelper {
     }
   }
 
-  doUpdateProfileOperation(bool isPersistentLogin, Function() onShowLoader,
+  doUpdateProfileOperation(UpdateProfile updateProfile, Function() onShowLoader,
       Function() onCloseLoader) async {
     onShowLoader();
     profileService
-        .updateProfile(UpdateProfile())
+        .updateProfile(updateProfile)
         .then((value) => _completeUpdate(value, onCloseLoader));
   }
 
