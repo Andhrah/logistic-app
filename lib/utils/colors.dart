@@ -42,6 +42,7 @@ const TextStyle kHeaderBig = TextStyle(
     fontWeight: FontWeight.bold,
     fontFamily: 'Raleway');
 const SizedBox kSizeBox = SizedBox(height: 20.0);
+const SizedBox kSmallSizeBox = SizedBox(height: 10.0);
 const BorderRadius kAppBorderRadius = BorderRadius.all(Radius.circular(6.0));
 const BorderRadius kAppCircle = BorderRadius.all(Radius.circular(50.0));
 const BorderRadius kAppBorderRadiusMini =

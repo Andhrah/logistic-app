@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_switch/flutter_switch.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/screens/wallet/beneficiaries.dart';
 import 'package:trakk/screens/wallet/qr_code_payment.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/utils/assets.dart';
@@ -176,7 +177,7 @@ class _TransferWidgetState extends State<TransferWidget> {
         children: [
           Container(
             //margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 20.0),
-            padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 15.0),
+            padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20.0),
             height: 160,
             //  height: MediaQuery.of(context).size.height * 0.5/3,
             width: MediaQuery.of(context).size.width,
@@ -196,19 +197,22 @@ class _TransferWidgetState extends State<TransferWidget> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: const [
-                  Text(
-                    'Transfer limit',
-                    textScaleFactor: 1.1,
-                    style: TextStyle(
-                        color: Color(0xFFFFFFFF), fontWeight: FontWeight.w400),
+                  Expanded(
+                    child: Text(
+                      'Transfer limit',
+                      textScaleFactor: 1.1,
+                      style: TextStyle(
+                          color: Color(0xFFFFFFFF),
+                          fontWeight: FontWeight.w400),
+                    ),
                   ),
-                  SizedBox(
-                    width: 40,
-                  ),
+                  // SizedBox(
+                  //   width: 50,
+                  // ),
                   Expanded(
                     child: Text(
                       '₦300,000.00',
-                      textScaleFactor: 1.9,
+                      textScaleFactor: 1.6,
                       style: TextStyle(
                           color: Color(0xFFFFFFFF),
                           fontWeight: FontWeight.bold),
@@ -216,9 +220,9 @@ class _TransferWidgetState extends State<TransferWidget> {
                   ),
                 ],
               ),
-              const SizedBox(height: 40.0),
+              const SizedBox(height: 20.0),
               Button(
-                  text: "ownWallet limit",
+                  text: "Edit limit",
                   onPress: () {},
                   color: whiteColor,
                   width: 104,
@@ -227,7 +231,7 @@ class _TransferWidgetState extends State<TransferWidget> {
             ]),
           ),
           const SizedBox(
-            height: 30,
+            height: 60,
           ),
           Text(
             "I want to transfer to",
@@ -241,10 +245,10 @@ class _TransferWidgetState extends State<TransferWidget> {
             children: [
               Expanded(
                 child: Container(
-                  height: 120,
+                  height: 98,
                   width: 100,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(8),
                     ),
                     border: Border.all(
@@ -252,6 +256,14 @@ class _TransferWidgetState extends State<TransferWidget> {
                   ),
                   child: ElevatedButton(
                     style: ButtonStyle(
+                      elevation:
+                          (selectedProfileOptions == ProfileOptions.ownWallet)
+                              ? MaterialStateProperty.all(3)
+                              : MaterialStateProperty.all(0),
+                      shadowColor:
+                          (selectedProfileOptions == ProfileOptions.ownWallet)
+                              ? MaterialStateProperty.all(secondaryColor)
+                              : MaterialStateProperty.all(whiteColor),
                       backgroundColor:
                           (selectedProfileOptions == ProfileOptions.ownWallet)
                               ? MaterialStateProperty.all(secondaryColor)
@@ -294,7 +306,7 @@ class _TransferWidgetState extends State<TransferWidget> {
               ),
               Expanded(
                 child: Container(
-                  height: 120,
+                  height: 98,
                   width: 100,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.all(
@@ -305,6 +317,14 @@ class _TransferWidgetState extends State<TransferWidget> {
                   ),
                   child: ElevatedButton(
                     style: ButtonStyle(
+                      elevation: (selectedProfileOptions ==
+                              ProfileOptions.zebrraWallet)
+                          ? MaterialStateProperty.all(3)
+                          : MaterialStateProperty.all(0),
+                      shadowColor: (selectedProfileOptions ==
+                              ProfileOptions.zebrraWallet)
+                          ? MaterialStateProperty.all(secondaryColor)
+                          : MaterialStateProperty.all(whiteColor),
                       backgroundColor: (selectedProfileOptions ==
                               ProfileOptions.zebrraWallet)
                           ? MaterialStateProperty.all(secondaryColor)
@@ -350,10 +370,10 @@ class _TransferWidgetState extends State<TransferWidget> {
               ),
               Expanded(
                 child: Container(
-                  height: 120,
+                  height: 98,
                   width: 100,
                   decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(
+                    borderRadius: const BorderRadius.all(
                       Radius.circular(8),
                     ),
                     border: Border.all(
@@ -361,6 +381,14 @@ class _TransferWidgetState extends State<TransferWidget> {
                   ),
                   child: ElevatedButton(
                     style: ButtonStyle(
+                      elevation:
+                          (selectedProfileOptions == ProfileOptions.otherBanks)
+                              ? MaterialStateProperty.all(3)
+                              : MaterialStateProperty.all(0),
+                      shadowColor:
+                          (selectedProfileOptions == ProfileOptions.otherBanks)
+                              ? MaterialStateProperty.all(secondaryColor)
+                              : MaterialStateProperty.all(whiteColor),
                       backgroundColor:
                           (selectedProfileOptions == ProfileOptions.otherBanks)
                               ? MaterialStateProperty.all(secondaryColor)
@@ -448,9 +476,11 @@ class _TransferWidgetState extends State<TransferWidget> {
                 Expanded(
                   child: Button(
                       text: "Saved Beneficiary",
-                      onPress: () {},
+                      onPress: () {
+                        Navigator.pushNamed(context, Beneficiaries.id);
+                      },
                       color: whiteColor,
-                      width: 160,
+                      width: mediaQuery.size.width * 0.4,
                       textColor: appPrimaryColor,
                       isLoading: false),
                 ),
@@ -462,7 +492,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                       text: "New Beneficiary",
                       onPress: () {},
                       color: appPrimaryColor,
-                      width: 160,
+                      width: mediaQuery.size.width * 0.4,
                       textColor: whiteColor,
                       isLoading: false),
                 ),
@@ -775,7 +805,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                                 style: TextStyle(color: Colors.black),
                                 children: <TextSpan>[
                                   TextSpan(
-                                    text: "\" ₦2000\" ",
+                                    text: " ₦2000 ",
                                     style: TextStyle(
                                       color: secondaryColor,
                                       fontWeight: FontWeight.bold,
@@ -784,7 +814,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                                   ),
                                   TextSpan(text: "from your "),
                                   TextSpan(
-                                    text: "\" Trakk Wallet\" ",
+                                    text: " Trakk Wallet ",
                                     style: TextStyle(
                                       color: secondaryColor,
                                       fontWeight: FontWeight.bold,
@@ -795,7 +825,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                                       text:
                                           " to Malik Johnson with the account number"),
                                   TextSpan(
-                                    text: "\" 002122658\" ",
+                                    text: " 002122658 ",
                                     style: TextStyle(
                                       color: secondaryColor,
                                       fontWeight: FontWeight.bold,
@@ -814,12 +844,13 @@ class _TransferWidgetState extends State<TransferWidget> {
                               width: 300,
                               child: Text(
                                 "If the above statement is correct, enter your 4-digit pin to continue",
+                              
                                 // maxLines: 2,
                                 style: TextStyle(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w500,
                                 ),
-                                textAlign: TextAlign.center,
+                                textAlign: TextAlign.left,
                               ),
                             ),
 
@@ -1023,7 +1054,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                                                                       content:
                                                                           SizedBox(
                                                                         height: mediaQuery.size.height *
-                                                                            0.4,
+                                                                            0.3,
                                                                         child:
                                                                             Column(
                                                                           children: [
@@ -1665,7 +1696,7 @@ class _Transfers extends State<Transfers> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
+              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17, top: 10),
               child: Row(
                 children: [
                   BackIcon(
@@ -1674,7 +1705,7 @@ class _Transfers extends State<Transfers> {
                     },
                   ),
                   Container(
-                    margin: const EdgeInsets.only(left: 40.0),
+                    margin:  EdgeInsets.symmetric(horizontal: mediaQuery.size.width*0.2),
                     alignment: Alignment.center,
                     child: const Text(
                       'TRANSFERS',

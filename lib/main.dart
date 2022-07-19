@@ -51,6 +51,7 @@ import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/wallet/all_cards.dart';
+import 'package:trakk/screens/wallet/beneficiaries.dart';
 import 'package:trakk/screens/wallet/buy_airtime.dart';
 import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/payments.dart';
@@ -185,7 +186,7 @@ class _MyAppState extends State<MyApp> {
             RiderHomeScreen.id: (context) => const RiderHomeScreen(),
             CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
             RiderProfile.id: (context) => const RiderProfile(),
-
+            Beneficiaries.id:(context) => const Beneficiaries(),
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             WalletScreen.id: (context) => const WalletScreen(),

@@ -189,7 +189,16 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return SingleChildScrollView(
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Text(
+            'Select your Top Up source',
+            textScaleFactor: 1.4,
+            style: TextStyle(fontWeight: FontWeight.w600),
+          ),
+          SizedBox(
+            height: 24,
+          ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -230,8 +239,8 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                           "Top up from\nZebrra wallet",
                           textScaleFactor: (selectedProfileOptions ==
                                   ProfileOptions.ZebrraWallet)
-                              ? 1.5
-                              : 0.9,
+                              ? 1.4
+                              : 0.8,
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: appPrimaryColor,
@@ -261,6 +270,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                   ),
                   child: ElevatedButton(
                     style: ButtonStyle(
+                      shadowColor: null,
                       backgroundColor:
                           (selectedProfileOptions == ProfileOptions.DebitCard)
                               ? MaterialStateProperty.all(secondaryColor)
@@ -287,8 +297,8 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                             "Top up with\nyour card",
                             textScaleFactor: (selectedProfileOptions ==
                                     ProfileOptions.DebitCard)
-                                ? 1.5
-                                : 0.9,
+                                ? 1.4
+                                : 0.8,
                             textAlign: TextAlign.center,
                             style: TextStyle(color: appPrimaryColor),
                           ),
@@ -356,12 +366,12 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Choose your card",
+                      const Text("Select Source Wallet",
                           textScaleFactor: 1.2,
                           style: TextStyle(
                               //fontSize: 16,
                               fontWeight: FontWeight.w500)),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       DecoratedBox(
@@ -400,13 +410,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                             ),
                           )),
                       const SizedBox(height: 20.0),
-                      const Text(
-                        "Wallet to be funded",
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                            //fontSize: 16,
-                            fontWeight: FontWeight.w500),
-                      ),
+
                       // const SizedBox(height: 10.0),
                       CustomInputField(
                           key: const Key('Trakk wallet'),
@@ -414,7 +418,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                           node: _amountNode,
                           autovalidateMode: AutovalidateMode.onUserInteraction,
                           hintText: 'Trakk wallet',
-                          text: "",
+                          text: "Wallet to be funded",
                           textHeight: 10.0,
                           borderColor: appPrimaryColor.withOpacity(0.9),
                           onSaved: (value) {
@@ -426,11 +430,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const Text("Amount",
-                          textScaleFactor: 1.2,
-                          style: TextStyle(
-                              //fontSize: 16,
-                              fontWeight: FontWeight.w500)),
+
                       CustomInputField(
                         key: const Key('amount'),
                         textController: _amountController,
@@ -438,7 +438,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                         node: _amountNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
-                        text: '',
+                        text: 'Amount',
                         hintText: '₦00.00',
                         textHeight: 10.0,
                         borderColor: appPrimaryColor.withOpacity(0.9),
@@ -545,8 +545,8 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                Color.fromARGB(255, 163, 153, 107),
-                Color.fromARGB(255, 248, 244, 209),
+                Color.fromARGB(255, 182, 176, 150),
+                Color.fromARGB(255, 248, 247, 240),
               ],
             )),
             height: 556,
@@ -624,18 +624,13 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                           //fontSize: 16,
                           fontWeight: FontWeight.w500)),
                   const SizedBox(height: 10.0),
-                  const Text("Card holder's name",
-                      textScaleFactor: 1,
-                      style: TextStyle(
-                          //fontSize: 16,
-                          fontWeight: FontWeight.w400)),
                   CustomInputField(
                       key: const Key('Trakk wallet'),
                       textController: _walletControler,
                       node: _amountNode,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       hintText: 'Name',
-                      text: "",
+                      text: "Card holder's name",
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       validator: (value) {
@@ -652,11 +647,6 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Card Number",
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                          //fontSize: 16,
-                          fontWeight: FontWeight.w500)),
                   CustomInputField(
                     key: const Key('cardNumber'),
                     textController: _cardNumberController,
@@ -664,7 +654,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                     node: _amountNode,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     obscureText: false,
-                    text: '',
+                    text: 'Card Number',
                     hintText: '0000-0000-0000-0000',
                     textHeight: 10.0,
                     borderColor: appPrimaryColor.withOpacity(0.9),
@@ -683,11 +673,6 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text("Expire Date",
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                          //fontSize: 16,
-                          fontWeight: FontWeight.w500)),
                   Row(
                     children: [
                       Expanded(
@@ -698,7 +683,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                             autovalidateMode:
                                 AutovalidateMode.onUserInteraction,
                             hintText: 'mm/yy',
-                            text: "",
+                            text: "Expire Date",
                             textHeight: 10.0,
                             borderColor: appPrimaryColor.withOpacity(0.9),
                             onSaved: (value) {
@@ -732,11 +717,6 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                   const SizedBox(
                     height: 20,
                   ),
-                  const Text("Amount",
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                          //fontSize: 16,
-                          fontWeight: FontWeight.w500)),
                   CustomInputField(
                     key: const Key('amount'),
                     textController: _amountController,
@@ -744,7 +724,7 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                     node: _amountNode,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     obscureText: false,
-                    text: '',
+                    text: 'Amount',
                     hintText: '₦00.00',
                     textHeight: 10.0,
                     borderColor: appPrimaryColor.withOpacity(0.9),
@@ -783,12 +763,21 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                                             MainAxisAlignment.end,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
-                                        children: const [CancelButton()]),
+                                        children:  [
+                                          InkWell(
+                                            onTap: () {
+                                              Navigator.of(context)
+                                            .pushNamed(WalletScreen.id);
+                                            },
+                                            child: CancelButton())
+                                        ]),
                                     SizedBox(
                                       height: 10,
                                     ),
                                     Image.asset(
-                                        Assets.check_success_outline),
+                                      Assets.check_success_outline,
+                                      height: 50,
+                                    ),
                                     SizedBox(
                                       height: 10,
                                     ),
@@ -909,6 +898,7 @@ class _FundWalletScreen extends State<FundWalletScreen> {
                     },
                   ),
                   Container(
+                    height: 80,
                     margin: EdgeInsets.only(left: mediaQuery.size.width / 6),
                     alignment: Alignment.center,
                     child: const Text(
