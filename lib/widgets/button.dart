@@ -36,10 +36,8 @@ class Button extends StatelessWidget {
         : ElevatedButton(
             onPressed: onPress,
             child: Text(
-              text,
-              style: theme.textTheme.button!.copyWith(
-                  fontSize: fontSize,
-                  color: textColor,
+              text,textScaleFactor: 1,
+              style: theme.textTheme.button!.copyWith(                  color: textColor,
                   fontWeight: FontWeight.w400),
             ),
             style: ButtonStyle(
@@ -49,7 +47,7 @@ class Button extends StatelessWidget {
                 elevation: MaterialStateProperty.all(0.0),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(borderRadius ?? 5.0),
+                  borderRadius: BorderRadius.circular(borderRadius ?? 10.0),
                   side: BorderSide(color: appPrimaryColor.withOpacity(0.1)),
                 ))));
   }

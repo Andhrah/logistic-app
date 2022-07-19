@@ -115,7 +115,8 @@ class _WalletHistoryState extends State<WalletHistory> {
                   },
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 40.0),
+                  height: 98,
+                  margin:  EdgeInsets.only(left: MediaQuery.of(context).size.width*0.2),
                   alignment: Alignment.center,
                   child: const Text(
                     'TRAKK WALLET',
@@ -157,16 +158,16 @@ class _WalletHistoryState extends State<WalletHistory> {
                           children: [
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                const Text(
+                              children: const [
+                                Text(
                                   'My Trakk Balance',
                                   textScaleFactor: 1.3,
                                   style: TextStyle(
                                       color: Color(0xFFFFFFFF),
                                       fontWeight: FontWeight.w400),
                                 ),
-                                const SizedBox(height: 10.0),
-                                const Text(
+                                SizedBox(height: 10.0),
+                                Text(
                                   '₦30,000.00',
                                   textScaleFactor: 1.9,
                                   style: TextStyle(
@@ -238,7 +239,8 @@ class _WalletHistoryState extends State<WalletHistory> {
                   Padding(
                     padding: const EdgeInsets.symmetric(
                         vertical: 15, horizontal: 30),
-                    child: Row(
+                    child: Row(mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Expanded(
                           child: InputField(
@@ -309,12 +311,14 @@ class _WalletHistoryState extends State<WalletHistory> {
                           ),
                         ),
                         const SizedBox(width: 10.0),
-                        Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'To',
-                              style: TextStyle(fontSize: 18),
-                            )),
+                        const Padding(
+                          padding: EdgeInsets.only(top: 17),
+                          child: Text(
+                            'To',
+                            style: TextStyle(fontSize: 18),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
                         const SizedBox(width: 10.0),
                         Expanded(
                           child: InputField(
