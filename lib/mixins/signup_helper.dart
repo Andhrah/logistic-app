@@ -58,7 +58,7 @@ class SignupHelper with ProfileHelper, ConnectivityHelper {
       await appSettingsBloc.saveLoginDetails(authResponse);
 
       await appToast(
-          'Your account has been created and '
+          'Your account has been created'
           // +
           // (messageOnlyResponse.message ?? ''
           // )

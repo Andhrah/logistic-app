@@ -279,12 +279,6 @@ class _CompanyDataState extends State<CompanyData> {
                           size: 18.0,
                           color: Color(0xFF909090),
                         ),
-                        validator: (value) {
-                          if (value!.trim().length > 13) {
-                            return null;
-                          }
-                          return "Enter a valid cac rc number";
-                        },
                         onSaved: (value) {
                           _rcNumber = value!.trim();
                           return null;

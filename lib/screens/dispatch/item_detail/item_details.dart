@@ -394,7 +394,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                   ),
                   const SizedBox(height: 20.0),
                   Button(
-                    text: 'Pick a preffered rider',
+                    text: 'Pick a preferred rider',
                     onPress: () {
                       Navigator.pop(context);
                       _showAllRiders(orderModel, riders);

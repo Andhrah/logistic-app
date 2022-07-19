@@ -1,10 +1,10 @@
-
 class OnboardingWidget {
   String image;
   String title;
   String description;
-  
-  OnboardingWidget({required this.image, required this.title, required this.description});
+
+  OnboardingWidget(
+      {required this.image, required this.title, required this.description});
 }
 
 class OnboardingList {
@@ -20,18 +20,20 @@ class OnboardingList {
       ),
       OnboardingWidget(
         image: 'assets/images/onboarding_img2.png',
-        title: 'Choose your preffered ride',
-        description: 'Accept the proposed ride of choose your preffered ride',
+        title: 'Choose your preferred ride',
+        description: 'Accept the proposed ride of choose your preferred ride',
       ),
       OnboardingWidget(
         image: 'assets/images/onboarding_img3.png',
         title: 'Checkout and Make payment',
-        description: 'Pay with zebbra and get 20% off or choose preffered payemnt method',
+        description:
+            'Pay with zebbra and get 20% off or choose preferred payment method',
       ),
-       OnboardingWidget(
+      OnboardingWidget(
         image: 'assets/images/onboarding_img4.png',
-        title: 'Recieve your item',
-        description: 'Receive your delivery and notify that your item has been recieved',
+        title: 'Receive your item',
+        description:
+            'Receive your delivery and notify that your item has been received',
       ),
     ];
   }
