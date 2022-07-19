@@ -151,64 +151,82 @@ Future dialogOrderPaymentSuccess(
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    RichText(
-                      text: TextSpan(
-                          text: "ID: ",
-                          style: theme.textTheme.bodyText1!.copyWith(
-                              fontWeight: kBoldWeight, color: appPrimaryColor),
-                          children: [
-                            TextSpan(
-                              text: "#${datum?.attributes?.orderRef ?? ''}",
-                              style: theme.textTheme.bodyText1!.copyWith(
-                                  fontWeight: kMediumWeight,
-                                  color: appPrimaryColor),
-                            ),
-                          ]),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        CustomClipboard.copy(
-                            datum?.attributes?.deliveryCode ?? '');
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Remix.file_copy_line,
-                            size: 20,
-                          ),
-                          2.5.widthInPixel(),
-                          Text(
-                            "Copy",
-                            style: theme.textTheme.bodyText1!
-                                .copyWith(fontWeight: kSemiBoldWeight),
-                          ),
-                        ],
+                    Expanded(
+                      flex: 3,
+                      child: RichText(
+                        text: TextSpan(
+                            text: "ID: ",
+                            style: theme.textTheme.bodyText1!.copyWith(
+                                fontWeight: kBoldWeight,
+                                color: appPrimaryColor),
+                            children: [
+                              TextSpan(
+                                text: "#${datum?.attributes?.orderRef ?? ''}",
+                                style: theme.textTheme.bodyText1!.copyWith(
+                                    fontWeight: kMediumWeight,
+                                    color: appPrimaryColor),
+                              ),
+                            ]),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        try {
-                          Share.share(datum?.attributes?.deliveryCode ?? '',
-                              subject: 'Delivery Code');
-                        } catch (err) {
-                          appToast('Could not share empty text',
-                              appToastType: AppToastType.failed);
-                        }
-                      },
-                      child: Row(
-                        children: [
-                          const Icon(
-                            Remix.share_line,
-                            size: 20,
+                    Expanded(
+                      flex: 2,
+                      child: GestureDetector(
+                        onTap: () {
+                          CustomClipboard.copy(
+                            "#${datum?.attributes?.orderRef ?? ''}",
+                          );
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Remix.file_copy_line,
+                                size: 20,
+                              ),
+                              2.5.widthInPixel(),
+                              Text(
+                                "Copy",
+                                style: theme.textTheme.bodyText1!
+                                    .copyWith(fontWeight: kSemiBoldWeight),
+                              ),
+                            ],
                           ),
-                          2.5.widthInPixel(),
-                          Text(
-                            "Share",
-                            style: theme.textTheme.bodyText1!
-                                .copyWith(fontWeight: kSemiBoldWeight),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 2,
+                      child: GestureDetector(
+                        onTap: () {
+                          try {
+                            Share.share("#${datum?.attributes?.orderRef ?? ''}",
+                                subject: 'Delivery Code');
+                          } catch (err) {
+                            appToast('Could not share empty text',
+                                appToastType: AppToastType.failed);
+                          }
+                        },
+                        child: Container(
+                          color: Colors.transparent,
+                          child: Row(
+                            children: [
+                              const Icon(
+                                Remix.share_line,
+                                size: 20,
+                              ),
+                              2.5.widthInPixel(),
+                              Text(
+                                "Share",
+                                style: theme.textTheme.bodyText1!
+                                    .copyWith(fontWeight: kSemiBoldWeight),
+                              ),
+                            ],
                           ),
-                        ],
+                        ),
                       ),
                     ),
                   ],

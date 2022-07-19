@@ -13,6 +13,8 @@ class CustomClipboard {
   static Future<void> copy(String text) async {
     if (text.isNotEmpty) {
       Clipboard.setData(ClipboardData(text: text));
+      appToast('Copied', appToastType: AppToastType.success);
+
       return;
     } else {
       appToast('Could not copy empty text', appToastType: AppToastType.failed);

@@ -105,147 +105,151 @@ class _OnboardingState extends State<Onboarding> {
 
     return Scaffold(
         body: Column(children: [
-      Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-        Expanded(
-          flex: 2,
-          child: Column(
-            children: [
-              ElispeImg(
-                child: SkipButton(onPress: () {
-                  Navigator.of(context)
-                      .pushNamedAndRemoveUntil(GetStarted.id, (route) => false);
-                }),
-              ),
-              Expanded(
-                child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  child: CarouselSlider(
-                    carouselController: buttonCarouselController,
-                    options: CarouselOptions(
-                      aspectRatio: MediaQuery.of(context).size.aspectRatio,
-                      viewportFraction: 1.2,
-                      initialPage: 0,
-                      enableInfiniteScroll: true,
-                      reverse: false,
-                      autoPlay: false,
-                      autoPlayInterval: const Duration(seconds: 5),
-                      autoPlayAnimationDuration:
-                          const Duration(milliseconds: 800),
-                      autoPlayCurve: Curves.fastOutSlowIn,
-                      enlargeCenterPage: false,
-                      onPageChanged: handleCarouselPageChange,
-                      scrollDirection: Axis.horizontal,
-                    ),
-                    items: screenStates.map((screenState) {
-                      return Container(
-                        alignment: Alignment.bottomCenter,
-                        child: Image(
-                          image: AssetImage(
-                            screenState['image'],
-                          ),
-                          width: MediaQuery.of(context).size.width / 1.2,
-                        ),
-                      );
-                    }).toList(),
-                  ),
-                ),
-              )
-            ],
-          ),
-        ),
-        Expanded(
+      Expanded(
+        child:
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+          Expanded(
             flex: 2,
-            child: Row(
-              children: <Widget>[
+            child: Column(
+              children: [
+                ElispeImg(
+                  child: SkipButton(onPress: () {
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                        GetStarted.id, (route) => false);
+                  }),
+                ),
                 Expanded(
-                    // flex: 9,
-                    child: Column(
-                  children: <Widget>[
-                    Container(
-                      margin: const EdgeInsets.only(top: 20, bottom: 30.0),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          IndicatorCircle(currentScreen == 1),
-                          IndicatorCircle(currentScreen == 2),
-                          IndicatorCircle(currentScreen == 3),
-                          IndicatorCircle(currentScreen == 4)
-                        ],
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width,
+                    child: CarouselSlider(
+                      carouselController: buttonCarouselController,
+                      options: CarouselOptions(
+                        aspectRatio: MediaQuery.of(context).size.aspectRatio,
+                        viewportFraction: 1.2,
+                        initialPage: 0,
+                        enableInfiniteScroll: true,
+                        reverse: false,
+                        autoPlay: false,
+                        autoPlayInterval: const Duration(seconds: 5),
+                        autoPlayAnimationDuration:
+                            const Duration(milliseconds: 800),
+                        autoPlayCurve: Curves.fastOutSlowIn,
+                        enlargeCenterPage: false,
+                        onPageChanged: handleCarouselPageChange,
+                        scrollDirection: Axis.horizontal,
                       ),
+                      items: screenStates.map((screenState) {
+                        return Container(
+                          alignment: Alignment.bottomCenter,
+                          child: Image(
+                            image: AssetImage(
+                              screenState['image'],
+                            ),
+                            width: MediaQuery.of(context).size.width / 1.2,
+                          ),
+                        );
+                      }).toList(),
                     ),
-                    Container(
-                        margin: const EdgeInsets.only(bottom: 10),
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: AnimatedOpacity(
+                  ),
+                )
+              ],
+            ),
+          ),
+          Expanded(
+              flex: 2,
+              child: Row(
+                children: <Widget>[
+                  Expanded(
+                      // flex: 9,
+                      child: Column(
+                    children: <Widget>[
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 30.0),
+                        child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: <Widget>[
+                            IndicatorCircle(currentScreen == 1),
+                            IndicatorCircle(currentScreen == 2),
+                            IndicatorCircle(currentScreen == 3),
+                            IndicatorCircle(currentScreen == 4)
+                          ],
+                        ),
+                      ),
+                      Container(
+                          margin: const EdgeInsets.only(bottom: 10),
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: AnimatedOpacity(
+                                  duration: const Duration(milliseconds: 100),
+                                  opacity: widgetOpacity,
+                                  curve: animationCurve,
+                                  child: Text(
+                                    screenStates[currentScreenIndex]['pageText']
+                                        [0],
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.w600,
+                                      fontSize: 34,
+                                      color: appPrimaryColor,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  )))),
+                      Container(
+                          margin: const EdgeInsets.only(bottom: 20),
+                          child: SizedBox(
+                              height: 60.0,
+                              width: 300.0,
+                              child: Center(
+                                  child: AnimatedOpacity(
                                 duration: const Duration(milliseconds: 100),
                                 opacity: widgetOpacity,
                                 curve: animationCurve,
-                                child: Text(
-                                  screenStates[currentScreenIndex]['pageText']
-                                      [0],
-                                  style: const TextStyle(
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 34,
-                                    color: appPrimaryColor,
-                                  ),
-                                  textAlign: TextAlign.center,
-                                )))),
-                    Container(
-                        margin: const EdgeInsets.only(bottom: 20),
-                        child: SizedBox(
-                            height: 60.0,
-                            width: 300.0,
-                            child: Center(
-                                child: AnimatedOpacity(
-                              duration: const Duration(milliseconds: 100),
-                              opacity: widgetOpacity,
-                              curve: animationCurve,
-                              child: Column(
-                                children: [
-                                  Text(
-                                    screenStates[currentScreenIndex]['pageText']
-                                        [1],
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      color: appPrimaryColor,
-                                      fontWeight: FontWeight.w400,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      screenStates[currentScreenIndex]
+                                          ['pageText'][1],
+                                      style: const TextStyle(
+                                        fontSize: 18,
+                                        color: appPrimaryColor,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                      textAlign: TextAlign.center,
                                     ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            )))),
-                    Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                        child: Button(
-                          text: 'Next',
-                          color: appPrimaryColor,
-                          textColor: const Color(0XFFFFFFFF),
-                          isLoading: false,
-                          width: MediaQuery.of(context).size.width,
-                          onPress: () {
-                            currentScreen != 4
-                                ? buttonCarouselController.nextPage()
-                                : Navigator.of(context).pushNamedAndRemoveUntil(
-                                    GetStarted.id, (route) => false);
-                          },
-                        )),
-                    Expanded(
-                      child: Container(
-                        alignment: Alignment.bottomRight,
-                        child: Image.asset(
-                          "assets/images/bottom_cone.png",
-                          width: MediaQuery.of(context).size.width / 4,
+                                  ],
+                                ),
+                              )))),
+                      Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                          child: Button(
+                            text: 'Next',
+                            color: appPrimaryColor,
+                            textColor: const Color(0XFFFFFFFF),
+                            isLoading: false,
+                            width: MediaQuery.of(context).size.width,
+                            onPress: () {
+                              currentScreen != 4
+                                  ? buttonCarouselController.nextPage()
+                                  : Navigator.of(context)
+                                      .pushNamedAndRemoveUntil(
+                                          GetStarted.id, (route) => false);
+                            },
+                          )),
+                      Expanded(
+                        child: Container(
+                          alignment: Alignment.bottomRight,
+                          child: Image.asset(
+                            "assets/images/bottom_cone.png",
+                            width: MediaQuery.of(context).size.width / 4,
+                          ),
                         ),
-                      ),
-                    )
-                  ],
-                )),
-              ],
-            )),
-      ])
+                      )
+                    ],
+                  )),
+                ],
+              )),
+        ]),
+      )
     ]));
   }
 }

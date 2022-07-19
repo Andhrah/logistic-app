@@ -116,12 +116,6 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           borderColor: appPrimaryColor.withOpacity(0.5),
           area: null,
-          validator: (value) {
-            if (value!.trim().length > 1) {
-              return null;
-            }
-            return "Enter a valid item weight";
-          },
           onChanged: (value) {
             doCallback();
             return null;
