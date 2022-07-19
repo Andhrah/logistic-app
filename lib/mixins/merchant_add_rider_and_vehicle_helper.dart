@@ -165,7 +165,7 @@ class MerchantAddRiderAndVehicleHelper {
               folder:
                   'rider_image_${_vehicleModel?.data?.riderId ?? 'unknown'}',
               progressCallback: (count, total) {
-                print('Uploading image from file with progress: $count/$total');
+                // print('Uploading image from file with progress: $count/$total');
               })));
       List<CloudinaryResponse> responses =
           await cloudinary.uploadResources(resources);

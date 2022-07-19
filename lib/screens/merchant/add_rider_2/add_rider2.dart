@@ -37,33 +37,14 @@ class _AddRider2State extends State<AddRider2>
 
   late TextEditingController _vehicleNameController;
   late TextEditingController _vehicleModelController;
-  late TextEditingController _emailController;
   late TextEditingController _vehicleNumberController;
   late TextEditingController _vehicleCapacityController;
-  late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
 
   FocusNode? _nameNode;
-  FocusNode? _lastNameNode;
   FocusNode? _vehicleNumberNode;
   FocusNode? _vehicleCapacityNode;
-  FocusNode? _emailNode;
-  FocusNode? _passwordNode;
-  FocusNode? _confirmPasswordNode;
-  FocusNode? _vehicleColorNode;
   FocusNode? _vehicleModelNode;
 
-  String? _name;
-  String? _lastName;
-  String? _email;
-  String? _vehicleNumber;
-  String? _vehicleCapacity;
-  String? _password;
-  String? _confirmPassword;
-  String? _vehicleColor;
-  String? _vehicleModel;
-
-  bool _loading = false;
   bool deliveryBox = false;
 
   @override
@@ -72,10 +53,7 @@ class _AddRider2State extends State<AddRider2>
     _vehicleNameController = TextEditingController();
     _vehicleModelController = TextEditingController();
     _vehicleCapacityController = TextEditingController();
-    _emailController = TextEditingController();
     _vehicleNumberController = TextEditingController();
-    _passwordController = TextEditingController();
-    _confirmPasswordController = TextEditingController();
   }
 
   @override
@@ -171,7 +149,6 @@ class _AddRider2State extends State<AddRider2>
                     //   return "Enter a valid first  name";
                     // },
                     onSaved: (value) {
-                      _name = value!.trim();
                       return null;
                     },
                   ),
@@ -251,7 +228,6 @@ class _AddRider2State extends State<AddRider2>
                     //   return "Enter a valid phone number";
                     // },
                     onSaved: (value) {
-                      _vehicleNumber = value!.trim();
                       return null;
                     },
                   ),
@@ -333,7 +309,7 @@ class _AddRider2State extends State<AddRider2>
                         },
                         color: appPrimaryColor,
                         textColor: whiteColor,
-                        isLoading: _loading,
+                        isLoading: false,
                         width: double.infinity),
                   ),
                   24.heightInPixel(),

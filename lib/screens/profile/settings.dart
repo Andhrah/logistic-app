@@ -139,7 +139,9 @@ class _SettingsState extends State<Settings> {
                   },
                 ),
                 Container(
-                  margin: const EdgeInsets.only(left: 60.0),
+                  height: 98,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.3),
                   alignment: Alignment.center,
                   child: InkWell(
                     onTap: () {},
@@ -162,6 +164,7 @@ class _SettingsState extends State<Settings> {
                   child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  divider(),
                   SizedBox(
                     child: Padding(
                       padding: const EdgeInsets.only(
@@ -169,52 +172,53 @@ class _SettingsState extends State<Settings> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.only(
-                                  top: 8,
-                                  bottom: 12,
-                                ),
-                                height: 80,
-                                width: 80,
-                                decoration: const BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                        image: AssetImage(
-                                            'assets/images/malik.png'))),
-                              ),
-                              Button(
-                                  text: "Edit profile",
-                                  onPress: () {},
-                                  color: whiteColor,
-                                  width: 100,
-                                  textColor: grayColor,
-                                  isLoading: false)
-                            ],
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 8,
+                              bottom: 12,
+                            ),
+                            height: 80,
+                            width: 80,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/malik.png'))),
                           ),
                           const Text(
                             'Malik Johnson',
                             style: TextStyle(
                                 fontSize: 24, fontWeight: FontWeight.w600),
                           ),
-                          const Text('+234816559234'),
-                          const SizedBox(
-                            height: 8,
+                          Row(crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Column(crossAxisAlignment: CrossAxisAlignment.start,
+                                children: const [
+                                  Text('+234816559234'),
+                                  SizedBox(
+                                    height: 8,
+                                  ),
+                                  Text('malhohn11@gmail.com'),
+                                ],
+                              ),
+                              Button(
+                                  text: "Edit profile",
+                                  onPress: () {},
+                                  color: appPrimaryColor,
+                                  width: 100,
+                                  textColor: grayColor,
+                                  isLoading: false),
+                            ],
                           ),
-                          Text('malhohn11@gmail.com'),
                         ],
                       ),
                     ),
                   ),
-                  const Divider(
-                    thickness: 1.0,
-                    color: Color(0xff909090),
-                  ),
+                  divider(),
                   Container(
-                    height: 250,
-                    margin: EdgeInsets.all(30),
+                    height: 150,
+                    margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                     decoration: const BoxDecoration(
                         borderRadius: BorderRadius.all(
                           Radius.circular(10),
@@ -234,25 +238,24 @@ class _SettingsState extends State<Settings> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Custom Colors and Borders"),
-                          SizedBox(height: 10.0),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: <Widget>[
-                              // Container(
-                              //   alignment: Alignment.centerRight,
-                              //   child: Text(
-                              //     "Value: $status",
-                              //   ),
-                              // ),
-                            ],
-                          ),
+                          //SizedBox(height: 10.0),
+                          // Row(
+                          //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          //   children: <Widget>[
+                          //     // Container(
+                          //     //   alignment: Alignment.centerRight,
+                          //     //   child: Text(
+                          //     //     "Value: $status",
+                          //     //   ),
+                          //     // ),
+                          //   ],
+                          // ),
                           Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Row(
                                   children: const [
-                                    Icon(Remix.user_2_line),
+                                    Icon(Remix.account_circle_line),
                                     SizedBox(
                                       width: 25,
                                     ),
@@ -264,7 +267,7 @@ class _SettingsState extends State<Settings> {
                                     ),
                                   ],
                                 ),
-                                Icon(Icons.arrow_forward_ios),
+                                Icon(Remix.arrow_right_s_line, size: 28,),
                               ]),
                           SettingsRow(
                             icon: FlutterSwitch(
@@ -289,7 +292,7 @@ class _SettingsState extends State<Settings> {
                               children: [
                                 Row(
                                   children: const [
-                                    Icon(Remix.user_2_line),
+                                    Icon(Remix.shield_keyhole_line),
                                     SizedBox(
                                       width: 25,
                                     ),
@@ -301,17 +304,18 @@ class _SettingsState extends State<Settings> {
                                     ),
                                   ],
                                 ),
-                                Icon(Icons.arrow_forward_ios),
+                                Icon(Remix.arrow_right_s_line, size: 28,),
                               ]),
                         ],
                       ),
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.all(10),
+                    margin: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                     padding: EdgeInsets.only(left: 30),
-                    height: 48,
+                    height: 64,
                     decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(8)),
                       color: whiteColor,
                       boxShadow: [
                         BoxShadow(
@@ -352,6 +356,20 @@ class _SettingsState extends State<Settings> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class divider extends StatelessWidget {
+  const divider({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return const Divider(
+      thickness: 1.0,
+      color: Color(0xff909090),
     );
   }
 }

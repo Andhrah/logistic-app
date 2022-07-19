@@ -23,17 +23,26 @@ class _WalletScreenState extends State<WalletScreen> {
         body: SafeArea(
       child: SingleChildScrollView(
         child: Column(children: [
-          kSizeBox,kSizeBox,
-          Container(
-            margin: const EdgeInsets.only(left: 40.0),
-            alignment: Alignment.center,
-            child: const Text(
-              'TRAKK WALLET',
-              style: TextStyle(
-                  color: appPrimaryColor,
-                  fontSize: 20.0,
-                  fontWeight: FontWeight.bold),
-            ),
+          kSmallSizeBox,kSmallSizeBox,
+          Row(
+            children: [
+              BackIcon(
+                  onPress: () {
+                    Navigator.pop(context);
+                  },
+                ),
+              Container(
+                margin:  EdgeInsets.only(left: MediaQuery.of(context).size.width)*0.2,
+                alignment: Alignment.center,
+                child: const Text(
+                  'TRAKK WALLET',
+                  style: TextStyle(
+                      color: appPrimaryColor,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            ],
           ),
 
           Container(

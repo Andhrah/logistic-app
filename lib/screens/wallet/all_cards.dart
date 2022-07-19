@@ -152,7 +152,7 @@ class _AllCardsState extends State<AllCards> {
                     Navigator.pop(context);
                   },
                 ),
-                Container(
+                Container(height: 98,
                   margin: EdgeInsets.only(left: mediaQuery.size.width / 5),
                   alignment: Alignment.center,
                   child: const Text(
@@ -170,9 +170,9 @@ class _AllCardsState extends State<AllCards> {
                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 10, horizontal: 30),
                   child: Text(
-                    "Secure and manage all your cards\nconnected to Trakk",
-                    textScaleFactor: 1,
-                    style: TextStyle(fontWeight: FontWeight.w500),
+                    "Secure and manage all your cards connected\n to Trakk",
+                    textScaleFactor: 1.2,textAlign: TextAlign.left,
+                    style: TextStyle(fontWeight: FontWeight.w500,),
                   ),
                 ),
               ],
@@ -481,7 +481,7 @@ class _AllCardsState extends State<AllCards> {
                                                           },
                                                           obscureText: false),
                                                     ),
-                                                    SizedBox(
+                                                    const SizedBox(
                                                       width: 50,
                                                     ),
                                                     Expanded(
@@ -535,7 +535,7 @@ class _AllCardsState extends State<AllCards> {
                             height: 20,
                           ),
                           Button(
-                              text: "Cancel",
+                              text: "Close",
                               onPress: () {},
                               color: whiteColor,
                               width: mediaQuery.size.width * 0.9,

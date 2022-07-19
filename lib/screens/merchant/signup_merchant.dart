@@ -279,12 +279,10 @@ class _SignupMerchantState extends State<SignupMerchant> {
                         maxLines: 1,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: _hidePassword,
-                        text: 'CAC  RC number (Optional)',
-                        hintText: 'CAC  RC number',
+                        text: 'CAC RC number (Optional)',
+                        hintText: 'CAC RC number',
                         textHeight: 10.0,
                         borderColor: appPrimaryColor.withOpacity(0.9),
-                        
-                        
                       ),
                       const SizedBox(height: 40.0),
                       Card(
