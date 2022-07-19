@@ -19,7 +19,7 @@ class SplashHelper {
     AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
 
     Timer(const Duration(milliseconds: 0), () {
-      if (!appSettings.hasViewedAppTour) {
+      if (appSettings.hasViewedAppTour) {
         if (appSettings.isLoggedIn) {
           _navigationHomePage();
         } else {
