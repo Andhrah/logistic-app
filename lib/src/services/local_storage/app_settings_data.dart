@@ -6,9 +6,9 @@
 
 import 'dart:convert';
 
-import 'package:trakk/models/app_settings.dart';
-import 'package:trakk/models/auth_response.dart';
-import 'package:trakk/utils/singleton_data.dart';
+import 'package:trakk/src/models/app_settings.dart';
+import 'package:trakk/src/models/auth_response.dart';
+import 'package:trakk/src/utils/singleton_data.dart';
 
 class AppSettingsProvider {
   Future<AppSettings> markAppTourViewed() async {
@@ -59,6 +59,12 @@ class AppSettingsProvider {
     AppSettings appSettings = await fetchAppSettings();
     appSettings.removeAccount();
 
+    return await _saveAppSettings(appSettings);
+  }
+
+  Future<AppSettings> setThemeMode(int themeModeIndex) async {
+    AppSettings appSettings = await fetchAppSettings();
+    appSettings.themeModeIndex = themeModeIndex;
     return await _saveAppSettings(appSettings);
   }
 }

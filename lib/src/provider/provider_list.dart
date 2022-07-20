@@ -1,11 +1,12 @@
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
-import 'package:trakk/provider/customer/customer_map_provider.dart';
-import 'package:trakk/provider/merchant/add_company_data_provider.dart';
-import 'package:trakk/provider/order/order.dart';
-import 'package:trakk/provider/rider/rider.dart';
-import 'package:trakk/provider/rider/rider_map_provider.dart';
-import 'package:trakk/provider/support/support.dart';
+import 'package:trakk/src/provider/customer/customer_map_provider.dart';
+import 'package:trakk/src/provider/merchant/add_company_data_provider.dart';
+import 'package:trakk/src/provider/order/order.dart';
+import 'package:trakk/src/provider/rider/rider.dart';
+import 'package:trakk/src/provider/rider/rider_map_provider.dart';
+import 'package:trakk/src/provider/settings_options/settings_options.dart';
+import 'package:trakk/src/provider/support/support.dart';
 
 List<SingleChildWidget> appProviders = [
   // ChangeNotifierProvider notifies the UI/Widget to update its
@@ -31,4 +32,5 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<RiderMapProvider>(create: (_) => RiderMapProvider()),
   ChangeNotifierProvider<CustomerMapProvider>(
       create: (_) => CustomerMapProvider()),
+  ChangeNotifierProvider<SettingsProvider>(create: (_) => SettingsProvider()),
 ];

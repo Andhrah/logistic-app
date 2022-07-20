@@ -6,30 +6,34 @@
 
 import 'dart:ui';
 
-import 'package:trakk/models/auth_response.dart';
+import 'package:trakk/src/models/auth_response.dart';
 
 class AppSettings {
   bool hasViewedAppTour;
   bool isLoggedIn;
   AuthResponse? loginResponse;
   bool isPersistentLogin;
+  int themeModeIndex;
 
   AppSettings(
       {this.hasViewedAppTour = false,
       this.isLoggedIn = false,
       this.isPersistentLogin = false,
-      this.loginResponse});
+      this.loginResponse,
+      this.themeModeIndex = 0});
 
   AppSettings copyWith(
       {bool? hasViewedAppTour,
       bool? isLoggedIn,
       AuthResponse? loginResponse,
-      bool? isPersistentLogin}) {
+      bool? isPersistentLogin,
+      int? themeModeIndex}) {
     return AppSettings(
       hasViewedAppTour: hasViewedAppTour ?? this.hasViewedAppTour,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       loginResponse: loginResponse ?? this.loginResponse,
       isPersistentLogin: isPersistentLogin ?? this.isPersistentLogin,
+      themeModeIndex: themeModeIndex ?? this.themeModeIndex,
     );
   }
 
@@ -40,12 +44,13 @@ class AppSettings {
     return hasViewedAppTour == typedOther.hasViewedAppTour &&
         isLoggedIn == typedOther.isLoggedIn &&
         loginResponse == typedOther.loginResponse &&
-        isPersistentLogin == typedOther.isPersistentLogin;
+        isPersistentLogin == typedOther.isPersistentLogin &&
+        themeModeIndex == typedOther.themeModeIndex;
   }
 
   @override
-  int get hashCode => hashValues(
-      hasViewedAppTour, isLoggedIn, loginResponse, isPersistentLogin);
+  int get hashCode => hashValues(hasViewedAppTour, isLoggedIn, loginResponse,
+      isPersistentLogin, themeModeIndex);
 
   @override
   String toString() {
@@ -59,6 +64,8 @@ class AppSettings {
         loginResponse: data['loginResponse'] == null
             ? null
             : AuthResponse.fromJson(data['loginResponse']),
+        themeModeIndex:
+            data['themeModeIndex'] == null ? 0 : data['themeModeIndex'],
       );
 
   Map<String, dynamic> toMap() => {
@@ -66,6 +73,7 @@ class AppSettings {
         "isPersistentLogin": isPersistentLogin,
         "isLoggedIn": isLoggedIn,
         'loginResponse': loginResponse != null ? loginResponse!.toJson() : null,
+        'themeModeIndex': themeModeIndex,
       };
 
   removeAccount({bool removeLoginData = true}) {
