@@ -17,7 +17,13 @@ class SettingsProvider extends ChangeNotifier {
     return Provider.of<SettingsProvider>(context, listen: listen);
   }
 
-  SettingOptions options = SettingOptions();
+  SettingOptions options = SettingOptions(
+    theme: kLightTrakkTheme,
+    darkTheme: kDarkTrakkTheme,
+    trakkThemeMode: kAllTrakkThemeModeValues.elementAt(0),
+    textScaleFactor: kAllTrakkTextScaleValues[0],
+    platform: defaultTargetPlatform,
+  );
 
   init() async {
     AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
