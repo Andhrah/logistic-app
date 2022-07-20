@@ -69,15 +69,11 @@ class _SettingsState extends State<Settings> {
             "Android is a mobile operating system based on a modified version of the Linux kernel and other open source software, designed primarily for touchscreen mobile devices such as smartphones and tablets. ... Some well known derivatives include Android TV for televisions and Wear OS for wearables, both developed by Google.",
         colorsItem: Colors.green,
         img: 'assets/images/android_img.png'),
+    
   ];
 
   String text =
-      """In order to have continued access to use the Platform, you will have to register on the Platform and create an account with a unique user identity and password ("Account"). If you are using the Platform on a compatible mobile or tablet, you will have to install the application and then proceed with registration.
-You will be responsible for maintaining the confidentiality of the Account information, and are fully responsible for all activities that occur under Your Account. You agree that you will 
-   a)	immediately notify Trakk of any unauthorized use of Your Account information or any other breach of security, and
-   b)	ensure that You exit from Your Account at the end of each session.
-   TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. 
-Use of another User’s Account information for using the Platform is expressly prohibited.
+      """In order to have continued access to use the Platform, you will have to register on the Platform and create an account with a unique user identity and password ("Account"). If you are using the Platform on a compatible mobile or tablet, you will have to install the application and then proceed with registration. You will be responsible for maintaining the confidentiality of the Account information, and are fully responsible for all activities that occur under Your Account. You agree that you will a) immediately notify Trakk of any unauthorized use of Your Account information or any other breach of security, and b) ensure that You exit from Your Account at the end of each session. TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. Use of another User’s Account information for using the Platform is expressly prohibited.
 
 """;
   /*
@@ -160,13 +156,14 @@ Use of another User’s Account information for using the Platform is expressly 
                       shrinkWrap: true,
                       itemCount: itemData.length,
                       itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          decoration: BoxDecoration(
+                        return 
+                        Container(
+                          decoration: const BoxDecoration(
                               color: appPrimaryColor,
                               borderRadius:
                                   BorderRadius.all(Radius.circular(8))),
                           child: ExpansionPanelList(
-                            animationDuration: Duration(seconds: 1),
+                            animationDuration: Duration(microseconds: 2000),
                             //dividerColor: Colors.red,
                             elevation: 0,
                             children: [
@@ -191,12 +188,8 @@ Use of another User’s Account information for using the Platform is expressly 
                                         trimMode: TrimMode.Line,
                                         trimCollapsedText: 'see all',
                                         trimExpandedText: 'back',
-                                        lessStyle: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600),
-                                        moreStyle: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600),
+                                        lessStyle: textStyle,
+                                        moreStyle: textStyle,
                                       ),
                                     ],
                                   ),
@@ -204,13 +197,13 @@ Use of another User’s Account information for using the Platform is expressly 
                                 headerBuilder:
                                     (BuildContext context, bool isExpanded) {
                                   return Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                         borderRadius: BorderRadius.all(
                                             Radius.circular(10))),
                                     padding:
                                         EdgeInsets.symmetric(horizontal: 20),
                                     child: Row(
-                                      children: [
+                                      children: const [
                                         Icon(
                                           Remix.account_pin_circle_line,
                                           color: appPrimaryColor,
@@ -219,7 +212,7 @@ Use of another User’s Account information for using the Platform is expressly 
                                           width: 10,
                                         ),
                                         Text(
-                                          itemData[index].headerItem,
+                                         "User Account Security",
                                           style: TextStyle(
                                             color: whiteColor,
                                             fontSize: 18,
@@ -232,7 +225,7 @@ Use of another User’s Account information for using the Platform is expressly 
                                 isExpanded: itemData[index].expanded,
                               )
                             ],
-                            expansionCallback: (int item, bool status) {
+                            expansionCallback: (int index, bool status) {
                               setState(() {
                                 itemData[index].expanded =
                                     !itemData[index].expanded;
@@ -298,3 +291,6 @@ class SettingsRow extends StatelessWidget {
     ]);
   }
 }
+  var textStyle = TextStyle(
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.w600);

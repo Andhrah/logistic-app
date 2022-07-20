@@ -159,12 +159,12 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ),
                     ),
                     SizedBox(height: 30.0),
-                    const Text(
-                      'What issue do you have with ride?',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
-                    ),
-                    const SizedBox(height: 20.0),
+                    // const Text(
+                    //   'What issue do you have with ride?',
+                    //   style:
+                    //       TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
+                    // ),
+                    // const SizedBox(height: 20.0),
                     Form(
                       key: _formKey,
                       child: Column(
@@ -249,7 +249,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                           ),
                           const SizedBox(height: 50),
                           Button(
-                              text: 'send',
+                              text: 'Send',
                               onPress: _onSave,
                               color: Colors.black,
                               width: mediaQuery.size.width * 1,

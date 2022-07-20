@@ -186,7 +186,7 @@ class _TabsState extends State<Tabs> {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 3.5),
                               child: Icon(
-                                Remix.file_list_fill,
+                                Remix.file_list_line,
                                 color: _selectedIndex != 1
                                     ? appPrimaryColor
                                     : secondaryColor,

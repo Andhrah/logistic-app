@@ -37,7 +37,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
           children: [
             12.heightInPixel(),
             Text(
-              'Your Dispatch',
+              'YOUR DISPATCH',
               style: theme.textTheme.subtitle1!.copyWith(
                 fontWeight: kBoldWeight,
                 fontSize: 18,

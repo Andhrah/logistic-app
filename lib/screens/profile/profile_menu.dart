@@ -394,7 +394,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                       Align(
                         alignment: Alignment.center,
                         child: Button(
-                            text: 'Become a rider and earn',
+                            text: 'Become a Rider and Earn',
                             onPress: () {},
                             color: kTextColor,
                             width: 344,
