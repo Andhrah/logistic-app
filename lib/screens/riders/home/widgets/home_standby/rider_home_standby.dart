@@ -3,7 +3,7 @@ import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/screens/riders/home/widgets/home_standby/rider_bottom_sheet.dart';
 import 'package:trakk/screens/riders/home/widgets/home_standby/rider_location_card.dart';
 import 'package:trakk/screens/riders/home/widgets/home_standby/rider_top_part.dart';
-import 'package:trakk/utils/assets.dart';
+import 'package:trakk/values/assets.dart';
 
 class RiderHomeStandbyScreen extends StatefulWidget {
   final MiscBloc locaBloc;

@@ -15,10 +15,10 @@ import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_hist
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/values/assetkk/utils/helper_utils.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/general_widget.dart';
 import 'package:trakk/widgets/profile_list.dart';

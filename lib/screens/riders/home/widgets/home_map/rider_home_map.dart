@@ -10,9 +10,9 @@ import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/screens/riders/home/widgets/home_map/rider_bottom_sheet.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/values/assets.dart';
 
 class RiderHomeMapScreen extends StatefulWidget {
   final MiscBloc locaBloc;

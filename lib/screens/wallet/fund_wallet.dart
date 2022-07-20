@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/values/assets.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';
@@ -763,13 +763,13 @@ class _FundWalletWidetState extends State<FundWalletWidget> {
                                             MainAxisAlignment.end,
                                         crossAxisAlignment:
                                             CrossAxisAlignment.end,
-                                        children:  [
+                                        children: [
                                           InkWell(
-                                            onTap: () {
-                                              Navigator.of(context)
-                                            .pushNamed(WalletScreen.id);
-                                            },
-                                            child: CancelButton())
+                                              onTap: () {
+                                                Navigator.of(context)
+                                                    .pushNamed(WalletScreen.id);
+                                              },
+                                              child: CancelButton())
                                         ]),
                                     SizedBox(
                                       height: 10,

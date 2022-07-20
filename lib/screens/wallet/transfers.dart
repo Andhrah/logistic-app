@@ -7,8 +7,8 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/screens/wallet/beneficiaries.dart';
 import 'package:trakk/screens/wallet/qr_code_payment.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/values/assettils/colors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';
@@ -844,7 +844,7 @@ class _TransferWidgetState extends State<TransferWidget> {
                               width: 300,
                               child: Text(
                                 "If the above statement is correct, enter your 4-digit pin to continue",
-                              
+
                                 // maxLines: 2,
                                 style: TextStyle(
                                   fontSize: 12,
@@ -1696,7 +1696,8 @@ class _Transfers extends State<Transfers> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17, top: 10),
+              padding: const EdgeInsets.only(
+                  left: 0.0, right: 30, bottom: 17, top: 10),
               child: Row(
                 children: [
                   BackIcon(
@@ -1705,7 +1706,8 @@ class _Transfers extends State<Transfers> {
                     },
                   ),
                   Container(
-                    margin:  EdgeInsets.symmetric(horizontal: mediaQuery.size.width*0.2),
+                    margin: EdgeInsets.symmetric(
+                        horizontal: mediaQuery.size.width * 0.2),
                     alignment: Alignment.center,
                     child: const Text(
                       'TRANSFERS',

@@ -5,9 +5,9 @@ import 'package:trakk/models/order/available_rider_response.dart';
 import 'package:trakk/models/order/order.dart';
 import 'package:trakk/screens/dispatch/payment.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
+import 'package:trakk/values/constant.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
 

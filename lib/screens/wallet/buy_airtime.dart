@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_text_field/pin_code_text_field.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/values/assetolors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/cancel_button.dart';

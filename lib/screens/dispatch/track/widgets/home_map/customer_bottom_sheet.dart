@@ -5,11 +5,11 @@ import 'package:trakk/bloc/rider/rider_rating_bloc.dart';
 import 'package:trakk/mixins/rider_order_helper.dart';
 import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/screens/dispatch/track/widgets/home_map/cutomer_track_bottom_sheet_content.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
+import 'package:trakk/values/assets.dart';
 
 class CustomerBottomSheet extends StatefulWidget {
   const CustomerBottomSheet({Key? key}) : super(key: key);

@@ -8,11 +8,11 @@ import 'package:trakk/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/screens/merchant/inactive_vehicle.dart';
 import 'package:trakk/screens/merchant/merchant_rider_profile.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/utils/styles.dart';
+import 'package:trakk/values/assetkk/utils/styles.dart';
 import 'package:trakk/widgets/button.dart';
 
 import '../../widgets/back_icon.dart';

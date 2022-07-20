@@ -9,8 +9,8 @@ import 'package:trakk/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/bloc/misc_bloc.dart';
 import 'package:trakk/screens/dispatch/track/widgets/home_map/customer_bottom_sheet.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/values/assets.dart';
 
 class CustomerHomeMapScreen extends StatefulWidget {
   final MiscBloc locaBloc;

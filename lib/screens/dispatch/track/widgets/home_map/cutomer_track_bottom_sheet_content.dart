@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/custom_clipboard.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/values/assets.dart';
+import 'package:trakk/values/constant.dart';
 
 typedef OnButtonClicked = Function();
 

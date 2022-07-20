@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/screens/dispatch/track/customer_track_screen.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
+import 'package:trakk/values/assets.dart';
+import 'package:trakk/values/constant.dart';
 import 'package:trakk/widgets/button.dart';
 
 class UserOrderCard extends StatefulWidget {

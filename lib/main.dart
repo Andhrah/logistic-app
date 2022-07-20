@@ -44,8 +44,8 @@ import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
-import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/profile/privacy_and_policy.dart';
+import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/screens/riders/home/rider_home.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
@@ -62,8 +62,8 @@ import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet.dart';
 import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/singleton_data.dart';
+import 'package:trakk/values/constant.dart';
 
 import 'screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'screens/profile/profile_menu.dart';
@@ -144,6 +144,21 @@ class _MyAppState extends State<MyApp> {
           // home: const MyHomePage(title: 'Flutter Demo Home Page'),
           // home: const SplashScreen(),
           initialRoute: SplashScreen.id,
+          builder: (BuildContext context, Widget? child) {
+            return Directionality(
+              textDirection: options.textDirection,
+              child: provider.applyTextScaleFactor(
+                  // Specifically use a blank Cupertino theme here and do not transfer
+                  // over the Material primary color etc except the brightness to
+                  // showcase standard iOS looks.
+                  CupertinoTheme(
+                data: CupertinoThemeData(
+                  brightness: options.theme!.data.brightness,
+                ),
+                child: child!,
+              )),
+            );
+          },
           routes: {
             SplashScreen.id: (context) => const SplashScreen(),
             Onboarding.id: (context) => const Onboarding(),
@@ -187,7 +202,7 @@ class _MyAppState extends State<MyApp> {
             RiderHomeScreen.id: (context) => const RiderHomeScreen(),
             CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
             RiderProfile.id: (context) => const RiderProfile(),
-            Beneficiaries.id:(context) => const Beneficiaries(),
+            Beneficiaries.id: (context) => const Beneficiaries(),
             // MyDatePicker.id: (context) => MyDatePicker(),
             // Country.id: (context) => const Country(),
             WalletScreen.id: (context) => const WalletScreen(),
@@ -197,7 +212,7 @@ class _MyAppState extends State<MyApp> {
             // RideIssues.id:(context) => const RideIssues(),
             EditProfile.id: (context) => const EditProfile(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
-            HelpAndSupport.id:(context) => const HelpAndSupport(),
+            HelpAndSupport.id: (context) => const HelpAndSupport(),
             // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             Transfers.id: (context) => const Transfers(),

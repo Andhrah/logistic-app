@@ -12,12 +12,12 @@ import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_image_sele
 import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_location_widget.dart';
 import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_participant_widget.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
+import 'package:trakk/values/assets.dart';
+import 'package:trakk/values/constant.dart';
 import 'package:trakk/widgets/button.dart';
 
 import '../../../models/app_settings.dart';

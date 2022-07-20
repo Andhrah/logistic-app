@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:trakk/models/support/support.dart';
-import 'package:trakk/utils/constant.dart';
+import 'package:trakk/values/constant.dart';
 
 class SupportService {
   Future<bool?> sendMessage({

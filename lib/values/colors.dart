@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 const Color kBackgroundColor = Color(0xFFFFFFFF);
 const Color kDarkThemeBackgroundColor = Color(0xFFFFFFFF);
 const Color appPrimaryColor = Color(0xFF000000);
+const Color appPrimaryDarkColor = Color(0xFF000000);
 const Color secondaryColor = Color(0xFFFDC70C);
+const Color secondaryDarkColor = Color(0xFFFDC70C);
 const Color paymentContainerColor = Color(0xffCA9E0D);
 const Color grayColor = Color(0xFFC4C4C4);
 const Color darkPink = Color(0xFFAE207C);
@@ -26,6 +28,9 @@ const Color darkBrownColor = Color(0xFF6F6F6F);
 const Color dividerColor = Color(0xff909090);
 const Color boarderline = Color.fromARGB(255, 243, 241, 241);
 const Color expansionTileBG = Color(0xffEEEEEE);
+
+const Color labelColor = Color(0xFF8C8C8C);
+const Color hintColor = Color(0xFFBDBDBD);
 
 const TextStyle kTextHeavyWeight = TextStyle(fontWeight: FontWeight.w600);
 const String kImageUrl = 'assets/images';

@@ -7,9 +7,9 @@ import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location/location.dart' as Loca;
 import 'package:trakk/.env.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/values/assets.dart';
 
 class MapExtraUI {
   Set<Marker> marker;

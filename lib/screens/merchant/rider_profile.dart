@@ -1,8 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:trakk/models/merchant/get_riders_for_merchant_response.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/values/assetolors.dart';
 import 'package:trakk/widgets/back_icon.dart';
 
 class RiderProfile extends StatefulWidget {

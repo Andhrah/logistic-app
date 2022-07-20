@@ -13,11 +13,11 @@ import 'package:trakk/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/services/order/order_api.dart';
 import 'package:trakk/utils/app_toast.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/operation.dart';
 import 'package:trakk/utils/singleton_data.dart';
 import 'package:trakk/utils/styles.dart';
+import 'package:trakk/values/constant.dart';
 
 class CustomerOrderHelper {
   final BuildContext _authContext =

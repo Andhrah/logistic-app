@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/utils/radii.dart';
+import 'package:trakk/values/assets.dart';
 
 class RiderTopPart extends StatefulWidget {
   const RiderTopPart({Key? key}) : super(key: key);

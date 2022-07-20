@@ -4,10 +4,9 @@ import 'dart:convert';
 
 import 'package:http/http.dart' as http;
 import 'package:trakk/Exceptions/api_failure_exception.dart';
-import 'package:trakk/utils/constant.dart';
+import 'package:trakk/values/constant.dart';
 
 class AuthService {
-
   Future<dynamic> loginRequest(Map body, String url) async {
     print('body is $body');
     print('Encoded body ${json.encode(body)}');

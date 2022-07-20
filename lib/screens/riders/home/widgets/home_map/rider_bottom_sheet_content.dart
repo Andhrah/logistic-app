@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
+import 'package:trakk/values/assets.dart';
 import 'package:trakk/widgets/button.dart';
 
 typedef OnButtonClicked = Function(RiderOrderState data, String orderNo,

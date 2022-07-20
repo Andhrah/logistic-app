@@ -7,14 +7,14 @@ import 'package:trakk/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/mixins/rider_order_helper.dart';
 import 'package:trakk/models/rider/order_response.dart';
-import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/utils/radii.dart';
+import 'package:trakk/values/assets.dart';
+import 'package:trakk/values/constant.dart';
 import 'package:trakk/widgets/button.dart';
 
 class RiderBottomSheet extends StatefulWidget {
