@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-// import 'package:trakk/screens/onboarding/get_started.dart';
-import 'package:trakk/screens/onboarding/splashscreen.dart';
+// import 'package:trakk/src/screens/onboarding/get_started.dart';
+import 'package:trakk/src/screens/onboarding/splashscreen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -118,5 +118,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-
