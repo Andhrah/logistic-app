@@ -1,8 +1,9 @@
 // import 'package:flutter/foundation.dart';
 import 'dart:convert';
-import 'package:http/http.dart' as http;
+
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:trakk/.env.dart';
+import 'package:http/http.dart' as http;
+import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/models/directions_model.dart';
 
 class DirectionsService {

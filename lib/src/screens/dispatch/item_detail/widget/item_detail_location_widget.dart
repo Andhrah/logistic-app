@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/.env.dart';
+import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/models/order/order.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/input_field.dart';
