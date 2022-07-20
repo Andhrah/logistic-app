@@ -13,7 +13,7 @@ import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
-import 'package:trakk/screens/profile/settings.dart';
+import 'package:trakk/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/assets.dart';
@@ -66,25 +66,13 @@ class _ProfileMenuState extends State<ProfileMenu>
         child: Column(
           children: [
             12.heightInPixel(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                BackIcon(
-                  onPress: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Text(
-                  'PROFILE MENU',
-                  style: theme.textTheme.subtitle1!.copyWith(
-                    fontWeight: kBoldWeight,
-                    // decoration: TextDecoration.underline,
-                  ),
-                ),
-                const BackIcon(
-                  isPlaceHolder: true,
-                ),
-              ],
+            Text(
+              'PROFILE MENU',
+              style: theme.textTheme.subtitle1!.copyWith(
+                fontWeight: kBoldWeight,
+                fontSize: 17,
+                // decoration: TextDecoration.underline,
+              ),
             ),
             12.heightInPixel(),
             Expanded(
@@ -209,80 +197,94 @@ class _ProfileMenuState extends State<ProfileMenu>
                       const Divider(
                         thickness: 1,
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        padding: EdgeInsets.only(left: 20),
-                        height: 87,
-                        decoration: const BoxDecoration(
-                          color: secondaryColor,
-                          boxShadow: [
-                            BoxShadow(
-                              spreadRadius: 2,
-                              color: Color.fromARGB(255, 233, 233, 233),
-                              offset: Offset(2.0, 4.0), //(x,y)
-                              blurRadius: 10,
-                            ),
-                          ],
-                        ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: ListTile(
-                            title: Row(
-                              children: [
-                                ConstrainedBox(
-                                  constraints:
-                                      const BoxConstraints(maxWidth: 200),
-                                  child: Text(
-                                    'Share App with your Trakk code and get ₦500 bonus in your wallet',
-                                    textAlign: TextAlign.justify,
-                                    style: theme.textTheme.bodyText2!
-                                        .copyWith(height: 1.4),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            trailing: StreamBuilder<AppSettings>(
-                                stream: appSettingsBloc.appSettings,
-                                builder: (context, snapshot) {
-                                  String code = '';
+                     
+                      // Container(
+                      //   padding: EdgeInsets.only(left: 20),
+                      //   height: 87,
+                      //   decoration: const BoxDecoration(
+                      //     color: secondaryColor,
+                      //     boxShadow: [
+                      //       BoxShadow(
+                      //         spreadRadius: 2,
+                      //         color: Color.fromARGB(255, 233, 233, 233),
+                      //         offset: Offset(2.0, 4.0), //(x,y)
+                      //         blurRadius: 10,
+                      //       ),
+                      //     ],
+                      //   ),
+                      //   child: Align(
+                      //     alignment: Alignment.center,
+                      //     child: ListTile(
+                      //       title: Row(
+                      //         children: [
+                      //           ConstrainedBox(
+                      //             constraints:
+                      //                 const BoxConstraints(maxWidth: 200),
+                      //             child: Text(
+                      //               'Share App with your Trakk code and get ₦500 bonus in your wallet',
+                      //               textAlign: TextAlign.justify,
+                      //               style: theme.textTheme.bodyText2!
+                      //                   .copyWith(height: 1.4),
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //       trailing: StreamBuilder<AppSettings>(
+                      //           stream: appSettingsBloc.appSettings,
+                      //           builder: (context, snapshot) {
+                      //             String code = '';
 
-                                  if (snapshot.hasData) {
-                                    // code = snapshot.data?.loginResponse?.data
-                                    //   ?.user?.code ??
-                                    // '';
-                                  }
-                                  return GestureDetector(
-                                    onTap: () {
-                                      try {
-                                        Share.share(code,
-                                            subject: 'Delivery Code');
-                                      } catch (err) {
-                                        appToast('Could not share empty text',
-                                            appToastType: AppToastType.failed);
-                                      }
-                                    },
-                                    child: const Icon(
-                                      Remix.share_line,
-                                      color: appPrimaryColor,
-                                    ),
-                                  );
-                                }),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(
-                        height: 18,
-                      ),
+                      //             if (snapshot.hasData) {
+                      //               // code = snapshot.data?.loginResponse?.data
+                      //               //   ?.user?.code ??
+                      //               // '';
+                      //             }
+                      //             return GestureDetector(
+                      //               onTap: () {
+                      //                 try {
+                      //                   Share.share(code,
+                      //                       subject: 'Delivery Code');
+                      //                 } catch (err) {
+                      //                   appToast('Could not share empty text',
+                      //                       appToastType: AppToastType.failed);
+                      //                 }
+                      //               },
+                      //               child: const Icon(
+                      //                 Remix.share_line,
+                      //                 color: appPrimaryColor,
+                      //               ),
+                      //             );
+                      //           }),
+                      //     ),
+                      //   ),
+                      // ),
+                      // InkWell(
+                      //   onTap: () {
+                      //     Navigator.of(context)
+                      //         .pushNamed(UserDispatchHistory.id);
+                      //   },
+                      //   child: const ProfileList(
+                      //     icon: Icon(
+                      //       Remix.wallet_3_line,
+                      //       color: appPrimaryColor,
+                      //     ),
+                      //     //svg: 'assets/images/history.svg',
+                      //     title: 'Wallet',
+                      //   ),
+                      // ),
+                      // const SizedBox(
+                      //   height: 18,
+                      // ),
                       InkWell(
                         onTap: () {
                           Navigator.of(context)
                               .pushNamed(UserDispatchHistory.id);
                         },
                         child: const ProfileList(
-                          icon: Icon(Remix.history_line),
+                          icon: Icon(
+                            Remix.history_line,
+                            color: appPrimaryColor,
+                          ),
                           //svg: 'assets/images/history.svg',
                           title: 'Dispatch History',
                         ),
@@ -295,9 +297,12 @@ class _ProfileMenuState extends State<ProfileMenu>
                           Navigator.of(context).pushNamed(Settings.id);
                         },
                         child: const ProfileList(
-                          icon: Icon(Remix.settings_2_line),
+                          icon: Icon(
+                            Remix.settings_2_line,
+                            color: appPrimaryColor,
+                          ),
                           //svg: 'assets/images/settings.svg',
-                          title: 'Settings',
+                          title: 'Privacy & Security',
                         ),
                       ),
                       const SizedBox(
@@ -308,7 +313,10 @@ class _ProfileMenuState extends State<ProfileMenu>
                           Navigator.of(context).pushNamed(HelpAndSupport.id);
                         },
                         child: const ProfileList(
-                          icon: Icon(Remix.question_line),
+                          icon: Icon(
+                            Remix.question_line,
+                            color: appPrimaryColor,
+                          ),
                           //svg: 'assets/images/help.svg',
                           title: 'Help and Support',
                         ),
@@ -381,7 +389,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                         ),
                       ),
                       const SizedBox(
-                        height: 45,
+                        height: 60,
                       ),
                       Align(
                         alignment: Alignment.center,

@@ -11,6 +11,7 @@ import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_date_widge
 import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_image_selector_widget.dart';
 import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_location_widget.dart';
 import 'package:trakk/screens/dispatch/item_detail/widget/item_detail_participant_widget.dart';
+import 'package:trakk/screens/profile/profile_menu.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
 import 'package:trakk/utils/constant.dart';
@@ -19,6 +20,9 @@ import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/widgets/button.dart';
 import 'package:trakk/widgets/header.dart';
+
+import '../../../models/app_settings.dart';
+import '../../../widgets/menu_button.dart';
 
 class ItemDetails extends StatefulWidget {
   static const String id = 'itemDetails';
@@ -114,82 +118,156 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
 
   @override
   Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: SafeArea(
-          child: Column(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          kSizeBox,
-          const Header(
-            text: 'DISPATCH ITEM',
-            padding: EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
-            showBackButton: false,
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultLayoutPadding),
-                decoration: const BoxDecoration(
-                    image: DecorationImage(
-                  image: AssetImage(Assets.empty_map_bg),
-                  fit: BoxFit.fill,
-                )),
-                child: Form(
-                  key: _formKey,
-                  child: Column(children: [
-                    ItemDetailLocationWidget(
-                        (OrderLocation? _pickupOrderLocation,
-                            OrderLocation? _dropOffOrderLocation) {
-                      pickupOrderLocation = _pickupOrderLocation;
-                      dropOffOrderLocation = _dropOffOrderLocation;
-                    }),
-                    ItemDetailCategoryWidget(
-                        (String? itemName, String description, String weight) {
-                      _itemName = itemName ?? '';
-                      _itemDescription = description;
-                      _itemWeight = weight;
-                    }),
-                    const SizedBox(height: 20.0),
-                    ItemDetailDateWidget((pickup, dropOff) {
-                      _pickupDate = pickup;
-                      _dropOffDate = dropOff;
-                    }),
-                    const SizedBox(height: 30.0),
-                    ItemDetailParticipantWidget((String senName,
-                        String senEmail,
-                        String senPhone,
-                        String recName,
-                        String recEmail,
-                        String recPhone) {
-                      _senName = senName;
-                      _senEmail = senEmail;
-                      _senPhone = senPhone;
-                      _recName = recName;
-                      _recEmail = recEmail;
-                      _recPhone = recPhone;
-                    }),
-                    const SizedBox(height: 20.0),
-                    ItemDetailImageSelectorWidget((String? itemImagePath) {
-                      _itemImagePath = itemImagePath;
-                    }),
-                    const SizedBox(height: 30.0),
-                    Button(
-                      text: 'Proceed',
-                      onPress: _onAddItemPress,
-                      color: appPrimaryColor,
-                      textColor: whiteColor,
-                      isLoading: false,
-                      width: double.infinity,
+            //kSizeBox,
+            // const Header(
+            //   text: 'DISPATCH ITEM',
+            //   padding: EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+            //   showBackButton: false,
+            // ),
+            Row(
+              children: [
+                MenuButton(
+                  onPress: () {
+                    Navigator.pushNamed(context, ProfileMenu.id);
+                  },
+                ),
+                Container(height: 98,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: mediaQuery.size.width * 0.2),
+                  alignment: Alignment.center,
+                  child: const Text(
+                    '',
+                    style: TextStyle(
+                        color: appPrimaryColor,
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      StreamBuilder<AppSettings>(
+                          stream: appSettingsBloc.appSettings,
+                          builder: (context, snapshot) {
+                            String firstName = '';
+                            if (snapshot.hasData) {
+                              firstName =
+                                  snapshot.data?.loginResponse?.data?.user?.firstName ??
+                                      '';
+                            }
+                            return Text(
+                              "Hello $firstName, ",
+                              style: const TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.w700,
+                                  color: appPrimaryColor),
+                            );
+                          }),
+                      Text(
+                        greetWithTime(),
+                        style: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: appPrimaryColor),
+                      ),
+                      
+                    ],
+                  ),
+                  SizedBox(height: 5,),
+                  const Text("Kindly enter your Location and Item details", style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w400,
+                                  color: appPrimaryColor),),
+                ],
+              ),
+            ),
+
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    kSizeBox, kSizeBox,
+
+
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: kDefaultLayoutPadding),
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                        image: AssetImage(Assets.empty_map_bg),
+                        fit: BoxFit.fill,
+                      )),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(children: [
+                          ItemDetailLocationWidget(
+                              (OrderLocation? _pickupOrderLocation,
+                                  OrderLocation? _dropOffOrderLocation) {
+                            pickupOrderLocation = _pickupOrderLocation;
+                            dropOffOrderLocation = _dropOffOrderLocation;
+                          }),
+                          ItemDetailCategoryWidget((String? itemName,
+                              String description, String weight) {
+                            _itemName = itemName ?? '';
+                            _itemDescription = description;
+                            _itemWeight = weight;
+                          }),
+                          const SizedBox(height: 20.0),
+                          ItemDetailDateWidget((pickup, dropOff) {
+                            _pickupDate = pickup;
+                            _dropOffDate = dropOff;
+                          }),
+                          const SizedBox(height: 30.0),
+                          ItemDetailParticipantWidget((String senName,
+                              String senEmail,
+                              String senPhone,
+                              String recName,
+                              String recEmail,
+                              String recPhone) {
+                            _senName = senName;
+                            _senEmail = senEmail;
+                            _senPhone = senPhone;
+                            _recName = recName;
+                            _recEmail = recEmail;
+                            _recPhone = recPhone;
+                          }),
+                          const SizedBox(height: 20.0),
+                          ItemDetailImageSelectorWidget((String? itemImagePath) {
+                            _itemImagePath = itemImagePath;
+                          }),
+                          const SizedBox(height: 30.0),
+                          Button(
+                            text: 'Proceed',
+                            onPress: _onAddItemPress,
+                            color: appPrimaryColor,
+                            textColor: whiteColor,
+                            isLoading: false,
+                            width: double.infinity,
+                          ),
+                          const SizedBox(height: 40.0),
+                        ]),
+                      ),
                     ),
-                    const SizedBox(height: 40.0),
-                  ]),
+                  ],
                 ),
               ),
             ),
-          ),
         ],
-      )),
+      ),
+          )),
     );
     // );
   }

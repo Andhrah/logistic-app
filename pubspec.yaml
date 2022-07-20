@@ -82,6 +82,8 @@ dependencies:
   share_plus: ^2.1.4
   url_launcher:
   cloudinary_sdk: ^4.0.2+10
+  expandable: ^5.0.1
+  readmore: ^2.1.0
 
 dev_dependencies:
   flutter_test:
