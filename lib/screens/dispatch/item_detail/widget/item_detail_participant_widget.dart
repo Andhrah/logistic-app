@@ -156,7 +156,6 @@ class _ItemDetailParticipantWidgetState
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),
-                      validator: validationBloc.emailValidator,
                       onChanged: (value) {
                         doCallback();
                         return null;
@@ -247,7 +246,6 @@ class _ItemDetailParticipantWidgetState
             size: 18.0,
             color: Color(0xFF909090),
           ),
-          validator: validationBloc.emailValidator,
           onChanged: (value) {
             doCallback();
             return null;

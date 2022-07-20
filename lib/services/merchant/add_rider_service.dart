@@ -12,10 +12,8 @@ class AddRiderService extends BaseNetworkCallHandler {
   }
 
   Future<Operation> deleteRiderFromMerchant(String riderID) async {
-    String userID = await appSettingsBloc.getUserID;
-
     return runAPI('api/riders/$riderID', HttpRequestType.put, body: {
-      "data": {"status": "deleted"}
+      "data": {"merchantId": ""}
     });
   }
 

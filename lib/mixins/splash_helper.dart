@@ -10,6 +10,7 @@ import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/screens/auth/login.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
+import 'package:trakk/screens/onboarding/onboarding.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/utils/singleton_data.dart';
 
@@ -22,11 +23,11 @@ class SplashHelper {
         if (appSettings.isLoggedIn) {
           _navigationHomePage();
         } else {
-          _navigationToLogin();
+          _navigationToLandingPage();
         }
       } else {
         appSettingsBloc.markAppTourViewed();
-        _navigationToLandingPage();
+        _navigationToOnBoardingPage();
       }
     });
   }
@@ -48,5 +49,9 @@ class SplashHelper {
 
   _navigationToLandingPage() async {
     SingletonData.singletonData.navKey.currentState!.pushNamed(GetStarted.id);
+  }
+
+  _navigationToOnBoardingPage() async {
+    SingletonData.singletonData.navKey.currentState!.pushNamed(Onboarding.id);
   }
 }

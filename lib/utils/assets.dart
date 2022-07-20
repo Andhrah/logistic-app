@@ -3,6 +3,7 @@ class Assets {
   static const String marker_icon = 'assets/images/rider/dummy_avatar.png';
   static const String check_success_outline =
       'assets/images/check_success_outline.png';
+  static const String Logout_svg = 'assets/images/Logout.svg';
 
   //rider
   static const String distance_icon = 'assets/images/rider/distance_icon.png';

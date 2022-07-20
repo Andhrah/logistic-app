@@ -307,83 +307,83 @@ class _SignupState extends State<Signup>
                         ),
                       ),
                       const SizedBox(height: 25.0),
-                      userType != "merchant"
-                          ? Row(
-                              children: const [
-                                Expanded(
-                                  child: Divider(
-                                    color: appPrimaryColor,
-                                  ),
-                                ),
-                                Padding(
-                                  padding:
-                                      EdgeInsets.symmetric(horizontal: 8.0),
-                                  child: Text(
-                                    'Or continue with',
-                                    textScaleFactor: 1.2,
-                                    style: TextStyle(
-                                        color: appPrimaryColor,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Divider(
-                                    color: appPrimaryColor,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : Container(),
-                      userType != "merchant"
-                          ? Row(
-                              children: [
-                                Expanded(
-                                  child: ElevatedContainer(
-                                    onPress: () {},
-                                    radius: 5.0,
-                                    color: whiteColor,
-                                    height: 55.0,
-                                    width: 55.0,
-                                    child: Image.asset(
-                                      'assets/images/google_icon.png',
-                                      height: 15,
-                                      width: 15,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: ElevatedContainer(
-                                    onPress: () {},
-                                    radius: 5.0,
-                                    color: whiteColor,
-                                    height: 55.0,
-                                    width: 55.0,
-                                    child: Image.asset(
-                                      'assets/images/apple_icon.png',
-                                      height: 20,
-                                      width: 20,
-                                    ),
-                                  ),
-                                ),
-                                Expanded(
-                                  child: ElevatedContainer(
-                                    onPress: () {},
-                                    radius: 5.0,
-                                    color: whiteColor,
-                                    height: 55.0,
-                                    width: 55.0,
-                                    child: Image.asset(
-                                      'assets/images/facebook_icon.png',
-                                      height: 18,
-                                      width: 18,
-                                    ),
-                                  ),
-                                ),
-                                kSizeBox,
-                                kSizeBox,
-                              ],
-                            )
-                          : Container(),
+                      // userType != "merchant"
+                      //     ? Row(
+                      //         children: const [
+                      //           Expanded(
+                      //             child: Divider(
+                      //               color: appPrimaryColor,
+                      //             ),
+                      //           ),
+                      //           Padding(
+                      //             padding:
+                      //                 EdgeInsets.symmetric(horizontal: 8.0),
+                      //             child: Text(
+                      //               'Or continue with',
+                      //               textScaleFactor: 1.2,
+                      //               style: TextStyle(
+                      //                   color: appPrimaryColor,
+                      //                   fontWeight: FontWeight.w400),
+                      //             ),
+                      //           ),
+                      //           Expanded(
+                      //             child: Divider(
+                      //               color: appPrimaryColor,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       )
+                      //     : Container(),
+                      // userType != "merchant"
+                      //     ? Row(
+                      //         children: [
+                      //           Expanded(
+                      //             child: ElevatedContainer(
+                      //               onPress: () {},
+                      //               radius: 5.0,
+                      //               color: whiteColor,
+                      //               height: 55.0,
+                      //               width: 55.0,
+                      //               child: Image.asset(
+                      //                 'assets/images/google_icon.png',
+                      //                 height: 15,
+                      //                 width: 15,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           Expanded(
+                      //             child: ElevatedContainer(
+                      //               onPress: () {},
+                      //               radius: 5.0,
+                      //               color: whiteColor,
+                      //               height: 55.0,
+                      //               width: 55.0,
+                      //               child: Image.asset(
+                      //                 'assets/images/apple_icon.png',
+                      //                 height: 20,
+                      //                 width: 20,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           Expanded(
+                      //             child: ElevatedContainer(
+                      //               onPress: () {},
+                      //               radius: 5.0,
+                      //               color: whiteColor,
+                      //               height: 55.0,
+                      //               width: 55.0,
+                      //               child: Image.asset(
+                      //                 'assets/images/facebook_icon.png',
+                      //                 height: 18,
+                      //                 width: 18,
+                      //               ),
+                      //             ),
+                      //           ),
+                      //           kSizeBox,
+                      //           kSizeBox,
+                      //         ],
+                      //       )
+                      //     : Container(),
                     ],
                   ),
                 ),

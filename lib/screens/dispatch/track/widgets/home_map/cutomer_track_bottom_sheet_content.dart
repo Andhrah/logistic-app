@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:trakk/models/order/user_order_history_response.dart';
+import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
+import 'package:trakk/utils/custom_clipboard.dart';
+import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 
@@ -34,11 +39,17 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                   .copyWith(fontWeight: kSemiBoldWeight, color: deepGreen),
             ),
             1.flexSpacer(),
-            Text(
-              '#${model.attributes?.orderRef ?? ''}',
-              textAlign: TextAlign.center,
-              style: theme.textTheme.bodyText1!
-                  .copyWith(fontWeight: kSemiBoldWeight),
+            GestureDetector(
+              onTap: () {
+                CustomClipboard.copy(
+                    '$orderIdentifier${model.attributes?.orderRef ?? ''}');
+              },
+              child: Text(
+                '#${model.attributes?.orderRef ?? ''}',
+                textAlign: TextAlign.center,
+                style: theme.textTheme.bodyText1!
+                    .copyWith(fontWeight: kSemiBoldWeight),
+              ),
             ),
           ],
         ),
@@ -141,10 +152,21 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
               ),
             ),
             24.widthInPixel(),
-            Image.asset(
-              Assets.share_icon,
-              height: 20,
-              width: 20,
+            GestureDetector(
+              onTap: () {
+                try {
+                  Share.share('#${model.attributes?.orderRef ?? ''}',
+                      subject: 'Delivery Code');
+                } catch (err) {
+                  appToast('Could not share empty text',
+                      appToastType: AppToastType.failed);
+                }
+              },
+              child: Image.asset(
+                Assets.share_icon,
+                height: 20,
+                width: 20,
+              ),
             )
           ],
         ),

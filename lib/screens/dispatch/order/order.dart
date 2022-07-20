@@ -36,17 +36,15 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             12.heightInPixel(),
-            Container(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
-              alignment: Alignment.center,
-              child: Text(
-                'Your Dispatch',
-                style: theme.textTheme.headline6!
-                    .copyWith(color: appPrimaryColor, fontWeight: kBoldWeight),
+            Text(
+              'Your Dispatch',
+              style: theme.textTheme.subtitle1!.copyWith(
+                fontWeight: kBoldWeight,
+                fontSize: 18,
+                // decoration: TextDecoration.underline,
               ),
             ),
-            12.heightInPixel(),
+            //12.heightInPixel(),
             Expanded(
               child: CustomStreamBuilder<List<UserOrderHistoryDatum>, String>(
                 stream: getCustomersOrderHistoryBloc.behaviorSubject,
