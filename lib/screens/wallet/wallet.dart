@@ -4,8 +4,11 @@ import 'package:trakk/screens/wallet/fund_wallet.dart';
 import 'package:trakk/screens/wallet/transfers.dart';
 import 'package:trakk/screens/wallet/wallet_history.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/icon_container.dart';
+
+import '../../utils/font.dart';
 
 class WalletScreen extends StatefulWidget {
   static const String  id = "wallet";
@@ -19,31 +22,32 @@ class WalletScreen extends StatefulWidget {
 class _WalletScreenState extends State<WalletScreen> {
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
         body: SafeArea(
       child: SingleChildScrollView(
         child: Column(children: [
-          kSmallSizeBox,kSmallSizeBox,
-          Row(
-            children: [
-              BackIcon(
-                  onPress: () {
-                    Navigator.pop(context);
-                  },
-                ),
-              Container(
-                margin:  EdgeInsets.only(left: MediaQuery.of(context).size.width)*0.2,
-                alignment: Alignment.center,
-                child: const Text(
-                  'TRAKK WALLET',
-                  style: TextStyle(
-                      color: appPrimaryColor,
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold),
-                ),
+          //kSmallSizeBox,kSmallSizeBox,
+           12.heightInPixel(),
+            Text(
+              'TRAKK WALLET',
+              style: theme.textTheme.subtitle1!.copyWith(
+                fontWeight: kBoldWeight,
+                fontSize: 18,
+                // decoration: TextDecoration.underline,
               ),
-            ],
-          ),
+            ),
+          // Container(
+          //   margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.2, vertical: 20),
+          //   alignment: Alignment.center,
+          //   child: const Text(
+          //     'TRAKK WALLET',
+          //     style: TextStyle(
+          //         color: appPrimaryColor,
+          //         fontSize: 20.0,
+          //         fontWeight: FontWeight.bold),
+          //   ),
+          // ),
 
           Container(
             margin: const EdgeInsets.symmetric(vertical: 15, horizontal: 30.0),

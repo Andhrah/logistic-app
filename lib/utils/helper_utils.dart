@@ -65,7 +65,7 @@ double safeAreaHeight(context, double height) {
 
 extension SizedboxUitls on num {
   Widget heightInPixel() {
-    return SizedBox(height: this * 1.0);
+    return SizedBox(height: this * 2.0);
   }
 
   Widget widthInPixel() {

@@ -251,7 +251,7 @@ class _PersonalDataState extends State<PersonalData> {
                                 );
                               }).toList(),
                             ),
-                          )),
+                          ),),
                       const SizedBox(height: 5.0),
                       _isButtonPress && _stateOfOrigin == "Choose State"
                           ? const Text(

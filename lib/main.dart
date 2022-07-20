@@ -45,10 +45,11 @@ import 'package:trakk/screens/onboarding/splashscreen.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/profile_menu.dart';
-import 'package:trakk/screens/profile/settings.dart';
+import 'package:trakk/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/screens/riders/home/rider_home.dart';
 import 'package:trakk/screens/riders/pick_up.dart';
 import 'package:trakk/screens/riders/rider_order.dart';
+import 'package:trakk/screens/support/help_and_support.dart';
 import 'package:trakk/screens/tab.dart';
 import 'package:trakk/screens/wallet/all_cards.dart';
 import 'package:trakk/screens/wallet/beneficiaries.dart';
@@ -196,7 +197,7 @@ class _MyAppState extends State<MyApp> {
             // RideIssues.id:(context) => const RideIssues(),
             EditProfile.id: (context) => const EditProfile(),
             FundWalletScreen.id: (context) => const FundWalletScreen(),
-
+            HelpAndSupport.id:(context) => const HelpAndSupport(),
             // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
             MerchantRiderProfile.id: (context) => const MerchantRiderProfile(),
             Transfers.id: (context) => const Transfers(),
