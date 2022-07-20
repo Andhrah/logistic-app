@@ -19,7 +19,6 @@ import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
 import 'package:trakk/utils/padding.dart';
 import 'package:trakk/widgets/button.dart';
-import 'package:trakk/widgets/header.dart';
 
 import '../../../models/app_settings.dart';
 import '../../../widgets/menu_button.dart';
@@ -121,153 +120,163 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
+          child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-            //kSizeBox,
-            // const Header(
-            //   text: 'DISPATCH ITEM',
-            //   padding: EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
-            //   showBackButton: false,
-            // ),
-            Row(
-              children: [
-                MenuButton(
-                  onPress: () {
-                    Navigator.pushNamed(context, ProfileMenu.id);
-                  },
-                ),
-                Container(height: 98,
-                  margin: EdgeInsets.symmetric(
-                      horizontal: mediaQuery.size.width * 0.2),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    '',
-                    style: TextStyle(
-                        color: appPrimaryColor,
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ],
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      StreamBuilder<AppSettings>(
-                          stream: appSettingsBloc.appSettings,
-                          builder: (context, snapshot) {
-                            String firstName = '';
-                            if (snapshot.hasData) {
-                              firstName =
-                                  snapshot.data?.loginResponse?.data?.user?.firstName ??
-                                      '';
-                            }
-                            return Text(
-                              "Hello $firstName, ",
-                              style: const TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.w700,
-                                  color: appPrimaryColor),
-                            );
-                          }),
-                      Text(
-                        greetWithTime(),
-                        style: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.w700,
-                            color: appPrimaryColor),
-                      ),
-                      
-                    ],
-                  ),
-                  SizedBox(height: 5,),
-                  const Text("Kindly enter your Location and Item details", style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w400,
-                                  color: appPrimaryColor),),
-                ],
-              ),
-            ),
+          //kSizeBox,
+          // const Header(
+          //   text: 'DISPATCH ITEM',
+          //   padding: EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+          //   showBackButton: false,
+          // ),
 
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    kSizeBox, kSizeBox,
+          12.heightInPixel(),
+          StreamBuilder<AppSettings>(
+              stream: appSettingsBloc.appSettings,
+              builder: (context, snapshot) {
+                bool showMenu = false;
+                if (snapshot.hasData) {
+                  // showMenu = (snapshot.data?.loginResponse?.data?.user?.userType ??
+                  //             '')=='guest';
+                }
 
-
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: kDefaultLayoutPadding),
-                      decoration: const BoxDecoration(
-                          image: DecorationImage(
-                        image: AssetImage(Assets.empty_map_bg),
-                        fit: BoxFit.fill,
-                      )),
-                      child: Form(
-                        key: _formKey,
-                        child: Column(children: [
-                          ItemDetailLocationWidget(
-                              (OrderLocation? _pickupOrderLocation,
-                                  OrderLocation? _dropOffOrderLocation) {
-                            pickupOrderLocation = _pickupOrderLocation;
-                            dropOffOrderLocation = _dropOffOrderLocation;
-                          }),
-                          ItemDetailCategoryWidget((String? itemName,
-                              String description, String weight) {
-                            _itemName = itemName ?? '';
-                            _itemDescription = description;
-                            _itemWeight = weight;
-                          }),
-                          const SizedBox(height: 20.0),
-                          ItemDetailDateWidget((pickup, dropOff) {
-                            _pickupDate = pickup;
-                            _dropOffDate = dropOff;
-                          }),
-                          const SizedBox(height: 30.0),
-                          ItemDetailParticipantWidget((String senName,
-                              String senEmail,
-                              String senPhone,
-                              String recName,
-                              String recEmail,
-                              String recPhone) {
-                            _senName = senName;
-                            _senEmail = senEmail;
-                            _senPhone = senPhone;
-                            _recName = recName;
-                            _recEmail = recEmail;
-                            _recPhone = recPhone;
-                          }),
-                          const SizedBox(height: 20.0),
-                          ItemDetailImageSelectorWidget((String? itemImagePath) {
-                            _itemImagePath = itemImagePath;
-                          }),
-                          const SizedBox(height: 30.0),
-                          Button(
-                            text: 'Proceed',
-                            onPress: _onAddItemPress,
-                            color: appPrimaryColor,
-                            textColor: whiteColor,
-                            isLoading: false,
-                            width: double.infinity,
+                return (showMenu == true)
+                    ? Column(
+                        children: [
+                          Row(
+                            children: [
+                              MenuButton(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: kDefaultLayoutPadding),
+                                onPress: () {
+                                  Navigator.pushNamed(context, ProfileMenu.id);
+                                },
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 40.0),
-                        ]),
-                      ),
+                          12.heightInPixel(),
+                        ],
+                      )
+                    : const SizedBox();
+              }),
+
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    StreamBuilder<AppSettings>(
+                        stream: appSettingsBloc.appSettings,
+                        builder: (context, snapshot) {
+                          String firstName = '';
+                          if (snapshot.hasData) {
+                            firstName = snapshot.data?.loginResponse?.data?.user
+                                    ?.firstName ??
+                                '';
+                          }
+                          return Text(
+                            "Hello $firstName, ",
+                            style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.w700,
+                                color: appPrimaryColor),
+                          );
+                        }),
+                    Text(
+                      greetWithTime(),
+                      style: const TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: appPrimaryColor),
                     ),
                   ],
                 ),
+                5.heightInPixel(),
+                const Text(
+                  "Kindly enter your Location and Item details",
+                  style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                      color: appPrimaryColor),
+                ),
+              ],
+            ),
+          ),
+          8.heightInPixel(),
+
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  kSizeBox,
+                  kSizeBox,
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
+                    decoration: const BoxDecoration(
+                        image: DecorationImage(
+                      image: AssetImage(Assets.empty_map_bg),
+                      fit: BoxFit.fill,
+                    )),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(children: [
+                        ItemDetailLocationWidget(
+                            (OrderLocation? _pickupOrderLocation,
+                                OrderLocation? _dropOffOrderLocation) {
+                          pickupOrderLocation = _pickupOrderLocation;
+                          dropOffOrderLocation = _dropOffOrderLocation;
+                        }),
+                        ItemDetailCategoryWidget((String? itemName,
+                            String description, String weight) {
+                          _itemName = itemName ?? '';
+                          _itemDescription = description;
+                          _itemWeight = weight;
+                        }),
+                        const SizedBox(height: 20.0),
+                        ItemDetailDateWidget((pickup, dropOff) {
+                          _pickupDate = pickup;
+                          _dropOffDate = dropOff;
+                        }),
+                        const SizedBox(height: 30.0),
+                        ItemDetailParticipantWidget((String senName,
+                            String senEmail,
+                            String senPhone,
+                            String recName,
+                            String recEmail,
+                            String recPhone) {
+                          _senName = senName;
+                          _senEmail = senEmail;
+                          _senPhone = senPhone;
+                          _recName = recName;
+                          _recEmail = recEmail;
+                          _recPhone = recPhone;
+                        }),
+                        const SizedBox(height: 20.0),
+                        ItemDetailImageSelectorWidget((String? itemImagePath) {
+                          _itemImagePath = itemImagePath;
+                        }),
+                        const SizedBox(height: 30.0),
+                        Button(
+                          text: 'Proceed',
+                          onPress: _onAddItemPress,
+                          color: appPrimaryColor,
+                          textColor: whiteColor,
+                          isLoading: false,
+                          width: double.infinity,
+                        ),
+                        const SizedBox(height: 40.0),
+                      ]),
+                    ),
+                  ),
+                ],
               ),
             ),
+          ),
         ],
-      ),
-          )),
+      )),
     );
     // );
   }

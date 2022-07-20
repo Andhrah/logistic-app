@@ -23,7 +23,7 @@ class SplashHelper {
         if (appSettings.isLoggedIn) {
           _navigationHomePage();
         } else {
-          _navigationToLogin();
+          _navigationToLandingPage();
         }
       } else {
         appSettingsBloc.markAppTourViewed();

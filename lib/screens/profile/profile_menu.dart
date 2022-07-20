@@ -3,26 +3,24 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 // import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:share_plus/share_plus.dart';
 import 'package:trakk/bloc/app_settings_bloc.dart';
 import 'package:trakk/mixins/connectivity_helper.dart';
 import 'package:trakk/mixins/logout_helper.dart';
 import 'package:trakk/mixins/profile_helper.dart';
 import 'package:trakk/models/app_settings.dart';
 import 'package:trakk/screens/auth/login.dart';
+import 'package:trakk/screens/auth/signup.dart';
 import 'package:trakk/screens/onboarding/get_started.dart';
 import 'package:trakk/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/screens/profile/edit_profile.dart';
 import 'package:trakk/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/screens/support/help_and_support.dart';
-import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
-import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
 import 'package:trakk/utils/helper_utils.dart';
-import 'package:trakk/widgets/back_icon.dart';
 import 'package:trakk/widgets/button.dart';
+import 'package:trakk/widgets/general_widget.dart';
 import 'package:trakk/widgets/profile_list.dart';
 
 import '../support/help_and_support.dart';
@@ -197,7 +195,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                       const Divider(
                         thickness: 1,
                       ),
-                     
+
                       // Container(
                       //   padding: EdgeInsets.only(left: 20),
                       //   height: 87,
@@ -346,11 +344,17 @@ class _ProfileMenuState extends State<ProfileMenu>
                       ),
                       InkWell(
                         onTap: () {
-                          logout(context, completeLogout: () {
-                            Navigator.popUntil(
-                                context, ModalRoute.withName(GetStarted.id));
-                            Navigator.of(context).pushNamed(Login.id);
-                          });
+                          yesNoDialog(
+                            context,
+                            message: 'Log out?',
+                            positiveCallback: () =>
+                                logout(context, completeLogout: () {
+                              Navigator.popUntil(
+                                  context, ModalRoute.withName(GetStarted.id));
+                              Navigator.of(context).pushNamed(Login.id);
+                            }),
+                            negativeCallback: () => Navigator.pop(context),
+                          );
                         },
                         child: Container(
                           padding: const EdgeInsets.only(left: 30),
@@ -371,7 +375,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                               child: Row(
                                 children: [
                                   SvgPicture.asset(
-                                    'assets/images/Logout.svg',
+                                    Assets.Logout_svg,
                                     color: redColor,
                                   ),
                                   const SizedBox(
@@ -391,16 +395,50 @@ class _ProfileMenuState extends State<ProfileMenu>
                       const SizedBox(
                         height: 60,
                       ),
-                      Align(
-                        alignment: Alignment.center,
-                        child: Button(
-                            text: 'Become a rider and earn',
-                            onPress: () {},
-                            color: kTextColor,
-                            width: 344,
-                            textColor: whiteColor,
-                            isLoading: false),
-                      ),
+                      StreamBuilder<AppSettings>(
+                          stream: appSettingsBloc.appSettings,
+                          builder: (context, snapshot) {
+                            bool isCustomer = false;
+                            if (snapshot.hasData) {
+                              isCustomer = (snapshot.data?.loginResponse?.data
+                                          ?.user?.userType ??
+                                      '') ==
+                                  'customer';
+                            }
+
+                            return isCustomer
+                                ? Align(
+                                    alignment: Alignment.center,
+                                    child: Button(
+                                        text: 'Become a rider and earn',
+                                        onPress: () {
+                                          yesNoDialog(
+                                            context,
+                                            message:
+                                                'You will be logged out to continue',
+                                            positiveCallback: () => logout(
+                                                context, completeLogout: () {
+                                              Navigator.popUntil(
+                                                  context,
+                                                  ModalRoute.withName(
+                                                      GetStarted.id));
+                                              Navigator.of(context).pushNamed(
+                                                  Signup.id,
+                                                  arguments: {
+                                                    "userType": "rider",
+                                                  });
+                                            }),
+                                            negativeCallback: () =>
+                                                Navigator.pop(context),
+                                          );
+                                        },
+                                        color: kTextColor,
+                                        width: 344,
+                                        textColor: whiteColor,
+                                        isLoading: false),
+                                  )
+                                : const SizedBox();
+                          }),
                       const SizedBox(
                         height: 30,
                       ),

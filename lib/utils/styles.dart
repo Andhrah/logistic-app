@@ -15,6 +15,7 @@ import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/custom_clipboard.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
@@ -176,7 +177,7 @@ Future dialogOrderPaymentSuccess(
                       child: GestureDetector(
                         onTap: () {
                           CustomClipboard.copy(
-                            "#${datum?.attributes?.orderRef ?? ''}",
+                            "$orderIdentifier${datum?.attributes?.orderRef ?? ''}",
                           );
                         },
                         child: Container(

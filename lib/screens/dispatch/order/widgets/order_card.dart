@@ -70,7 +70,7 @@ class _UserOrderCardState extends State<UserOrderCard> {
                       fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '#${widget.datum.attributes?.orderRef ?? ''}',
+                  '$orderIdentifier${widget.datum.attributes?.orderRef ?? ''}',
                   textScaleFactor: 1.0,
                   style: TextStyle(
                     color: appPrimaryColor.withOpacity(0.3),

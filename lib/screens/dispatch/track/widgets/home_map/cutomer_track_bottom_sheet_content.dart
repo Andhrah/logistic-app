@@ -4,6 +4,7 @@ import 'package:trakk/models/order/user_order_history_response.dart';
 import 'package:trakk/utils/app_toast.dart';
 import 'package:trakk/utils/assets.dart';
 import 'package:trakk/utils/colors.dart';
+import 'package:trakk/utils/constant.dart';
 import 'package:trakk/utils/custom_clipboard.dart';
 import 'package:trakk/utils/enums.dart';
 import 'package:trakk/utils/font.dart';
@@ -40,7 +41,8 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
             1.flexSpacer(),
             GestureDetector(
               onTap: () {
-                CustomClipboard.copy('#${model.attributes?.orderRef ?? ''}');
+                CustomClipboard.copy(
+                    '$orderIdentifier${model.attributes?.orderRef ?? ''}');
               },
               child: Text(
                 '#${model.attributes?.orderRef ?? ''}',
