@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:trakk/main.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/auth/signup_model.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
@@ -24,7 +25,7 @@ import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/cancel_button.dart';
 
-class MerchantAddRiderAndVehicleHelper {
+class MerchantAddRiderAndVehicleHelper with ProfileHelper {
   final BuildContext _authContext =
       SingletonData.singletonData.navKey.currentState!.context;
   final BuildContext _authContextOverLay =
@@ -254,11 +255,15 @@ class MerchantAddRiderAndVehicleHelper {
         }
       }
 
-      _finalStep(
-          operation,
-          onSuccessCallback,
-          () => _completeAddVehicleOperation(operation,
-              onSuccessCallback: onSuccessCallback, onRetry: onRetry));
+      doUpdateOnBoardingOperation(
+          {
+            'onBoardingSteps': {'riderVehicleCompleted': true}
+          },
+          () => _finalStep(
+              operation,
+              onSuccessCallback,
+              () => _completeAddVehicleOperation(operation,
+                  onSuccessCallback: onSuccessCallback, onRetry: onRetry)));
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',

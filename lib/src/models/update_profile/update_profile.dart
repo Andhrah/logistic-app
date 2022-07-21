@@ -27,6 +27,16 @@ class UpdateProfile {
   String? nOKphoneNumber;
   String? nOKemail;
 
+  UpdateProfile.riderContact({
+    this.stateOfOrigin,
+    this.stateOfResidence,
+    this.residentialAddress,
+  });
+
+  String? stateOfOrigin;
+  String? stateOfResidence;
+  String? residentialAddress;
+
   factory UpdateProfile.fromJson(Map<String, dynamic> json) => UpdateProfile(
         firstName: json["firstName"],
         lastName: json["lastName"],
@@ -42,6 +52,20 @@ class UpdateProfile {
         "email": email,
         "address": address,
       };
+
+  Map<String, dynamic> toUpdateRiderContactJson() {
+    Map<String, dynamic> _map = {
+      'data': {
+        "stateOfOrigin": stateOfOrigin == null ? null : stateOfOrigin,
+        "stateOfResidence": stateOfResidence == null ? null : stateOfResidence,
+        "residentialAddress":
+            residentialAddress == null ? null : residentialAddress,
+      }
+    };
+
+    _map.removeWhere((key, value) => value == null);
+    return _map;
+  }
 
   Map<String, dynamic> toRiderNOKJson() {
     Map<String, dynamic> _map = {

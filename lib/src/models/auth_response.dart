@@ -155,7 +155,7 @@ class User {
   final List<dynamic>? beneficiaries;
   Rider? rider;
   final List<dynamic>? orders;
-  final Merchant? merchant;
+  Merchant? merchant;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -250,12 +250,38 @@ class User {
 }
 
 class OnBoardingSteps {
-  OnBoardingSteps();
+  final bool? riderContactCompleted;
+
+  final bool? riderNOKCompleted;
+
+  final bool? riderVehicleCompleted;
+
+  OnBoardingSteps({
+    this.riderContactCompleted,
+    this.riderNOKCompleted,
+    this.riderVehicleCompleted,
+  });
 
   factory OnBoardingSteps.fromJson(Map<String, dynamic> json) =>
-      OnBoardingSteps();
+      OnBoardingSteps(
+          riderContactCompleted: json['riderContactCompleted'] == null
+              ? null
+              : json['riderContactCompleted'],
+          riderNOKCompleted: json['riderNOKCompleted'] == null
+              ? null
+              : json['riderContactCompleted'],
+          riderVehicleCompleted: json['riderVehicleCompleted'] == null
+              ? null
+              : json['riderVehicleCompleted']);
 
-  Map<String, dynamic> toJson() => {};
+  Map<String, dynamic> toJson() => {
+        'riderContactCompleted':
+            riderContactCompleted == null ? null : riderContactCompleted,
+        'riderNOKCompleted':
+            riderNOKCompleted == null ? null : riderNOKCompleted,
+        'riderVehicleCompleted':
+            riderVehicleCompleted == null ? null : riderVehicleCompleted
+      };
 }
 
 class Rider {

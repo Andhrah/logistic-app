@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/models/rider/add_vehicle_to_merchant_model.dart';
 import 'package:trakk/src/screens/merchant/add_rider1.dart';
@@ -25,7 +26,7 @@ class AddRider2 extends StatefulWidget {
 }
 
 class _AddRider2State extends State<AddRider2>
-    with MerchantAddRiderAndVehicleHelper {
+    with MerchantAddRiderAndVehicleHelper, ProfileHelper {
   Map<String, String> _files = {};
 
   bool _isButtonPress = false;

@@ -11,6 +11,7 @@ import 'package:trakk/src/models/rider/order_response.dart';
 import 'package:trakk/src/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/src/screens/merchant/add_rider1.dart';
 import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/glow_widget.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
@@ -49,7 +50,19 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
             if (snapshot
                     .data?.loginResponse?.data?.user?.hasCompletedOnBoarding ==
                 false) {
-              return cardWithNoOnBoarding(context);
+              bool completedContact = snapshot.data?.loginResponse?.data?.user
+                      ?.onBoardingSteps?.riderContactCompleted ??
+                  false;
+              bool completedNok = snapshot.data?.loginResponse?.data?.user
+                      ?.onBoardingSteps?.riderNOKCompleted ??
+                  false;
+              bool completedVehicles = snapshot.data?.loginResponse?.data?.user
+                      ?.onBoardingSteps?.riderVehicleCompleted ??
+                  false;
+              if (!completedContact || !completedNok || !completedVehicles) {
+                return cardWithOnBoarding(
+                    context, completedContact, completedNok, completedVehicles);
+              }
             }
             return CustomStreamBuilder<RiderOrderState, String>(
                 stream: riderHomeStateBloc.behaviorSubject,
@@ -230,7 +243,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
     );
   }
 
-  Widget cardWithNoOnBoarding(BuildContext context) {
+  Widget cardWithOnBoarding(BuildContext context, bool completedContact,
+      bool completedNok, bool completedVehicles) {
     var theme = Theme.of(context);
 
     return Container(
@@ -248,6 +262,10 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
             Expanded(
               child: GestureDetector(
                 onTap: () async {
+                  if (completedContact) {
+                    appToast('You had previously added contact details');
+                    return;
+                  }
                   var model = AddRiderToMerchantModel(
                       data: AddRiderToMerchantModelData(
                           userId: ((await appSettingsBloc.fetchAppSettings())
@@ -300,8 +318,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                               ),
                             ),
                             // 2.widthInPixel(),
-                            const Icon(
-                              Icons.add,
+                            Icon(
+                              completedContact ? Icons.add : Icons.check,
                               size: 14,
                               color: secondaryColor,
                             )
@@ -317,6 +335,11 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
+                  if (completedNok) {
+                    appToast(
+                        'You had previously added contact next of kin details');
+                    return;
+                  }
                   Navigator.pushNamed(context, NextOfKin.id);
                 },
                 child: AspectRatio(
@@ -357,8 +380,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                               ),
                             ),
                             // 2.widthInPixel(),
-                            const Icon(
-                              Icons.add,
+                            Icon(
+                              completedNok ? Icons.add : Icons.check,
                               size: 14,
                               color: secondaryColor,
                             )
@@ -374,6 +397,10 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
             Expanded(
               child: GestureDetector(
                 onTap: () {
+                  if (completedVehicles) {
+                    appToast('You had previously added vehicle');
+                    return;
+                  }
                   Navigator.pushNamed(context, AddRider2.id,
                       arguments: {'previousScreenID': RiderLocationCard.id});
                 },
@@ -415,8 +442,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                               ),
                             ),
                             // 2.widthInPixel(),
-                            const Icon(
-                              Icons.add,
+                            Icon(
+                              completedVehicles ? Icons.add : Icons.check,
                               size: 14,
                               color: secondaryColor,
                             )

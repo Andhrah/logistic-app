@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
+import 'package:trakk/src/models/update_profile/update_profile.dart';
 import 'package:trakk/src/screens/merchant/add_rider.dart';
 import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_location_card.dart';
@@ -22,8 +23,7 @@ class AddRider1 extends StatefulWidget {
   State<AddRider1> createState() => _AddRider1State();
 }
 
-class _AddRider1State extends State<AddRider1>
-    with MerchantAddRiderAndVehicleHelper {
+class _AddRider1State extends State<AddRider1> with ProfileHelper {
   final _formKey = GlobalKey<FormState>();
 
   String? _stateOfOrigin;
@@ -33,6 +33,8 @@ class _AddRider1State extends State<AddRider1>
       TextEditingController();
 
   final FocusNode _residentialAddressNode = FocusNode();
+
+  bool isLoading = false;
 
   @override
   void dispose() {
@@ -269,19 +271,27 @@ class _AddRider1State extends State<AddRider1>
                                       'rider_bio_data': model.toJson()
                                     });
                               } else {
-                                addRiderBioData(model,
-                                    onSuccessCallback: () async {
-                                  await appToast('Successful',
-                                      appToastType: AppToastType.success);
+                                doUpdateRiderContactDetailsOperation(
+                                    UpdateProfile.riderContact(
+                                        residentialAddress:
+                                            model.data!.residentialAddress,
+                                        stateOfOrigin:
+                                            model.data!.stateOfOrigin,
+                                        stateOfResidence:
+                                            model.data!.stateOfResidence),
+                                    () => setState(() => isLoading = true),
+                                    () async {
+                                  setState(() => isLoading = false);
 
-                                  Navigator.pop(context);
-                                }, continueStepAfterCompletion: continueFlow);
+                                  await appToast('Contact updated successfully',
+                                      appToastType: AppToastType.success);
+                                });
                               }
                             }
                           },
                           color: appPrimaryColor,
                           textColor: whiteColor,
-                          isLoading: false,
+                          isLoading: isLoading,
                           width: double.infinity),
                     ),
                     24.heightInPixel(),

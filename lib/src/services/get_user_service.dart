@@ -20,6 +20,19 @@ class ProfileService extends BaseNetworkCallHandler {
 
   ///below are exclusive for rider
 
+  Future<Operation> updateOnBoarding(Map<String, dynamic> map) async {
+    String id = await appSettingsBloc.getUserID;
+
+    return runAPI('api/riders/$id', HttpRequestType.put, body: {'data': map});
+  }
+
+  Future<Operation> updateRider(UpdateProfile updateProfile) async {
+    String id = await appSettingsBloc.getUserID;
+
+    return runAPI('api/riders/$id', HttpRequestType.put,
+        body: updateProfile.toUpdateRiderContactJson());
+  }
+
   Future<Operation> updateRiderNextOfKin(UpdateProfile updateProfile) async {
     String id = await appSettingsBloc.getUserID;
 
