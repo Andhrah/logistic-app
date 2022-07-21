@@ -6,16 +6,16 @@ import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import '../../widgets/item_model.dart';
 
-class Settings extends StatefulWidget {
+class PrivacyAndPolicy extends StatefulWidget {
   static String id = "privacyAndSecurity";
 
-  const Settings({Key? key}) : super(key: key);
+  const PrivacyAndPolicy({Key? key}) : super(key: key);
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<PrivacyAndPolicy> createState() => _PrivacyAndPolicyState();
 }
 
-class _SettingsState extends State<Settings> {
+class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
   bool status = false;
 
   static String userType = "user";
@@ -43,12 +43,9 @@ class _SettingsState extends State<Settings> {
   String? _password;
   String? _confirmPassword;
 
-  bool _loading = false;
-  bool _passwordIsValid = false;
-  bool _confirmPasswordIsValid = false;
-  bool _hidePassword = true;
-  bool _autoValidate = false;
-  bool _emailIsValid = false;
+  bool _isVisible = false;
+  bool _isVisible1 = false;
+
 
   @override
   void initState() {
@@ -64,13 +61,21 @@ class _SettingsState extends State<Settings> {
         img: 'assets/images/android_img.png'),
   ];
 
-  String text =
+  String securityDescription =
       """In order to have continued access to use the Platform, you will have to register on the Platform and create an account with a unique user identity and password ("Account"). If you are using the Platform on a compatible mobile or tablet, you will have to install the application and then proceed with registration.
 You will be responsible for maintaining the confidentiality of the Account information, and are fully responsible for all activities that occur under Your Account. You agree that you will 
-   a)	immediately notify Trakk of any unauthorized use of Your Account information or any other breach of security, and
-   b)	ensure that You exit from Your Account at the end of each session.
+   a) Immediately notify Trakk of any unauthorized use of Your Account information or any other breach of security, and
+   b) Ensure that You exit from Your Account at the end of each session.
    TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. 
 Use of another User’s Account information for using the Platform is expressly prohibited.
+
+""";
+String privacyPolicy = """
+All information provided by you is for the purpose of efficient delivery of services.
+
+TRAKK shall not use your information for any other purpose other than that which was stated.
+
+All information received by TRAKK shall be managed according to the Nigerian Data Protection Laws.
 
 """;
   /*
@@ -81,32 +86,6 @@ Use of another User’s Account information for using the Platform is expressly 
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      // appBar: AppBar(
-      //   elevation: 2.0,
-      //   backgroundColor: Colors.white,
-      //   leading: BackIcon(
-      //     onPress: () {
-      //       Navigator.pop(context);
-      //     },
-      //   ),
-      //   title: Container(
-      //     // margin: const EdgeInsets.only(left: 0.0),
-      //     alignment: Alignment.center,
-      //     child: InkWell(
-      //       onTap: () {},
-      //       customBorder: const CircleBorder(),
-      //       child: const Text(
-      //         'SETTINGS',
-      //         textScaleFactor: 1.0,
-      //         style: TextStyle(
-      //           color: appPrimaryColor,
-      //           fontWeight: FontWeight.bold,
-      //           // decoration: TextDecoration.underline,
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
       backgroundColor: whiteColor,
       body: SafeArea(
         child: Column(
@@ -130,7 +109,7 @@ Use of another User’s Account information for using the Platform is expressly 
                       'PRIVACY & POLICY',
                       style: theme.textTheme.subtitle1!.copyWith(
                         fontWeight: kBoldWeight,
-                        fontSize: 18,
+                        fontSize: 18,fontFamily: kDefaultFontFamilyHeading
                         // decoration: TextDecoration.underline,
                       ),
                     ),
@@ -138,110 +117,147 @@ Use of another User’s Account information for using the Platform is expressly 
                 ),
               ],
             ),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // ExpandedText(text: "text"),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 30),
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  height: MediaQuery.of(context).size.height * .5,
-                  child: Expanded(
-                    child: ListView.builder(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      itemCount: itemData.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        return Container(
-                          decoration: BoxDecoration(
-                              color: appPrimaryColor,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(8))),
-                          child: ExpansionPanelList(
-                            animationDuration: Duration(seconds: 1),
-                            //dividerColor: Colors.red,
-                            elevation: 0,
-                            children: [
-                              ExpansionPanel(
-                                backgroundColor: grayColor,
-                                body: Container(
-                                  color: grayColor,
-                                  padding: EdgeInsets.all(10),
-                                  child: Column(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: <Widget>[
-                                      ReadMoreText(
-                                        text,
-                                        textAlign: TextAlign.start,
-                                        //trimLength: 500,
-                                        trimLines: 15,
-                                        colorClickableText:
-                                            Color.fromARGB(255, 30, 233, 91),
-                                        trimMode: TrimMode.Line,
-                                        trimCollapsedText: 'see all',
-                                        trimExpandedText: 'back',
-                                        lessStyle: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600),
-                                        moreStyle: TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.w600),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                headerBuilder:
-                                    (BuildContext context, bool isExpanded) {
-                                  return Container(
-                                    decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.all(
-                                            Radius.circular(10))),
-                                    padding:
-                                        EdgeInsets.symmetric(horizontal: 20),
-                                    child: Row(
-                                      children: [
-                                        Icon(
-                                          Remix.account_pin_circle_line,
-                                          color: appPrimaryColor,
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        Text(
-                                          itemData[index].headerItem,
-                                          style: TextStyle(
-                                            color: whiteColor,
-                                            fontSize: 18,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                },
-                                isExpanded: itemData[index].expanded,
-                              )
-                            ],
-                            expansionCallback: (int item, bool status) {
-                              setState(() {
-                                itemData[index].expanded =
-                                    !itemData[index].expanded;
-                              });
-                            },
-                          ),
-                        );
-                      },
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: (() {
+                        setState(() {
+                          _isVisible = true;
+                        });
+                      }),
+                      child: privacyContainer(
+                        isVisible: _isVisible,
+                        leadIcon: Remix.account_pin_circle_line,
+                        title: 'User Account Security',
+                        description: securityDescription,
+                        onPressed: () {
+                          setState(() {
+                            _isVisible = false;
+                          });
+                        },
+                      ),
                     ),
-                  ),
+                    InkWell(
+                      onTap: (() {
+                        setState(() {
+                          _isVisible1 = true;
+                        });
+                      }),
+                      child: privacyContainer(
+                        isVisible: _isVisible1,
+                        leadIcon: Remix.git_repository_private_line,
+                        title: 'Privacy Policy',
+                        description: privacyPolicy,
+                        onPressed: () {
+                          setState(() {
+                            _isVisible1 = false;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class privacyContainer extends StatelessWidget {
+  final IconData leadIcon;
+  final String title;
+  final String description;
+  final Function onPressed;
+
+  privacyContainer({
+    Key? key,
+    required bool isVisible,
+    required this.leadIcon,
+    required this.title,
+    required this.description,
+    required this.onPressed,
+  })  : _isVisible = isVisible,
+        super(key: key);
+
+  bool _isVisible;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+      padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 25),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(Radius.circular(18)),
+        color: Colors.black,
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                leadIcon,
+                color: secondaryColor,
+              ),
+              const Spacer(),
+              Text(
+                title,
+                style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: kDefaultFontFamily ),
+              ),
+              const Spacer(),
+              _isVisible == true
+                  ? IconButton(
+                      onPressed: () {
+                        onPressed();
+                      },
+                      icon: const Icon(
+                        Remix.arrow_down_s_line,
+                        color: Colors.white,
+                      ),
+                    )
+                  : const Icon(
+                    Remix.arrow_right_s_line,
+                      //size: 26,
+                      color: Colors.white,
+                    ),
+            ],
+          ),
+          Visibility(
+            visible: _isVisible,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: ReadMoreText(
+                description,
+                trimLines: 19,
+                colorClickableText: Colors.pink,
+                trimMode: TrimMode.Line,
+                trimCollapsedText: ' See all',
+                trimExpandedText: ' Back',
+                moreStyle: textStyle(),
+                lessStyle: textStyle(),
+                style: const TextStyle(
+                    color: Colors.white, fontFamily: kDefaultFontFamilyBody),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  TextStyle textStyle() {
+    return const TextStyle(
+      color: secondaryColor,
+      fontSize: 16,
+      fontWeight: FontWeight.w700,
+      fontFamily: kDefaultFontFamily,
     );
   }
 }
@@ -278,12 +294,12 @@ class SettingsRow extends StatelessWidget {
       Row(
         children: [
           statusIcon,
-          SizedBox(
+          const SizedBox(
             width: 25,
           ),
           Text(
             title,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
           ),
         ],
       ),
@@ -291,3 +307,5 @@ class SettingsRow extends StatelessWidget {
     ]);
   }
 }
+
+var textStyle = const TextStyle(fontSize: 17, fontWeight: FontWeight.w600);

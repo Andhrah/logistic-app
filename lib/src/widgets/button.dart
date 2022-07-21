@@ -38,7 +38,7 @@ class Button extends StatelessWidget {
             child: Text(
               text,textScaleFactor: 1,
               style: theme.textTheme.button!.copyWith(                  color: textColor,
-                  fontWeight: FontWeight.w400),
+                  fontWeight: FontWeight.w400,  fontFamily: kDefaultFontFamily),
             ),
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(color),
@@ -47,7 +47,7 @@ class Button extends StatelessWidget {
                 elevation: MaterialStateProperty.all(0.0),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(borderRadius ?? 10.0),
+                  borderRadius: BorderRadius.circular(borderRadius ?? 18.0),
                   side: BorderSide(color: appPrimaryColor.withOpacity(0.1)),
                 ))));
   }

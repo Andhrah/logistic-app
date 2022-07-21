@@ -27,8 +27,8 @@ class SupportService {
       //         });
       var response = await http.post(
         Uri.parse("https://zebrra.itskillscenter.com/api/complaints"),
-        //headers: kHeaders(token),
-        body: supportToJson(support),
+         headers: kHeaders(""), body: jsonEncode(support),
+        //body: supportToJson(support),
       );
       var responses = await http.post(
         uriConverter("api/complaints"),

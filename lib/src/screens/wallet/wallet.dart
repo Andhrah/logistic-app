@@ -9,7 +9,6 @@ import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/icon_container.dart';
 
 import '../../values/font.dart';
-
 class WalletScreen extends StatefulWidget {
   static const String id = "wallet";
 
@@ -28,15 +27,15 @@ class _WalletScreenState extends State<WalletScreen> {
       child: SingleChildScrollView(
         child: Column(children: [
           //kSmallSizeBox,kSmallSizeBox,
-          12.heightInPixel(),
-          Text(
-            'TRAKK WALLET',
-            style: theme.textTheme.subtitle1!.copyWith(
-              fontWeight: kBoldWeight,
-              fontSize: 18,
-              // decoration: TextDecoration.underline,
+           12.heightInPixel(),
+            Text(
+              'TRAKK WALLET',
+              style: theme.textTheme.subtitle1!.copyWith(
+                fontWeight: kBoldWeight,
+                fontSize: 18, fontFamily: kDefaultFontFamilyHeading
+                // decoration: TextDecoration.underline,
+              ),
             ),
-          ),
           // Container(
           //   margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.2, vertical: 20),
           //   alignment: Alignment.center,
