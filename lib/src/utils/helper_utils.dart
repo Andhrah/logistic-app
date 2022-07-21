@@ -11,6 +11,7 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:trakk/src/.env.dart';
+import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/enums.dart';

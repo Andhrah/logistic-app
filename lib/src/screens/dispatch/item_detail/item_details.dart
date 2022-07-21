@@ -198,24 +198,28 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                     ),
                   ],
                 ),
-                5.heightInPixel(),
-                const Text(
-                  "Kindly enter your Location and Item details",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: appPrimaryColor),
-                ),
+                
               ],
             ),
           ),
-          8.heightInPixel(),
+          //8.heightInPixel(),
 
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   kSizeBox,
+                  15.heightInPixel(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Kindly enter your Location and Item details",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: appPrimaryColor),
+                  ),
+                ),
                   kSizeBox,
                   Container(
                     padding: const EdgeInsets.symmetric(
