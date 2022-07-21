@@ -210,7 +210,7 @@ class _MyAppState extends State<MyApp> {
               // Country.id: (context) => const Country(),
               WalletScreen.id: (context) => const WalletScreen(),
               UserDispatchHistory.id: (context) => const UserDispatchHistory(),
-              Settings.id: (context) => const Settings(),
+              HelpAndSupport.id: (context) => const HelpAndSupport(),
               Payments.id: (context) => const Payments(),
               // RideIssues.id:(context) => const RideIssues(),
               EditProfile.id: (context) => const EditProfile(),

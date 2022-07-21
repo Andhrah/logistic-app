@@ -186,7 +186,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                             style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
-                                color: appPrimaryColor),
+                                color: appPrimaryColor,  fontFamily: kDefaultFontFamilyHeading),
                           );
                         }),
                     Text(
@@ -194,7 +194,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                       style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
-                          color: appPrimaryColor),
+                          color: appPrimaryColor,  fontFamily: kDefaultFontFamilyHeading),
                     ),
                   ],
                 ),

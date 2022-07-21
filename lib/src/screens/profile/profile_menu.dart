@@ -66,7 +66,7 @@ class _ProfileMenuState extends State<ProfileMenu>
               'PROFILE MENU',
               style: theme.textTheme.subtitle1!.copyWith(
                 fontWeight: kBoldWeight,
-                fontSize: 17,
+                fontSize: 17,fontFamily: kDefaultFontFamilyHeading
                 // decoration: TextDecoration.underline,
               ),
             ),
@@ -290,7 +290,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                       ),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context).pushNamed(Settings.id);
+                          Navigator.of(context).pushNamed(PrivacyAndPolicy.id);
                         },
                         child: const ProfileList(
                           icon: Icon(

@@ -6,16 +6,16 @@ import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import '../../widgets/item_model.dart';
 
-class Settings extends StatefulWidget {
+class PrivacyAndPolicy extends StatefulWidget {
   static String id = "privacyAndSecurity";
 
-  const Settings({Key? key}) : super(key: key);
+  const PrivacyAndPolicy({Key? key}) : super(key: key);
 
   @override
-  State<Settings> createState() => _SettingsState();
+  State<PrivacyAndPolicy> createState() => _PrivacyAndPolicyState();
 }
 
-class _SettingsState extends State<Settings> {
+class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
   bool status = false;
 
   static String userType = "user";
@@ -109,7 +109,7 @@ All information received by TRAKK shall be managed according to the Nigerian Dat
                       'PRIVACY & POLICY',
                       style: theme.textTheme.subtitle1!.copyWith(
                         fontWeight: kBoldWeight,
-                        fontSize: 18,
+                        fontSize: 18,fontFamily: kDefaultFontFamilyHeading
                         // decoration: TextDecoration.underline,
                       ),
                     ),

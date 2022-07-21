@@ -40,7 +40,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
               'YOUR DISPATCH',
               style: theme.textTheme.subtitle1!.copyWith(
                 fontWeight: kBoldWeight,
-                fontSize: 18,
+                fontSize: 18, fontFamily: kDefaultFontFamilyHeading
                 // decoration: TextDecoration.underline,
               ),
             ),

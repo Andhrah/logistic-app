@@ -32,7 +32,7 @@ class _WalletScreenState extends State<WalletScreen> {
               'TRAKK WALLET',
               style: theme.textTheme.subtitle1!.copyWith(
                 fontWeight: kBoldWeight,
-                fontSize: 18,
+                fontSize: 18, fontFamily: kDefaultFontFamilyHeading
                 // decoration: TextDecoration.underline,
               ),
             ),
