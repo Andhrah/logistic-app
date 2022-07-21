@@ -1,8 +1,8 @@
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/services/base_network_call_handler.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/operation.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class AddRiderService extends BaseNetworkCallHandler {
   Future<Operation> addRiderToMerchant(

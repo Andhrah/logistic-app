@@ -16,11 +16,11 @@ import 'package:trakk/src/services/auth/signup_service.dart';
 import 'package:trakk/src/services/merchant/add_rider_service.dart';
 import 'package:trakk/src/services/merchant/vehicle_list_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/operation.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/cancel_button.dart';
 
@@ -73,8 +73,8 @@ class MerchantAddRiderAndVehicleHelper {
           data: _riderToMerchantModel!.data!
               .copyWith(userId: '${authResponse.data?.user?.id ?? ''}'));
 
-      addRiderBioData(_riderToMerchantModel!, _vehicleModel!,
-          onSuccessCallback: onSuccess);
+      addRiderBioData(_riderToMerchantModel!,
+          vehicleModel: _vehicleModel!, onSuccessCallback: onSuccess);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
@@ -95,11 +95,11 @@ class MerchantAddRiderAndVehicleHelper {
 
   ///step 2a
   addRiderBioData(AddRiderToMerchantModel addRiderToMerchantModel,
-      AddVehicleToMerchantModel vehicleModel,
-      {Function()? onSuccessCallback}) {
+      {AddVehicleToMerchantModel? vehicleModel,
+      Function()? onSuccessCallback,
+      bool continueStepAfterCompletion = true}) {
     _riderToMerchantModel = addRiderToMerchantModel;
     _vehicleModel = vehicleModel;
-
     showDialog(
         context: _authContext,
         builder: (context) => const Center(
@@ -109,22 +109,33 @@ class MerchantAddRiderAndVehicleHelper {
     addRiderService.addRiderToMerchant(_riderToMerchantModel!).then((value) =>
         _completeAddRiderOperation(value,
             onSuccessCallback: onSuccessCallback,
-            onRetry: () => addRiderBioData(
-                addRiderToMerchantModel, vehicleModel,
-                onSuccessCallback: onSuccessCallback)));
+            onRetry: () => addRiderBioData(addRiderToMerchantModel,
+                vehicleModel: vehicleModel,
+                onSuccessCallback: onSuccessCallback,
+                continueStepAfterCompletion: continueStepAfterCompletion),
+            continueStepAfterCompletion: continueStepAfterCompletion));
   }
 
   ///step 2b
   _completeAddRiderOperation(Operation operation,
-      {Function()? onSuccessCallback, Function()? onRetry}) async {
+      {Function()? onSuccessCallback,
+      Function()? onRetry,
+      bool continueStepAfterCompletion = true}) async {
     Navigator.pop(_authContext);
     if (operation.code == 200 || operation.code == 201) {
-      _vehicleModel = _vehicleModel!.copyWith(
-          data: _vehicleModel!.data!
-              .copyWith(riderId: _riderToMerchantModel!.data!.userId));
-      addVehicle(_vehicleModel!,
-          addRiderToMerchantModel: _riderToMerchantModel,
-          onSuccessCallback: onSuccessCallback);
+      if (_vehicleModel != null) {
+        _vehicleModel = _vehicleModel!.copyWith(
+            data: _vehicleModel!.data!
+                .copyWith(riderId: _riderToMerchantModel!.data!.userId));
+      }
+
+      if (continueStepAfterCompletion) {
+        addVehicle(_vehicleModel!,
+            addRiderToMerchantModel: _riderToMerchantModel,
+            onSuccessCallback: onSuccessCallback);
+      } else {
+        if (onSuccessCallback != null) onSuccessCallback();
+      }
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
@@ -294,10 +305,17 @@ class MerchantAddRiderAndVehicleHelper {
           Navigator.pop(_authContext);
           if (onSuccessCallback != null) onSuccessCallback();
           Navigator.pushNamed(_authContext, ListOfVehicles.id);
+        }, nextAction: () {
+          Navigator.pop(_authContext);
+          if (onSuccessCallback != null) onSuccessCallback();
         });
       }
 
-      appToast('Rider added successfully', appToastType: AppToastType.success);
+      appToast(
+          _riderToMerchantModel != null
+              ? 'Rider added successfully'
+              : 'Vehicle added successfully',
+          appToastType: AppToastType.success);
     } else {
       Navigator.pop(_authContext);
 

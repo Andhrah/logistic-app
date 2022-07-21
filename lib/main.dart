@@ -14,8 +14,6 @@ import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/screens/auth/merchant/company_data.dart';
 import 'package:trakk/src/screens/auth/reset_password.dart';
 import 'package:trakk/src/screens/auth/rider/next_of_kin.dart';
-import 'package:trakk/src/screens/auth/rider/personal_data.dart';
-import 'package:trakk/src/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/src/screens/auth/signup.dart';
 import 'package:trakk/src/screens/auth/verify_account.dart';
 import 'package:trakk/src/screens/dispatch/cart.dart';
@@ -63,9 +61,9 @@ import 'package:trakk/src/screens/wallet/qr_payment.dart';
 import 'package:trakk/src/screens/wallet/transfers.dart';
 import 'package:trakk/src/screens/wallet/wallet.dart';
 import 'package:trakk/src/screens/wallet/wallet_history.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/values.dart';
 
 final cloudinary = Cloudinary.basic(cloudName: cloudinaryCloudName);
 
@@ -176,8 +174,8 @@ class _MyAppState extends State<MyApp> {
               ForgetPassword.id: (context) => const ForgetPassword(),
               ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
               ResetPassword.id: (context) => const ResetPassword(),
-              PersonalData.id: (context) => const PersonalData(),
-              VehicleData.id: (context) => const VehicleData(),
+              // PersonalData.id: (context) => const PersonalData(),
+              // VehicleData.id: (context) => const VehicleData(),
               NextOfKin.id: (context) => const NextOfKin(),
               PickUpScreen.id: (context) => const PickUpScreen(),
               CartScreen.id: (context) => const CartScreen(),

@@ -76,4 +76,29 @@ class ProfileHelper {
       appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
+
+  ///below is exclusive to rider only
+  doNextOfKinOperation(UpdateProfile updateProfile, Function() onShowLoader,
+      Function() onCloseLoader) async {
+    onShowLoader();
+    profileService
+        .updateRiderNextOfKin(updateProfile)
+        .then((value) => _completeNOK(value, onCloseLoader));
+  }
+
+  _completeNOK(Operation operation, Function() onCloseLoader) async {
+    if (operation.code == 200 || operation.code == 201) {
+      doGetProfileOperation(profileFetchSuccess: (AuthData authData) {
+        appToast('Profile updated successfully',
+            appToastType: AppToastType.success);
+
+        onCloseLoader();
+      });
+    } else {
+      onCloseLoader();
+      MessageOnlyResponse error = operation.result;
+
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
+    }
+  }
 }

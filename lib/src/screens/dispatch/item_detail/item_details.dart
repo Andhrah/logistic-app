@@ -12,12 +12,8 @@ import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_image_
 import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_location_widget.dart';
 import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_participant_widget.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
-import 'package:trakk/src/values/assets.dart';
-import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 import '../../../models/app_settings.dart';

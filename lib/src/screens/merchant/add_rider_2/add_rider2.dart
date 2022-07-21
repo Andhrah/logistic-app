@@ -4,11 +4,13 @@ import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/models/rider/add_vehicle_to_merchant_model.dart';
+import 'package:trakk/src/screens/merchant/add_rider1.dart';
 import 'package:trakk/src/screens/merchant/add_rider_2/widgets/doc_selector_widget.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
-import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/input_field.dart';
@@ -62,9 +64,10 @@ class _AddRider2State extends State<AddRider2>
         ? ModalRoute.of(context)!.settings.arguments as Map
         : null;
 
-    AddRiderToMerchantModel? model = arg == null
-        ? null
-        : AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
+    AddRiderToMerchantModel? model =
+        (arg != null && arg["rider_bio_data"] != null)
+            ? AddRiderToMerchantModel.fromJson(arg["rider_bio_data"])
+            : null;
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -86,7 +89,7 @@ class _AddRider2State extends State<AddRider2>
                   padding: EdgeInsets.zero,
                 ),
                 Text(
-                  'ADD RIDER',
+                  'ADD VEHICLE',
                   style: theme.textTheme.subtitle1!.copyWith(
                     color: appPrimaryColor,
                     fontWeight: FontWeight.bold,
@@ -102,19 +105,19 @@ class _AddRider2State extends State<AddRider2>
             ),
           ),
           30.heightInPixel(),
-
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
-            child: Text('Vehicle data',
-                style: theme.textTheme.subtitle1!.copyWith(
-                  color: appPrimaryColor,
-                  fontWeight: kBoldWeight,
-                  // decoration: TextDecoration.underline,
-                )),
-          ),
-
-          24.heightInPixel(),
+          if (arg != null && arg["previousScreenID"] == AddRider1.id)
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+              child: Text('Vehicle data',
+                  style: theme.textTheme.subtitle1!.copyWith(
+                    color: appPrimaryColor,
+                    fontWeight: kBoldWeight,
+                    // decoration: TextDecoration.underline,
+                  )),
+            ),
+          if (arg != null && arg["previousScreenID"] == AddRider1.id)
+            24.heightInPixel(),
           Expanded(
               child: SingleChildScrollView(
             padding:
@@ -276,7 +279,6 @@ class _AddRider2State extends State<AddRider2>
                         text: 'Register',
                         //onPress:// _onSubmit,
                         onPress: () async {
-                          String merchantId = await appSettingsBloc.getUserID;
                           AddVehicleToMerchantModel vehicleModel =
                               AddVehicleToMerchantModel(
                                   data: AddRiderToMerchantData(
@@ -288,7 +290,11 @@ class _AddRider2State extends State<AddRider2>
                                       deliveryBox: deliveryBox,
                                       files: _files));
 
-                          if (model != null) {
+                          if (model != null &&
+                              ((await appSettingsBloc.getUserType) ==
+                                  UserType.merchant)) {
+                            String merchantId = await appSettingsBloc.getUserID;
+
                             ///This flow is for when the user is from add ride
                             model = model!.copyWith(
                                 data: model!.data!.copyWith(
@@ -298,11 +304,26 @@ class _AddRider2State extends State<AddRider2>
                             doCreateRider(model!, vehicleModel,
                                 onSuccess: () => Navigator.popUntil(
                                     context, ModalRoute.withName(Riders.id)));
-                          } else {
+                          } else if ((await appSettingsBloc.getUserType) ==
+                              UserType.merchant) {
                             ///  This flow is for direct add vehicle only
+                            ///  Merge with below if rider needs to be selected
+                            ///  for a merchant
                             addVehicle(vehicleModel,
                                 onSuccessCallback: () =>
                                     Navigator.pop(context));
+                          } else if ((await appSettingsBloc.getUserType) ==
+                              UserType.rider) {
+                            vehicleModel = vehicleModel.copyWith(
+                                data: vehicleModel.data!.copyWith(
+                                    riderId:
+                                        (await appSettingsBloc.getUserID)));
+                            addVehicle(vehicleModel,
+                                onSuccessCallback: () async {
+                              Navigator.pop(context);
+                              await appToast('Successful',
+                                  appToastType: AppToastType.success);
+                            });
                           }
                         },
                         color: appPrimaryColor,

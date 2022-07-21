@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
-import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
@@ -19,7 +18,7 @@ class VerifiyAccountScreen extends StatefulWidget {
 }
 
 class _VerifiyAccountScreenState extends State<VerifiyAccountScreen>
-    with SignupHelper, ProfileHelper, ConnectivityHelper {
+    with SignupHelper, ConnectivityHelper {
   final _formKey = GlobalKey<FormState>();
 
   TextEditingController textEditingController = TextEditingController();

@@ -110,6 +110,7 @@ class User {
     this.dateOfBirth,
     this.about,
     this.onBoardingSteps,
+    this.hasCompletedOnBoarding = false,
     this.status,
     this.expiryTime,
     this.state,
@@ -144,6 +145,7 @@ class User {
   final String? dateOfBirth;
   final String? about;
   final OnBoardingSteps? onBoardingSteps;
+  final bool hasCompletedOnBoarding;
   final String? status;
   final String? expiryTime;
   final String? state;
@@ -186,6 +188,9 @@ class User {
         onBoardingSteps: json["onBoardingSteps"] == null
             ? null
             : OnBoardingSteps.fromJson(json["onBoardingSteps"]),
+        hasCompletedOnBoarding: json["onBoardingSteps"] != null &&
+            (json["onBoardingSteps"] is Map &&
+                (json["onBoardingSteps"] as Map).isNotEmpty),
         status: json["status"],
         expiryTime: json["expiryTime"],
         state: json["state"],
