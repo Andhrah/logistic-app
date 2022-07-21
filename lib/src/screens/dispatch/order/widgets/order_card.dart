@@ -59,7 +59,8 @@ class _UserOrderCardState extends State<UserOrderCard> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
-            child: Row(
+            child: 
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -148,10 +149,11 @@ class _UserOrderCardState extends State<UserOrderCard> {
                       Remix.price_tag_3_fill,
                       color: secondaryColor,
                     ),
+                    SizedBox(width: 10,),
                     Text(
                       '$naira${formatMoney(widget.datum.attributes?.amount ?? 0.0)}',
                       style: theme.textTheme.subtitle2!.copyWith(
-                          color: secondaryColor, fontWeight: kBoldWeight),
+                          color: appPrimaryColor, fontWeight: kBoldWeight),
                     ),
                   ],
                 ),
@@ -165,13 +167,14 @@ class _UserOrderCardState extends State<UserOrderCard> {
                       Remix.time_fill,
                       color: secondaryColor,
                     ),
+                    SizedBox(width: 10,),
                     Text(
                       (widget.datum.attributes?.deliveryDate ?? '').isEmpty
                           ? ''
                           : getTimeFromDate(
                               dateValue: widget.datum.attributes?.deliveryDate),
                       style: theme.textTheme.subtitle2!.copyWith(
-                          color: secondaryColor, fontWeight: kBoldWeight),
+                          color: appPrimaryColor, fontWeight: kBoldWeight),
                     ),
                   ],
                 ),
@@ -183,12 +186,12 @@ class _UserOrderCardState extends State<UserOrderCard> {
                     const Icon(
                       Remix.pin_distance_fill,
                       color: secondaryColor,
-                    ),
+                    ),SizedBox(width: 10,),
                     Text(
                       widget.datum.attributes?.distance ?? '',
                       textScaleFactor: 1.0,
                       style: theme.textTheme.subtitle2!.copyWith(
-                          color: secondaryColor, fontWeight: kBoldWeight),
+                          color: appPrimaryColor, fontWeight: kBoldWeight),
                     ),
                   ],
                 ),

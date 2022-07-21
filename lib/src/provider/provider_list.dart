@@ -3,7 +3,6 @@ import 'package:provider/single_child_widget.dart';
 import 'package:trakk/src/provider/customer/customer_map_provider.dart';
 import 'package:trakk/src/provider/merchant/add_company_data_provider.dart';
 import 'package:trakk/src/provider/order/order.dart';
-import 'package:trakk/src/provider/rider/rider.dart';
 import 'package:trakk/src/provider/rider/rider_map_provider.dart';
 import 'package:trakk/src/provider/settings_options/settings_options.dart';
 import 'package:trakk/src/provider/support/support.dart';
@@ -22,7 +21,7 @@ List<SingleChildWidget> appProviders = [
   ChangeNotifierProvider<AddCompanyDataProvider>(
       create: (_) => AddCompanyDataProvider()),
   ChangeNotifierProvider<Order>(create: (_) => Order()),
-  ChangeNotifierProvider<RiderAuth>(create: (_) => RiderAuth()),
+  // ChangeNotifierProvider<RiderAuth>(create: (_) => RiderAuth()),
   ChangeNotifierProvider<SupportProvider>(create: (_) => SupportProvider()),
   // ChangeNotifierProvider<UpdateUserProvider>(
   //     create: (_) => UpdateUserProvider()),

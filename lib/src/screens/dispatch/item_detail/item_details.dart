@@ -12,13 +12,12 @@ import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_image_
 import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_location_widget.dart';
 import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_participant_widget.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
-import 'package:trakk/src/values/assets.dart';
-import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+
+import '../../../models/app_settings.dart';
+import '../../../widgets/menu_button.dart';
 
 import '../../../models/app_settings.dart';
 import '../../../widgets/menu_button.dart';
@@ -120,7 +119,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Scaffold(
       body: SafeArea(
-          child: Column(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           //kSizeBox,
@@ -181,7 +182,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                             style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.w700,
-                                color: appPrimaryColor),
+                                color: appPrimaryColor,  fontFamily: kDefaultFontFamilyHeading),
                           );
                         }),
                     Text(
@@ -189,28 +190,32 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                       style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.w700,
-                          color: appPrimaryColor),
+                          color: appPrimaryColor,  fontFamily: kDefaultFontFamilyHeading),
                     ),
                   ],
                 ),
-                5.heightInPixel(),
-                const Text(
-                  "Kindly enter your Location and Item details",
-                  style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w400,
-                      color: appPrimaryColor),
-                ),
+                
               ],
             ),
           ),
-          8.heightInPixel(),
+          //8.heightInPixel(),
 
           Expanded(
             child: SingleChildScrollView(
-              child: Column(
+              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   kSizeBox,
+                  15.heightInPixel(),
+                const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20),
+                  child: Text(
+                    "Kindly enter your Location and Item details",
+                    style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        color: appPrimaryColor),
+                  ),
+                ),
                   kSizeBox,
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -274,9 +279,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                 ],
               ),
             ),
-          ),
-        ],
-      )),
+            )]
+      ),
+          )),
     );
     // );
   }

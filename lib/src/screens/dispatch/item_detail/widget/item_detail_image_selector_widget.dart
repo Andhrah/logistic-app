@@ -31,7 +31,8 @@ class _ItemDetailImageSelectorWidgetState
   }
 
   uploadItemImage() async {
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
     if (result != null &&
         result.files.isNotEmpty &&
         result.files.first.path != null) {

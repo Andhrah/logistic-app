@@ -37,9 +37,17 @@ class ProfileHelper {
       if (!appSettings.isLoggedIn) {
         return;
       }
+
       AuthData user =
           appSettings.loginResponse?.data?.copyWith(user: authData.user) ??
               authData;
+
+      if (user.user!.rider == null) {
+        user.user!.rider = appSettings.loginResponse?.data!.user!.rider;
+      }
+      if (user.user!.merchant == null) {
+        user.user!.merchant = appSettings.loginResponse?.data!.user!.merchant;
+      }
 
       await appSettingsBloc.saveLoginDetails(
           appSettings.loginResponse?.copyWith(data: user) ??
@@ -68,6 +76,78 @@ class ProfileHelper {
             appToastType: AppToastType.success);
 
         onCloseLoader();
+      });
+    } else {
+      onCloseLoader();
+      MessageOnlyResponse error = operation.result;
+
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
+    }
+  }
+
+  ///below is exclusive to rider only
+
+  doUpdateOnBoardingOperation(
+      Map<String, dynamic> map, Function() onCloseLoader) async {
+    profileService
+        .updateOnBoarding(map)
+        .then((value) => _completeOnBoardingUpdate(value, onCloseLoader));
+  }
+
+  _completeOnBoardingUpdate(
+      Operation operation, Function() onCloseLoader) async {
+    if (operation.code == 200 || operation.code == 201) {
+      doGetProfileOperation(profileFetchSuccess: (AuthData authData) {
+        onCloseLoader();
+      });
+    } else {
+      onCloseLoader();
+      MessageOnlyResponse error = operation.result;
+
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
+    }
+  }
+
+  doUpdateRiderContactDetailsOperation(UpdateProfile updateProfile,
+      Function() onShowLoader, Function() onCloseLoader) async {
+    onShowLoader();
+    profileService
+        .updateRider(updateProfile)
+        .then((value) => _completeRiderContactUpdate(value, onCloseLoader));
+  }
+
+  _completeRiderContactUpdate(
+      Operation operation, Function() onCloseLoader) async {
+    if (operation.code == 200 || operation.code == 201) {
+      doUpdateOnBoardingOperation({
+        'onBoardingSteps': {'riderContactCompleted': true}
+      }, () async {
+        onCloseLoader();
+      });
+    } else {
+      onCloseLoader();
+      MessageOnlyResponse error = operation.result;
+
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
+    }
+  }
+
+  doNextOfKinOperation(UpdateProfile updateProfile, Function() onShowLoader,
+      Function() onCloseLoader) async {
+    onShowLoader();
+    profileService
+        .updateRiderNextOfKin(updateProfile)
+        .then((value) => _completeNOK(value, onCloseLoader));
+  }
+
+  _completeNOK(Operation operation, Function() onCloseLoader) async {
+    if (operation.code == 200 || operation.code == 201) {
+      doUpdateOnBoardingOperation({
+        'onBoardingSteps': {'riderNOKCompleted': true}
+      }, () {
+        onCloseLoader();
+        appToast('Next of kin updated successfully',
+            appToastType: AppToastType.success);
       });
     } else {
       onCloseLoader();

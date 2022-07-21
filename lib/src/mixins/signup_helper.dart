@@ -7,23 +7,21 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
-import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/auth/signup_model.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
-import 'package:trakk/src/screens/auth/merchant/company_data.dart';
 import 'package:trakk/src/screens/auth/verify_account.dart';
 import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/services/auth/signup_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 import '../utils/operation.dart';
 
 typedef LoginCompleted = Function(AuthResponse loginResponse);
 
-class SignupHelper with ProfileHelper, ConnectivityHelper {
+class SignupHelper with ConnectivityHelper {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   late TextEditingController firstNameController = TextEditingController();
@@ -31,6 +29,19 @@ class SignupHelper with ProfileHelper, ConnectivityHelper {
   late TextEditingController emailController = TextEditingController();
   late TextEditingController phoneNumberController = TextEditingController();
   late TextEditingController passwordController = TextEditingController();
+
+  late TextEditingController nameController = TextEditingController();
+  late TextEditingController rcNumberController = TextEditingController();
+
+  disposeControllers() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    emailController.dispose();
+    phoneNumberController.dispose();
+    passwordController.dispose();
+    nameController.dispose();
+    rcNumberController.dispose();
+  }
 
   doSignUpOperation(String userType, Function() onShowLoader,
       Function() onCloseLoader) async {
@@ -89,12 +100,12 @@ class SignupHelper with ProfileHelper, ConnectivityHelper {
   _completeVerify(Operation operation, Function() onCloseLoader) async {
     if (operation.code == 200 || operation.code == 201) {
       UserType userType = await appSettingsBloc.getUserType;
-      if (userType == UserType.merchant) {
-        SingletonData.singletonData.navKey.currentState!
-            .pushNamed(CompanyData.id);
-      } else {
-        SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
-      }
+      // if (userType == UserType.merchant) {
+      //   SingletonData.singletonData.navKey.currentState!
+      //       .pushNamed(CompanyData.id);
+      // } else {
+      SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
+      // }
     } else {
       onCloseLoader();
       MessageOnlyResponse error = operation.result;
@@ -129,4 +140,46 @@ class SignupHelper with ProfileHelper, ConnectivityHelper {
       appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
+
+  /// This flow is exclusive to merchant *Start*
+  String cacDocument = "";
+
+  doAddCompanyInfoOperation(
+      Function() onShowLoader, Function() onCloseLoader) async {
+    if (formKey.currentState!.validate()) {
+      if (cacDocument.isEmpty) {
+        appToast('CAC document is required', appToastType: AppToastType.failed);
+        return;
+      }
+      onShowLoader();
+      signupService
+          .doAddCompanyInfo(
+            SignupModel.toCompanyData(
+                name: nameController.text.trim(),
+                email: emailController.text.trim(),
+                phoneNumber: phoneNumberController.text.trim(),
+                rcNumber: rcNumberController.text.trim()),
+          )
+          .then(
+              (operation) => _completeCompanyInfoAdd(operation, onCloseLoader));
+    }
+  }
+
+  _completeCompanyInfoAdd(Operation operation, Function() onCloseLoader) async {
+    onCloseLoader();
+    if (operation.code == 200 || operation.code == 201) {
+      await appToast(
+        'Your information has been add successfully',
+        appToastType: AppToastType.success,
+      );
+
+      SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
+    } else {
+      MessageOnlyResponse error = operation.result;
+
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
+    }
+  }
+
+  ///   *End*
 }

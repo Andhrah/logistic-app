@@ -1,24 +1,32 @@
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
+import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/src/models/app_settings.dart';
+import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/font.dart';
+import 'package:trakk/src/screens/auth/rider/next_of_kin.dart';
+import 'package:trakk/src/screens/merchant/add_rider1.dart';
+import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/glow_widget.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
-
 import 'package:trakk/src/values/assets.dart';
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/font.dart';
+import 'package:trakk/src/values/padding.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 class RiderLocationCard extends StatefulWidget {
   final MiscBloc locaBloc;
 
   const RiderLocationCard(this.locaBloc, {Key? key}) : super(key: key);
+
+  static const String id = 'riderLocationCard';
 
   @override
   _RiderLocationCardState createState() => _RiderLocationCardState();
@@ -35,22 +43,47 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
-    return CustomStreamBuilder<RiderOrderState, String>(
-        stream: riderHomeStateBloc.behaviorSubject,
-        dataBuilder: (context, data) {
-          if (data == RiderOrderState.isNewRequestIncoming) {
-            return StreamBuilder<BaseModel<OrderResponse, String>>(
-                stream: riderStreamSocket.behaviorSubject,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData && snapshot.data!.model != null) {
-                    return cardWithNewRequest(context);
+    return StreamBuilder<AppSettings>(
+        stream: appSettingsBloc.appSettings,
+        builder: (context, snapshot) {
+          if (snapshot.hasData) {
+            if (snapshot
+                    .data?.loginResponse?.data?.user?.hasCompletedOnBoarding ==
+                false) {
+              bool completedContact = snapshot.data?.loginResponse?.data?.user
+                      ?.onBoardingSteps?.riderContactCompleted ??
+                  false;
+              bool completedNok = snapshot.data?.loginResponse?.data?.user
+                      ?.onBoardingSteps?.riderNOKCompleted ??
+                  false;
+              bool completedVehicles = snapshot.data?.loginResponse?.data?.user
+                      ?.onBoardingSteps?.riderVehicleCompleted ??
+                  false;
+              if (!completedContact || !completedNok || !completedVehicles) {
+                return cardWithOnBoarding(
+                    context, completedContact, completedNok, completedVehicles);
+              }
+            }
+            return CustomStreamBuilder<RiderOrderState, String>(
+                stream: riderHomeStateBloc.behaviorSubject,
+                dataBuilder: (context, data) {
+                  if (data == RiderOrderState.isNewRequestIncoming) {
+                    return StreamBuilder<BaseModel<OrderResponse, String>>(
+                        stream: riderStreamSocket.behaviorSubject,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData &&
+                              snapshot.data!.model != null) {
+                            return cardWithNewRequest(context);
+                          }
+                          return cardWithLocation(context);
+                        });
+                  } else if (data == RiderOrderState.isHomeScreen) {
+                    return cardWithLocation(context);
                   }
-                  return cardWithLocation(context);
-                });
-          } else if (data == RiderOrderState.isHomeScreen) {
-            return cardWithLocation(context);
-          }
 
+                  return const SizedBox();
+                });
+          }
           return const SizedBox();
         });
   }
@@ -133,7 +166,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                   bottomRight: Radius.circular(8)),
               child: Image.asset(
                 Assets.rider_home_location,
-                height: 130,
+                height: 135,
               ),
             ),
           ),
@@ -206,6 +239,224 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
             ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget cardWithOnBoarding(BuildContext context, bool completedContact,
+      bool completedNok, bool completedVehicles) {
+    var theme = Theme.of(context);
+
+    return Container(
+      constraints: const BoxConstraints(maxWidth: 450),
+      margin: const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+      decoration: const BoxDecoration(
+          color: whiteColor, borderRadius: Radii.k8pxRadius),
+      child: Container(
+        height: 135,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: GestureDetector(
+                onTap: () async {
+                  if (completedContact) {
+                    appToast('You had previously added contact details');
+                    return;
+                  }
+                  var model = AddRiderToMerchantModel(
+                      data: AddRiderToMerchantModelData(
+                          userId: ((await appSettingsBloc.fetchAppSettings())
+                                      .loginResponse
+                                      ?.data
+                                      ?.user
+                                      ?.id ??
+                                  '')
+                              .toString()));
+                  Navigator.pushNamed(context, AddRider1.id, arguments: {
+                    'rider_bio_data': model.toJson(),
+                    'previousScreenID': RiderLocationCard.id
+                  });
+                },
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45.withOpacity(0.1),
+                          spreadRadius: 1,
+                          offset: const Offset(0.0, 0.0), //(x,y)
+                          blurRadius: 8.0,
+                        ),
+                      ],
+                      color: whiteColor,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Assets.rider_add_contact,
+                          height: 20,
+                          width: 20,
+                        ),
+                        2.5.heightInPixel(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Add Contact Details',
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.caption!.copyWith(
+                                    fontWeight: kSemiBoldWeight, fontSize: 8),
+                              ),
+                            ),
+                            // 2.widthInPixel(),
+                            Icon(
+                              completedContact ? Icons.add : Icons.check,
+                              size: 14,
+                              color: secondaryColor,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            20.widthInPixel(),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if (completedNok) {
+                    appToast(
+                        'You had previously added contact next of kin details');
+                    return;
+                  }
+                  Navigator.pushNamed(context, NextOfKin.id);
+                },
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45.withOpacity(0.1),
+                          spreadRadius: 1,
+                          offset: const Offset(0.0, 0.0), //(x,y)
+                          blurRadius: 8.0,
+                        ),
+                      ],
+                      color: whiteColor,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Assets.rider_add_next_of_kin,
+                          height: 20,
+                          width: 20,
+                        ),
+                        2.5.heightInPixel(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Add Next of Kin Details',
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.caption!.copyWith(
+                                    fontWeight: kSemiBoldWeight, fontSize: 8),
+                              ),
+                            ),
+                            // 2.widthInPixel(),
+                            Icon(
+                              completedNok ? Icons.add : Icons.check,
+                              size: 14,
+                              color: secondaryColor,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            20.widthInPixel(),
+            Expanded(
+              child: GestureDetector(
+                onTap: () {
+                  if (completedVehicles) {
+                    appToast('You had previously added vehicle');
+                    return;
+                  }
+                  Navigator.pushNamed(context, AddRider2.id,
+                      arguments: {'previousScreenID': RiderLocationCard.id});
+                },
+                child: AspectRatio(
+                  aspectRatio: 1,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black45.withOpacity(0.1),
+                          spreadRadius: 1,
+                          offset: const Offset(0.0, 0.0), //(x,y)
+                          blurRadius: 8.0,
+                        ),
+                      ],
+                      color: whiteColor,
+                    ),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12, vertical: 12),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Image.asset(
+                          Assets.rider_add_vehicle_details,
+                          height: 20,
+                          width: 20,
+                        ),
+                        2.5.heightInPixel(),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                'Add Vehicle Details',
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.caption!.copyWith(
+                                    fontWeight: kSemiBoldWeight, fontSize: 8),
+                              ),
+                            ),
+                            // 2.widthInPixel(),
+                            Icon(
+                              completedVehicles ? Icons.add : Icons.check,
+                              size: 14,
+                              color: secondaryColor,
+                            )
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

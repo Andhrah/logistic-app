@@ -110,6 +110,7 @@ class User {
     this.dateOfBirth,
     this.about,
     this.onBoardingSteps,
+    this.hasCompletedOnBoarding = false,
     this.status,
     this.expiryTime,
     this.state,
@@ -144,6 +145,7 @@ class User {
   final String? dateOfBirth;
   final String? about;
   final OnBoardingSteps? onBoardingSteps;
+  final bool hasCompletedOnBoarding;
   final String? status;
   final String? expiryTime;
   final String? state;
@@ -153,7 +155,7 @@ class User {
   final List<dynamic>? beneficiaries;
   Rider? rider;
   final List<dynamic>? orders;
-  final Merchant? merchant;
+  Merchant? merchant;
 
   factory User.fromJson(Map<String, dynamic> json) => User(
         id: json["id"],
@@ -186,6 +188,9 @@ class User {
         onBoardingSteps: json["onBoardingSteps"] == null
             ? null
             : OnBoardingSteps.fromJson(json["onBoardingSteps"]),
+        hasCompletedOnBoarding: json["onBoardingSteps"] != null &&
+            (json["onBoardingSteps"] is Map &&
+                (json["onBoardingSteps"] as Map).isNotEmpty),
         status: json["status"],
         expiryTime: json["expiryTime"],
         state: json["state"],
@@ -245,12 +250,38 @@ class User {
 }
 
 class OnBoardingSteps {
-  OnBoardingSteps();
+  final bool? riderContactCompleted;
+
+  final bool? riderNOKCompleted;
+
+  final bool? riderVehicleCompleted;
+
+  OnBoardingSteps({
+    this.riderContactCompleted,
+    this.riderNOKCompleted,
+    this.riderVehicleCompleted,
+  });
 
   factory OnBoardingSteps.fromJson(Map<String, dynamic> json) =>
-      OnBoardingSteps();
+      OnBoardingSteps(
+          riderContactCompleted: json['riderContactCompleted'] == null
+              ? null
+              : json['riderContactCompleted'],
+          riderNOKCompleted: json['riderNOKCompleted'] == null
+              ? null
+              : json['riderContactCompleted'],
+          riderVehicleCompleted: json['riderVehicleCompleted'] == null
+              ? null
+              : json['riderVehicleCompleted']);
 
-  Map<String, dynamic> toJson() => {};
+  Map<String, dynamic> toJson() => {
+        'riderContactCompleted':
+            riderContactCompleted == null ? null : riderContactCompleted,
+        'riderNOKCompleted':
+            riderNOKCompleted == null ? null : riderNOKCompleted,
+        'riderVehicleCompleted':
+            riderVehicleCompleted == null ? null : riderVehicleCompleted
+      };
 }
 
 class Rider {

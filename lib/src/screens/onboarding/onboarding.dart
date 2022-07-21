@@ -107,7 +107,7 @@ class _OnboardingState extends State<Onboarding> {
         body: Column(children: [
       Expanded(
         child:
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Column(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
           Expanded(
             flex: 2,
             child: Column(

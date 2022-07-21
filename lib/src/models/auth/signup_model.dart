@@ -1,3 +1,6 @@
+import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/models/app_settings.dart';
+
 class SignupModel {
   SignupModel({
     this.firstName,
@@ -8,12 +11,24 @@ class SignupModel {
     this.userType,
   });
 
-  final String? firstName;
-  final String? lastName;
-  final String? email;
-  final String? phoneNumber;
-  final String? password;
-  final String? userType;
+  String? firstName;
+  String? lastName;
+  String? email;
+  String? phoneNumber;
+  String? password;
+  String? userType;
+
+  //exclusive to merchant
+  SignupModel.toCompanyData(
+      {this.name,
+      this.email,
+      this.phoneNumber,
+      this.rcNumber,
+      this.cacDocument});
+
+  String? name;
+  String? rcNumber;
+  String? cacDocument;
 
   Map<String, dynamic> toJson() => {
         "firstName": firstName == null ? null : firstName,
@@ -23,4 +38,20 @@ class SignupModel {
         "password": password == null ? null : password,
         "userType": userType == null ? null : userType
       };
+
+  Future<Map<String, dynamic>> toAddCompanyInfoJson() async {
+    AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+    Map<String, dynamic> map = {
+      "data": {
+        "name": name,
+        "email": email,
+        "phoneNumber": phoneNumber,
+        "rcNumber": rcNumber,
+        "cacDocument": cacDocument,
+        "userId": appSettings.loginResponse?.data?.user?.id ?? ''
+        // "cacDocument": cacDocument,
+      }
+    };
+    return map;
+  }
 }
