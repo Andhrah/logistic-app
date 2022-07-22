@@ -116,6 +116,7 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           borderColor: appPrimaryColor.withOpacity(0.5),
           area: null,
+          
           onChanged: (value) {
             doCallback();
             return null;

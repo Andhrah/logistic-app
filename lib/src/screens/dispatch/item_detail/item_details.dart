@@ -120,16 +120,14 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
 
   @override
   Widget build(BuildContext context) {
-    
     MediaQueryData mediaQuery = MediaQuery.of(context);
     var theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
+        padding: const EdgeInsets.symmetric(horizontal: 10),
+        child:
+            Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: [
           //kSizeBox,
           // const Header(
           //   text: 'DISPATCH ITEM',
@@ -186,10 +184,11 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                           return Text(
                             "Hello $firstName, ",
                             style: theme.textTheme.subtitle1!.copyWith(
-                fontWeight: kBoldWeight,
-                fontSize: 18, fontFamily: kDefaultFontFamilyHeading
-                // decoration: TextDecoration.underline,
-              ),
+                                fontWeight: kBoldWeight,
+                                fontSize: 18,
+                                fontFamily: kDefaultFontFamilyHeading
+                                // decoration: TextDecoration.underline,
+                                ),
                           );
                         }),
                     Text(
@@ -197,11 +196,11 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                       style: const TextStyle(
                           fontSize: 18,
                           fontWeight: kBoldWeight,
-                          color: appPrimaryColor,  fontFamily: kDefaultFontFamilyHeading),
+                          color: appPrimaryColor,
+                          fontFamily: kDefaultFontFamilyHeading),
                     ),
                   ],
                 ),
-                
               ],
             ),
           ),
@@ -209,20 +208,21 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
 
           Expanded(
             child: SingleChildScrollView(
-              child: Column(crossAxisAlignment: CrossAxisAlignment.start,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   kSizeBox,
                   15.heightInPixel(),
-                const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20),
-                  child: Text(
-                    "Kindly enter your Location and Item details",
-                    style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        color: appPrimaryColor),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    child: Text(
+                      "Kindly enter your Location and Item details",
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: appPrimaryColor),
+                    ),
                   ),
-                ),
                   kSizeBox,
                   Container(
                     padding: const EdgeInsets.symmetric(
@@ -286,9 +286,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                 ],
               ),
             ),
-            )]
-      ),
-          )),
+          )
+        ]),
+      )),
     );
     // );
   }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:readmore/readmore.dart';
 import 'package:remixicon/remixicon.dart';
-
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import '../../widgets/item_model.dart';
@@ -22,30 +21,8 @@ class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
 
   final _formKey = GlobalKey<FormState>();
 
-  late TextEditingController _firstNameController;
-  late TextEditingController _lastNameController;
-  late TextEditingController _emailController;
-  late TextEditingController _phoneNumberController;
-  late TextEditingController _passwordController;
-  late TextEditingController _confirmPasswordController;
-
-  FocusNode? _firstNameNode;
-  FocusNode? _lastNameNode;
-  FocusNode? _phoneNumberNode;
-  FocusNode? _emailNode;
-  FocusNode? _passwordNode;
-  FocusNode? _confirmPasswordNode;
-
-  String? _firstName;
-  String? _lastName;
-  String? _email;
-  String? _phoneNumber;
-  String? _password;
-  String? _confirmPassword;
-
   bool _isVisible = false;
   bool _isVisible1 = false;
-
 
   @override
   void initState() {
@@ -70,7 +47,7 @@ You will be responsible for maintaining the confidentiality of the Account infor
 Use of another User’s Account information for using the Platform is expressly prohibited.
 
 """;
-String privacyPolicy = """
+  String privacyPolicy = """
 All information provided by you is for the purpose of efficient delivery of services.
 
 TRAKK shall not use your information for any other purpose other than that which was stated.
@@ -108,10 +85,11 @@ All information received by TRAKK shall be managed according to the Nigerian Dat
                     child: Text(
                       'PRIVACY & SECURITY',
                       style: theme.textTheme.subtitle1!.copyWith(
-                        fontWeight: kBoldWeight,
-                        fontSize: 18,fontFamily: kDefaultFontFamilyHeading
-                        // decoration: TextDecoration.underline,
-                      ),
+                          fontWeight: kBoldWeight,
+                          fontSize: 18,
+                          fontFamily: kDefaultFontFamilyHeading
+                          // decoration: TextDecoration.underline,
+                          ),
                     ),
                   ),
                 ),
@@ -209,7 +187,10 @@ class privacyContainer extends StatelessWidget {
               const Spacer(),
               Text(
                 title,
-                style: TextStyle(color: Colors.white, fontSize: 18, fontFamily: kDefaultFontFamily ),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontFamily: kDefaultFontFamily),
               ),
               const Spacer(),
               _isVisible == true
@@ -223,7 +204,7 @@ class privacyContainer extends StatelessWidget {
                       ),
                     )
                   : const Icon(
-                    Remix.arrow_right_s_line,
+                      Remix.arrow_right_s_line,
                       //size: 26,
                       color: Colors.white,
                     ),
