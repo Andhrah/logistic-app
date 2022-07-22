@@ -249,245 +249,244 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 20),
-                              child: Expanded(
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        InkWell(
-                                          onTap: () => showDialog<String>(
-                                            // barrierDismissible: true,
-                                            context: context,
-                                            builder: (BuildContext context) =>
-                                                AlertDialog(
-                                              // title: const Text('AlertDialog Title'),
-                                              contentPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 20.0,
-                                                      vertical: 15.0),
-                                              content: Column(
-                                                  mainAxisSize:
-                                                      MainAxisSize.min,
-                                                  children: [
-                                                    Row(
-                                                      mainAxisAlignment:
-                                                          MainAxisAlignment.end,
-                                                      children: [
-                                                        InkWell(
-                                                            onTap: () {
-                                                              Navigator.pop(
-                                                                  context);
-                                                            },
-                                                            child:
-                                                                const CancelButton())
-                                                      ],
-                                                    ),
-                                                    const SizedBox(
-                                                      height: 15,
-                                                    ),
-                                                    SizedBox(
-                                                      width: 300,
-                                                      child: Text(
-                                                        'You are about to remove ${name}\nVeh.No. 889 from the list of \nvehicles',
-                                                        // maxLines: 2,
-                                                        style: const TextStyle(
-                                                          fontSize: 13,
-                                                          fontWeight:
-                                                              FontWeight.w400,
-                                                        ),
-                                                        textAlign:
-                                                            TextAlign.center,
+                              child: Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                        onTap: () => showDialog<String>(
+                                          // barrierDismissible: true,
+                                          context: context,
+                                          builder: (BuildContext context) =>
+                                              AlertDialog(
+                                            // title: const Text('AlertDialog Title'),
+                                            contentPadding:
+                                                const EdgeInsets.symmetric(
+                                                    horizontal: 20.0,
+                                                    vertical: 15.0),
+                                            content: Column(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment.end,
+                                                    children: [
+                                                      InkWell(
+                                                          onTap: () {
+                                                            Navigator.pop(
+                                                                context);
+                                                          },
+                                                          child:
+                                                              const CancelButton())
+                                                    ],
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 15,
+                                                  ),
+                                                  SizedBox(
+                                                    width: 300,
+                                                    child: Text(
+                                                      'You are about to remove ${name}\nVeh.No. 889 from the list of \nvehicles',
+                                                      // maxLines: 2,
+                                                      style: const TextStyle(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w400,
                                                       ),
+                                                      textAlign:
+                                                          TextAlign.center,
                                                     ),
-                                                    const SizedBox(
-                                                      height: 14,
-                                                    ),
-                                                    Button(
-                                                      text: 'Delete',
-                                                      onPress: () {
-                                                        Navigator.pop(context);
-                                                        doDeleteVehicle(id,
-                                                            onSuccessful: () {
-                                                          showDialog<String>(
-                                                            // barrierDismissible: true,
-                                                            context: context,
-                                                            builder: (BuildContext
-                                                                    context) =>
-                                                                AlertDialog(
-                                                              // title: const Text('AlertDialog Title'),
-                                                              contentPadding:
-                                                                  const EdgeInsets
-                                                                          .symmetric(
-                                                                      horizontal:
-                                                                          20.0,
-                                                                      vertical:
-                                                                          15.0),
-                                                              content: SizedBox(
-                                                                height: 220.0,
-                                                                child: Column(
-                                                                  children: [
-                                                                    Row(
-                                                                      mainAxisAlignment:
-                                                                          MainAxisAlignment
-                                                                              .end,
+                                                  ),
+                                                  const SizedBox(
+                                                    height: 14,
+                                                  ),
+                                                  Button(
+                                                    text: 'Delete',
+                                                    onPress: () {
+                                                      Navigator.pop(context);
+                                                      doDeleteVehicle(id,
+                                                          onSuccessful: () {
+                                                        showDialog<String>(
+                                                          // barrierDismissible: true,
+                                                          context: context,
+                                                          builder: (BuildContext
+                                                                  context) =>
+                                                              AlertDialog(
+                                                            // title: const Text('AlertDialog Title'),
+                                                            contentPadding:
+                                                                const EdgeInsets
+                                                                        .symmetric(
+                                                                    horizontal:
+                                                                        20.0,
+                                                                    vertical:
+                                                                        15.0),
+                                                            content: SizedBox(
+                                                              height: 220.0,
+                                                              child: Column(
+                                                                children: [
+                                                                  Row(
+                                                                    mainAxisAlignment:
+                                                                        MainAxisAlignment
+                                                                            .end,
+                                                                    children: [
+                                                                      InkWell(
+                                                                        onTap:
+                                                                            () {
+                                                                          Navigator.of(context)
+                                                                              .pushNamed(CompanyHome.id);
+                                                                        },
+                                                                        child:
+                                                                            const CancelButton(),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  Container(
+                                                                    padding: const EdgeInsets
+                                                                            .symmetric(
+                                                                        vertical:
+                                                                            30),
+                                                                    child:
+                                                                        Column(
                                                                       children: [
-                                                                        InkWell(
-                                                                          onTap:
-                                                                              () {
-                                                                            Navigator.of(context).pushNamed(CompanyHome.id);
-                                                                          },
+                                                                        Center(
                                                                           child:
-                                                                              const CancelButton(),
-                                                                        )
-                                                                      ],
-                                                                    ),
-                                                                    Container(
-                                                                      padding: const EdgeInsets
-                                                                              .symmetric(
-                                                                          vertical:
-                                                                              30),
-                                                                      child:
-                                                                          Column(
-                                                                        children: [
-                                                                          Center(
-                                                                            child:
-                                                                                Text(
-                                                                              '  You have succefully removed\n${name} Veh.No${number} from the list \nof riders',
-                                                                              // maxLines: 2,
-                                                                              textAlign: TextAlign.center,
-                                                                              style: const TextStyle(
-                                                                                fontSize: 15,
-                                                                                fontWeight: FontWeight.w400,
-                                                                              ),
+                                                                              Text(
+                                                                            '  You have succefully removed\n${name} Veh.No${number} from the list \nof riders',
+                                                                            // maxLines: 2,
+                                                                            textAlign:
+                                                                                TextAlign.center,
+                                                                            style:
+                                                                                const TextStyle(
+                                                                              fontSize: 15,
+                                                                              fontWeight: FontWeight.w400,
                                                                             ),
                                                                           ),
-                                                                          const SizedBox(
-                                                                              height: 10),
-                                                                          const Icon(
-                                                                              Remix.delete_bin_6_line),
-                                                                        ],
-                                                                      ),
-                                                                    )
-                                                                  ],
-                                                                ),
+                                                                        ),
+                                                                        const SizedBox(
+                                                                            height:
+                                                                                10),
+                                                                        const Icon(
+                                                                            Remix.delete_bin_6_line),
+                                                                      ],
+                                                                    ),
+                                                                  )
+                                                                ],
                                                               ),
                                                             ),
-                                                          );
-                                                        });
-                                                      },
-                                                      color: redColor,
-                                                      textColor: whiteColor,
-                                                      isLoading: false,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              1.6,
-                                                    ),
-                                                    20.heightInPixel(),
-                                                    Button(
-                                                      text: 'Don\'t delete',
-                                                      onPress: () {
-                                                        Navigator.of(context)
-                                                            .pop();
-                                                      },
-                                                      color: appPrimaryColor,
-                                                      textColor: whiteColor,
-                                                      isLoading: false,
-                                                      width:
-                                                          MediaQuery.of(context)
-                                                                  .size
-                                                                  .width /
-                                                              1.6,
-                                                    )
-                                                  ]),
-                                            ),
-                                          ),
-                                          child: Container(
-                                              height: 44,
-                                              width: 44,
-                                              decoration: const BoxDecoration(
-                                                  color: whiteColor,
-                                                  borderRadius:
-                                                      BorderRadius.all(
-                                                          Radius.circular(8)),
-                                                  boxShadow: [
-                                                    BoxShadow(
-                                                      color: Color.fromARGB(
-                                                          255, 230, 230, 230),
-                                                      spreadRadius: 1,
-                                                      offset: Offset(2.0, 2.0),
-                                                      //(x,y)
-                                                      blurRadius: 8.0,
-                                                    ),
-                                                  ]),
-                                              child: const Icon(
-                                                  Remix.delete_bin_5_line)),
-                                        )
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        CachedNetworkImage(
-                                          imageUrl: avatar,
-                                          width: 80,
-                                          height: 80,
-                                          placeholder: (context, url) =>
-                                              Image.asset(
-                                            Assets.ride,
-                                            width: 80,
-                                            height: 80,
-                                          ),
-                                          errorWidget: (context, url, err) =>
-                                              Image.asset(
-                                            Assets.ride,
-                                            width: 80,
-                                            height: 80,
+                                                          ),
+                                                        );
+                                                      });
+                                                    },
+                                                    color: redColor,
+                                                    textColor: whiteColor,
+                                                    isLoading: false,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            1.6,
+                                                  ),
+                                                  20.heightInPixel(),
+                                                  Button(
+                                                    text: 'Don\'t delete',
+                                                    onPress: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                    color: appPrimaryColor,
+                                                    textColor: whiteColor,
+                                                    isLoading: false,
+                                                    width:
+                                                        MediaQuery.of(context)
+                                                                .size
+                                                                .width /
+                                                            1.6,
+                                                  )
+                                                ]),
                                           ),
                                         ),
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          children: [
-                                            Text(
-                                              name,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                            const SizedBox(
-                                              height: 5,
-                                            ),
-                                            Text(
-                                              number,
-                                              style: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w600),
-                                            ),
-                                          ],
-                                        )
-                                      ],
-                                    ),
-                                    Button(
-                                        text: 'Assigned to',
-                                        onPress: () {
-                                          Navigator.of(context).pushNamed(
-                                              MerchantRiderProfile.id);
-                                        },
-                                        color: appPrimaryColor,
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                1,
-                                        textColor: whiteColor,
-                                        isLoading: false)
-                                  ],
-                                ),
+                                        child: Container(
+                                            height: 44,
+                                            width: 44,
+                                            decoration: const BoxDecoration(
+                                                color: whiteColor,
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(8)),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Color.fromARGB(
+                                                        255, 230, 230, 230),
+                                                    spreadRadius: 1,
+                                                    offset: Offset(2.0, 2.0),
+                                                    //(x,y)
+                                                    blurRadius: 8.0,
+                                                  ),
+                                                ]),
+                                            child: const Icon(
+                                                Remix.delete_bin_5_line)),
+                                      )
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      CachedNetworkImage(
+                                        imageUrl: avatar,
+                                        width: 80,
+                                        height: 80,
+                                        placeholder: (context, url) =>
+                                            Image.asset(
+                                          Assets.ride,
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                        errorWidget: (context, url, err) =>
+                                            Image.asset(
+                                          Assets.ride,
+                                          width: 80,
+                                          height: 80,
+                                        ),
+                                      ),
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            name,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            number,
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w600),
+                                          ),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                  Button(
+                                      text: 'Assigned to',
+                                      onPress: () {
+                                        Navigator.of(context)
+                                            .pushNamed(MerchantRiderProfile.id);
+                                      },
+                                      color: appPrimaryColor,
+                                      width:
+                                          MediaQuery.of(context).size.width / 1,
+                                      textColor: whiteColor,
+                                      isLoading: false)
+                                ],
                               ),
                             ),
                           );

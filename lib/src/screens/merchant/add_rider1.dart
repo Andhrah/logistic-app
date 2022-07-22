@@ -52,6 +52,8 @@ class _AddRider1State extends State<AddRider1> with ProfileHelper {
         AddRiderToMerchantModel.fromJson(arg["rider_bio_data"]);
     bool continueFlow = (arg["previousScreenID"] == AddRider.id);
 
+    print('someonelat: $continueFlow');
+    // someonelat
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(

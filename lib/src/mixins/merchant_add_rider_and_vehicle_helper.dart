@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/auth/signup_model.dart';
 import 'package:trakk/src/models/auth_response.dart';
@@ -70,8 +71,9 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
     if (operation.code == 200 || operation.code == 201) {
       AuthResponse authResponse = AuthResponse.fromJson(operation.result);
       _riderToMerchantModel = _riderToMerchantModel!.copyWith(
-          data: _riderToMerchantModel!.data!
-              .copyWith(userId: '${authResponse.data?.user?.id ?? ''}'));
+          data: _riderToMerchantModel!.data!.copyWith(
+        userId: '${authResponse.data?.user?.id ?? ''}',
+      ));
 
       addRiderBioData(_riderToMerchantModel!,
           vehicleModel: _vehicleModel!, onSuccessCallback: onSuccess);
@@ -123,10 +125,17 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
       bool continueStepAfterCompletion = true}) async {
     Navigator.pop(_authContext);
     if (operation.code == 200 || operation.code == 201) {
+      _riderToMerchantModel = _riderToMerchantModel!.copyWith(
+          data: _riderToMerchantModel!.data!.copyWith(
+              riderId: operation.result['data'] != null &&
+                      operation.result['data']['id'] != null
+                  ? operation.result['data']['id'].toString()
+                  : null));
+
       if (_vehicleModel != null) {
         _vehicleModel = _vehicleModel!.copyWith(
             data: _vehicleModel!.data!
-                .copyWith(riderId: _riderToMerchantModel!.data!.userId));
+                .copyWith(riderId: _riderToMerchantModel!.data!.riderId));
       }
 
       if (continueStepAfterCompletion) {
@@ -266,14 +275,12 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
       }
 
       doUpdateOnBoardingOperation(
-          {
-            'onBoardingSteps': {'riderVehicleCompleted': true}
-          },
           () => _finalStep(
               operation,
               onSuccessCallback,
               () => _completeAddVehicleOperation(operation,
-                  onSuccessCallback: onSuccessCallback, onRetry: onRetry)));
+                  onSuccessCallback: onSuccessCallback, onRetry: onRetry)),
+          completedVehicles: true);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
@@ -295,6 +302,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
   ///step 4c: finalStep of submitting doc
   _finalStep(
       operation, Function()? onSuccessCallback, Function()? onRetry) async {
+    UserType userType = await appSettingsBloc.getUserType;
     if (operation.code == 200 || operation.code == 201) {
       if (_riderToMerchantModel != null) {
         await _showSuccessfulDialog(
@@ -307,19 +315,23 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
           Navigator.pop(_authContext);
           await _showSuccessfulDialog(
               '${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle list',
-              'View All Vehicles', () {
+              userType == UserType.rider ? 'Go back' : 'View All Vehicles', () {
             Navigator.pop(_authContext);
             if (onSuccessCallback != null) onSuccessCallback();
-            Navigator.pushNamed(_authContext, ListOfVehicles.id);
+            if (userType == UserType.merchant) {
+              Navigator.pushNamed(_authContext, ListOfVehicles.id);
+            }
           });
         });
       } else {
         await _showSuccessfulDialog(
             '${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle list',
-            'View All Vehicles', () {
+            userType == UserType.rider ? 'Go back' : 'View All Vehicles', () {
           Navigator.pop(_authContext);
           if (onSuccessCallback != null) onSuccessCallback();
-          Navigator.pushNamed(_authContext, ListOfVehicles.id);
+          if (userType == UserType.merchant) {
+            Navigator.pushNamed(_authContext, ListOfVehicles.id);
+          }
         }, nextAction: () {
           Navigator.pop(_authContext);
           if (onSuccessCallback != null) onSuccessCallback();

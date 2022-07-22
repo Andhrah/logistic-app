@@ -34,6 +34,7 @@ class AddRiderToMerchantModelData {
     this.lastName,
     this.email,
     this.userId,
+    this.riderId,
     this.merchantId,
     this.avatar,
     this.dateOfBirth,
@@ -52,6 +53,7 @@ class AddRiderToMerchantModelData {
   final String? lastName;
   final String? email;
   final String? userId;
+  final String? riderId;
   final String? merchantId;
   final String? avatar;
   final String? dateOfBirth;
@@ -70,6 +72,7 @@ class AddRiderToMerchantModelData {
     String? lastName,
     String? email,
     String? userId,
+    String? riderId,
     String? merchantId,
     String? avatar,
     String? dateOfBirth,
@@ -88,6 +91,7 @@ class AddRiderToMerchantModelData {
         lastName: lastName ?? this.lastName,
         email: email ?? this.email,
         userId: userId ?? this.userId,
+        riderId: riderId ?? this.riderId,
         merchantId: merchantId ?? this.merchantId,
         avatar: avatar ?? this.avatar,
         dateOfBirth: dateOfBirth ?? this.dateOfBirth,

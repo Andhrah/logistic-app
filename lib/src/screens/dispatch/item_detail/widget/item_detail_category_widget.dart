@@ -109,7 +109,7 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
         InputField(
           obscureText: false,
           text: '',
-          hintText: 'Item Weight',
+          hintText: 'Item Weight (Optional)',
           textHeight: 0,
           node: _itemWeightND,
           textController: _itemWeightCC,

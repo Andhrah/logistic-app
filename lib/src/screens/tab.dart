@@ -81,7 +81,7 @@ class _TabsState extends State<Tabs> {
 
   void _onItemTapped(int index) {
     setState(() {
-      _selectedIndex = index;
+      _selectedIndex = index == 2 ? _selectedIndex : index;
     });
   }
 
@@ -263,8 +263,8 @@ class _TabsState extends State<Tabs> {
                                 child: Icon(
                                   Remix.wallet_2_line,
                                   color: _selectedIndex != 2
-                                      ? appPrimaryColor
-                                      : secondaryColor,
+                                      ? appPrimaryColor.withOpacity(0.35)
+                                      : secondaryColor.withOpacity(0.35),
                                   size: 24,
                                 ),
                               ),
