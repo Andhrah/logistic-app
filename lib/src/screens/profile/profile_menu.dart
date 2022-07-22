@@ -65,11 +65,10 @@ class _ProfileMenuState extends State<ProfileMenu>
             Text(
               'PROFILE MENU',
               style: theme.textTheme.subtitle1!.copyWith(
-                  fontWeight: kBoldWeight,
-                  fontSize: 17,
-                  fontFamily: kDefaultFontFamilyHeading
-                  // decoration: TextDecoration.underline,
-                  ),
+                fontWeight: kBoldWeight,
+                fontSize: 18,fontFamily: kDefaultFontFamilyHeading
+                // decoration: TextDecoration.underline,
+              ),
             ),
             12.heightInPixel(),
             Expanded(
@@ -404,7 +403,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                                 ? Align(
                                     alignment: Alignment.center,
                                     child: Button(
-                                        text: 'Become a rider and earn',
+                                        text: 'Become a Rider and Earn',
                                         onPress: () {
                                           yesNoDialog(
                                             context,

@@ -85,7 +85,7 @@ class InputField extends StatelessWidget {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 13.0, horizontal: 10.0),
             enabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor, width: 0.0),
+              borderSide: BorderSide(color: appPrimaryColor, width: 0.0),
             ),
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(color: secondaryColor.withOpacity(0.8)),
