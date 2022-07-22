@@ -34,7 +34,7 @@ class _DispatchHistoryState extends State<DispatchHistory> {
                     Navigator.pop(context);
                   },
                 ),
-                Container(
+                Container(height: 98,
                   margin: const EdgeInsets.only(left: 40.0),
                   alignment: Alignment.center,
                   child: const Text(
