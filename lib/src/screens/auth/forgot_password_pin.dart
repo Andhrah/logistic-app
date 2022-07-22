@@ -1,12 +1,9 @@
 import 'dart:async';
 
-import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/forgot_password_helper.dart';
-
 import 'package:trakk/src/screens/auth/reset_password.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
@@ -62,6 +59,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin>
 
   _onSubmit() async {
     Navigator.of(context).pushNamed(ResetPassword.id, arguments: {
+      "email": _email,
       "code": code,
     });
   }

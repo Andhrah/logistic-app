@@ -90,13 +90,26 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
     );
   }
 
-  void moveCameraToUser(LatLng riderLatLng) async {
+  void moveCameraToUser({LatLng? riderLatLng}) async {
     final GoogleMapController controller = await _controller.future;
 
-    setState(() {
-      controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: riderLatLng, zoom: 15.0)));
-    });
+    final loca = await miscBloc.fetchLocation();
+    if (loca != null) {
+      final latitude = loca.latitude ?? 0;
+      final longitude = loca.longitude ?? 0;
+      final center = LatLng(latitude, longitude);
+
+      setState(() {
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: center, zoom: 15.0)));
+      });
+    }
+    if (riderLatLng != null && mounted) {
+      setState(() {
+        controller.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: riderLatLng, zoom: 15.0)));
+      });
+    }
   }
 
   bool isLoadedAtLeastOnce = false;
@@ -115,9 +128,10 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
     // });
     // // await miscBloc.fetchLocation();
 
+    moveCameraToUser();
     customerStreamSocket.behaviorSubject.listen((value) {
       if (value.model != null && !isLoadedAtLeastOnce) {
-        moveCameraToUser(value.model!);
+        moveCameraToUser(riderLatLng: value.model!);
 
         isLoadedAtLeastOnce = true;
       }

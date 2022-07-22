@@ -18,7 +18,7 @@ class AddCompanyDataService {
     };
     var response = await http.post(uriConverter('api/merchants'),
         headers: kHeaders(token), body: json.encode(body));
-    // print(body);
+    print(body);
     // print(kHeaders(token));
     // print(uriConverter('api/merchants'));
     // print('************ FROM SERVICE *************');

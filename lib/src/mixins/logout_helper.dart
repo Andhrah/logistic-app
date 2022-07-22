@@ -9,8 +9,8 @@ import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/provider/rider/rider_map_provider.dart';
 import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 typedef CompleteLogout();
 
@@ -27,7 +27,7 @@ class LogoutHelper {
 
   _doLogout() async {
     UserType userType = await appSettingsBloc.getUserType;
-    if (userType == UserType.merchant) {
+    if (userType == UserType.rider) {
       var injector = RiderMapProvider.riderMapProvider(
           SingletonData.singletonData.navKey.currentState!.context);
       injector.disconnectSocket();

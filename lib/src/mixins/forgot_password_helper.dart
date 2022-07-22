@@ -8,11 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
+import 'package:trakk/src/screens/auth/forgot_password_pin.dart';
 import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/services/auth/forgot_password_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 import '../utils/operation.dart';
 
@@ -43,6 +44,10 @@ class ForgotPasswordHelper with ConnectivityHelper {
 
       await appToast(messageOnlyResponse.message ?? '',
           appToastType: AppToastType.success);
+      SingletonData.singletonData.navKey.currentState!
+          .pushNamed(ForgetPasswordPin.id, arguments: {
+        "email": emailCC.text.trim(),
+      });
     } else {
       MessageOnlyResponse error = operation.result;
 
@@ -50,12 +55,12 @@ class ForgotPasswordHelper with ConnectivityHelper {
     }
   }
 
-  doResetPasswordOperation(
-      String code, Function() onShowLoader, Function() onCloseLoader) async {
+  doResetPasswordOperation(String email, String code, Function() onShowLoader,
+      Function() onCloseLoader) async {
     if (formKey.currentState!.validate()) {
       onShowLoader();
       forgotPasswordService
-          .doResetPassword(code, passwordCC.text, confirmPasswordCC.text)
+          .doResetPassword(email, code, passwordCC.text, confirmPasswordCC.text)
           .then((value) => _completeResetPassword(value, onCloseLoader));
     }
   }
@@ -63,10 +68,7 @@ class ForgotPasswordHelper with ConnectivityHelper {
   _completeResetPassword(Operation operation, Function() onCloseLoader) async {
     onCloseLoader();
     if (operation.code == 200 || operation.code == 201) {
-      MessageOnlyResponse messageOnlyResponse =
-          MessageOnlyResponse.fromJson(operation.result);
-
-      await appToast(messageOnlyResponse.message ?? '',
+      await appToast('Password reset successfully',
           appToastType: AppToastType.success);
       SingletonData.singletonData.navKey.currentState!.pushNamed(Login.id);
     } else {

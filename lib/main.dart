@@ -1,4 +1,3 @@
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +5,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
 import 'package:pusher_client/pusher_client.dart';
+import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/provider/provider_list.dart';
 import 'package:trakk/src/provider/settings_options/settings_options.dart';
 import 'package:trakk/src/screens/auth/forgot_password.dart';
@@ -14,8 +14,6 @@ import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/screens/auth/merchant/company_data.dart';
 import 'package:trakk/src/screens/auth/reset_password.dart';
 import 'package:trakk/src/screens/auth/rider/next_of_kin.dart';
-import 'package:trakk/src/screens/auth/rider/personal_data.dart';
-import 'package:trakk/src/screens/auth/rider/vehicle_data.dart';
 import 'package:trakk/src/screens/auth/signup.dart';
 import 'package:trakk/src/screens/auth/verify_account.dart';
 import 'package:trakk/src/screens/dispatch/cart.dart';
@@ -45,8 +43,7 @@ import 'package:trakk/src/screens/onboarding/get_started.dart';
 import 'package:trakk/src/screens/onboarding/onboarding.dart';
 import 'package:trakk/src/screens/onboarding/splashscreen.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
-import 'package:trakk/src/screens/profile/edit_profile.dart';
-import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
+import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
@@ -63,17 +60,25 @@ import 'package:trakk/src/screens/wallet/qr_payment.dart';
 import 'package:trakk/src/screens/wallet/transfers.dart';
 import 'package:trakk/src/screens/wallet/wallet.dart';
 import 'package:trakk/src/screens/wallet/wallet_history.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
-import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/values.dart';
+import 'package:uploadcare_client/uploadcare_client.dart';
 
-final cloudinary = Cloudinary.basic(cloudName: cloudinaryCloudName);
+import 'src/screens/profile/privacy_and_policy.dart';
 
 void main() async {
-  SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
-  SingletonData.singletonData.initSsoURL('https://zebrrasso.herokuapp.com/');
+  WidgetsFlutterBinding.ensureInitialized();
 
   await _openHive();
+  SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
+  SingletonData.singletonData.initSocketURL('https://zebrrasso.herokuapp.com/');
+  SingletonData.singletonData.initImageURL('https://ucarecdn.com/');
+  SingletonData.singletonData
+      .initUploadCareClient(UploadcareClient.withSimpleAuth(
+    publicKey: uploadCarePublicKey,
+    privateKey: uploadCarePrivateKey,
+    apiVersion: 'v0.7',
+  ));
 
   // To load the .env file contents into dotenv.
   // NOTE: fileName defaults to .env and can be omitted in this case.
@@ -86,8 +91,7 @@ void main() async {
 }
 
 _openHive() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
+// create client with simple auth scheme
   // Register the generated adapter
 }
 
@@ -176,8 +180,8 @@ class _MyAppState extends State<MyApp> {
               ForgetPassword.id: (context) => const ForgetPassword(),
               ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
               ResetPassword.id: (context) => const ResetPassword(),
-              PersonalData.id: (context) => const PersonalData(),
-              VehicleData.id: (context) => const VehicleData(),
+              // PersonalData.id: (context) => const PersonalData(),
+              // VehicleData.id: (context) => const VehicleData(),
               NextOfKin.id: (context) => const NextOfKin(),
               PickUpScreen.id: (context) => const PickUpScreen(),
               CartScreen.id: (context) => const CartScreen(),

@@ -31,7 +31,8 @@ class _ItemDetailImageSelectorWidgetState
   }
 
   uploadItemImage() async {
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.platform.pickFiles(
+        type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
     if (result != null &&
         result.files.isNotEmpty &&
         result.files.first.path != null) {
@@ -65,8 +66,8 @@ class _ItemDetailImageSelectorWidgetState
                 borderRadius: BorderRadius.circular(10),
               ),
               child: SizedBox(
-                width: MediaQuery.of(context).size.width / 3.4,
-                height: MediaQuery.of(context).size.height / 8.7,
+                width: 120,
+                height: 150,
                 child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -82,22 +83,25 @@ class _ItemDetailImageSelectorWidgetState
             onTap: uploadItemImage,
           ),
           secondChild: SizedBox(
-            width: MediaQuery.of(context).size.width / 3.4,
-            height: MediaQuery.of(context).size.height / 8.7,
+            width: 120,
+            height: 150,
             child: Stack(
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8),
                   child: file == null
-                      ? SizedBox(
-                          width: MediaQuery.of(context).size.width / 3.4,
-                          height: MediaQuery.of(context).size.height / 8.7,
+                      ? const SizedBox(
+                          width: 120,
+                          height: 150,
                         )
-                      : Image.file(
-                          file!,
-                          width: MediaQuery.of(context).size.width / 3.4,
-                          height: MediaQuery.of(context).size.height / 8.7,
-                          fit: BoxFit.cover,
+                      : ClipRRect(
+                          borderRadius: Radii.k8pxRadius,
+                          child: Image.file(
+                            file!,
+                            width: 120,
+                            height: 150,
+                            fit: BoxFit.cover,
+                          ),
                         ),
                 ),
                 Align(

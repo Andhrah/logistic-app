@@ -3,8 +3,8 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/values.dart';
 
 const vehicleImageKey = 'vehicle_image';
 
@@ -39,7 +39,12 @@ class _AddRiderVehicleDocSelectorWidgetState
   }
 
   uploadItemImage(int index) async {
-    final result = await FilePicker.platform.pickFiles();
+    final result = await FilePicker.platform
+        .pickFiles(type: FileType.custom, allowedExtensions: [
+      'png',
+      'jpg',
+      'jpeg',
+    ]);
     if (result != null &&
         result.files.isNotEmpty &&
         result.files.first.path != null) {
@@ -103,7 +108,7 @@ class _AddRiderVehicleDocSelectorWidgetState
                           children: [
                             Padding(
                               padding: const EdgeInsets.all(8),
-                              child: files.values.elementAt(index).isNotEmpty
+                              child: files.values.elementAt(index).isEmpty
                                   ? SizedBox(
                                       width: MediaQuery.of(context).size.width /
                                           3.4,

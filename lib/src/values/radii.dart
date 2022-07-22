@@ -20,6 +20,7 @@ class Radii {
   static const BorderRadius k25pxRadius = BorderRadius.all(Radius.circular(25));
   static const BorderRadius k30pxRadius = BorderRadius.all(Radius.circular(30));
   static const BorderRadius k35pxRadius = BorderRadius.all(Radius.circular(35));
+  static const BorderRadius k50pxRadius = BorderRadius.all(Radius.circular(50));
 
   static const BorderRadius k20TopSymmetricRadius = BorderRadius.only(
       topLeft: Radius.circular(20), topRight: Radius.circular(20));

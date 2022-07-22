@@ -3,13 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
-import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
 import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
-import 'package:trakk/src/widgets/elevated_container.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 class Signup extends StatefulWidget {
@@ -21,8 +19,7 @@ class Signup extends StatefulWidget {
   _SignupState createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup>
-    with SignupHelper, ProfileHelper, ConnectivityHelper {
+class _SignupState extends State<Signup> with SignupHelper, ConnectivityHelper {
   String? _firstName;
   String? _lastName;
   String? _email;
@@ -38,6 +35,12 @@ class _SignupState extends State<Signup>
   @override
   void initState() {
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    disposeControllers();
+    super.dispose();
   }
 
   /// This function handles email validation

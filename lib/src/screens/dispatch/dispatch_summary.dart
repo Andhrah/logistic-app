@@ -4,10 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:trakk/src/models/order/available_rider_response.dart';
 import 'package:trakk/src/models/order/order.dart';
 import 'package:trakk/src/screens/dispatch/payment.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/padding.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/header.dart';
 
@@ -364,9 +364,20 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                         horizontal: 10.0, vertical: 24.0),
                     height: 170,
                     width: MediaQuery.of(context).size.width,
-                    child: Image.file(
-                      File(orderModel.data?.itemImage ?? ''),
-                      height: 90.0,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        ClipRRect(
+                          borderRadius: Radii.k8pxRadius,
+                          child: AspectRatio(
+                            aspectRatio: 3 / 4,
+                            child: Image.file(
+                              File(orderModel.data?.itemImage ?? ''),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ),

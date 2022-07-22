@@ -22,6 +22,12 @@ class Assets {
   static const String price_icon = 'assets/images/rider/price_icon.png';
   static const String request_a_dispatch =
       'assets/images/rider/request_a_dispatch.png';
+  static const String rider_add_contact =
+      'assets/images/rider/rider_add_contact.png';
+  static const String rider_add_next_of_kin =
+      'assets/images/rider/rider_add_next_of_kin.png';
+  static const String rider_add_vehicle_details =
+      'assets/images/rider/rider_add_vehicle_details.png';
   static const String rider_home_location =
       'assets/images/rider/rider_home_location.png';
   static const String rider_location_icon =

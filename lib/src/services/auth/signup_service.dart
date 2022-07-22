@@ -1,7 +1,7 @@
 import 'package:trakk/src/models/auth/signup_model.dart';
 import 'package:trakk/src/services/base_network_call_handler.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/operation.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class SignupService extends BaseNetworkCallHandler {
   Future<Operation> doSignUp(SignupModel signupModel) async {
@@ -25,6 +25,13 @@ class SignupService extends BaseNetworkCallHandler {
           "phoneNumber": phoneNumber,
         },
         useIsLoggedIn: false);
+  }
+
+  ///merchant exclusive
+  ///
+  Future<Operation> doAddCompanyInfo(SignupModel signupModel) async {
+    return runAPI('api/merchants', HttpRequestType.post,
+        body: (await signupModel.toAddCompanyInfoJson()));
   }
 }
 

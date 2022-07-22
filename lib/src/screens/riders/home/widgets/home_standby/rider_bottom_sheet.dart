@@ -7,14 +7,13 @@ import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/src/mixins/rider_order_helper.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
-
 import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/font.dart';
+import 'package:trakk/src/values/padding.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 class RiderBottomSheet extends StatefulWidget {
@@ -466,22 +465,27 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                         controller: _pageController,
                                         itemCount: 1,
                                         itemBuilder: (context, index) {
-                                          return CachedNetworkImage(
-                                            imageUrl: '${order?.itemImage}',
-                                            placeholder: (context, url) =>
-                                                const Center(
-                                              child:
-                                                  CircularProgressIndicator(),
-                                            ),
-                                            errorWidget: (context, url, err) =>
-                                                SizedBox(
-                                              child: Center(
-                                                child: Text(
-                                                  'Could not load image',
-                                                  textAlign: TextAlign.center,
-                                                  style: theme
-                                                      .textTheme.caption!
-                                                      .copyWith(),
+                                          return ClipRRect(
+                                            borderRadius: Radii.k8pxRadius,
+                                            child: CachedNetworkImage(
+                                              imageUrl: '${order?.itemImage}',
+                                              fit: BoxFit.cover,
+                                              placeholder: (context, url) =>
+                                                  const Center(
+                                                child:
+                                                    CircularProgressIndicator(),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, err) =>
+                                                      SizedBox(
+                                                child: Center(
+                                                  child: Text(
+                                                    'Could not load image',
+                                                    textAlign: TextAlign.center,
+                                                    style: theme
+                                                        .textTheme.caption!
+                                                        .copyWith(),
+                                                  ),
                                                 ),
                                               ),
                                             ),

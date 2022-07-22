@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/customer/customer_order_history_bloc.dart';
 import 'package:trakk/src/models/order/user_order_history_response.dart';
 import 'package:trakk/src/screens/dispatch/order/widgets/order_card.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/styles.dart';
+import 'package:trakk/src/values/values.dart';
 
 class UserOrderScreen extends StatefulWidget {
   static const String id = 'userOrder';
@@ -39,10 +39,11 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
             Text(
               'YOUR DISPATCH',
               style: theme.textTheme.subtitle1!.copyWith(
-                fontWeight: kBoldWeight,
-                fontSize: 18, fontFamily: kDefaultFontFamilyHeading
-                // decoration: TextDecoration.underline,
-              ),
+                  fontWeight: kBoldWeight,
+                  fontSize: 18,
+                  fontFamily: kDefaultFontFamilyHeading
+                  // decoration: TextDecoration.underline,
+                  ),
             ),
             //12.heightInPixel(),
             Expanded(
@@ -54,6 +55,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: kDefaultLayoutPadding, vertical: 12.0),
                       itemBuilder: (BuildContext context, int index) {
+                        print(data.elementAt(index).toJson());
                         return UserOrderCard(data.elementAt(index));
                       });
                 },

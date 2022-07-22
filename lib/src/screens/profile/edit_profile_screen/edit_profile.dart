@@ -1,13 +1,16 @@
-import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/update_profile/update_profile.dart';
-import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/screens/profile/edit_profile_screen/widgets/image_selector_widget.dart';
+import 'package:trakk/src/utils/app_toast.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/input_field.dart';
@@ -38,10 +41,9 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
   final FocusNode _emailNode = FocusNode();
   final FocusNode _addressNode = FocusNode();
 
-  String? _itemImage = "";
+  File? _itemImage;
 
   bool _loading = false;
-  bool _isItemImage = false;
 
   @override
   void initState() {
@@ -63,20 +65,6 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
           ? (user?.rider?.residentialAddress ?? '')
           : user?.address ?? '';
     });
-  }
-
-  uploadItemImage() async {
-    final result = await FilePicker.platform.pickFiles();
-    if (result != null) {
-      // Open single file open
-      final file = result.files.first;
-      print("Image Name: ${file.name}");
-      setState(() {
-        _itemImage = file.name;
-        _isItemImage = true;
-      });
-      return;
-    }
   }
 
   @override
@@ -158,25 +146,12 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                _isItemImage == false
-                                    ? InkWell(
-                                        splashColor:
-                                            Colors.black12.withAlpha(30),
-                                        child: Icon(
-                                          Remix.account_circle_fill,
-                                          size: 90,
-                                        ),
-                                        onTap: uploadItemImage,
-                                      )
-                                    : Text(
-                                        _itemImage!,
-                                        textScaleFactor: 1.5,
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                          color: secondaryColor,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+                                12.heightInPixel(),
+                                EditProfileImageSelectorWidget(
+                                    (File? itemImage) {
+                                  _itemImage = itemImage;
+                                }),
+                                4.heightInPixel(),
                                 Text(
                                   firstName,
                                   style: const TextStyle(
@@ -342,15 +317,23 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                                             phoneNumber:
                                                 _phoneNumberController.text,
                                             email: _emailController.text,
-                                            address: _addressController.text),
+                                            address: _addressController.text,
+                                            profilePic: _itemImage),
                                         () => setState(() => _loading = true),
-                                        () => setState(() => _loading = false),
+                                        () async {
+                                          setState(() => _loading = false);
+                                          await appToast(
+                                              'Profile updated successfully',
+                                              appToastType:
+                                                  AppToastType.success);
+
+                                          Navigator.pop(context);
+                                        },
                                       ),
                                   color: appPrimaryColor,
                                   textColor: whiteColor,
                                   isLoading: _loading,
                                   width: 350.0)),
-                          const SizedBox(height: 15.0),
                           const SizedBox(height: 25.0),
                         ],
                       ),

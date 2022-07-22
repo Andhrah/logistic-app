@@ -12,11 +12,11 @@ import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/screens/auth/signup.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
-import 'package:trakk/src/screens/profile/edit_profile.dart';
+import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:trakk/src/widgets/profile_list.dart';
@@ -79,116 +79,111 @@ class _ProfileMenuState extends State<ProfileMenu>
                       const Divider(
                         thickness: 1,
                       ),
-                      SizedBox(
-                        height: 160,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 35.0, right: 35.0, top: 0, bottom: 0),
-                          child: Stack(children: [
-                            StreamBuilder<AppSettings>(
-                                stream: appSettingsBloc.appSettings,
-                                builder: (context, snapshot) {
-                                  String avatar = '';
-                                  String firstName = '';
-                                  String lastName = '';
-                                  String phone = '';
-                                  String email = '';
+                      Padding(
+                        padding: const EdgeInsets.only(
+                            left: 35.0, right: 35.0, top: 0, bottom: 0),
+                        child: StreamBuilder<AppSettings>(
+                            stream: appSettingsBloc.appSettings,
+                            builder: (context, snapshot) {
+                              String avatar = '';
+                              String firstName = '';
+                              String lastName = '';
+                              String phone = '';
+                              String email = '';
 
-                                  if (snapshot.hasData) {
-                                    avatar = snapshot.data?.loginResponse?.data
-                                            ?.user?.avatar ??
-                                        '';
-                                    firstName = snapshot.data?.loginResponse
-                                            ?.data?.user?.firstName ??
-                                        '';
-                                    lastName = snapshot.data?.loginResponse
-                                            ?.data?.user?.lastName ??
-                                        '';
-                                    phone = snapshot.data?.loginResponse?.data
-                                            ?.user?.phoneNumber ??
-                                        '';
-                                    email = snapshot.data?.loginResponse?.data
-                                            ?.user?.email ??
-                                        '';
-                                  }
+                              if (snapshot.hasData) {
+                                avatar = snapshot.data?.loginResponse?.data
+                                        ?.user?.avatar ??
+                                    '';
+                                firstName = snapshot.data?.loginResponse?.data
+                                        ?.user?.firstName ??
+                                    '';
+                                lastName = snapshot.data?.loginResponse?.data
+                                        ?.user?.lastName ??
+                                    '';
+                                phone = snapshot.data?.loginResponse?.data?.user
+                                        ?.phoneNumber ??
+                                    '';
+                                email = snapshot.data?.loginResponse?.data?.user
+                                        ?.email ??
+                                    '';
+                              }
 
-                                  return Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      12.heightInPixel(),
-                                      Expanded(
-                                        child: ClipOval(
-                                          child: CachedNetworkImage(
-                                            imageUrl: avatar,
-                                            height: 70,
-                                            width: 70,
-                                            fit: BoxFit.cover,
-                                            placeholder: (context, url) =>
-                                                Image.asset(
-                                              Assets.dummy_avatar,
-                                              height: 70,
-                                              width: 70,
-                                              fit: BoxFit.cover,
-                                            ),
-                                            errorWidget: (context, url, err) =>
-                                                Image.asset(
-                                              Assets.dummy_avatar,
-                                              height: 70,
-                                              width: 70,
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
+                              return Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  12.heightInPixel(),
+                                  Hero(
+                                    tag: 'profile_pic',
+                                    child: ClipOval(
+                                      child: CachedNetworkImage(
+                                        imageUrl: avatar,
+                                        height: 70,
+                                        width: 70,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            Image.asset(
+                                          Assets.dummy_avatar,
+                                          height: 70,
+                                          width: 70,
+                                          fit: BoxFit.cover,
+                                        ),
+                                        errorWidget: (context, url, err) =>
+                                            Image.asset(
+                                          Assets.dummy_avatar,
+                                          height: 70,
+                                          width: 70,
+                                          fit: BoxFit.cover,
                                         ),
                                       ),
-                                      const SizedBox(height: 8),
-                                      Text(
-                                        '$firstName $lastName',
-                                        style: theme.textTheme.headline6!
-                                            .copyWith(fontWeight: kBoldWeight),
-                                      ),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    '$firstName $lastName',
+                                    style: theme.textTheme.headline6!
+                                        .copyWith(fontWeight: kBoldWeight),
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
                                         children: [
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                phone,
-                                                style: theme.textTheme.caption,
-                                              ),
-                                              2.heightInPixel(),
-                                              Text(
-                                                email,
-                                                style: theme.textTheme.caption,
-                                              ),
-                                            ],
+                                          Text(
+                                            phone,
+                                            style: theme.textTheme.caption,
                                           ),
-                                          Button(
-                                              text: 'Edit profile',
-                                              onPress: () {
-                                                //  var id = box.get('id');
-                                                //   //print("This is the token " + name);
-                                                //   print("This is the user id " +
-                                                //       id.toString());
-
-                                                Navigator.of(context)
-                                                    .pushNamed(EditProfile.id);
-                                              },
-                                              color: Colors.black,
-                                              width: 80.0,
-                                              height: 40,
-                                              textColor: whiteColor,
-                                              isLoading: false),
+                                          2.heightInPixel(),
+                                          Text(
+                                            email,
+                                            style: theme.textTheme.caption,
+                                          ),
                                         ],
                                       ),
+                                      Button(
+                                          text: 'Edit profile',
+                                          onPress: () {
+                                            //  var id = box.get('id');
+                                            //   //print("This is the token " + name);
+                                            //   print("This is the user id " +
+                                            //       id.toString());
+
+                                            Navigator.of(context)
+                                                .pushNamed(EditProfile.id);
+                                          },
+                                          color: Colors.black,
+                                          width: 80.0,
+                                          height: 40,
+                                          textColor: whiteColor,
+                                          isLoading: false),
                                     ],
-                                  );
-                                }),
-                          ]),
-                        ),
+                                  ),
+                                ],
+                              );
+                            }),
                       ),
                       const Divider(
                         thickness: 1,
