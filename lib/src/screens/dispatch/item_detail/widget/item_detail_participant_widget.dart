@@ -4,9 +4,9 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/font.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 typedef _OnInputCallback = Function(String senName, String senEmail,
@@ -238,7 +238,7 @@ class _ItemDetailParticipantWidgetState
           autovalidateMode: AutovalidateMode.onUserInteraction,
           obscureText: false,
           text: '',
-          hintText: 'Email',
+          hintText: 'Email (Optional)',
           textHeight: 0.0,
           borderColor: appPrimaryColor.withOpacity(0.9),
           suffixIcon: const Icon(

@@ -1,17 +1,22 @@
-class UpdateProfile {
-  UpdateProfile({
-    this.firstName,
-    this.lastName,
-    this.phoneNumber,
-    this.email,
-    this.address,
-  });
+import 'dart:io';
 
+class UpdateProfile {
+  UpdateProfile(
+      {this.avatar,
+      this.firstName,
+      this.lastName,
+      this.phoneNumber,
+      this.email,
+      this.address,
+      this.profilePic});
+
+  String? avatar;
   String? firstName;
   String? lastName;
   String? phoneNumber;
   String? email;
   String? address;
+  File? profilePic;
 
   UpdateProfile.riderNOK({
     this.riderId,
@@ -45,13 +50,19 @@ class UpdateProfile {
         address: json["address"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "firstName": firstName,
-        "lastName": lastName,
-        "phoneNumber": phoneNumber,
-        "email": email,
-        "address": address,
-      };
+  Map<String, dynamic> toJson() {
+    Map<String, dynamic> map = {
+      "avatar": avatar,
+      "firstName": firstName,
+      "lastName": lastName,
+      "phoneNumber": phoneNumber,
+      "email": email,
+      "address": address,
+    };
+
+    map.removeWhere((key, value) => value == null);
+    return map;
+  }
 
   Map<String, dynamic> toUpdateRiderContactJson() {
     Map<String, dynamic> _map = {

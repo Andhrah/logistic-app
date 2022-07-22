@@ -3,12 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/models/order/user_order_history_response.dart';
 import 'package:trakk/src/screens/dispatch/track/customer_track_screen.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/font.dart';
+import 'package:trakk/src/values/padding.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 class UserOrderCard extends StatefulWidget {
@@ -59,8 +59,7 @@ class _UserOrderCardState extends State<UserOrderCard> {
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
-            child: 
-            Row(
+            child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
@@ -149,7 +148,9 @@ class _UserOrderCardState extends State<UserOrderCard> {
                       Remix.price_tag_3_fill,
                       color: secondaryColor,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       '$naira${formatMoney(widget.datum.attributes?.amount ?? 0.0)}',
                       style: theme.textTheme.subtitle2!.copyWith(
@@ -167,7 +168,9 @@ class _UserOrderCardState extends State<UserOrderCard> {
                       Remix.time_fill,
                       color: secondaryColor,
                     ),
-                    SizedBox(width: 10,),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       (widget.datum.attributes?.deliveryDate ?? '').isEmpty
                           ? ''
@@ -186,7 +189,10 @@ class _UserOrderCardState extends State<UserOrderCard> {
                     const Icon(
                       Remix.pin_distance_fill,
                       color: secondaryColor,
-                    ),SizedBox(width: 10,),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
                     Text(
                       widget.datum.attributes?.distance ?? '',
                       textScaleFactor: 1.0,
@@ -210,7 +216,7 @@ class _UserOrderCardState extends State<UserOrderCard> {
                   fontWeight: FontWeight.bold),
             ),
           ),
-          8.heightInPixel(),
+          4.heightInPixel(),
           SizedBox(
             height: 120.0,
             child: ListView.builder(
@@ -221,19 +227,20 @@ class _UserOrderCardState extends State<UserOrderCard> {
               itemBuilder: (context, index) => Container(
                 margin: const EdgeInsets.symmetric(
                     horizontal: kDefaultLayoutPadding / 2),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 10.0, vertical: 10.0),
-                child: CachedNetworkImage(
-                  imageUrl: widget.datum.attributes?.itemImage ?? '',
-                  height: 90.0,
-                  width: 90,
-                  placeholder: (context, url) => const SizedBox(
+                child: ClipRRect(
+                  borderRadius: Radii.k8pxRadius,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.datum.attributes?.itemImage ?? '',
                     height: 90.0,
                     width: 90,
-                  ),
-                  errorWidget: (context, url, err) => const SizedBox(
-                    height: 90.0,
-                    width: 90,
+                    placeholder: (context, url) => const SizedBox(
+                      height: 90.0,
+                      width: 90,
+                    ),
+                    errorWidget: (context, url, err) => const SizedBox(
+                      height: 90.0,
+                      width: 90,
+                    ),
                   ),
                 ),
                 decoration: BoxDecoration(

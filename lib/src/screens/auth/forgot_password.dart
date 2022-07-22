@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/forgot_password_helper.dart';
-import 'package:trakk/src/screens/auth/login.dart';
-import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
@@ -156,30 +154,6 @@ class _ForgetPasswordState extends State<ForgetPassword>
                               isLoading: _loading,
                               width: 350.0)),
                       const SizedBox(height: 15.0),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(Login.id);
-                        },
-                        child: Align(
-                          child: RichText(
-                            textScaleFactor: 1,
-                            text: const TextSpan(
-                              text: 'Don’t have an account? ',
-                              style: TextStyle(
-                                color: appPrimaryColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                              children: <TextSpan>[
-                                TextSpan(
-                                    text: 'Sign up',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: secondaryColor)),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
                     ],
                   ),
                 ),

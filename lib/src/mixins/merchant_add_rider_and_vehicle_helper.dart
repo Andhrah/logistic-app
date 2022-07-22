@@ -1,9 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
-import 'package:trakk/main.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/auth/signup_model.dart';
 import 'package:trakk/src/models/auth_response.dart';
@@ -24,6 +22,7 @@ import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/cancel_button.dart';
+import 'package:uploadcare_client/uploadcare_client.dart';
 
 class MerchantAddRiderAndVehicleHelper with ProfileHelper {
   final BuildContext _authContext =
@@ -160,39 +159,50 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
       Function({Map<String, String>? images}) callback) async {
     ///This checks if the image exist and upload, the proceeds to create order.
     ///If image is null, it proceeds to image order
-    if (files != null && cloudinaryUploadPreset.isNotEmpty) {
+    if (files != null) {
       showDialog(
           context: _authContext,
           builder: (context) =>
               const Center(child: kCircularProgressIndicator));
 
-      final resources = await Future.wait(files.values.map((filePath) async =>
-          CloudinaryUploadResource(
-              uploadPreset: cloudinaryUploadPreset,
-              filePath: filePath,
-              fileBytes: File(filePath).readAsBytesSync(),
-              resourceType: CloudinaryResourceType.image,
-              folder:
-                  'rider_image_${_vehicleModel?.data?.riderId ?? 'unknown'}',
-              progressCallback: (count, total) {
-                // print('Uploading image from file with progress: $count/$total');
-              })));
-      List<CloudinaryResponse> responses =
-          await cloudinary.uploadResources(resources);
+      final CancelToken _cancelToken = CancelToken('canceled by user');
+      try {
+        final resources = await Future.wait(files.values.map((filePath) async =>
+            await SingletonData.singletonData.uploadCareClient!.upload.auto(
+              UCFile(File(filePath)),
+              cancelToken: _cancelToken,
+              storeMode: false,
+              runInIsolate: true,
+              onProgress: (progress) {
+                // debugPrint('Uploading image from file with progress: $progress');
+              },
+              metadata: {
+                'metakey': 'metavalue',
+              },
+            )));
 
-      Navigator.pop(_authContext);
+        Navigator.pop(_authContext);
 
-      if (responses.any((element) => !element.isSuccessful)) {
-        //  show retry popup
+        for (int i = 0; i < resources.length; i++) {
+          files[files.keys.elementAt(i)] =
+              '${SingletonData.singletonData.imageURL}${resources.elementAt(i)}/';
+
+          // responses.elementAt(i).secureUrl ?? '';
+        }
+        callback(images: files);
+      } on CancelUploadException catch (e) {
+        Navigator.pop(_authContext);
+
+        debugPrint(e.toString());
         appToast('Could not process request at the moment.\nPlease try again',
             appToastType: AppToastType.failed);
-        return;
-      }
+      } catch (err) {
+        Navigator.pop(_authContext);
+        appToast('Could not process request at the moment.\nPlease try again',
+            appToastType: AppToastType.failed);
 
-      for (int i = 0; i < files.length; i++) {
-        files[files.keys.elementAt(i)] = responses.elementAt(i).secureUrl ?? '';
+        debugPrint(err.toString());
       }
-      callback(images: files);
     } else {
       callback();
     }

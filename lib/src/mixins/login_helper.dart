@@ -13,8 +13,8 @@ import 'package:trakk/src/screens/auth/verify_account.dart';
 import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/services/auth/login_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 import '../utils/operation.dart';
 
@@ -42,6 +42,7 @@ class LoginHelper with ConnectivityHelper {
   _completeLogin(Operation operation, Function() onCloseLoader) async {
     onCloseLoader();
     if (operation.code == 200 || operation.code == 201) {
+      passwordCC.clear();
       AuthResponse authResponse = AuthResponse.fromJson(operation.result);
       await appSettingsBloc.saveLoginDetails(authResponse);
 

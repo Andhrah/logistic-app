@@ -26,7 +26,7 @@ class _NextOfKinState extends State<NextOfKin> with ProfileHelper {
 
   final _formKey = GlobalKey<FormState>();
 
-  bool isLoading = true;
+  bool isLoading = false;
 
   final TextEditingController _fullNameCC = TextEditingController();
   final TextEditingController _emailCC = TextEditingController();
@@ -216,8 +216,10 @@ class _NextOfKinState extends State<NextOfKin> with ProfileHelper {
                               }, () async {
                                 setState(() => isLoading = false);
 
-                                await appToast('Successful',
+                                await appToast(
+                                    'Next of kin updated successfully',
                                     appToastType: AppToastType.success);
+
                                 Navigator.pop(context);
                               });
                             }
