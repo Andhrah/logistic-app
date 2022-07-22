@@ -314,7 +314,8 @@ class _AddRiderState extends State<AddRider> {
                                           password: _passwordController.text));
                               Navigator.of(context).pushNamed(AddRider1.id,
                                   arguments: {
-                                    'rider_bio_data': model.toJson()
+                                    'rider_bio_data': model.toJson(),
+                                    'previousScreenID': AddRider.id
                                   });
                             }
                           },

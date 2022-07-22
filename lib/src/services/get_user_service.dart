@@ -19,11 +19,44 @@ class ProfileService extends BaseNetworkCallHandler {
   }
 
   ///below are exclusive for rider
+  Future<Operation> updateOnBoarding(
+      {bool? completedContact,
+      bool? completedNok,
+      bool? completedVehicles}) async {
+    String id = await appSettingsBloc.getRootUserID;
 
-  Future<Operation> updateOnBoarding(Map<String, dynamic> map) async {
-    String id = await appSettingsBloc.getUserID;
+    completedContact = completedContact ??
+        (await appSettingsBloc.fetchAppSettings())
+            .loginResponse
+            ?.data
+            ?.user
+            ?.onBoardingSteps
+            ?.riderContactCompleted ??
+        false;
+    completedNok = completedNok ??
+        (await appSettingsBloc.fetchAppSettings())
+            .loginResponse
+            ?.data
+            ?.user
+            ?.onBoardingSteps
+            ?.riderNOKCompleted ??
+        false;
+    completedVehicles = completedVehicles ??
+        (await appSettingsBloc.fetchAppSettings())
+            .loginResponse
+            ?.data
+            ?.user
+            ?.onBoardingSteps
+            ?.riderVehicleCompleted ??
+        false;
 
-    return runAPI('api/riders/$id', HttpRequestType.put, body: {'data': map});
+    return runAPI('api/users/$id', HttpRequestType.put, body: {
+      'onBoardingSteps': {
+        'riderContactCompleted': completedContact,
+        'riderNOKCompleted': completedNok,
+        'riderVehicleCompleted': completedVehicles
+      }
+    });
   }
 
   Future<Operation> updateRider(UpdateProfile updateProfile) async {
@@ -34,8 +67,6 @@ class ProfileService extends BaseNetworkCallHandler {
   }
 
   Future<Operation> updateRiderNextOfKin(UpdateProfile updateProfile) async {
-    String id = await appSettingsBloc.getUserID;
-
     return runAPI('api/next-of-kins', HttpRequestType.post,
         body: updateProfile.toRiderNOKJson());
   }

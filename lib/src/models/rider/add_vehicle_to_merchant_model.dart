@@ -78,7 +78,7 @@ class AddRiderToMerchantData {
 
   factory AddRiderToMerchantData.fromJson(Map<String, dynamic> json) =>
       AddRiderToMerchantData(
-        riderId: json["riderId"] == null ? null : json["riderId"],
+        riderId: ' json["riderId"] == null ? null : json["riderId"]',
         name: json["name"] == null ? null : json["name"],
         color: json["color"] == null ? null : json["color"],
         number: json["number"] == null ? null : json["number"],

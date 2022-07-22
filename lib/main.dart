@@ -44,6 +44,7 @@ import 'package:trakk/src/screens/onboarding/onboarding.dart';
 import 'package:trakk/src/screens/onboarding/splashscreen.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
+import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
@@ -212,8 +213,8 @@ class _MyAppState extends State<MyApp> {
               Beneficiaries.id: (context) => const Beneficiaries(),
               // MyDatePicker.id: (context) => MyDatePicker(),
               // Country.id: (context) => const Country(),
-              HelpAndSupport.id:(context) => const HelpAndSupport(),
-              PrivacyAndPolicy.id:(context) => const PrivacyAndPolicy(),
+              HelpAndSupport.id: (context) => const HelpAndSupport(),
+              PrivacyAndPolicy.id: (context) => const PrivacyAndPolicy(),
               WalletScreen.id: (context) => const WalletScreen(),
               UserDispatchHistory.id: (context) => const UserDispatchHistory(),
               Payments.id: (context) => const Payments(),
