@@ -44,6 +44,7 @@ import 'package:trakk/src/screens/onboarding/onboarding.dart';
 import 'package:trakk/src/screens/onboarding/splashscreen.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
+import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
@@ -63,6 +64,8 @@ import 'package:trakk/src/screens/wallet/wallet_history.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:uploadcare_client/uploadcare_client.dart';
+
+import 'src/screens/profile/privacy_and_policy.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -210,14 +213,14 @@ class _MyAppState extends State<MyApp> {
               Beneficiaries.id: (context) => const Beneficiaries(),
               // MyDatePicker.id: (context) => MyDatePicker(),
               // Country.id: (context) => const Country(),
+              HelpAndSupport.id: (context) => const HelpAndSupport(),
+              PrivacyAndPolicy.id: (context) => const PrivacyAndPolicy(),
               WalletScreen.id: (context) => const WalletScreen(),
               UserDispatchHistory.id: (context) => const UserDispatchHistory(),
-              HelpAndSupport.id: (context) => const HelpAndSupport(),
               Payments.id: (context) => const Payments(),
               // RideIssues.id:(context) => const RideIssues(),
               EditProfile.id: (context) => const EditProfile(),
               FundWalletScreen.id: (context) => const FundWalletScreen(),
-              HelpAndSupport.id: (context) => const HelpAndSupport(),
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
               MerchantRiderProfile.id: (context) =>
                   const MerchantRiderProfile(),

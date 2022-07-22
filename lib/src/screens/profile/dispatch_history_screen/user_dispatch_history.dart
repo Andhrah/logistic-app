@@ -61,8 +61,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                 Text(
                   'DISPATCH HISTORY',
                   style: theme.textTheme.subtitle1!.copyWith(
-                    color: appPrimaryColor,
-                    fontWeight: FontWeight.bold, fontFamily: kDefaultFontFamilyHeading
+                    color: appPrimaryColor,fontSize: 18,
+                    fontWeight: kBoldWeight, fontFamily: kDefaultFontFamilyHeading
                     // decoration: TextDecoration.underline,
                   ),
                 ),

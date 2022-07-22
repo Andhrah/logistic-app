@@ -75,8 +75,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
-        child: ListView(
-          physics: ScrollPhysics(),
+        child: Column(
           children: [
             const SizedBox(height: 10.0),
             Row(
@@ -175,8 +174,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
             const SizedBox(
               height: 20,
             ),
-            SizedBox(
-              height: mediaQuery.size.height,
+            Expanded(
               child: CustomStreamBuilder<
                   List<GetRidersForMerchantResponseDatum>, String>(
                 stream: getRidersListBloc.behaviorSubject,
@@ -186,6 +184,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
                             height: 24,
                           ),
                       itemCount: data.length,
+                      padding: const EdgeInsets.symmetric(vertical: 16),
                       itemBuilder: (BuildContext context, int index) {
                         //return RiderListContainer();
                         if (showAll) {

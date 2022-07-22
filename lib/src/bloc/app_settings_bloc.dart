@@ -62,6 +62,14 @@ class _AppSettingsBloc {
     return token;
   }
 
+  Future<String> get getRootUserID async {
+    var appSettings = await appSettingsProvider.fetchAppSettings();
+
+    String id = '${appSettings.loginResponse?.data?.user?.id ?? ''}';
+
+    return id;
+  }
+
   Future<String> get getUserID async {
     var appSettings = await appSettingsProvider.fetchAppSettings();
 

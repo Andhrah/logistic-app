@@ -120,11 +120,15 @@ class ProfileHelper {
   }
 
   ///below is exclusive to rider only
-
-  doUpdateOnBoardingOperation(
-      Map<String, dynamic> map, Function() onCloseLoader) async {
+  doUpdateOnBoardingOperation(Function() onCloseLoader,
+      {bool? completedContact,
+      bool? completedNok,
+      bool? completedVehicles}) async {
     profileService
-        .updateOnBoarding(map)
+        .updateOnBoarding(
+            completedContact: completedContact,
+            completedNok: completedNok,
+            completedVehicles: completedVehicles)
         .then((value) => _completeOnBoardingUpdate(value, onCloseLoader));
   }
 
@@ -153,11 +157,12 @@ class ProfileHelper {
   _completeRiderContactUpdate(
       Operation operation, Function() onCloseLoader) async {
     if (operation.code == 200 || operation.code == 201) {
-      doUpdateOnBoardingOperation({
-        'onBoardingSteps': {'riderContactCompleted': true}
-      }, () async {
-        onCloseLoader();
-      });
+      doUpdateOnBoardingOperation(
+        () async {
+          onCloseLoader();
+        },
+        completedContact: true,
+      );
     } else {
       onCloseLoader();
       MessageOnlyResponse error = operation.result;
@@ -176,11 +181,9 @@ class ProfileHelper {
 
   _completeNOK(Operation operation, Function() onCloseLoader) async {
     if (operation.code == 200 || operation.code == 201) {
-      doUpdateOnBoardingOperation({
-        'onBoardingSteps': {'riderNOKCompleted': true}
-      }, () {
+      doUpdateOnBoardingOperation(() {
         onCloseLoader();
-      });
+      }, completedNok: true);
     } else {
       onCloseLoader();
       MessageOnlyResponse error = operation.result;

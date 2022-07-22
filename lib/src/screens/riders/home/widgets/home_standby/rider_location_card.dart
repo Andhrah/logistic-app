@@ -317,7 +317,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                             ),
                             // 2.widthInPixel(),
                             Icon(
-                              completedContact ? Icons.add : Icons.check,
+                              completedContact ? Icons.check : Icons.add,
                               size: 14,
                               color: secondaryColor,
                             )
@@ -379,7 +379,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                             ),
                             // 2.widthInPixel(),
                             Icon(
-                              completedNok ? Icons.add : Icons.check,
+                              completedNok ? Icons.check : Icons.add,
                               size: 14,
                               color: secondaryColor,
                             )
@@ -441,7 +441,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                             ),
                             // 2.widthInPixel(),
                             Icon(
-                              completedVehicles ? Icons.add : Icons.check,
+                              completedVehicles ? Icons.check : Icons.add,
                               size: 14,
                               color: secondaryColor,
                             )

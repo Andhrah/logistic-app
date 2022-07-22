@@ -20,7 +20,7 @@ class HelpAndSupport extends StatefulWidget {
 
 class _HelpAndSupportState extends State<HelpAndSupport> {
   var complaints = [
-    "Choose complaint",
+
     "Delivery issues",
     "Payment issues",
     "Account & data",
@@ -29,7 +29,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
   final _formKey = GlobalKey<FormState>();
 
   String? _email;
-  String _complaintType = "Choose complaint";
+  late String _complaintType;
 
   late TextEditingController _emailController;
   late TextEditingController _messageController;
@@ -53,7 +53,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
 
     final FormState? form = _formKey.currentState;
 
-    if (form!.validate() && _complaintType != "Choose complaint") {
+    if (form!.validate() && _complaintType !=  _complaintType) {
       form.save();
 
       try {
@@ -102,6 +102,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
   @override
   void initState() {
     super.initState();
+    _complaintType = "";
     //_firstNameController = TextEditingController();
     //_lastNameController = TextEditingController();
     _emailController = TextEditingController();
@@ -127,17 +128,19 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       Navigator.pop(context);
                     },
                   ),
-                  Container(height: 98,
+                  Container(
+                    height: 98,
                     margin: const EdgeInsets.only(left: 60.0),
                     alignment: Alignment.center,
                     child: const Text(
                       'HELP & SUPPORT',
                       textScaleFactor: 1.2,
                       style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,fontFamily: kDefaultFontFamilyHeading
-                        // decoration: TextDecoration.underline,
-                      ),
+                          color: appPrimaryColor,
+                          fontWeight: kBoldWeight,
+                          fontFamily: kDefaultFontFamilyHeading
+                          // decoration: TextDecoration.underline,
+                          ),
                     ),
                   ),
                 ],
@@ -158,7 +161,6 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                       ),
                     ),
                     SizedBox(height: 30.0),
-                    
                     Form(
                       key: _formKey,
                       child: Column(
@@ -186,7 +188,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                               return null;
                             },
                           ),
-                          _isButtonPress && _complaintType == "Choose complaint"
+                          _isButtonPress && _complaintType == _complaintType
                               ? const Text(
                                   " Choose your complaint type",
                                   textScaleFactor: 0.9,
@@ -230,6 +232,13 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                                       child: Text(value),
                                     );
                                   }).toList(),
+                                  hint: Text(
+                                    "Choose complaint",
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w600),
+                                  ),
                                 ),
                               )),
                           const SizedBox(height: 30.0),

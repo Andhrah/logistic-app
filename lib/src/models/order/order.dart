@@ -216,7 +216,8 @@ class OrderModelData {
       "referred": referred == null ? false : referred,
     };
 
-    _map.removeWhere((key, value) => value == null);
+    _map.removeWhere((key, value) =>
+        (value == null || (value != null && value.toString().isEmpty)));
     return _map;
   }
 }
