@@ -65,6 +65,8 @@ import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:uploadcare_client/uploadcare_client.dart';
 
+import 'src/screens/profile/privacy_and_policy.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
