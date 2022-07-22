@@ -106,7 +106,7 @@ All information received by TRAKK shall be managed according to the Nigerian Dat
                     onTap: () {},
                     customBorder: const CircleBorder(),
                     child: Text(
-                      'PRIVACY & POLICY',
+                      'PRIVACY & SECURITY',
                       style: theme.textTheme.subtitle1!.copyWith(
                         fontWeight: kBoldWeight,
                         fontSize: 18,fontFamily: kDefaultFontFamilyHeading

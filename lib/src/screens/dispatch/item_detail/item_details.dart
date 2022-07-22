@@ -120,7 +120,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
 
   @override
   Widget build(BuildContext context) {
+    
     MediaQueryData mediaQuery = MediaQuery.of(context);
+    var theme = Theme.of(context);
     return Scaffold(
       body: SafeArea(
           child: Padding(
@@ -183,17 +185,18 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                           }
                           return Text(
                             "Hello $firstName, ",
-                            style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.w700,
-                                color: appPrimaryColor,  fontFamily: kDefaultFontFamilyHeading),
+                            style: theme.textTheme.subtitle1!.copyWith(
+                fontWeight: kBoldWeight,
+                fontSize: 18, fontFamily: kDefaultFontFamilyHeading
+                // decoration: TextDecoration.underline,
+              ),
                           );
                         }),
                     Text(
                       greetWithTime(),
                       style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.w700,
+                          fontSize: 18,
+                          fontWeight: kBoldWeight,
                           color: appPrimaryColor,  fontFamily: kDefaultFontFamilyHeading),
                     ),
                   ],
