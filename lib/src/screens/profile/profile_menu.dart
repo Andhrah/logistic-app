@@ -65,10 +65,11 @@ class _ProfileMenuState extends State<ProfileMenu>
             Text(
               'PROFILE MENU',
               style: theme.textTheme.subtitle1!.copyWith(
-                fontWeight: kBoldWeight,
-                fontSize: 18,fontFamily: kDefaultFontFamilyHeading
-                // decoration: TextDecoration.underline,
-              ),
+                  fontWeight: kBoldWeight,
+                  fontSize: 18,
+                  fontFamily: kDefaultFontFamilyHeading
+                  // decoration: TextDecoration.underline,
+                  ),
             ),
             12.heightInPixel(),
             Expanded(
