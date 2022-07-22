@@ -1,9 +1,7 @@
 import 'dart:io';
 
-import 'package:cloudinary_sdk/cloudinary_sdk.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:trakk/main.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/models/order/available_rider_response.dart';
@@ -13,11 +11,11 @@ import 'package:trakk/src/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/services/order/order_api.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/operation.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/styles.dart';
-import 'package:trakk/src/values/constant.dart';
+import 'package:uploadcare_client/uploadcare_client.dart';
 
 class CustomerOrderHelper {
   final BuildContext _authContext =
@@ -67,33 +65,32 @@ class CustomerOrderHelper {
       String? filePath, Function({String? imageUrl}) callback) async {
     ///This checks if the image exist and upload, the proceeds to create order.
     ///If image is null, it proceeds to image order
-    if (filePath != null && cloudinaryUploadPreset.isNotEmpty) {
+    if (filePath != null) {
       File file = File(filePath);
-      showDialog(
-          context: _authContext,
-          builder: (context) =>
-              const Center(child: kCircularProgressIndicator));
 
-      String userid = await appSettingsBloc.getUserID;
+      final CancelToken _cancelToken = CancelToken('canceled by user');
+      try {
+        String _fileId =
+            await SingletonData.singletonData.uploadCareClient!.upload.auto(
+          UCFile(file),
+          cancelToken: _cancelToken,
+          storeMode: false,
+          runInIsolate: true,
+          onProgress: (progress) {
+            // debugPrint('Uploading image from file with progress: $progress');
+          },
+          metadata: {
+            'metakey': 'metavalue',
+          },
+        );
 
-      final response =
-          await cloudinary.unsignedUploadResource(CloudinaryUploadResource(
-              uploadPreset: cloudinaryUploadPreset,
-              filePath: file.path,
-              fileBytes: file.readAsBytesSync(),
-              resourceType: CloudinaryResourceType.image,
-              folder: 'order_images_$userid',
-              fileName: '${userid}_${DateTime.now().millisecondsSinceEpoch}',
-              progressCallback: (count, total) {
-                print('Uploading image from file with progress: $count/$total');
-              }));
-
-      Navigator.pop(_authContext);
-      if (response.isSuccessful) {
-        callback(imageUrl: response.secureUrl);
-      } else {
+        callback(imageUrl: '${SingletonData.singletonData.imageURL}$_fileId/');
+      } on CancelUploadException catch (e) {
+        debugPrint(e.toString());
         appToast('Could not process request at the moment.\nPlease try again',
             appToastType: AppToastType.failed);
+      } catch (err) {
+        debugPrint(err.toString());
       }
     } else {
       callback();
@@ -102,10 +99,9 @@ class CustomerOrderHelper {
 
   doCreateOrder(OrderModel orderModel, Function() showLoading,
       Function() closeLoading) async {
+    showLoading();
     uploadToCloudinary(orderModel.data?.itemImage, ({String? imageUrl}) async {
       orderModel.data!.itemImage = imageUrl;
-
-      showLoading();
 
       var operation = await orderAPI.createOrder(orderModel);
 

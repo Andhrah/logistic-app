@@ -38,9 +38,6 @@ const kSpeedInMinutes = kDistanceKMCoveredInAnHour * 60.0;
 
 String naira = '₦';
 
-String cloudinaryUploadPreset = '';
-String cloudinaryCloudName = '';
-
 const List<String> states = [
   "Abia",
   "Adamawa",

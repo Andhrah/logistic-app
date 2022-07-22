@@ -121,7 +121,7 @@ class _AddRider1State extends State<AddRider1> with ProfileHelper {
                         fontWeight: kMediumWeight,
                       ),
                     ),
-                    10.heightInPixel(),
+                    5.heightInPixel(),
                     DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -171,7 +171,7 @@ class _AddRider1State extends State<AddRider1> with ProfileHelper {
                         fontWeight: kMediumWeight,
                       ),
                     ),
-                    10.heightInPixel(),
+                    5.heightInPixel(),
                     DecoratedBox(
                         decoration: BoxDecoration(
                           border: Border.all(
@@ -285,6 +285,8 @@ class _AddRider1State extends State<AddRider1> with ProfileHelper {
 
                                   await appToast('Contact updated successfully',
                                       appToastType: AppToastType.success);
+
+                                  Navigator.pop(context);
                                 });
                               }
                             }

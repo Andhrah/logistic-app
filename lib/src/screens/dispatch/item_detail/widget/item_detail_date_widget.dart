@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 class ItemDetailDateWidget extends StatefulWidget {
@@ -84,7 +84,7 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
             child: InputField(
               obscureText: false,
               text: 'Pickup Date',
-              hintText: '24/3/2022',
+              hintText: '24/03/2022',
               textHeight: 5.0,
               maxLines: 1,
               node: _pickUpDateNode,
@@ -161,7 +161,7 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
             child: InputField(
               obscureText: false,
               text: 'Dropoff Date',
-              hintText: '26/3/2022',
+              hintText: '26/03/2022',
               textHeight: 5.0,
               enabled: false,
               maxLines: 1,

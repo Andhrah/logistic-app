@@ -35,9 +35,11 @@ class _ResetPasswordState extends State<ResetPassword>
 
   _onSubmit() async {
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
+    String email = arg["email"];
     String code = arg["code"];
 
     doResetPasswordOperation(
+        email,
         code,
         () => setState(() {
               _loading = true;

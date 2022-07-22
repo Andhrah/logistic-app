@@ -7,6 +7,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:trakk/src/.env.dart';
+import 'package:uploadcare_client/uploadcare_client.dart';
 
 class SingletonData {
   static final SingletonData _instance = SingletonData.internal();
@@ -62,17 +64,50 @@ class SingletonData {
     return _baseURL;
   }
 
-  //ssoURL
-  static String? _ssoURL;
+  //socketURL
+  static String? _socketURL;
 
-  String? get ssoURL {
-    if (_ssoURL != null) return _ssoURL;
-    _ssoURL = '';
-    return _ssoURL;
+  String? get socketURL {
+    if (_socketURL != null) return _socketURL;
+    _socketURL = '';
+    return _socketURL;
   }
 
-  initSsoURL(String ssoURL) {
-    _ssoURL = ssoURL;
-    return _ssoURL;
+  initSocketURL(String socketURL) {
+    _socketURL = socketURL;
+    return _socketURL;
+  }
+
+  //socketURL
+  static String? _imageURL;
+
+  String? get imageURL {
+    if (_imageURL != null) return _imageURL;
+    _imageURL = '';
+    return _imageURL;
+  }
+
+  initImageURL(String imageURL) {
+    _imageURL = imageURL;
+    return _imageURL;
+  }
+
+//  uploadClient
+  static UploadcareClient? _uploadCareClient;
+
+  UploadcareClient? get uploadCareClient {
+    if (_uploadCareClient != null) return _uploadCareClient;
+    //if it's not initialize
+    _uploadCareClient = UploadcareClient.withSimpleAuth(
+      publicKey: uploadCarePublicKey,
+      privateKey: uploadCarePrivateKey,
+      apiVersion: 'v0.7',
+    );
+    return _uploadCareClient;
+  }
+
+  initUploadCareClient(UploadcareClient client) {
+    _uploadCareClient = client;
+    return _uploadCareClient;
   }
 }

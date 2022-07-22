@@ -4,13 +4,18 @@
 *  Copyright © 2022 [Zebrra]. All rights reserved.
     */
 
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/models/update_profile/update_profile.dart';
 import 'package:trakk/src/services/get_user_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
+import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/enums.dart';
+import 'package:uploadcare_client/uploadcare_client.dart';
 
 import '../utils/operation.dart';
 
@@ -61,20 +66,49 @@ class ProfileHelper {
     }
   }
 
+  _uploadProfilePic(File? profilePic, Function({String? url}) onSuccess) async {
+    if (profilePic != null) {
+      final CancelToken _cancelToken = CancelToken('canceled by user');
+      try {
+        String _fileId =
+            await SingletonData.singletonData.uploadCareClient!.upload.auto(
+          UCFile(profilePic),
+          cancelToken: _cancelToken,
+          storeMode: false, runInIsolate: true,
+          // onProgress: (progress) => _progressController.add(progress),
+          metadata: {
+            'metakey': 'metavalue',
+          },
+        );
+
+        onSuccess(url: '${SingletonData.singletonData.imageURL}$_fileId/');
+      } on CancelUploadException catch (e) {
+        debugPrint(e.toString());
+        appToast('Could not process request at the moment.\nPlease try again',
+            appToastType: AppToastType.failed);
+      } catch (err) {
+        debugPrint(err.toString());
+      }
+    } else {
+      onSuccess();
+    }
+  }
+
   doUpdateProfileOperation(UpdateProfile updateProfile, Function() onShowLoader,
       Function() onCloseLoader) async {
     onShowLoader();
-    profileService
-        .updateProfile(updateProfile)
-        .then((value) => _completeUpdate(value, onCloseLoader));
+
+    _uploadProfilePic(updateProfile.profilePic, ({String? url}) {
+      updateProfile.avatar = url;
+      profileService
+          .updateProfile(updateProfile)
+          .then((value) => _completeUpdate(value, onCloseLoader));
+    });
   }
 
   _completeUpdate(Operation operation, Function() onCloseLoader) async {
     if (operation.code == 200 || operation.code == 201) {
       doGetProfileOperation(profileFetchSuccess: (AuthData authData) {
-        appToast('Profile updated successfully',
-            appToastType: AppToastType.success);
-
         onCloseLoader();
       });
     } else {
@@ -146,8 +180,6 @@ class ProfileHelper {
         'onBoardingSteps': {'riderNOKCompleted': true}
       }, () {
         onCloseLoader();
-        appToast('Next of kin updated successfully',
-            appToastType: AppToastType.success);
       });
     } else {
       onCloseLoader();

@@ -47,23 +47,21 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
         stream: appSettingsBloc.appSettings,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            if (snapshot
-                    .data?.loginResponse?.data?.user?.hasCompletedOnBoarding ==
-                false) {
-              bool completedContact = snapshot.data?.loginResponse?.data?.user
-                      ?.onBoardingSteps?.riderContactCompleted ??
-                  false;
-              bool completedNok = snapshot.data?.loginResponse?.data?.user
-                      ?.onBoardingSteps?.riderNOKCompleted ??
-                  false;
-              bool completedVehicles = snapshot.data?.loginResponse?.data?.user
-                      ?.onBoardingSteps?.riderVehicleCompleted ??
-                  false;
-              if (!completedContact || !completedNok || !completedVehicles) {
-                return cardWithOnBoarding(
-                    context, completedContact, completedNok, completedVehicles);
-              }
+            bool completedContact = snapshot.data?.loginResponse?.data?.user
+                    ?.onBoardingSteps?.riderContactCompleted ??
+                false;
+            bool completedNok = snapshot.data?.loginResponse?.data?.user
+                    ?.onBoardingSteps?.riderNOKCompleted ??
+                false;
+            bool completedVehicles = snapshot.data?.loginResponse?.data?.user
+                    ?.onBoardingSteps?.riderVehicleCompleted ??
+                false;
+
+            if (!completedContact || !completedNok || !completedVehicles) {
+              return cardWithOnBoarding(
+                  context, completedContact, completedNok, completedVehicles);
             }
+
             return CustomStreamBuilder<RiderOrderState, String>(
                 stream: riderHomeStateBloc.behaviorSubject,
                 dataBuilder: (context, data) {
