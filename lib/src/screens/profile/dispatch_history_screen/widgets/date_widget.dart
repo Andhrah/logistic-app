@@ -52,7 +52,7 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                   },
                   child: Container(
                     height: 45,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     decoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(8),
@@ -62,9 +62,10 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            getLongDate(dateValue: widget.startDate),
+                            getLongDate(dateValue: widget.startDate), textScaleFactor: 1,
                             style: theme.textTheme.bodyText2!.copyWith(
-                                fontSize: 16, fontWeight: FontWeight.w400),
+                                //fontSize: 16, 
+                                fontWeight: FontWeight.w400),
                           ),
                           Icon(
                             Icons.calendar_month,
@@ -91,7 +92,7 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                   },
                   child: Container(
                     height: 45,
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
                     decoration: BoxDecoration(
                         borderRadius: const BorderRadius.all(
                           Radius.circular(8),
@@ -101,9 +102,9 @@ class _UserDispatcHistoryState extends State<DateDispatchHistory> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            getLongDate(dateValue: widget.endDate),
+                            getLongDate(dateValue: widget.endDate), textScaleFactor: 1,
                             style: theme.textTheme.bodyText2!.copyWith(
-                                fontSize: 16, fontWeight: FontWeight.w400),
+                                fontWeight: FontWeight.w400),
                           ),
                           Icon(
                             Icons.calendar_month,

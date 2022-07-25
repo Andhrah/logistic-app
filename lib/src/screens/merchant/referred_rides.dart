@@ -170,52 +170,51 @@ class _ReferredRidesState extends State<ReferredRides> {
         body: SafeArea(
             child: Column(
           children: [
-            const SizedBox(height: 10.0),
-            Row(
-              children: [
-                BackIcon(
-                  onPress: () {
-                    Navigator.pop(context);
-                  },
-                ),
-                Container(
-                  margin: const EdgeInsets.only(left: 40.0),
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'REFRRED RIDES',
-                    textScaleFactor: 1.2,
-                    style: TextStyle(
-                      color: appPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                      // decoration: TextDecoration.underline,
+            Container(height: 98,
+              child: Row(
+                children: [
+                  BackIcon(
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  //SizedBox(width: MediaQuery.of(context).size.width*0.3,),
+                  Container(
+                  //padding: EdgeInsets.symmetric(horizontal: 30 ),
+                    //margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.2),
+                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.05 ),
+                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.06),
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'REFRRED RIDES',
+                      textScaleFactor: 1.1,
+                      style: TextStyle(
+                        color: appPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        // decoration: TextDecoration.underline,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(left: 30, right: 30, top: 20),
-                      child: Column(
-                        //crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                           DateDispatchHistory(
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 30),
+                      child: DateDispatchHistory(
                       startDate: startDate,
                       endDate: endDate,
-                    ),
-                             
-                        ],
                       ),
                     ),
                     SizedBox(
                       height: 20,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 30, right: 30),
+                      margin: const EdgeInsets.only(left: 30, right: 30),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -230,14 +229,14 @@ class _ReferredRidesState extends State<ReferredRides> {
                           ),
                           Container(
                             height: 100,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Color(0xffEEEEEE),
                                 borderRadius:
                                     BorderRadius.all(Radius.circular(4))),
-                            child: Align(
+                            child: const Align(
                               alignment: Alignment.centerLeft,
                               child: Padding(
-                                padding: const EdgeInsets.all(16.0),
+                                padding: EdgeInsets.all(16.0),
                                 child: Text("None"),
                               ),
                             ),
@@ -245,11 +244,11 @@ class _ReferredRidesState extends State<ReferredRides> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(
+                    const Padding(
+                      padding: EdgeInsets.only(
                           top: 10, bottom: 10, right: 30, left: 30),
                       child: Text(
                         'Previous referred',

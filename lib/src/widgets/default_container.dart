@@ -42,7 +42,7 @@ class DefaultContainer extends StatelessWidget {
                 ),
               ],
             ),
-            const Icon(Icons.arrow_forward_ios),
+            const Icon(Icons.arrow_forward_ios, color: appPrimaryColor,),
           ],
         ),
       ),
