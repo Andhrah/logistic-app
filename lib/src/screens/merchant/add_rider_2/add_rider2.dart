@@ -215,7 +215,7 @@ class _AddRider2State extends State<AddRider2>
                   InputField(
                     key: const Key('vehiclenumber'),
                     textController: _vehicleNumberController,
-                    keyboardType: TextInputType.phone,
+                    keyboardType: TextInputType.text,
                     node: _vehicleNumberNode,
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     obscureText: false,
