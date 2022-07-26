@@ -124,7 +124,8 @@ class _CompanyHomeState extends State<CompanyHome> {
                           return Text(
                             "Hello $firstName",
                             style: const TextStyle(
-                                fontSize: 24,
+                                fontSize: 24, 
+                                fontFamily: 'HelveticaRoundedLTStd',
                                 fontWeight: FontWeight.w600,
                                 color: whiteColor),
                           );

@@ -38,7 +38,7 @@ class _VehiclesState extends State<Vehicles> {
                   child: const Text(
                     'VEHICLES',
                     textScaleFactor: 1.2,
-                    style: TextStyle(
+                    style: TextStyle( fontFamily: 'HelveticaRoundedLTStd',
                       color: appPrimaryColor,
                       fontWeight: FontWeight.bold,
                       // decoration: TextDecoration.underline,
@@ -113,7 +113,7 @@ class DefaultContainer extends StatelessWidget {
               title,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
-            const Icon(Icons.arrow_forward_ios),
+            const Icon(Icons.arrow_forward_ios, color: appPrimaryColor,),
           ],
         ),
       ),
