@@ -54,9 +54,14 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
   dynamic responseKey;
   dynamic responseId;
 
+  String filter = 'Assigned';
+
+  List<String> filters = ['Assigned', 'Unassigned'];
+
   @override
   void initState() {
-    getVehiclesListBloc.fetchCurrent();
+    filter = filters.first;
+    getVehiclesListBloc.fetchCurrent(filter == 'Unassigned');
     fetchVehicleList().whenComplete(() {
       setState(() {});
     });
@@ -100,27 +105,73 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
         body: SafeArea(
             child: Column(children: [
           const SizedBox(height: 10.0),
-          Row(
-            children: [
-              BackIcon(
-                onPress: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Container(
-                margin: const EdgeInsets.only(left: 40.0),
-                alignment: Alignment.center,
-                child: const Text(
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(
+                  width: 65,
+                  child: Row(
+                    children: [
+                      BackIcon(
+                        padding: EdgeInsets.zero,
+                        onPress: () {
+                          Navigator.pop(context);
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                Text(
                   'LIST OF VEHICLES',
-                  textScaleFactor: 1.2,
-                  style: TextStyle(
+                  style: theme.textTheme.subtitle2!.copyWith(
                     color: appPrimaryColor,
                     fontWeight: FontWeight.bold,
                     // decoration: TextDecoration.underline,
                   ),
                 ),
-              ),
-            ],
+                SizedBox(
+                  height: 50,
+                  width: 65,
+                  child: DropdownButton<String>(
+                    value: filter,
+                    icon: const Icon(
+                      Icons.filter_alt,
+                      size: 18,
+                    ),
+                    elevation: 16,
+                    isExpanded: true,
+                    style: TextStyle(
+                      color: appPrimaryColor.withOpacity(0.8),
+                      fontSize: 18.0,
+                    ),
+                    underline: Container(),
+                    items: filters
+                        .map((e) => DropdownMenuItem<String>(
+                              value: e,
+                              child: Text(
+                                e,
+                                style: theme.textTheme.caption!.copyWith(
+                                  color: appPrimaryColor,
+                                  fontWeight: FontWeight.bold,
+                                  // decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        filter = value ?? filters.first;
+                      });
+
+                      getVehiclesListBloc.fetchCurrent(filter == 'Unassigned');
+                    },
+                  ),
+                ),
+              ],
+            ),
           ),
           Expanded(
               child: Column(
@@ -210,7 +261,6 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                   dataBuilder: (context, data) {
                     return ListView.builder(
                         shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: data.length,
                         itemBuilder: (BuildContext context, int index) {
                           //return RiderListContainer();
@@ -245,7 +295,8 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                     blurRadius: 8.0,
                                   ),
                                 ]),
-                            margin: const EdgeInsets.only(left: 22, right: 22),
+                            margin: const EdgeInsets.only(
+                                left: 22, right: 22, bottom: 7, top: 7),
                             child: Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 0, horizontal: 20),

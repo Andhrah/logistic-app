@@ -18,11 +18,11 @@ class GetVehiclesListBloc
         ConnectivityHelper {
   CancelableOperation? _cancelableOperation;
 
-  fetchCurrent() async {
+  fetchCurrent(bool unassigned) async {
     setAsLoading();
     checkInternetConnection(
         hasInternetCallback: () async {
-          var operation = await vehiclesListService.getVehicles();
+          var operation = await vehiclesListService.getVehicles(unassigned);
 
           if (operation.code == 200 || operation.code == 201) {
             GetVehiclesForMerchantResponse response =
