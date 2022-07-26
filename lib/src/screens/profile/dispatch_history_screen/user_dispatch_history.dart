@@ -44,7 +44,8 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
         body: SafeArea(
             child: Column(
           children: [
-            const SizedBox(height: 12.0),
+            12.heightInPixel(),
+            // const SizedBox(height: 12.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -76,9 +77,7 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+           12.heightInPixel(),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(

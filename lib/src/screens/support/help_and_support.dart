@@ -20,7 +20,7 @@ class HelpAndSupport extends StatefulWidget {
 
 class _HelpAndSupportState extends State<HelpAndSupport> {
   var complaints = [
-
+"Choose Complaint",
     "Delivery issues",
     "Payment issues",
     "Account & data",
@@ -29,7 +29,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
   final _formKey = GlobalKey<FormState>();
 
   String? _email;
-  late String _complaintType;
+   String _complaintType = "Choose Complaint";
 
   late TextEditingController _emailController;
   late TextEditingController _messageController;
@@ -53,7 +53,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
 
     final FormState? form = _formKey.currentState;
 
-    if (form!.validate() && _complaintType !=  _complaintType) {
+    if (form!.validate() && _complaintType !=  "Choose Complaint") {
       form.save();
 
       try {
@@ -102,7 +102,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
   @override
   void initState() {
     super.initState();
-    _complaintType = "";
+
     //_firstNameController = TextEditingController();
     //_lastNameController = TextEditingController();
     _emailController = TextEditingController();
@@ -188,7 +188,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                               return null;
                             },
                           ),
-                          _isButtonPress && _complaintType == _complaintType
+                          _isButtonPress && _complaintType == "Choose Complaint"
                               ? const Text(
                                   " Choose your complaint type",
                                   textScaleFactor: 0.9,

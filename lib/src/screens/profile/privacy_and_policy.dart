@@ -77,7 +77,7 @@ All information received by TRAKK shall be managed according to the Nigerian Dat
                 Container(
                   height: 98,
                   margin: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.2),
+                      horizontal: MediaQuery.of(context).size.width * 0.1),
                   alignment: Alignment.center,
                   child: InkWell(
                     onTap: () {},
@@ -186,10 +186,10 @@ class privacyContainer extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                title,
-                style: TextStyle(
+                title,textScaleFactor: 1,
+                style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    //fontSize: 18,
                     fontFamily: kDefaultFontFamily),
               ),
               const Spacer(),

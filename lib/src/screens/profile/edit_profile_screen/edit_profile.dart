@@ -92,8 +92,8 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                     Navigator.pop(context);
                   },
                 ),
-                Container(
-                  margin: const EdgeInsets.only(left: 60.0),
+                Container(height: 98,
+                  margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.2),
                   alignment: Alignment.center,
                   child: InkWell(
                     onTap: () {},

@@ -847,7 +847,7 @@ class _MerchantRiderProfile extends State<MerchantRiderProfile> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17),
+              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17, top: 20),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

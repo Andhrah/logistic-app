@@ -55,9 +55,9 @@ class _CompanyHomeState extends State<CompanyHome> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const SizedBox(height: 20.0),
+              //const SizedBox(height: 20.0),
               Padding(
-                padding: const EdgeInsets.only(left: 30.0, right: 30),
+                padding: const EdgeInsets.only(left: 30.0, right: 30, top: 20),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -104,11 +104,11 @@ class _CompanyHomeState extends State<CompanyHome> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 25,
-              ),
+              // const SizedBox(
+              //   height: 25,
+              // ),
               Padding(
-                padding: const EdgeInsets.only(left: 30.0, bottom: 25),
+                padding: const EdgeInsets.only(left: 30.0, bottom: 45, top: 25),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -139,9 +139,9 @@ class _CompanyHomeState extends State<CompanyHome> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 35,
-              ),
+              // const SizedBox(
+              //   height: 35,
+              // ),
               //const Expanded(child: Divider(),),
               Expanded(
                 child: Container(
@@ -165,10 +165,12 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ],
                   ),
                   child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(
-                        height: 15,
-                      ),
+                      // const SizedBox(
+                      //   height: 15,
+                      // ),
                       Row(
                         children: [
                           Expanded(
@@ -205,7 +207,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                           ),
                         ],
                       ),
-                      kSizeBox,
+                     // kSizeBox,
                       Row(
                         children: [
                           Expanded(
@@ -243,7 +245,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                           ),
                         ],
                       ),
-                      kSizeBox,
+                      //kSizeBox,
                       Row(
                         children: [
                           Expanded(
