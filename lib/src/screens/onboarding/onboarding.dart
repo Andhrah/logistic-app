@@ -53,21 +53,21 @@ class _OnboardingState extends State<Onboarding> {
       'image': 'assets/images/onboarding_img2.png',
       'pageText': [
         'Choose your\npreferred ride',
-        'Accept the proposed ride of choose your preferred ride',
+        'Accept the proposed ride or choose your preferred ride',
       ],
     },
     {
       'image': 'assets/images/onboarding_img3.png',
       'pageText': [
         'Checkout to Make \npayment',
-        'Pay with zebbra and get 20% off or choose preferred payemnt method',
+        'Pay with Zebbra and get 20% off or choose preferred payment method',
       ]
     },
     {
       'image': 'assets/images/onboarding_img4.png',
       'pageText': [
         'Recieve your item',
-        'Receive your delivery and notify that your item has been recieved',
+        'Receive your delivery and get notified that your item has been recieved',
       ]
     }
   ];

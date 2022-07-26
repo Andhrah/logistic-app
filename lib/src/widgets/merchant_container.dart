@@ -23,8 +23,8 @@ class MerchantContainer extends StatelessWidget {
     MediaQueryData mediaQuery = MediaQuery.of(context);
     return Container(
       margin: const EdgeInsets.only(left: 7, right: 7),
-        height: 120,
-        width: 120,
+        height: mediaQuery.size.height*0.14,
+        width: mediaQuery.size.width,
         decoration: BoxDecoration(
           
           boxShadow:  const [
@@ -49,15 +49,15 @@ class MerchantContainer extends StatelessWidget {
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ),
-            Text(rides?? '', style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600), )
+            Text(rides?? '',textScaleFactor: 1.2, style: const TextStyle(fontWeight: FontWeight.w600, fontFamily: kDefaultFontFamily), )
                   ],
                 )),
             Align(
               alignment: Alignment.bottomRight,
               child: SizedBox(
                 child: Container(
-                  height: 48,
-                  width: 50,
+                  height: mediaQuery.size.height*0.05,
+                  width: mediaQuery.size.width*0.08,
                   decoration: BoxDecoration(
                       color: color,
                       borderRadius: const BorderRadius.only(
@@ -66,7 +66,8 @@ class MerchantContainer extends StatelessWidget {
                           topLeft: Radius.circular(25),
                           topRight: Radius.circular(5),),
                           ),
-                  child: Center(child: SvgPicture.asset(icon, color: iconColor,)),
+                  child: Center(child: SvgPicture.asset(icon, color: iconColor,
+                  height: mediaQuery.size.height*0.02,)),
                 ),
               ),
             )

@@ -25,59 +25,57 @@ class RiderListContainer extends StatelessWidget {
       ]),
       margin: EdgeInsets.only(left: 22, right: 22),
       child: Padding(
-        padding: const EdgeInsets.only(top: 12.0, left: 22, right: 22),
-        child: Column(
+        padding: const EdgeInsets.only(top: 12.0, left: 25, right: 22),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            CachedNetworkImage(
+              imageUrl: ridersForMerchantResponseDatum
+                      .attributes?.userId?.data?.attributes?.avatar ??
+                  '',
+              height: 45,
+              width: 45,
+              placeholder: (context, url) => Image.asset(
+                Assets.dummy_avatar,
+                height: 45,
+                width: 45,
+              ),
+              errorWidget: (context, url, err) => Image.asset(
+                Assets.dummy_avatar,
+                height: 45,
+                width: 45,
+              ),
+            ),
+            SizedBox(
+              width: 20,
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    CachedNetworkImage(
-                      imageUrl: ridersForMerchantResponseDatum
-                              .attributes?.userId?.data?.attributes?.avatar ??
-                          '',
-                      height: 45,
-                      width: 45,
-                      placeholder: (context, url) => Image.asset(
-                        Assets.dummy_avatar,
-                        height: 45,
-                        width: 45,
-                      ),
-                      errorWidget: (context, url, err) => Image.asset(
-                        Assets.dummy_avatar,
-                        height: 45,
-                        width: 45,
-                      ),
-                    ),
-                    Text(
-                      '${ridersForMerchantResponseDatum.attributes?.userId?.data?.attributes?.firstName ?? ''} ${ridersForMerchantResponseDatum.attributes?.userId?.data?.attributes?.lastName ?? ''}',
-                      style: const TextStyle(
-                          fontSize: 13, fontWeight: FontWeight.w400),
-                    ),
-                    if ((ridersForMerchantResponseDatum
-                                .attributes?.vehicles?.data?.length ??
-                            0) >
-                        0)
-                      Text(
-                        'Vehicle no. ${ridersForMerchantResponseDatum.attributes?.vehicles?.data?.first.attributes?.number}',
-                        style: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                      ),
-                    //const SizedBox(height: 10,),
-                  ],
+                Text(
+                  '${ridersForMerchantResponseDatum.attributes?.userId?.data?.attributes?.firstName ?? ''} ${ridersForMerchantResponseDatum.attributes?.userId?.data?.attributes?.lastName ?? ''}',
+                  style: const TextStyle(
+                      fontSize: 13, fontWeight: FontWeight.w400),
                 ),
-                const Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    'View detail',
-                    style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w400,
-                        color: secondaryColor),
+                if ((ridersForMerchantResponseDatum
+                            .attributes?.vehicles?.data?.length ??
+                        0) >
+                    0)
+                  Text(
+                    'Vehicle no. ${ridersForMerchantResponseDatum.attributes?.vehicles?.data?.first.attributes?.number}',
+                    style: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.w600),
                   ),
+                SizedBox(
+                  height: 5,
+                ),
+                Text(
+                  'View detail',
+                  style: TextStyle(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w400,
+                      color: secondaryColor),
                 ),
               ],
             ),
