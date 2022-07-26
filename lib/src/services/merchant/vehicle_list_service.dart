@@ -23,11 +23,7 @@ class VehiclesListService extends BaseNetworkCallHandler {
   }
 
   Future<Operation> deleteVehicleFromMerchant(String vehicleID) async {
-    // String userID = await appSettingsBloc.getUserID;
-
-    return runAPI('api/vehicles/$vehicleID', HttpRequestType.put, body: {
-      "data": {"riderId": "", "merchantId": ""}
-    });
+    return runAPI('api/vehicles/$vehicleID', HttpRequestType.delete);
   }
 
   Future<Operation> getVehicles(bool unassigned) async {
