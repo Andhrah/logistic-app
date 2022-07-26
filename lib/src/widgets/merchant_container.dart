@@ -57,7 +57,7 @@ class MerchantContainer extends StatelessWidget {
               child: SizedBox(
                 child: Container(
                   height: mediaQuery.size.height*0.05,
-                  width: mediaQuery.size.width*0.08,
+                  width: mediaQuery.size.width*0.09,
                   decoration: BoxDecoration(
                       color: color,
                       borderRadius: const BorderRadius.only(

@@ -6,8 +6,10 @@
 
 import 'dart:ui';
 
-const String kDefaultFontFamily = 'Poppins';
-const String kDefaultFontFamilyHeading = kDefaultFontFamily;
+const String kDefaultFontFamilyH = 'HelveticaRoundedLTStd';
+const String kDefaultFontFamily = 'Mulish';
+const String kDefaultFontFamilyHeading = kDefaultFontFamilyH;
+//const String kDefaultFontFamilyBody = kDefaultFontFamily;
 const String kDefaultFontFamilyBody = kDefaultFontFamily;
 const String kNairaFontFamily = 'Roboto';
 

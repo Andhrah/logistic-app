@@ -157,6 +157,33 @@ flutter:
           weight: 500
         - asset: assets/fonts/Poppins-Regular.ttf
           weight: 400
+
+    - family: Mulish
+      fonts:
+        - asset: assets/fonts/Mulish-Black.ttf
+          weight: 800
+        - asset: assets/fonts/Mulish-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Mulish-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Mulish-ExtraBold.ttf
+          weight: 900
+        - asset: assets/fonts/Mulish-ExtraLight.ttf
+          weight: 200
+        - asset: assets/fonts/Mulish-Light.ttf
+          weight: 300
+        - asset: assets/fonts/Mulish-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Mulish-Regular.ttf
+          weight: 400
+
+    - family: HelveticaRoundedLTStd
+      fonts:
+        - asset: assets/fonts/HelveticaRoundedLTStd-Bd.ttf
+          weight: 200
+        - asset: assets/fonts/HelveticaRoundedLTStd-Black.ttf
+          weight: 200
+         
     #       style: italic
     # - family: Trajan Pro
     #   fonts:
