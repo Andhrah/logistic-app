@@ -26,7 +26,8 @@ class AddVehicleToMerchantModel {
 
 class AddRiderToMerchantData {
   AddRiderToMerchantData(
-      {this.riderId,
+      {this.merchantId,
+      this.riderId,
       this.name,
       this.color,
       this.number,
@@ -39,6 +40,7 @@ class AddRiderToMerchantData {
       //  doc
       this.docs});
 
+  final String? merchantId;
   final String? riderId;
   final String? name;
   final String? color;
@@ -53,7 +55,8 @@ class AddRiderToMerchantData {
   List<AddVehicleDocToMerchantModel>? docs;
 
   AddRiderToMerchantData copyWith(
-          {String? riderId,
+          {String? merchantId,
+          String? riderId,
           String? name,
           String? color,
           String? number,
@@ -66,6 +69,7 @@ class AddRiderToMerchantData {
           String? documentUrl,
           Map<String, String>? files}) =>
       AddRiderToMerchantData(
+          merchantId: merchantId ?? this.merchantId,
           riderId: riderId ?? this.riderId,
           name: name ?? this.name,
           color: color ?? this.color,
@@ -78,7 +82,8 @@ class AddRiderToMerchantData {
 
   factory AddRiderToMerchantData.fromJson(Map<String, dynamic> json) =>
       AddRiderToMerchantData(
-        riderId: ' json["riderId"] == null ? null : json["riderId"]',
+        merchantId: json["merchantId"] == null ? null : json["merchantId"],
+        riderId: json["riderId"] == null ? null : json["riderId"],
         name: json["name"] == null ? null : json["name"],
         color: json["color"] == null ? null : json["color"],
         number: json["number"] == null ? null : json["number"],
@@ -90,6 +95,7 @@ class AddRiderToMerchantData {
 
   Map<String, dynamic> toJson() {
     Map<String, dynamic> map = {
+      "merchantId": merchantId == null ? null : merchantId,
       "riderId": riderId == null ? null : riderId,
       "name": name == null ? null : name,
       "color": color == null ? null : color,

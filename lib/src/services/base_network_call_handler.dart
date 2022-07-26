@@ -14,6 +14,7 @@ import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/message_only_response.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/operation.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
@@ -101,62 +102,84 @@ class BaseNetworkCallHandler with LogoutHelper {
     _onErrorResponse = onErrorResponse;
     _isRawData = isRawData;
 
-    // SingletonData.singletonData.dio.interceptors.clear();
-    //
-    // SingletonData.singletonData.dio.interceptors
-    //     .add(InterceptorsWrapper(onRequest: (options, handler) async {
-    //   String url = SingletonData.singletonData.baseURL!;
-    //
-    //   if (!options.path.contains('http')) {
-    //     options.path = url + options.path;
-    //   }
-    //   AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
-    //
-    //   Map<String, dynamic> header = const {};
-    //
-    //   if (appSettings.isLoggedIn &&
-    //       appSettings.loginResponse != null &&
-    //       appSettings.loginResponse!.data != null &&
-    //       appSettings.loginResponse!.data!.token != null) {
-    //     header = {
-    //       'Authorization': 'Bearer ${appSettings.loginResponse!.data!.token}',
-    //     };
-    //   }
-    //   options.headers = header;
-    //   return handler.next(options);
-    // }, onResponse: (response, handler) async {
-    //   if (response.statusCode == 401) {
-    //     AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
-    //     if (appSettings.loginResponse?.data?.refreshToken != null) {
-    //       String url = '';
-    //       if (Platform.isAndroid || Platform.isIOS) {
-    //         url = SingletonData.singletonData.baseURL!;
-    //       } else {
-    //         url = SingletonData.singletonData.baseURL!;
-    //       }
-    //       if (await refreshToken(url)) {
-    //         return handler.resolve(await _retry(response.requestOptions));
-    //       }
-    //     }
-    //   }
-    //   return handler.next(response);
-    // }, onError: (DioError error, handler) async {
-    //   if (error.response?.statusCode == 401) {
-    //     AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
-    //     if (appSettings.loginResponse?.data?.refreshToken != null) {
-    //       String url = '';
-    //       if (Platform.isAndroid || Platform.isIOS) {
-    //         url = SingletonData.singletonData.baseURL!;
-    //       } else {
-    //         url = SingletonData.singletonData.baseURL!;
-    //       }
-    //       if (await refreshToken(url)) {
-    //         return handler.resolve(await _retry(error.requestOptions));
-    //       }
-    //     }
-    //   }
-    //   return handler.next(error);
-    // }));
+    SingletonData.singletonData.dio.interceptors.clear();
+
+    SingletonData.singletonData.dio.interceptors
+        .add(InterceptorsWrapper(onRequest: (options, handler) async {
+      String url = SingletonData.singletonData.baseURL!;
+
+      if (!options.path.contains('http')) {
+        options.path = url + options.path;
+      }
+      AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+
+      Map<String, dynamic> header = const {};
+
+      if (appSettings.isLoggedIn &&
+          appSettings.loginResponse != null &&
+          appSettings.loginResponse!.data != null &&
+          appSettings.loginResponse!.data!.token != null) {
+        header = {
+          'Authorization': 'Bearer ${appSettings.loginResponse!.data!.token}',
+        };
+      }
+      options.headers = header;
+      return handler.next(options);
+    }, onResponse: (response, handler) async {
+      AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+
+      if (appSettings.isLoggedIn && response.statusCode == 401 ||
+          response.data['message']
+              .toString()
+              .contains('Missing or invalid credentials')) {
+        await appToast('Session expired', appToastType: AppToastType.failed);
+        logoutGlobal();
+
+        return;
+      }
+      // if (response.statusCode == 401) {
+      //   AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+      //   if (appSettings.loginResponse?.data?.refreshToken != null) {
+      //     String url = '';
+      //     if (Platform.isAndroid || Platform.isIOS) {
+      //       url = SingletonData.singletonData.baseURL!;
+      //     } else {
+      //       url = SingletonData.singletonData.baseURL!;
+      //     }
+      //     if (await refreshToken(url)) {
+      //       return handler.resolve(await _retry(response.requestOptions));
+      //     }
+      //   }
+      // }
+      return handler.next(response);
+    }, onError: (DioError error, handler) async {
+      AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+
+      if (appSettings.isLoggedIn && error.response?.statusCode == 401 ||
+          (error.response?.data['message'] ?? '')
+              .toString()
+              .contains('Missing or invalid credentials')) {
+        await appToast('Session expired', appToastType: AppToastType.failed);
+        logoutGlobal();
+
+        return;
+      }
+      // if (error.response?.statusCode == 401) {
+      //   AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+      //   if (appSettings.loginResponse?.data?.refreshToken != null) {
+      //     String url = '';
+      //     if (Platform.isAndroid || Platform.isIOS) {
+      //       url = SingletonData.singletonData.baseURL!;
+      //     } else {
+      //       url = SingletonData.singletonData.baseURL!;
+      //     }
+      //     if (await refreshToken(url)) {
+      //       return handler.resolve(await _retry(error.requestOptions));
+      //     }
+      //   }
+      // }
+      return handler.next(error);
+    }));
 
     try {
       String url = baseurl;

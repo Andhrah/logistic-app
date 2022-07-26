@@ -5,12 +5,14 @@ class BackIcon extends StatelessWidget {
   const BackIcon({
     Key? key,
     this.onPress,
+    this.width = 36,
     this.padding = const EdgeInsets.only(left: 25.0),
     this.isPlaceHolder = false,
   }) : super(key: key);
 
   final VoidCallback? onPress;
   final EdgeInsets padding;
+  final double width;
   final bool isPlaceHolder;
 
   @override
@@ -21,7 +23,7 @@ class BackIcon extends StatelessWidget {
         opacity: isPlaceHolder ? 0 : 1,
         child: Container(
           height: 36,
-          width: 36,
+          width: width,
           margin: padding,
           child: InkWell(
             onTap: isPlaceHolder ? null : onPress,

@@ -307,6 +307,14 @@ class _AddRider2State extends State<AddRider2>
                                     context, ModalRoute.withName(Riders.id)));
                           } else if ((await appSettingsBloc.getUserType) ==
                               UserType.merchant) {
+                            String merchantId = await appSettingsBloc.getUserID;
+
+                            ///This flow is for when the user is from add ride
+                            vehicleModel = vehicleModel.copyWith(
+                                data: vehicleModel.data!.copyWith(
+                              merchantId: merchantId,
+                            ));
+
                             ///  This flow is for direct add vehicle only
                             ///  Merge with below if rider needs to be selected
                             ///  for a merchant

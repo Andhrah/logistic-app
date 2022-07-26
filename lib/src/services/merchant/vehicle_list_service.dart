@@ -26,15 +26,17 @@ class VehiclesListService extends BaseNetworkCallHandler {
     // String userID = await appSettingsBloc.getUserID;
 
     return runAPI('api/vehicles/$vehicleID', HttpRequestType.put, body: {
-      "data": {"merchantId": ""}
+      "data": {"riderId": "", "merchantId": ""}
     });
   }
 
-  Future<Operation> getVehicles() async {
+  Future<Operation> getVehicles(bool unassigned) async {
     String userID = await appSettingsBloc.getUserID;
 
     return runAPI(
-        'api/vehicles?populate=riderId,riderId.userId,riderId.merchantId&filters[riderId][merchantId][id][\$eq]=$userID',
+        unassigned
+            ? 'api/vehicles?populate=*&filters[merchantId][id][\$eq]=$userID'
+            : 'api/vehicles?populate=riderId,riderId.userId,riderId.merchantId&filters[riderId][merchantId][id][\$eq]=$userID',
         HttpRequestType.get);
   }
 }
