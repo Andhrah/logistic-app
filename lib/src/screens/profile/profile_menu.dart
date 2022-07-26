@@ -165,7 +165,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                                         ],
                                       ),
                                       Button(
-                                          text: 'Edit profile',
+                                          text: 'Edit Profile',
                                           onPress: () {
                                             //  var id = box.get('id');
                                             //   //print("This is the token " + name);
@@ -340,7 +340,8 @@ class _ProfileMenuState extends State<ProfileMenu>
                         onTap: () {
                           yesNoDialog(
                             context,
-                            message: 'Log out?',
+                            title: 'Log out',
+                            message: 'Are you sure you want to log out?',
                             positiveCallback: () =>
                                 logout(context, completeLogout: () {
                               Navigator.popUntil(

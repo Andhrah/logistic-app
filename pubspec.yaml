@@ -141,47 +141,47 @@ flutter:
   fonts:
     - family: Poppins
       fonts:
-        - asset: assets/fonts/Poppins-Black.ttf
+        - asset: assets/fonts/Poppins/Poppins-Black.ttf
           weight: 800
-        - asset: assets/fonts/Poppins-Bold.ttf
+        - asset: assets/fonts/Poppins/Poppins-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Poppins-SemiBold.ttf
+        - asset: assets/fonts/Poppins/Poppins-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/Poppins-ExtraBold.ttf
+        - asset: assets/fonts/Poppins/Poppins-ExtraBold.ttf
           weight: 900
-        - asset: assets/fonts/Poppins-ExtraLight.ttf
+        - asset: assets/fonts/Poppins/Poppins-ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/Poppins-Light.ttf
+        - asset: assets/fonts/Poppins/Poppins-Light.ttf
           weight: 300
-        - asset: assets/fonts/Poppins-Medium.ttf
+        - asset: assets/fonts/Poppins/Poppins-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Poppins-Regular.ttf
+        - asset: assets/fonts/Poppins/Poppins-Regular.ttf
           weight: 400
 
     - family: Mulish
       fonts:
-        - asset: assets/fonts/Mulish-Black.ttf
+        - asset: assets/fonts/Mulish/Mulish-Black.ttf
           weight: 800
-        - asset: assets/fonts/Mulish-Bold.ttf
+        - asset: assets/fonts/Mulish/Mulish-Bold.ttf
           weight: 700
-        - asset: assets/fonts/Mulish-SemiBold.ttf
+        - asset: assets/fonts/Mulish/Mulish-SemiBold.ttf
           weight: 600
-        - asset: assets/fonts/Mulish-ExtraBold.ttf
+        - asset: assets/fonts/Mulish/Mulish-ExtraBold.ttf
           weight: 900
-        - asset: assets/fonts/Mulish-ExtraLight.ttf
+        - asset: assets/fonts/Mulish/Mulish-ExtraLight.ttf
           weight: 200
-        - asset: assets/fonts/Mulish-Light.ttf
+        - asset: assets/fonts/Mulish/Mulish-Light.ttf
           weight: 300
-        - asset: assets/fonts/Mulish-Medium.ttf
+        - asset: assets/fonts/Mulish/Mulish-Medium.ttf
           weight: 500
-        - asset: assets/fonts/Mulish-Regular.ttf
+        - asset: assets/fonts/Mulish/Mulish-Regular.ttf
           weight: 400
 
     - family: HelveticaRoundedLTStd
       fonts:
-        - asset: assets/fonts/HelveticaRoundedLTStd-Bd.ttf
+        - asset: assets/fonts/HelveticaRounded/HelveticaRoundedLTStd-Bd.ttf
           weight: 200
-        - asset: assets/fonts/HelveticaRoundedLTStd-Black.ttf
+        - asset: assets/fonts/HelveticaRounded/HelveticaRoundedLTStd-Black.ttf
           weight: 200
          
     #       style: italic

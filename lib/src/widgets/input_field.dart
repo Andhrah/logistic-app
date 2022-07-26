@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/values/font.dart';
+import 'package:trakk/src/values/values.dart';
 
 class InputField extends StatelessWidget {
   const InputField(
@@ -95,6 +95,9 @@ class InputField extends StatelessWidget {
             ),
             disabledBorder: OutlineInputBorder(
               borderSide: BorderSide(color: borderColor, width: 0.0),
+            ),
+            border: OutlineInputBorder(
+              borderSide: BorderSide(color: appPrimaryColor, width: 0.0),
             ),
             // labelText: labelText,
             labelStyle: theme.textTheme.bodyText2!.copyWith(
