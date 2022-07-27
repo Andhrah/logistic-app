@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
+import 'package:location/location.dart' as Loca;
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/models/order/order.dart';
+import 'package:trakk/src/utils/app_toast.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
@@ -55,6 +59,55 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
     super.initState();
 
     googlePlace = GooglePlace(googleAPIKey);
+    init();
+  }
+
+  init() async {
+    var loca = await fetchLocation();
+
+    if (loca != null) {
+      pickUpLatLng = LatLng(loca.latitude ?? 0.0, loca.longitude ?? 0.0);
+
+      var list = (await geocoding.placemarkFromCoordinates(
+          pickUpLatLng?.latitude ?? 0.0, pickUpLatLng?.longitude ?? 0.0));
+      if (list.isNotEmpty) {
+        _pickUp = list.first.name;
+
+        setState(() {
+          _pickUpController.text = _pickUp ?? '';
+        });
+
+        doCallback();
+      }
+    }
+  }
+
+  Future<Loca.LocationData?> fetchLocation() async {
+    Loca.LocationData? locationData;
+    final Loca.Location location = Loca.Location();
+    bool serviceEnabled;
+    Loca.PermissionStatus permissionGranted;
+
+    serviceEnabled = await location.serviceEnabled();
+    if (!serviceEnabled) {
+      serviceEnabled = await location.requestService();
+      if (!serviceEnabled) {
+        return locationData;
+      }
+    }
+
+    permissionGranted = await location.hasPermission();
+    if (permissionGranted == Loca.PermissionStatus.denied) {
+      permissionGranted = await location.requestPermission();
+      //TODO: do your logic to manage when user denies the permission
+      if (permissionGranted != Loca.PermissionStatus.granted) {
+        appToast('Permission not granted', appToastType: AppToastType.failed);
+        return locationData;
+      }
+    }
+    locationData = await location.getLocation();
+
+    return locationData;
   }
 
   @override

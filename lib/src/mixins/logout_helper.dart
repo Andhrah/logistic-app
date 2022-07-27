@@ -17,7 +17,7 @@ typedef CompleteLogout();
 class LogoutHelper {
   CompleteLogout? _completeLogout;
 
-  logout(BuildContext context, {CompleteLogout? completeLogout}) async {
+  logout({CompleteLogout? completeLogout}) async {
     _completeLogout = completeLogout;
 
     _doLogout();

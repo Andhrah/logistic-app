@@ -92,20 +92,18 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                     Navigator.pop(context);
                   },
                 ),
-                Container(height: 98,
-                  margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.2),
+                Container(
+                  height: 98,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.2),
                   alignment: Alignment.center,
-                  child: InkWell(
-                    onTap: () {},
-                    customBorder: const CircleBorder(),
-                    child: const Text(
-                      'PROFILE MENU',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
-                      ),
+                  child: const Text(
+                    'PROFILE MENU',
+                    textScaleFactor: 1.2,
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      // decoration: TextDecoration.underline,
                     ),
                   ),
                 ),

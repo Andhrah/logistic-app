@@ -240,30 +240,31 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                               textColor: whiteColor,
                               isLoading: _loading,
                               width: 350.0)),
-                      const SizedBox(height: 15.0),
-                      InkWell(
-                        onTap: () {
-                          modalSearchableList(_list, (int index, String value) {
-                            String userType = 'customer';
-                            switch (value) {
-                              case 'Customer':
-                                userType = 'customer';
-                                break;
-                              case 'Rider':
-                                userType = 'rider';
-                                break;
-                              case 'Company':
-                                userType = 'merchant';
-                                break;
-                            }
+                      const SizedBox(height: 8.0),
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            modalSearchableList(_list,
+                                (int index, String value) {
+                              String userType = 'customer';
+                              switch (value) {
+                                case 'Customer':
+                                  userType = 'customer';
+                                  break;
+                                case 'Rider':
+                                  userType = 'rider';
+                                  break;
+                                case 'Company':
+                                  userType = 'merchant';
+                                  break;
+                              }
 
-                            Navigator.of(context)
-                                .pushNamed(Signup.id, arguments: {
-                              "userType": userType,
-                            });
-                          });
-                        },
-                        child: Align(
+                              Navigator.of(context)
+                                  .pushNamed(Signup.id, arguments: {
+                                "userType": userType,
+                              });
+                            }, title: 'Sign up as?');
+                          },
                           child: RichText(
                             textScaleFactor: 0.9,
                             text: const TextSpan(

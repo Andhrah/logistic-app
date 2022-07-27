@@ -1,12 +1,13 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 class EditProfileImageSelectorWidget extends StatefulWidget {
   final Function(File? itemImage) callback;
@@ -33,18 +34,37 @@ class _EditProfileImageSelectorWidgetState
     super.dispose();
   }
 
-  uploadItemImage() async {
-    final result = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
-    if (result != null &&
-        result.files.isNotEmpty &&
-        result.files.first.path != null) {
-      setState(() {
-        file = File(result.files.first.path!);
-      });
+  final ImagePicker _picker = ImagePicker();
 
-      doCallback();
-    }
+  uploadItemImage() async {
+    modalImageSelector((index) async {
+      switch (index) {
+        case 0:
+          var result = await _picker.pickImage(source: ImageSource.camera);
+
+          if (result != null && result.path.isNotEmpty) {
+            setState(() {
+              file = File(result.path);
+            });
+
+            doCallback();
+          }
+
+          break;
+        case 1:
+          var result = await _picker.pickImage(source: ImageSource.gallery);
+
+          if (result != null && result.path.isNotEmpty) {
+            setState(() {
+              file = File(result.path);
+            });
+
+            doCallback();
+          }
+
+          break;
+      }
+    });
   }
 
   doCallback() => widget.callback(file);
