@@ -7,7 +7,7 @@ import 'package:trakk/src/screens/auth/signup.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
-import 'package:trakk/src/widgets/elevated_container.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 class Login extends StatefulWidget {
@@ -29,6 +29,8 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
 
   String? _email;
   String? _password;
+
+  final List<String> _list = ['Customer', 'Rider', 'Company'];
 
   @override
   void initState() {
@@ -241,9 +243,24 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                       const SizedBox(height: 15.0),
                       InkWell(
                         onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(Signup.id, arguments: {
-                            "userType": "unknown",
+                          modalSearchableList(_list, (int index, String value) {
+                            String userType = 'customer';
+                            switch (value) {
+                              case 'Customer':
+                                userType = 'customer';
+                                break;
+                              case 'Rider':
+                                userType = 'rider';
+                                break;
+                              case 'Company':
+                                userType = 'merchant';
+                                break;
+                            }
+
+                            Navigator.of(context)
+                                .pushNamed(Signup.id, arguments: {
+                              "userType": userType,
+                            });
                           });
                         },
                         child: Align(

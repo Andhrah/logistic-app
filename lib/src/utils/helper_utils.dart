@@ -11,12 +11,9 @@ import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:intl/intl.dart';
 import 'package:trakk/src/.env.dart';
-import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/widgets/button.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 const chars = "abcdefghijklmnopqrstuvwxyz0123456789";
@@ -151,76 +148,6 @@ String greetWithTime() {
   } else {
     return 'Hi ';
   }
-}
-
-modalDialog(BuildContext context,
-    {String title = '',
-    Widget? child,
-    required String positiveLabel,
-    required Function() onPositiveCallback,
-    required String negativeLabel,
-    required Function() onNegativeCallback}) {
-  var theme = Theme.of(context);
-  MediaQueryData mediaQuery = MediaQuery.of(context);
-
-  showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.transparent,
-      builder: (context) => Container(
-          margin: EdgeInsets.only(bottom: mediaQuery.viewInsets.bottom),
-          constraints: const BoxConstraints(maxWidth: 450),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 54),
-          decoration: const BoxDecoration(
-              color: whiteColor,
-              borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(50), topLeft: Radius.circular(50))),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (title.isNotEmpty) 24.heightInPixel(),
-              if (title.isNotEmpty)
-                Center(
-                  child: Text(
-                    title,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(),
-                  ),
-                ),
-              if (title.isNotEmpty) 24.heightInPixel(),
-              if (child != null) child,
-              if (child != null) 24.heightInPixel(),
-              Row(
-                children: [
-                  Expanded(
-                    child: Button(
-                        text: positiveLabel,
-                        fontSize: 12,
-                        onPress: () {
-                          onPositiveCallback();
-                        },
-                        borderRadius: 12,
-                        color: kTextColor,
-                        width: double.infinity,
-                        textColor: whiteColor,
-                        isLoading: false),
-                  ),
-                  20.widthInPixel(),
-                  Expanded(
-                    child: Button(
-                        text: negativeLabel,
-                        fontSize: 12,
-                        onPress: () {
-                          onNegativeCallback();
-                        },
-                        borderRadius: 12,
-                        color: redColor,
-                        width: double.infinity,
-                        textColor: whiteColor,
-                        isLoading: false),
-                  ),
-                ],
-              ),
-            ],
-          )));
 }
 
 Future<Uint8List?> getBytesFromAsset(String path, int width) async {

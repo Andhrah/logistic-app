@@ -23,6 +23,7 @@ import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/cancel_button.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:uploadcare_client/uploadcare_client.dart';
 
 class MerchantAddRiderAndVehicleHelper with ProfileHelper {

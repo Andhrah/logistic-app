@@ -13,7 +13,7 @@ class InputField extends StatelessWidget {
       required this.text,
       this.suffixIcon,
       required this.textHeight,
-      required this.borderColor,
+      this.borderColor,
       this.enabled = true,
       // this.maxLines,
       this.area,
@@ -23,7 +23,7 @@ class InputField extends StatelessWidget {
       this.onSaved,
       this.onChanged,
       this.autovalidateMode,
-      required this.obscureText,
+      this.obscureText = false,
       this.maxLines,
       this.textColor,
       this.inputFormatters})
@@ -37,7 +37,7 @@ class InputField extends StatelessWidget {
   final String text;
   final Widget? suffixIcon;
   final double textHeight;
-  final Color borderColor;
+  final Color? borderColor;
   final Color? textColor;
   final bool enabled;
 
@@ -94,7 +94,9 @@ class InputField extends StatelessWidget {
               borderSide: BorderSide(color: redColor.withOpacity(0.8)),
             ),
             disabledBorder: OutlineInputBorder(
-              borderSide: BorderSide(color: borderColor, width: 0.0),
+              borderSide: BorderSide(
+                  color: borderColor ?? appPrimaryColor.withOpacity(0.9),
+                  width: 0.0),
             ),
             border: OutlineInputBorder(
               borderSide: BorderSide(color: appPrimaryColor, width: 0.0),

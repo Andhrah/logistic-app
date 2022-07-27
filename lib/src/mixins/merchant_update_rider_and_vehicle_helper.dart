@@ -3,11 +3,11 @@ import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/services/merchant/add_rider_service.dart';
 import 'package:trakk/src/services/merchant/vehicle_list_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/operation.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/styles.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 class MerchantUpdateRiderAndVehicleHelper {
   final BuildContext _authContext =

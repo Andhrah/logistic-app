@@ -8,13 +8,10 @@ import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/src/mixins/rider_order_helper.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/assets.dart';
-import 'package:trakk/src/values/constant.dart';
 import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/font.dart';
-import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 class RiderBottomSheet extends StatefulWidget {
   const RiderBottomSheet({Key? key}) : super(key: key);

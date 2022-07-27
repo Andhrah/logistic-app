@@ -23,6 +23,16 @@ class FormValidators {
     }
   }
 
+  ValidationState validateSingleInput(String? value) {
+    if (value == null) {
+      return ValidationState.isValidateFailed;
+    } else if (value.isEmpty) {
+      return ValidationState.isEmpty;
+    } else {
+      return ValidationState.isValidateSuccess;
+    }
+  }
+
   final validateEmailOnlyBloc =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
     final RegExp emailExp = RegExp(_kEmailRule);

@@ -7,11 +7,9 @@ import 'package:trakk/src/mixins/rider_order_helper.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_map/rider_bottom_sheet_content.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
-import 'package:trakk/src/values/styles.dart';
+import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 class RiderBottomSheet extends StatefulWidget {
   final double initialSize;

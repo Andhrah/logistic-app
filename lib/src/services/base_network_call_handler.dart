@@ -15,9 +15,9 @@ import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/operation.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 //below are for network calls
 const String kTimeoutText = 'Connection Timed out';
@@ -113,14 +113,16 @@ class BaseNetworkCallHandler with LogoutHelper {
       }
       AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
 
-      Map<String, dynamic> header = const {};
+      Map<String, dynamic> header = const {'Content-Type': 'application/json'};
 
-      if (appSettings.isLoggedIn &&
+      if (useIsLoggedIn &&
+          appSettings.isLoggedIn &&
           appSettings.loginResponse != null &&
           appSettings.loginResponse!.data != null &&
           appSettings.loginResponse!.data!.token != null) {
         header = {
           'Authorization': 'Bearer ${appSettings.loginResponse!.data!.token}',
+          'Content-Type': 'application/json'
         };
       }
       options.headers = header;
@@ -128,10 +130,13 @@ class BaseNetworkCallHandler with LogoutHelper {
     }, onResponse: (response, handler) async {
       AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
 
-      if (appSettings.isLoggedIn && response.statusCode == 401 ||
+      if ((appSettings.isLoggedIn && response.statusCode == 401) ||
           response.data['message']
               .toString()
               .contains('Missing or invalid credentials')) {
+        print('onResponse');
+        print(response.statusCode);
+        print(response.data);
         await appToast('Session expired', appToastType: AppToastType.failed);
         logoutGlobal();
 
@@ -155,10 +160,13 @@ class BaseNetworkCallHandler with LogoutHelper {
     }, onError: (DioError error, handler) async {
       AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
 
-      if (appSettings.isLoggedIn && error.response?.statusCode == 401 ||
+      if ((appSettings.isLoggedIn && error.response?.statusCode == 401) ||
           (error.response?.data['message'] ?? '')
               .toString()
               .contains('Missing or invalid credentials')) {
+        print('onError');
+        print(error.response?.statusCode);
+        print(error.response?.data);
         await appToast('Session expired', appToastType: AppToastType.failed);
         logoutGlobal();
 
