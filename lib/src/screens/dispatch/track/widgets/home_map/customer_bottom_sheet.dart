@@ -10,6 +10,7 @@ import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 class CustomerBottomSheet extends StatefulWidget {
   const CustomerBottomSheet({Key? key}) : super(key: key);
