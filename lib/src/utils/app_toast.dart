@@ -1,10 +1,10 @@
 import 'package:another_flushbar/flushbar.dart';
 import 'package:flutter/material.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/enums.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/values.dart';
 
-//todo: change is success to an enum and make color optional
 appToast(String message,
     {AppToastType appToastType = AppToastType.success,
     Color backgroundColor = appPrimaryColor}) {
@@ -25,10 +25,26 @@ appToast(String message,
         ? green
         : appToastType == AppToastType.failed
             ? redColor
-            : backgroundColor,
+            : appToastType == AppToastType.normal
+                ? appPrimaryColor
+                : backgroundColor,
     maxWidth: maxWidth,
     flushbarPosition: FlushbarPosition.TOP,
     borderRadius: BorderRadius.circular(10),
     duration: const Duration(seconds: 3),
   ).show(context);
+}
+
+runToast(String message,
+    {Toast length = Toast.LENGTH_SHORT,
+    ToastGravity toastGravity = ToastGravity.BOTTOM,
+    Color? backgroundColor,
+    Color? textColor}) {
+  Fluttertoast.showToast(
+      msg: message,
+      toastLength: length,
+      backgroundColor: backgroundColor,
+      textColor: textColor,
+      timeInSecForIosWeb: length == Toast.LENGTH_SHORT ? 1 : 3,
+      gravity: toastGravity);
 }

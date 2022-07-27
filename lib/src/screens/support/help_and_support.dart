@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'package:remixicon/remixicon.dart';
-
-import 'package:trakk/src/provider/support/support.dart';
 import 'package:trakk/src/services/support_service.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
@@ -20,7 +17,6 @@ class HelpAndSupport extends StatefulWidget {
 
 class _HelpAndSupportState extends State<HelpAndSupport> {
   var complaints = [
-"Choose Complaint",
     "Delivery issues",
     "Payment issues",
     "Account & data",
@@ -29,7 +25,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
   final _formKey = GlobalKey<FormState>();
 
   String? _email;
-   String _complaintType = "Choose Complaint";
+  String? _complaintType;
 
   late TextEditingController _emailController;
   late TextEditingController _messageController;
@@ -53,7 +49,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
 
     final FormState? form = _formKey.currentState;
 
-    if (form!.validate() && _complaintType !=  "Choose Complaint") {
+    if (form!.validate() && _complaintType != null) {
       form.save();
 
       try {
@@ -61,7 +57,7 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
           _isLoading = true;
         });
         var response = await supportService.sendMessage(
-            name: _complaintType,
+            name: _complaintType ?? '',
             email: _emailController.text,
             message: _messageController.text);
         if (response == true) {
@@ -111,7 +107,9 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -188,59 +186,82 @@ class _HelpAndSupportState extends State<HelpAndSupport> {
                               return null;
                             },
                           ),
-                          _isButtonPress && _complaintType == "Choose Complaint"
-                              ? const Text(
-                                  " Choose your complaint type",
-                                  textScaleFactor: 0.9,
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    color: Colors.red,
-                                  ),
-                                )
-                              : Container(),
+                          // const Text(
+                          //   "Choose your complaint type",
+                          //   textScaleFactor: 0.9,
+                          //   textAlign: TextAlign.center,
+                          //   style: TextStyle(
+                          //     color: Colors.red,
+                          //   ),
+                          // ),
                           const SizedBox(height: 30.0),
-                          DecoratedBox(
-                              decoration: BoxDecoration(
-                                border: Border.all(
-                                    color: appPrimaryColor.withOpacity(0.9),
-                                    width: 0.3), //border of dropdown button
-                                borderRadius: BorderRadius.circular(
-                                    5.0), //border raiuds of dropdown button
+                          DropdownButtonFormField<String>(
+                            value: _complaintType,
+                            icon: const Icon(Remix.arrow_down_s_line),
+                            elevation: 16,
+                            isExpanded: true,
+                            hint: Text(
+                              'Choose Complaint',
+                              style: TextStyle(
+                                color: appPrimaryColor.withOpacity(0.5),
+                                fontSize: 14.0,
                               ),
-                              child: Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10.0),
-                                child: DropdownButton<String>(
-                                  value: _complaintType,
-                                  icon: const Icon(Remix.arrow_down_s_line),
-                                  elevation: 16,
-                                  isExpanded: true,
-                                  style: TextStyle(
-                                    color: appPrimaryColor.withOpacity(0.8),
-                                    fontSize: 18.0,
-                                  ),
-                                  underline: Container(),
-                                  //empty line
-                                  onChanged: (String? newValue) {
-                                    setState(() {
-                                      _complaintType = newValue!;
-                                    });
-                                  },
-                                  items: complaints.map((String value) {
-                                    return DropdownMenuItem(
-                                      value: value,
-                                      child: Text(value),
-                                    );
-                                  }).toList(),
-                                  hint: Text(
-                                    "Choose complaint",
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w600),
-                                  ),
-                                ),
-                              )),
+                            ),
+                            style: theme.textTheme.bodyText2!.copyWith(
+                              color: appPrimaryColor.withOpacity(0.8),
+                            ),
+                            validator: (value) {
+                              if (value == null || (value.isEmpty)) {
+                                return 'Choose your complaint type';
+                              }
+
+                              return null;
+                            },
+                            decoration: InputDecoration(
+                              contentPadding: const EdgeInsets.symmetric(
+                                  vertical: 13.0, horizontal: 10.0),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: appPrimaryColor, width: 0.0),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: secondaryColor.withOpacity(0.8)),
+                              ),
+                              errorBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: redColor.withOpacity(0.8)),
+                              ),
+                              disabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: appPrimaryColor.withOpacity(0.9),
+                                    width: 0.0),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: appPrimaryColor, width: 0.0),
+                              ),
+                              // labelText: labelText,
+                              labelStyle: theme.textTheme.bodyText2!.copyWith(
+                                  color: const Color(0xFF8C8C8C),
+                                  fontWeight: kSemiBoldWeight),
+
+                              hintStyle: theme.textTheme.bodyText2!
+                                  .copyWith(color: const Color(0xFFBDBDBD)),
+                            ),
+                            onChanged: (String? newValue) {
+                              setState(() {
+                                _complaintType = newValue!;
+                              });
+                              _formKey.currentState!.validate();
+                            },
+                            items: complaints.map((String value) {
+                              return DropdownMenuItem(
+                                value: value,
+                                child: Text(value),
+                              );
+                            }).toList(),
+                          ),
                           const SizedBox(height: 30.0),
                           TextField(
                             controller: _messageController,

@@ -42,23 +42,25 @@ class LoginHelper with ConnectivityHelper {
   _completeLogin(Operation operation, Function() onCloseLoader) async {
     onCloseLoader();
     if (operation.code == 200 || operation.code == 201) {
-      passwordCC.clear();
       AuthResponse authResponse = AuthResponse.fromJson(operation.result);
       await appSettingsBloc.saveLoginDetails(authResponse);
 
       if ((authResponse.data?.user?.confirmed ?? false) == true) {
         await appToast('Login Successful', appToastType: AppToastType.success);
-        SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
+        await SingletonData.singletonData.navKey.currentState!
+            .pushNamed(Tabs.id);
       } else {
         await appToast('Login Successful, please verify your account',
             appToastType: AppToastType.success);
-        SingletonData.singletonData.navKey.currentState!
+        await SingletonData.singletonData.navKey.currentState!
             .pushNamed(VerifiyAccountScreen.id, arguments: {
           "email": authResponse.data?.user?.email ?? '',
           "phoneNumber": authResponse.data?.user?.phoneNumber ?? '',
           'userType': authResponse.data?.user?.userType ?? ''
         });
       }
+
+      passwordCC.clear();
     } else {
       MessageOnlyResponse error = operation.result;
 
