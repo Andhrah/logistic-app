@@ -85,6 +85,7 @@ dependencies:
   readmore: ^2.1.0
   fluttertoast: ^8.0.9
   image_picker:
+  local_auth: ^1.1.7
 
 dev_dependencies:
   flutter_test:

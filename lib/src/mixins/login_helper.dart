@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/mixins/biometrics_helper.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
@@ -24,7 +25,11 @@ import '../utils/operation.dart';
 typedef LoginCompleted = Function(AuthResponse loginResponse);
 
 class LoginHelper
-    with ConnectivityHelper, MerchantAddRiderAndVehicleHelper, ProfileHelper {
+    with
+        ConnectivityHelper,
+        MerchantAddRiderAndVehicleHelper,
+        ProfileHelper,
+        BiometricsHelper {
   late Function() _onShowLoader;
   late Function() _onCloseLoader;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -86,8 +91,17 @@ class LoginHelper
         }
 
         await appToast('Login Successful', appToastType: AppToastType.success);
+        // toggleBiometrics(_authContext!, true, false, (bool status) async {
+        //   AuthResponse authResponse = operation.result;
+        //
+        //   await appSettingsBloc.saveLoginDetails(authResponse);
+        //   await appSettingsBloc.setPersistentLogin(_isPersistentLogin);
+        //   await appSettingsBloc.setBiometrics(status);
+
         await SingletonData.singletonData.navKey.currentState!
             .pushNamed(Tabs.id);
+        // });
+
       } else {
         await appToast('Login Successful, please verify your account',
             appToastType: AppToastType.success);

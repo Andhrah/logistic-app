@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/mixins/biometrics_helper.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/login_helper.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
@@ -26,7 +27,8 @@ class _LoginState extends State<Login>
         LoginHelper,
         ConnectivityHelper,
         MerchantAddRiderAndVehicleHelper,
-        ProfileHelper {
+        ProfileHelper,
+        BiometricsHelper {
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
 
