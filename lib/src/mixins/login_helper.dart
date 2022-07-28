@@ -25,6 +25,8 @@ typedef LoginCompleted = Function(AuthResponse loginResponse);
 
 class LoginHelper
     with ConnectivityHelper, MerchantAddRiderAndVehicleHelper, ProfileHelper {
+  late Function() _onShowLoader;
+  late Function() _onCloseLoader;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController emailCC = TextEditingController();
   TextEditingController passwordCC = TextEditingController();
@@ -33,18 +35,20 @@ class LoginHelper
 
   doLoginOperation(bool isPersistentLogin, Function() onShowLoader,
       Function() onCloseLoader) async {
+    _onShowLoader = onShowLoader;
+    _onCloseLoader = onCloseLoader;
     _isPersistentLogin = isPersistentLogin;
 
     if (formKey.currentState!.validate()) {
       onShowLoader();
       loginService
           .doLogin(emailCC.text.trim(), passwordCC.text)
-          .then((value) => _completeLogin(value, onCloseLoader));
+          .then((value) => _completeLogin(value));
     }
   }
 
-  _completeLogin(Operation operation, Function() onCloseLoader) async {
-    onCloseLoader();
+  _completeLogin(Operation operation) async {
+    _onCloseLoader();
     if (operation.code == 200 || operation.code == 201) {
       AuthResponse authResponse = AuthResponse.fromJson(operation.result);
       await appSettingsBloc.saveLoginDetails(authResponse);
@@ -54,6 +58,7 @@ class LoginHelper
                 'rider') &&
             (authResponse.data?.user?.rider == null)) {
           //make an API request to update the riderID so that rider's object can be created
+
           addRiderBioData(
               AddRiderToMerchantModel(
                   data: AddRiderToMerchantModelData(
@@ -64,10 +69,18 @@ class LoginHelper
                       phone: authResponse.data?.user?.phoneNumber,
                       email: authResponse.data?.user?.email)),
               onSuccessCallback: () async {
-            await appToast('Login Successful',
-                appToastType: AppToastType.success);
-            await SingletonData.singletonData.navKey.currentState!
-                .pushNamed(Tabs.id);
+            // //use this flow and remove the flow below when the profile API returns Rider Object
+            // doGetProfileOperation(
+            // onShowLoader: _onShowLoader,
+            // onCloseLoader: () async {
+            //   _onCloseLoader();
+            //   await appToast('Login Successful',
+            //       appToastType: AppToastType.success);
+            //   await SingletonData.singletonData.navKey.currentState!
+            //       .pushNamed(Tabs.id);
+            // });
+
+            doLoginOperation(_isPersistentLogin, _onShowLoader, _onCloseLoader);
           }, continueStepAfterCompletion: false);
           return;
         }
