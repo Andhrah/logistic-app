@@ -7,8 +7,11 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
+import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
+import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/screens/auth/verify_account.dart';
 import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/services/auth/login_service.dart';
@@ -20,7 +23,8 @@ import '../utils/operation.dart';
 
 typedef LoginCompleted = Function(AuthResponse loginResponse);
 
-class LoginHelper with ConnectivityHelper {
+class LoginHelper
+    with ConnectivityHelper, MerchantAddRiderAndVehicleHelper, ProfileHelper {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController emailCC = TextEditingController();
   TextEditingController passwordCC = TextEditingController();
@@ -46,6 +50,28 @@ class LoginHelper with ConnectivityHelper {
       await appSettingsBloc.saveLoginDetails(authResponse);
 
       if ((authResponse.data?.user?.confirmed ?? false) == true) {
+        if ((authResponse.data?.user?.userType!.toString().toLowerCase() ==
+                'rider') &&
+            (authResponse.data?.user?.rider == null)) {
+          //make an API request to update the riderID so that rider's object can be created
+          addRiderBioData(
+              AddRiderToMerchantModel(
+                  data: AddRiderToMerchantModelData(
+                      userId: '${authResponse.data?.user?.id ?? ''}',
+                      firstName: authResponse.data?.user?.firstName,
+                      lastName: authResponse.data?.user?.lastName,
+                      avatar: authResponse.data?.user?.avatar,
+                      phone: authResponse.data?.user?.phoneNumber,
+                      email: authResponse.data?.user?.email)),
+              onSuccessCallback: () async {
+            await appToast('Login Successful',
+                appToastType: AppToastType.success);
+            await SingletonData.singletonData.navKey.currentState!
+                .pushNamed(Tabs.id);
+          }, continueStepAfterCompletion: false);
+          return;
+        }
+
         await appToast('Login Successful', appToastType: AppToastType.success);
         await SingletonData.singletonData.navKey.currentState!
             .pushNamed(Tabs.id);
