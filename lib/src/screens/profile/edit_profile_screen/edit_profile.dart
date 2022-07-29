@@ -55,15 +55,13 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
     var user =
         (await appSettingsBloc.fetchAppSettings()).loginResponse?.data?.user;
 
-    UserType userType = await appSettingsBloc.getUserType;
+    // UserType userType = await appSettingsBloc.getUserType;
     setState(() {
       _firstNameController.text = user?.firstName ?? '';
       _lastNameController.text = user?.lastName ?? '';
       _emailController.text = user?.email ?? '';
       _phoneNumberController.text = user?.phoneNumber ?? '';
-      _addressController.text = userType == UserType.rider
-          ? (user?.rider?.residentialAddress ?? '')
-          : user?.address ?? '';
+      _addressController.text = user?.address ?? '';
     });
   }
 
@@ -267,22 +265,25 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                             },
                           ),
                           const SizedBox(height: 30.0),
-                          InputField(
-                            key: const Key('Company\'s email address'),
-                            textController: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            node: _emailNode,
-                            // autovalidateMode: AutovalidateMode.onUserInteraction,
-                            obscureText: false,
-                            text: 'Email Address',
-                            hintText: '@gmail.com',
-                            textHeight: 10.0,
-                            borderColor: appPrimaryColor.withOpacity(0.9),
+                          Opacity(
+                            opacity: 0.5,
+                            child: InputField(
+                              key: const Key('Company\'s email address'),
+                              textController: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              node: _emailNode,
+                              // autovalidateMode: AutovalidateMode.onUserInteraction,
+                              obscureText: false, enabled: false,
+                              text: 'Email Address',
+                              hintText: '@gmail.com',
+                              textHeight: 10.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
 
-                            validator: validationBloc.emailValidator,
-                            onSaved: (value) {
-                              return null;
-                            },
+                              validator: validationBloc.emailValidator,
+                              onSaved: (value) {
+                                return null;
+                              },
+                            ),
                           ),
                           const SizedBox(height: 30.0),
                           InputField(

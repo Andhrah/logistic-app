@@ -204,7 +204,6 @@ class _MyAppState extends State<MyApp> {
               RiderOrderScreen.id: (context) => const RiderHomeScreen(),
               RiderHomeScreen.id: (context) => const RiderHomeScreen(),
               CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
-              RiderProfile.id: (context) => const RiderProfile(),
               Beneficiaries.id: (context) => const Beneficiaries(),
               // MyDatePicker.id: (context) => MyDatePicker(),
               // Country.id: (context) => const Country(),

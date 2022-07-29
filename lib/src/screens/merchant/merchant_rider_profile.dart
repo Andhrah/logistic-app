@@ -6,17 +6,91 @@ import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/screens/merchant/company_home.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/cancel_button.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
-enum ProfileOptions {
-  Edit,
-  Suspend,
-  Delete,
-  Null,
+class MerchantRiderProfile extends StatefulWidget {
+  static String id = "mriderprofile";
+
+  const MerchantRiderProfile({Key? key}) : super(key: key);
+
+  @override
+  State<MerchantRiderProfile> createState() => _MerchantRiderProfile();
+}
+
+class _MerchantRiderProfile extends State<MerchantRiderProfile> {
+  @override
+  Widget build(BuildContext context) {
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    return Scaffold(
+      backgroundColor: whiteColor,
+      body: SafeArea(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                  left: 0.0, right: 30, bottom: 17, top: 20),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  BackIcon(
+                    onPress: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                  //Text('data'),
+                  SizedBox(
+                    width: mediaQuery.size.width / 4,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(
+                              top: 30,
+                              bottom: 0,
+                            ),
+                            height: 80,
+                            width: 80,
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                    image:
+                                        AssetImage('assets/images/malik.png'))),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                //physics: NeverScrollableScrollPhysics(),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: const [
+                    Padding(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 25),
+                      child: ProfileIdget(),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class ProfileIdget extends StatefulWidget {
@@ -27,7 +101,7 @@ class ProfileIdget extends StatefulWidget {
 }
 
 class _ProfileWidgetState extends State<ProfileIdget> {
-  ProfileOptions selectedProfileOptions = ProfileOptions.Edit;
+  RiderProfileOptions selectedProfileOptions = RiderProfileOptions.Edit;
 
   final _formKey = GlobalKey<FormState>();
 
@@ -153,14 +227,14 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                         ),
                         child: ElevatedButton(
                           style: ButtonStyle(
-                            backgroundColor:
-                                (selectedProfileOptions == ProfileOptions.Edit)
-                                    ? MaterialStateProperty.all(appPrimaryColor)
-                                    : MaterialStateProperty.all(whiteColor),
+                            backgroundColor: (selectedProfileOptions ==
+                                    RiderProfileOptions.Edit)
+                                ? MaterialStateProperty.all(appPrimaryColor)
+                                : MaterialStateProperty.all(whiteColor),
                           ),
                           onPressed: () {
                             setState(() {
-                              selectedProfileOptions = ProfileOptions.Edit;
+                              selectedProfileOptions = RiderProfileOptions.Edit;
                               _selectedProfile = true;
                             });
                           },
@@ -168,7 +242,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                             "Edit",
                             style: TextStyle(
                                 color: (selectedProfileOptions ==
-                                        ProfileOptions.Edit)
+                                        RiderProfileOptions.Edit)
                                     ? whiteColor
                                     : appPrimaryColor),
                           ),
@@ -186,20 +260,21 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: (selectedProfileOptions ==
-                                    ProfileOptions.Suspend)
+                                    RiderProfileOptions.Suspend)
                                 ? MaterialStateProperty.all(appPrimaryColor)
                                 : MaterialStateProperty.all(whiteColor),
                           ),
                           onPressed: () {
                             setState(() {
-                              selectedProfileOptions = ProfileOptions.Suspend;
+                              selectedProfileOptions =
+                                  RiderProfileOptions.Suspend;
                             });
                           },
                           child: Text(
                             "Suspend",
                             style: TextStyle(
                                 color: (selectedProfileOptions ==
-                                        ProfileOptions.Suspend)
+                                        RiderProfileOptions.Suspend)
                                     ? whiteColor
                                     : appPrimaryColor),
                           ),
@@ -217,7 +292,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: (selectedProfileOptions ==
-                                    ProfileOptions.Delete)
+                                    RiderProfileOptions.Delete)
                                 ? MaterialStateProperty.all(appPrimaryColor)
                                 : MaterialStateProperty.all(whiteColor),
                           ),
@@ -333,7 +408,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                             "Delete",
                             style: TextStyle(
                                 color: (selectedProfileOptions ==
-                                        ProfileOptions.Delete)
+                                        RiderProfileOptions.Delete)
                                     ? whiteColor
                                     : appPrimaryColor),
                           ),
@@ -353,13 +428,13 @@ class _ProfileWidgetState extends State<ProfileIdget> {
   Widget getCustomContainer(User user) {
     //var selectedOptions;
     switch (selectedProfileOptions) {
-      case ProfileOptions.Edit:
+      case RiderProfileOptions.Edit:
         return editContainer(user);
-      case ProfileOptions.Suspend:
+      case RiderProfileOptions.Suspend:
         return suspendContainer();
-      case ProfileOptions.Delete:
+      case RiderProfileOptions.Delete:
         return deleteContainer();
-      case ProfileOptions.Null:
+      case RiderProfileOptions.Null:
         // TODO: Handle this case.
         break;
     }
@@ -824,85 +899,6 @@ class Profillebox extends StatelessWidget {
               )),
         ),
       ],
-    );
-  }
-}
-
-class MerchantRiderProfile extends StatefulWidget {
-  static String id = "mriderprofile";
-
-  const MerchantRiderProfile({Key? key}) : super(key: key);
-
-  @override
-  State<MerchantRiderProfile> createState() => _MerchantRiderProfile();
-}
-
-class _MerchantRiderProfile extends State<MerchantRiderProfile> {
-  @override
-  Widget build(BuildContext context) {
-    MediaQueryData mediaQuery = MediaQuery.of(context);
-    return Scaffold(
-      backgroundColor: whiteColor,
-      body: SafeArea(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 0.0, right: 30, bottom: 17, top: 20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  BackIcon(
-                    onPress: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  //Text('data'),
-                  SizedBox(
-                    width: mediaQuery.size.width / 4,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Column(
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.only(
-                              top: 30,
-                              bottom: 0,
-                            ),
-                            height: 80,
-                            width: 80,
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(
-                                    image:
-                                        AssetImage('assets/images/malik.png'))),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                //physics: NeverScrollableScrollPhysics(),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 10, horizontal: 25),
-                      child: ProfileIdget(),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }

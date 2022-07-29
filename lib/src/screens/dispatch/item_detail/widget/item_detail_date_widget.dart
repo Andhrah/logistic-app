@@ -91,7 +91,7 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
               enabled: false,
               textController: _pickUpDateController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              borderColor: appPrimaryColor.withOpacity(0.5),
+              borderColor: appPrimaryColor.withOpacity(0.7),
               area: null,
               suffixIcon: IconButton(
                 onPressed: () {},
@@ -168,7 +168,7 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
               node: _dropOffDateNode,
               textController: _dropOffDateController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              borderColor: appPrimaryColor.withOpacity(0.5),
+              borderColor: appPrimaryColor.withOpacity(0.7),
               area: null,
               suffixIcon: IconButton(
                 onPressed: () {},

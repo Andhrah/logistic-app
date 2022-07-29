@@ -46,11 +46,11 @@ class GetVehiclesForMerchantDatum {
   });
 
   final int? id;
-  final DatumAttributes? attributes;
+  final GetVehiclesDatumAttributes? attributes;
 
   GetVehiclesForMerchantDatum copyWith({
     int? id,
-    DatumAttributes? attributes,
+    GetVehiclesDatumAttributes? attributes,
   }) =>
       GetVehiclesForMerchantDatum(
         id: id ?? this.id,
@@ -62,7 +62,7 @@ class GetVehiclesForMerchantDatum {
         id: json["id"] == null ? null : json["id"],
         attributes: json["attributes"] == null
             ? null
-            : DatumAttributes.fromJson(json["attributes"]),
+            : GetVehiclesDatumAttributes.fromJson(json["attributes"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,8 +71,8 @@ class GetVehiclesForMerchantDatum {
       };
 }
 
-class DatumAttributes {
-  DatumAttributes({
+class GetVehiclesDatumAttributes {
+  GetVehiclesDatumAttributes({
     this.name,
     this.color,
     this.number,
@@ -98,7 +98,7 @@ class DatumAttributes {
   final DateTime? publishedAt;
   final RiderId? riderId;
 
-  DatumAttributes? copyWith({
+  GetVehiclesDatumAttributes? copyWith({
     String? name,
     String? color,
     String? number,
@@ -111,7 +111,7 @@ class DatumAttributes {
     DateTime? publishedAt,
     RiderId? riderId,
   }) =>
-      DatumAttributes(
+      GetVehiclesDatumAttributes(
         name: name ?? this.name,
         color: color ?? this.color,
         number: number ?? this.number,
@@ -125,8 +125,8 @@ class DatumAttributes {
         riderId: riderId ?? this.riderId,
       );
 
-  factory DatumAttributes.fromJson(Map<String, dynamic> json) =>
-      DatumAttributes(
+  factory GetVehiclesDatumAttributes.fromJson(Map<String, dynamic> json) =>
+      GetVehiclesDatumAttributes(
         name: json["name"] == null ? null : json["name"],
         color: json["color"] == null ? null : json["color"],
         number: json["number"] == null ? null : json["number"],

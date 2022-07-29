@@ -89,13 +89,14 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
           const CustomerBottomSheet(),
           Positioned(
             top: 12,
-            left: 0,
-            child: BackIcon(
-              onPress: () {
-                Navigator.pop(context);
-              },
-              padding:
-                  const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+            left: kDefaultLayoutPadding,
+            child: SafeArea(
+              child: BackIcon(
+                onPress: () {
+                  Navigator.pop(context);
+                },
+                padding: EdgeInsets.zero,
+              ),
             ),
           ),
         ],
