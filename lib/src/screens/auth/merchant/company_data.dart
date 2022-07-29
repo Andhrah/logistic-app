@@ -164,7 +164,7 @@ class _CompanyDataState extends State<CompanyData>
                       InputField(
                         key: const Key('cac'),
                         textController: rcNumberController,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.text,
                         node: _rcNumberNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,
