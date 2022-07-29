@@ -13,10 +13,12 @@ class AppSettings {
   bool isLoggedIn;
   AuthResponse? loginResponse;
   bool isPersistentLogin;
+  bool biometricsEnabled;
   int themeModeIndex;
 
   AppSettings(
       {this.hasViewedAppTour = false,
+      this.biometricsEnabled = false,
       this.isLoggedIn = false,
       this.isPersistentLogin = false,
       this.loginResponse,
@@ -27,11 +29,13 @@ class AppSettings {
       bool? isLoggedIn,
       AuthResponse? loginResponse,
       bool? isPersistentLogin,
+      bool? biometricsEnabled,
       int? themeModeIndex}) {
     return AppSettings(
       hasViewedAppTour: hasViewedAppTour ?? this.hasViewedAppTour,
       isLoggedIn: isLoggedIn ?? this.isLoggedIn,
       loginResponse: loginResponse ?? this.loginResponse,
+      biometricsEnabled: biometricsEnabled ?? this.biometricsEnabled,
       isPersistentLogin: isPersistentLogin ?? this.isPersistentLogin,
       themeModeIndex: themeModeIndex ?? this.themeModeIndex,
     );
@@ -43,14 +47,15 @@ class AppSettings {
     final AppSettings typedOther = other;
     return hasViewedAppTour == typedOther.hasViewedAppTour &&
         isLoggedIn == typedOther.isLoggedIn &&
+        biometricsEnabled == typedOther.biometricsEnabled &&
         loginResponse == typedOther.loginResponse &&
         isPersistentLogin == typedOther.isPersistentLogin &&
         themeModeIndex == typedOther.themeModeIndex;
   }
 
   @override
-  int get hashCode => hashValues(hasViewedAppTour, isLoggedIn, loginResponse,
-      isPersistentLogin, themeModeIndex);
+  int get hashCode => hashValues(hasViewedAppTour, isLoggedIn,
+      biometricsEnabled, loginResponse, isPersistentLogin, themeModeIndex);
 
   @override
   String toString() {
@@ -59,6 +64,7 @@ class AppSettings {
 
   factory AppSettings.fromJson(Map<String, dynamic> data) => AppSettings(
         hasViewedAppTour: data['hasViewedAppTour'] ?? false,
+        biometricsEnabled: data['biometricsEnabled'] ?? false,
         isPersistentLogin: data['isPersistentLogin'] ?? false,
         isLoggedIn: data['isLoggedIn'] ?? false,
         loginResponse: data['loginResponse'] == null
@@ -71,6 +77,7 @@ class AppSettings {
   Map<String, dynamic> toMap() => {
         'hasViewedAppTour': hasViewedAppTour,
         "isPersistentLogin": isPersistentLogin,
+        'biometricsEnabled': biometricsEnabled,
         "isLoggedIn": isLoggedIn,
         'loginResponse': loginResponse != null ? loginResponse!.toJson() : null,
         'themeModeIndex': themeModeIndex,

@@ -10,6 +10,7 @@ import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/wallet/wallet.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 
@@ -80,6 +81,9 @@ class _TabsState extends State<Tabs> {
   }
 
   void _onItemTapped(int index) {
+    if (index == 2) {
+      runToast('Coming soon!!');
+    }
     setState(() {
       _selectedIndex = index == 2 ? _selectedIndex : index;
     });

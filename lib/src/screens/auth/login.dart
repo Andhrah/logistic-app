@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/mixins/biometrics_helper.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/login_helper.dart';
+import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/screens/auth/forgot_password.dart';
 import 'package:trakk/src/screens/auth/signup.dart';
 import 'package:trakk/src/values/values.dart';
@@ -19,7 +22,13 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
+class _LoginState extends State<Login>
+    with
+        LoginHelper,
+        ConnectivityHelper,
+        MerchantAddRiderAndVehicleHelper,
+        ProfileHelper,
+        BiometricsHelper {
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
 
@@ -240,30 +249,31 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                               textColor: whiteColor,
                               isLoading: _loading,
                               width: 350.0)),
-                      const SizedBox(height: 15.0),
-                      InkWell(
-                        onTap: () {
-                          modalSearchableList(_list, (int index, String value) {
-                            String userType = 'customer';
-                            switch (value) {
-                              case 'Customer':
-                                userType = 'customer';
-                                break;
-                              case 'Rider':
-                                userType = 'rider';
-                                break;
-                              case 'Company':
-                                userType = 'merchant';
-                                break;
-                            }
+                      const SizedBox(height: 8.0),
+                      Center(
+                        child: TextButton(
+                          onPressed: () {
+                            modalSearchableList(_list,
+                                (int index, String value) {
+                              String userType = 'customer';
+                              switch (value) {
+                                case 'Customer':
+                                  userType = 'customer';
+                                  break;
+                                case 'Rider':
+                                  userType = 'rider';
+                                  break;
+                                case 'Company':
+                                  userType = 'merchant';
+                                  break;
+                              }
 
-                            Navigator.of(context)
-                                .pushNamed(Signup.id, arguments: {
-                              "userType": userType,
-                            });
-                          });
-                        },
-                        child: Align(
+                              Navigator.of(context)
+                                  .pushNamed(Signup.id, arguments: {
+                                "userType": userType,
+                              });
+                            }, title: 'Sign up as?');
+                          },
                           child: RichText(
                             textScaleFactor: 0.9,
                             text: const TextSpan(

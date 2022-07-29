@@ -3,6 +3,7 @@ import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/image_selector_modal.dart';
 import 'package:trakk/src/widgets/searchable_list_modal.dart';
 
 yesNoDialog(
@@ -167,4 +168,18 @@ modalDialog(BuildContext context,
               ),
             ],
           )));
+}
+
+modalImageSelector(ImageSelectorCallback callback, {BuildContext? context}) {
+  showModalBottomSheet(
+      context: context ??
+          SingletonData.singletonData.navKey.currentState!.overlay!.context,
+      isScrollControlled: true,
+      builder: (context) {
+        ThemeData theme = Theme.of(context);
+        final bool isDark = theme.brightness == Brightness.dark;
+
+        return ImageSelectorModal(callback);
+      },
+      backgroundColor: Colors.transparent);
 }

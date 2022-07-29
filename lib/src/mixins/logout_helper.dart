@@ -15,14 +15,12 @@ import 'package:trakk/src/values/enums.dart';
 typedef CompleteLogout();
 
 class LogoutHelper {
-  CompleteLogout? _completeLogout;
-
-  logout(BuildContext context, {CompleteLogout? completeLogout}) async {
-    _completeLogout = completeLogout;
-
+  logout({CompleteLogout? completeLogout}) async {
     _doLogout();
 
-    _completeLogout!();
+    if (completeLogout != null) {
+      completeLogout();
+    }
   }
 
   _doLogout() async {
