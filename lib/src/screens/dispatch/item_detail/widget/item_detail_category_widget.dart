@@ -49,8 +49,8 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
         DecoratedBox(
             decoration: BoxDecoration(
               border: Border.all(
-                  color: appPrimaryColor.withOpacity(0.5),
-                  width: 0.3), //border of dropdown button
+                  color: appPrimaryColor.withOpacity(0.6),
+                  width: 0.6), //border of dropdown button
               borderRadius:
                   BorderRadius.circular(5.0), //border raiuds of dropdown button
             ),
@@ -116,7 +116,6 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
           autovalidateMode: AutovalidateMode.onUserInteraction,
           borderColor: appPrimaryColor.withOpacity(0.5),
           area: null,
-          
           onChanged: (value) {
             doCallback();
             return null;

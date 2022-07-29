@@ -1,3 +1,6 @@
+import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
+import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
+
 class AvailableRiderResponse {
   AvailableRiderResponse({
     this.status,
@@ -91,7 +94,7 @@ class AvailableRiderDataRider {
   final String? status;
   final double? cost;
   final dynamic userId;
-  final List<dynamic>? vehicles;
+  final List<GetVehiclesDatumAttributes>? vehicles;
   final List<dynamic>? ratings;
   final List<dynamic>? nextOfKins;
   final MerchantId? merchantId;
@@ -136,7 +139,8 @@ class AvailableRiderDataRider {
         userId: json["userId"],
         vehicles: json["vehicles"] == null
             ? null
-            : List<dynamic>.from(json["vehicles"].map((x) => x)),
+            : List<GetVehiclesDatumAttributes>.from(json["vehicles"]
+                .map((x) => GetVehiclesDatumAttributes.fromJson(x))),
         ratings: json["ratings"] == null
             ? null
             : List<dynamic>.from(json["ratings"].map((x) => x)),
@@ -179,7 +183,7 @@ class AvailableRiderDataRider {
         "userId": userId,
         "vehicles": vehicles == null
             ? null
-            : List<dynamic>.from(vehicles!.map((x) => x)),
+            : List<dynamic>.from(vehicles!.map((x) => x.toJson())),
         "ratings":
             ratings == null ? null : List<dynamic>.from(ratings!.map((x) => x)),
         "nextOfKins": nextOfKins == null

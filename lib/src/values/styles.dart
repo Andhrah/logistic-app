@@ -146,57 +146,57 @@ Future dialogOrderPaymentSuccess(
                 const SizedBox(
                   height: 20,
                 ),
+                RichText(
+                  text: TextSpan(
+                      text: "ID: ",
+                      style: theme.textTheme.bodyText1!.copyWith(
+                          fontWeight: kBoldWeight, color: appPrimaryColor),
+                      children: [
+                        TextSpan(
+                          text: "#${datum?.attributes?.orderRef ?? ''}",
+                          style: theme.textTheme.bodyText1!.copyWith(
+                              fontWeight: kMediumWeight,
+                              color: appPrimaryColor),
+                        ),
+                      ]),
+                ),
+                24.heightInPixel(),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
-                      flex: 3,
-                      child: RichText(
-                        text: TextSpan(
-                            text: "ID: ",
-                            style: theme.textTheme.bodyText1!.copyWith(
-                                fontWeight: kBoldWeight,
-                                color: appPrimaryColor),
-                            children: [
-                              TextSpan(
-                                text: "#${datum?.attributes?.orderRef ?? ''}",
-                                style: theme.textTheme.bodyText1!.copyWith(
-                                    fontWeight: kMediumWeight,
-                                    color: appPrimaryColor),
-                              ),
-                            ]),
-                      ),
-                    ),
-                    Expanded(
-                      flex: 2,
-                      child: GestureDetector(
-                        onTap: () {
-                          CustomClipboard.copy(
-                            "$orderIdentifier${datum?.attributes?.orderRef ?? ''}",
-                          );
-                        },
-                        child: Container(
-                          color: Colors.transparent,
-                          child: Row(
-                            children: [
-                              const Icon(
-                                Remix.file_copy_line,
-                                size: 20,
-                              ),
-                              2.5.widthInPixel(),
-                              Text(
-                                "Copy",
-                                style: theme.textTheme.bodyText1!
-                                    .copyWith(fontWeight: kSemiBoldWeight),
-                              ),
-                            ],
+                      child: Align(
+                        alignment: Alignment.centerRight,
+                        child: GestureDetector(
+                          onTap: () {
+                            CustomClipboard.copy(
+                              "$orderIdentifier${datum?.attributes?.orderRef ?? ''}",
+                            );
+                          },
+                          child: Container(
+                            color: Colors.transparent,
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Remix.file_copy_line,
+                                  size: 20,
+                                  color: appPrimaryColor,
+                                ),
+                                2.5.widthInPixel(),
+                                Text(
+                                  "Copy",
+                                  style: theme.textTheme.bodyText1!
+                                      .copyWith(fontWeight: kSemiBoldWeight),
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ),
                     ),
+                    34.widthInPixel(),
                     Expanded(
-                      flex: 2,
                       child: GestureDetector(
                         onTap: () {
                           try {
@@ -214,6 +214,7 @@ Future dialogOrderPaymentSuccess(
                               const Icon(
                                 Remix.share_line,
                                 size: 20,
+                                color: appPrimaryColor,
                               ),
                               2.5.widthInPixel(),
                               Text(

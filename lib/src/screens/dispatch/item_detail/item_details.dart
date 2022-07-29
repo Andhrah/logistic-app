@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -401,10 +402,28 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                       Container(
                         alignment: Alignment.centerLeft,
                         width: MediaQuery.of(context).size.width / 3,
-                        child: Image.asset(
-                          "assets/images/ride.png",
-                          height: 50.0,
-                        ),
+                        child: CachedNetworkImage(
+                            imageUrl: riders.first.avatar ?? '',
+                            height: 50,
+                            width: MediaQuery.of(context).size.width / 3,
+                            placeholder: (context, url) => SizedBox(
+                                  width: MediaQuery.of(context).size.width / 3,
+                                ),
+                            errorWidget: (context, url, err) =>
+                                CachedNetworkImage(
+                                  imageUrl:
+                                      '${(riders.first.vehicles?.length ?? 0) > 0 ? riders.first.vehicles?.first.image : '-'}',
+                                  height: 50,
+                                  width: MediaQuery.of(context).size.width / 3,
+                                  placeholder: (context, url) => SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                  ),
+                                  errorWidget: (context, url, err) => SizedBox(
+                                    width:
+                                        MediaQuery.of(context).size.width / 3,
+                                  ),
+                                )),
                       ),
                       Text(
                           'Closest and suitable\nrider for item\n$naira${formatMoney(riders.first.cost ?? 0.0)}',
@@ -450,8 +469,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                               fontWeight: FontWeight.w700),
                         ),
                       ),
-                      const Text('-',
-                          style: TextStyle(
+                      Text(
+                          '${(riders.first.vehicles?.length ?? 0) > 0 ? riders.first.vehicles?.first.name : '-'}',
+                          style: const TextStyle(
                               fontSize: 15.0,
                               color: appPrimaryColor,
                               fontWeight: FontWeight.w500)),
@@ -471,8 +491,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                               fontWeight: FontWeight.w700),
                         ),
                       ),
-                      const Text('-',
-                          style: TextStyle(
+                      Text(
+                          '${(riders.first.vehicles?.length ?? 0) > 0 ? riders.first.vehicles?.first.color : '-'}',
+                          style: const TextStyle(
                               fontSize: 15.0,
                               color: appPrimaryColor,
                               fontWeight: FontWeight.w500)),
@@ -544,11 +565,32 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                       itemBuilder: (context, index) {
                         return Row(
                           children: [
-                            Image.asset(
-                              Assets.ride,
-                              height: 50.0,
-                              width: 50,
-                            ),
+                            CachedNetworkImage(
+                                imageUrl: riders.first.avatar ?? '',
+                                height: 50.0,
+                                width: 50,
+                                placeholder: (context, url) => SizedBox(
+                                      width:
+                                          MediaQuery.of(context).size.width / 3,
+                                    ),
+                                errorWidget: (context, url, err) =>
+                                    CachedNetworkImage(
+                                      imageUrl:
+                                          '${(riders.first.vehicles?.length ?? 0) > 0 ? riders.first.vehicles?.first.image : '-'}',
+                                      height: 50.0,
+                                      width: 50,
+                                      placeholder: (context, url) =>
+                                          const SizedBox(
+                                        height: 50.0,
+                                        width: 50,
+                                      ),
+                                      errorWidget: (context, url, err) =>
+                                          Image.asset(
+                                        Assets.ride,
+                                        height: 50.0,
+                                        width: 50,
+                                      ),
+                                    )),
                             const SizedBox(
                               width: 24,
                             ),
@@ -556,8 +598,22 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const Text('-',
-                                      style: TextStyle(
+                                  Text(
+                                      riders.elementAt(index).firstName ??
+                                          ((riders
+                                                          .elementAt(index)
+                                                          .vehicles
+                                                          ?.length ??
+                                                      0) >
+                                                  0
+                                              ? riders
+                                                  .elementAt(index)
+                                                  .vehicles
+                                                  ?.first
+                                                  .name
+                                              : '') ??
+                                          '',
+                                      style: const TextStyle(
                                           fontSize: 15.0,
                                           color: appPrimaryColor,
                                           fontWeight: kSemiBoldWeight)),
