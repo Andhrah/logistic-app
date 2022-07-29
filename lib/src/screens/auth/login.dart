@@ -330,39 +330,39 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                       ),
                     ),
                     const SizedBox(height: 40.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () => displayBottomSheet(context),
-                        //  {
+                    // Align(
+                    //   alignment: Alignment.center,
+                    //   child: InkWell(
+                    //     onTap: () => displayBottomSheet(context),
+                    //     //  {
 
-                        //   Navigator.pushNamed(context, MyPage.id);
-                        //   // _show = true;
-                        //   // setState(() {});
-                        // },
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: whiteColor,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: -3,
-                                blurRadius: 11,
-                                offset:
-                                    Offset(0, 8), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child:
-                                SvgPicture.asset("assets/images/biometric.svg"),
-                          ),
-                        ),
-                      ),
-                    ),
+                    //     //   Navigator.pushNamed(context, MyPage.id);
+                    //     //   // _show = true;
+                    //     //   // setState(() {});
+                    //     // },
+                    //     child: Container(
+                    //       height: 60,
+                    //       width: 60,
+                    //       decoration: BoxDecoration(
+                    //         color: whiteColor,
+                    //         shape: BoxShape.circle,
+                    //         boxShadow: [
+                    //           BoxShadow(
+                    //             color: Colors.grey.withOpacity(0.5),
+                    //             spreadRadius: -3,
+                    //             blurRadius: 11,
+                    //             offset:
+                    //                 Offset(0, 8), // changes position of shadow
+                    //           ),
+                    //         ],
+                    //       ),
+                    //       child: Center(
+                    //         child:
+                    //             SvgPicture.asset("assets/images/biometric.svg"),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                     const SizedBox(height: 40.0),
                     Align(
                         alignment: Alignment.center,
@@ -494,7 +494,7 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
           ],
         )),
       ),
-      bottomSheet: _loginBottomSheet(),
+      //bottomSheet: _loginBottomSheet(),
     );
   }
 
