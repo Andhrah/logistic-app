@@ -165,7 +165,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                                         ],
                                       ),
                                       Button(
-                                          text: 'Edit profile',
+                                          text: 'Edit Profile',
                                           onPress: () {
                                             //  var id = box.get('id');
                                             //   //print("This is the token " + name);
@@ -340,9 +340,9 @@ class _ProfileMenuState extends State<ProfileMenu>
                         onTap: () {
                           yesNoDialog(
                             context,
-                            message: 'Log out?',
-                            positiveCallback: () =>
-                                logout(context, completeLogout: () {
+                            title: 'Log out',
+                            message: 'Are you sure you want to log out?',
+                            positiveCallback: () => logout(completeLogout: () {
                               Navigator.popUntil(
                                   context, ModalRoute.withName(GetStarted.id));
                               Navigator.of(context).pushNamed(Login.id);
@@ -410,8 +410,8 @@ class _ProfileMenuState extends State<ProfileMenu>
                                             context,
                                             message:
                                                 'You will be logged out to continue',
-                                            positiveCallback: () => logout(
-                                                context, completeLogout: () {
+                                            positiveCallback: () =>
+                                                logout(completeLogout: () {
                                               Navigator.popUntil(
                                                   context,
                                                   ModalRoute.withName(

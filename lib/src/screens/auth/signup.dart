@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
+import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
 import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/values/values.dart';
@@ -19,7 +20,8 @@ class Signup extends StatefulWidget {
   _SignupState createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> with SignupHelper, ConnectivityHelper {
+class _SignupState extends State<Signup>
+    with SignupHelper, ConnectivityHelper, LogoutHelper {
   String? _firstName;
   String? _lastName;
   String? _email;

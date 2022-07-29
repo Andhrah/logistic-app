@@ -106,10 +106,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // PusherOptions pusherOptions = PusherOptions(
-  //   host: "https://trakk-server.herokuapp.com",
-  //   encrypted: false,
-  // );
 
   @override
   void dispose() {

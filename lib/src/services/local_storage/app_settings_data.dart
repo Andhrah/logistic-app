@@ -55,6 +55,12 @@ class AppSettingsProvider {
     return await _saveAppSettings(appSettings);
   }
 
+  Future<AppSettings> setBiometrics(bool biometricsEnabled) async {
+    AppSettings appSettings = await fetchAppSettings();
+    appSettings.biometricsEnabled = biometricsEnabled;
+    return await _saveAppSettings(appSettings);
+  }
+
   Future<AppSettings> setLogOut() async {
     AppSettings appSettings = await fetchAppSettings();
     appSettings.removeAccount();

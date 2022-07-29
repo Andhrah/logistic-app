@@ -5,8 +5,8 @@
     */
 
 import 'package:rxdart/rxdart.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/validators.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class PasswordValidationStage {
   bool minimumOf8Characters;
@@ -56,5 +56,16 @@ class ValidationBloc extends FormValidators {
         : state == ValidationState.isValidateFailed
             ? (response ?? "Enter a valid email address")
             : (response ?? "Email address cannot be empty");
+  }
+
+  String? singleInputValidator(String? value, {String? response}) {
+    ValidationState state = validateSingleInput(value);
+    return state == ValidationState.isValidateSuccess
+        ? null
+        : state == ValidationState.isValidateFailed
+            ? (response ?? "Enter a valid email address")
+            : state == ValidationState.isEmpty
+                ? (response ?? "Field is required")
+                : (response ?? "Email address cannot be empty");
   }
 }
