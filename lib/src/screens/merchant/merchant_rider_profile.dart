@@ -367,7 +367,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                                                     vertical: 30),
                                                 child: const Center(
                                                   child: Text(
-                                                    'You have succefully deleted Malik Johnson from the list of riders',
+                                                    'You have successfully deleted Malik Johnson from the list of riders',
                                                     // maxLines: 2,
                                                     style: TextStyle(
                                                       fontSize: 15,
@@ -806,7 +806,7 @@ class _ProfileWidgetState extends State<ProfileIdget> {
                                               vertical: 20.0),
                                           child: const Center(
                                             child: Text(
-                                              'You have succefully suspended Malik Johnson for 1 month',
+                                              'You have successfully suspended Malik Johnson for 1 month',
                                               // maxLines: 2,
                                               style: TextStyle(
                                                 fontSize: 15,

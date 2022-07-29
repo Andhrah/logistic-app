@@ -139,7 +139,7 @@ class _WalletScreenState extends State<WalletScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'Zebbra wallet balance',
+                            'Zebrra wallet balance',
                             textScaleFactor: 0.9,
                             style: TextStyle(
                                 color: Color(0xFFFFFFFF),
