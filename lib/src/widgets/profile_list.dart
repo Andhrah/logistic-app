@@ -6,11 +6,14 @@ import 'package:trakk/src/values/values.dart';
 class ProfileList extends StatelessWidget {
   final Widget icon;
   final String title;
+  final Widget? trailingWidget;
 
   const ProfileList({
     Key? key,
     required this.icon,
     required this.title,
+    this.trailingWidget,
+
   }) : super(key: key);
 
   @override
@@ -36,7 +39,7 @@ class ProfileList extends StatelessWidget {
             title,
             style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: appPrimaryColor,),
           ),
-          trailing: const Icon(Icons.arrow_forward_ios, color: kTextColor),
+          trailing: trailingWidget,
         ),
       ),
     );

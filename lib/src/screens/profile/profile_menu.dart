@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 // import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
@@ -15,13 +16,14 @@ import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
+import 'package:trakk/src/screens/support/send_message.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:trakk/src/widgets/profile_list.dart';
 
-import '../support/help_and_support.dart';
+import '../support/send_message.dart';
 
 class ProfileMenu extends StatefulWidget {
   static const String id = "ProfileMenu";
@@ -36,6 +38,7 @@ class _ProfileMenuState extends State<ProfileMenu>
     with ProfileHelper, ConnectivityHelper, LogoutHelper {
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
+  bool _isToggled = false;
 
   @override
   void initState() {
@@ -279,6 +282,8 @@ class _ProfileMenuState extends State<ProfileMenu>
                           ),
                           //svg: 'assets/images/history.svg',
                           title: 'Dispatch History',
+                          trailingWidget:
+                              Icon(Icons.arrow_forward_ios, color: kTextColor),
                         ),
                       ),
                       const SizedBox(
@@ -295,6 +300,8 @@ class _ProfileMenuState extends State<ProfileMenu>
                           ),
                           //svg: 'assets/images/settings.svg',
                           title: 'Privacy & Security',
+                          trailingWidget:
+                              Icon(Icons.arrow_forward_ios, color: kTextColor),
                         ),
                       ),
                       const SizedBox(
@@ -311,18 +318,50 @@ class _ProfileMenuState extends State<ProfileMenu>
                           ),
                           //svg: 'assets/images/help.svg',
                           title: 'Help and Support',
+                          trailingWidget: Icon(Icons.arrow_forward_ios,
+                              color: secondaryColor),
                         ),
                       ),
                       const SizedBox(
                         height: 18,
                       ),
-                      // InkWell(
-                      //   onTap: () {},
-                      //   child:  ProfileList(
-                      //     icon: Remix.wallet_2_line,
-                      //     title: 'E-commerce',
-                      //   ),
-                      // ),
+                      InkWell(
+                        onTap: () {},
+                        child: const ProfileList(
+                          icon: Icon(
+                            Remix.lock_2_line,
+                            color: appPrimaryColor,
+                          ),
+                          title: 'Enable Touch ID',
+                          // trailingWidget: FlutterSwitch(
+                          //   height: 20.0,
+                          //   width: 40.0,
+                          //   padding: 4.0,
+                          //   toggleSize: 15.0,
+                          //   borderRadius: 10.0,
+                          //   inactiveColor: whiteColor,
+                          //   activeColor: whiteColor,
+                          //   activeSwitchBorder: Border.all(
+                          //       color: secondaryColor,
+                          //       style: BorderStyle.solid),
+                          //   activeToggleBorder:
+                          //       Border.all(color: secondaryColor),
+                          //   activeToggleColor: secondaryColor,
+                          //   inactiveToggleBorder:
+                          //       Border.all(color: appPrimaryColor),
+                          //   inactiveToggleColor: appPrimaryColor,
+                          //   inactiveSwitchBorder:
+                          //       Border.all(color: appPrimaryColor),
+                          //   value: _isToggled,
+                          //   onToggle: (value) {
+                          //     print("VALUE : $value");
+                          //     setState(() {
+                          //       _isToggled = value;
+                          //     });
+                          //   },
+                          // ),
+                        ),
+                      ),
                       // const SizedBox(
                       //   height: 18,
                       // ),

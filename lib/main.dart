@@ -12,6 +12,7 @@ import 'package:trakk/src/screens/auth/forgot_password.dart';
 import 'package:trakk/src/screens/auth/forgot_password_pin.dart';
 import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/screens/auth/merchant/company_data.dart';
+import 'package:trakk/src/screens/auth/new.dart';
 import 'package:trakk/src/screens/auth/reset_password.dart';
 import 'package:trakk/src/screens/auth/rider/next_of_kin.dart';
 import 'package:trakk/src/screens/auth/signup.dart';
@@ -50,6 +51,7 @@ import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
 import 'package:trakk/src/screens/riders/rider_order.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
+import 'package:trakk/src/screens/support/send_message.dart';
 import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/screens/wallet/all_cards.dart';
 import 'package:trakk/src/screens/wallet/beneficiaries.dart';
@@ -63,6 +65,7 @@ import 'package:trakk/src/screens/wallet/wallet.dart';
 import 'package:trakk/src/screens/wallet/wallet_history.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/values.dart';
+import 'package:trakk/starter_file.dart';
 import 'package:uploadcare_client/uploadcare_client.dart';
 
 import 'src/screens/profile/privacy_and_policy.dart';
@@ -179,6 +182,7 @@ class _MyAppState extends State<MyApp> {
               DispatchSummary.id: (context) => const DispatchSummary(),
               Payment.id: (context) => const Payment(),
               Login.id: (context) => const Login(),
+              MyPage.id: (context) =>  MyPage(),
               ForgetPassword.id: (context) => const ForgetPassword(),
               ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
               ResetPassword.id: (context) => const ResetPassword(),
@@ -214,7 +218,8 @@ class _MyAppState extends State<MyApp> {
               Beneficiaries.id: (context) => const Beneficiaries(),
               // MyDatePicker.id: (context) => MyDatePicker(),
               // Country.id: (context) => const Country(),
-              HelpAndSupport.id: (context) => const HelpAndSupport(),
+              SendMessage.id: (context) => const SendMessage(),
+              HelpAndSupport.id:(context) => const HelpAndSupport(),
               PrivacyAndPolicy.id: (context) => const PrivacyAndPolicy(),
               WalletScreen.id: (context) => const WalletScreen(),
               UserDispatchHistory.id: (context) => const UserDispatchHistory(),

@@ -243,19 +243,6 @@ class privacyContainer extends StatelessWidget {
   }
 }
 
-class divider extends StatelessWidget {
-  const divider({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Divider(
-      thickness: 1.0,
-      color: Color(0xff909090),
-    );
-  }
-}
 
 class SettingsRow extends StatelessWidget {
   final String title;
