@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:pusher_client/pusher_client.dart';
+// import 'package:pusher_client/pusher_client.dart';
 import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/provider/provider_list.dart';
 import 'package:trakk/src/provider/settings_options/settings_options.dart';
@@ -106,10 +106,10 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  PusherOptions pusherOptions = PusherOptions(
-    host: "https://trakk-server.herokuapp.com",
-    encrypted: false,
-  );
+  // PusherOptions pusherOptions = PusherOptions(
+  //   host: "https://trakk-server.herokuapp.com",
+  //   encrypted: false,
+  // );
 
   @override
   void dispose() {
