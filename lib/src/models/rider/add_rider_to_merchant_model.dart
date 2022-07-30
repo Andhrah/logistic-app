@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class AddRiderToMerchantModel {
   AddRiderToMerchantModel({
     this.data,
@@ -19,8 +21,8 @@ class AddRiderToMerchantModel {
             : AddRiderToMerchantModelData.fromJson(json["data"]),
       );
 
-  Map<String, dynamic> toJson() => {
-        "data": data == null ? null : data!.toJson(),
+  Map<String, dynamic> toJson({bool isToServer = false}) => {
+        "data": data == null ? null : data!.toJson(isToServer: isToServer),
       };
 
   Map<String, dynamic> toAddRiderToServerJson() => {
@@ -30,6 +32,7 @@ class AddRiderToMerchantModel {
 
 class AddRiderToMerchantModelData {
   AddRiderToMerchantModelData({
+    this.profilePicFile,
     this.firstName,
     this.lastName,
     this.email,
@@ -49,6 +52,7 @@ class AddRiderToMerchantModelData {
     this.currentLongitude,
   });
 
+  final File? profilePicFile;
   final String? firstName;
   final String? lastName;
   final String? email;
@@ -135,7 +139,7 @@ class AddRiderToMerchantModelData {
             : json["currentLongitude"].toDouble(),
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson({bool isToServer = false}) => {
         "firstName": firstName == null ? null : firstName,
         "lastName": lastName == null ? null : lastName,
         "email": email == null ? null : email,
@@ -146,8 +150,11 @@ class AddRiderToMerchantModelData {
         "currentLocation": currentLocation == null ? null : currentLocation,
         "stateOfOrigin": stateOfOrigin == null ? null : stateOfOrigin,
         "stateOfResidence": stateOfResidence == null ? null : stateOfResidence,
-        "residentialAddress":
-            residentialAddress == null ? null : residentialAddress,
+        if (isToServer)
+          "address": residentialAddress == null ? null : residentialAddress
+        else
+          "residentialAddress":
+              residentialAddress == null ? null : residentialAddress,
         "phone": phone == null ? null : phone,
         "password": password == null ? null : password,
         "status": status == null ? null : status,

@@ -66,7 +66,7 @@ class ProfileHelper {
     }
   }
 
-  _uploadProfilePic(File? profilePic, Function({String? url}) onSuccess) async {
+  uploadProfilePic(File? profilePic, Function({String? url}) onSuccess) async {
     if (profilePic != null) {
       final CancelToken _cancelToken = CancelToken('canceled by user');
       try {
@@ -98,7 +98,7 @@ class ProfileHelper {
       Function() onCloseLoader) async {
     onShowLoader();
 
-    _uploadProfilePic(updateProfile.profilePic, ({String? url}) {
+    uploadProfilePic(updateProfile.profilePic, ({String? url}) {
       updateProfile.avatar = url;
       profileService
           .updateProfile(updateProfile)

@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 
 class RiderListContainer extends StatelessWidget {
@@ -13,6 +14,8 @@ class RiderListContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Container(
       height: 116,
       decoration: const BoxDecoration(color: whiteColor, boxShadow: [
@@ -67,15 +70,11 @@ class RiderListContainer extends StatelessWidget {
                     style: const TextStyle(
                         fontSize: 18, fontWeight: FontWeight.w600),
                   ),
-                SizedBox(
-                  height: 5,
-                ),
+                5.heightInPixel(),
                 Text(
                   'View detail',
-                  style: TextStyle(
-                      fontSize: 13,
-                      fontWeight: FontWeight.w400,
-                      color: secondaryColor),
+                  style: theme.textTheme.bodyText2!.copyWith(
+                      fontWeight: FontWeight.w400, color: secondaryColor),
                 ),
               ],
             ),

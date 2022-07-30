@@ -28,13 +28,13 @@ class GetRidersListBloc
             GetRidersForMerchantResponse response =
                 GetRidersForMerchantResponse.fromJson(operation.result);
 
-            // if (response.data != null && response.data!.isNotEmpty) {
-            //   response.data!.sort((a, b) =>
-            //       b.attributes!.createdAt!.compareTo(a.attributes!.createdAt!));
-            addToModel(response.data!);
-            // } else {
-            //   addToError("History not found");
-            // }
+            if (response.data != null && response.data!.isNotEmpty) {
+              //   response.data!.sort((a, b) =>
+              //       b.attributes!.createdAt!.compareTo(a.attributes!.createdAt!));
+              addToModel(response.data!);
+            } else {
+              addToError("Riders not found");
+            }
           } else {
             addToError((operation.result as MessageOnlyResponse).message!);
           }

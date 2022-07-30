@@ -2,13 +2,8 @@ import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-
-import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/widgets/default_container.dart';
-import 'package:trakk/src/widgets/input_field.dart';
 
 import '../../widgets/back_icon.dart';
 import '../profile/dispatch_history_screen/widgets/date_widget.dart';
@@ -59,7 +54,7 @@ class _RejectedRidesState extends State<RejectedRides> {
   String? _dropOffDate;
   dynamic _buttonText = "";
 
-   String startDate =
+  String startDate =
       DateTime.now().subtract(const Duration(days: 1)).toIso8601String();
   String endDate = DateTime.now().toIso8601String();
 
@@ -83,9 +78,7 @@ class _RejectedRidesState extends State<RejectedRides> {
     }
   }
 
-  _getPreviousRoute() async {
-
-  }
+  _getPreviousRoute() async {}
 
   @override
   void initState() {
@@ -189,17 +182,19 @@ class _RejectedRidesState extends State<RejectedRides> {
                     Navigator.pop(context);
                   },
                 ),
-                Container(height: 98,
+                Container(
+                  height: 98,
                   margin: const EdgeInsets.only(left: 40.0),
                   alignment: Alignment.center,
                   child: const Text(
                     'REJECTED RIDES',
                     textScaleFactor: 1.2,
                     style: TextStyle(
-                      color: appPrimaryColor,
-                      fontWeight: FontWeight.bold, fontFamily: kDefaultFontFamilyHeading
-                      // decoration: TextDecoration.underline,
-                    ),
+                        color: appPrimaryColor,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: kDefaultFontFamilyHeading
+                        // decoration: TextDecoration.underline,
+                        ),
                   ),
                 ),
               ],
@@ -383,11 +378,11 @@ class _RejectedRidesState extends State<RejectedRides> {
                         //     ],
                         //   ),
                         // ),
-                     
-                      DateDispatchHistory(
-                      startDate: startDate,
-                      endDate: endDate,
-                    ),
+
+                        DateDispatchHistory(
+                          startDate: startDate,
+                          endDate: endDate,
+                        ),
                       ],
                     ),
                   ),
@@ -400,7 +395,7 @@ class _RejectedRidesState extends State<RejectedRides> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Today\'s referrred ride',
+                          'Today\'s referred ride',
                           textScaleFactor: 1.2,
                           style: TextStyle(
                             color: appPrimaryColor,

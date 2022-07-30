@@ -33,10 +33,9 @@ import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
-import 'package:trakk/src/screens/merchant/merchant_rider_profile.dart';
+import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
 import 'package:trakk/src/screens/merchant/referred_rides.dart';
 import 'package:trakk/src/screens/merchant/rejected_rides.dart';
-import 'package:trakk/src/screens/merchant/rider_profile.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -106,7 +105,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-
   @override
   void dispose() {
     super.dispose();
@@ -218,8 +216,8 @@ class _MyAppState extends State<MyApp> {
               EditProfile.id: (context) => const EditProfile(),
               FundWalletScreen.id: (context) => const FundWalletScreen(),
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
-              MerchantRiderProfile.id: (context) =>
-                  const MerchantRiderProfile(),
+              // MerchantRiderProfile.id: (context) =>
+              //     const MerchantRiderProfile(),
               Transfers.id: (context) => const Transfers(),
               PayWithTransfer.id: (context) => const PayWithTransfer(),
               AllCards.id: (context) => const AllCards(),

@@ -3,15 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
-import 'package:trakk/src/screens/dispatch/item_detail/item_details.dart';
-import 'package:trakk/src/screens/dispatch/pick_ride.dart';
 import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/notifications.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
-import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/merchant_container.dart';
 
 class CompanyHome extends StatefulWidget {
@@ -124,7 +123,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                           return Text(
                             "Hello $firstName",
                             style: const TextStyle(
-                                fontSize: 24, 
+                                fontSize: 24,
                                 fontFamily: 'HelveticaRoundedLTStd',
                                 fontWeight: FontWeight.w600,
                                 color: whiteColor),
@@ -166,8 +165,8 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ],
                   ),
                   child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // const SizedBox(
                       //   height: 15,
@@ -208,7 +207,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                           ),
                         ],
                       ),
-                     // kSizeBox,
+                      // kSizeBox,
                       Row(
                         children: [
                           Expanded(
@@ -233,8 +232,9 @@ class _CompanyHomeState extends State<CompanyHome> {
                               padding: const EdgeInsets.all(10.0),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.of(context)
-                                      .pushNamed(ItemDetails.id);
+                                  runToast('Coming soon');
+                                  // Navigator.of(context)
+                                  //     .pushNamed(ItemDetails.id);
                                 },
                                 child: const MerchantContainer(
                                   color: deepGreen,
@@ -254,6 +254,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                               padding: const EdgeInsets.all(10),
                               child: InkWell(
                                 onTap: () {
+                                  runToast('Coming soon');
                                   //Navigator.of(context).pushNamed(ItemDetails.id);
                                 },
                                 child: const MerchantContainer(
@@ -271,7 +272,8 @@ class _CompanyHomeState extends State<CompanyHome> {
                               padding: const EdgeInsets.all(10),
                               child: InkWell(
                                 onTap: () {
-                                  Navigator.of(context).pushNamed(PickRide.id);
+                                  runToast('Coming soon');
+                                  // Navigator.of(context).pushNamed(PickRide.id);
                                 },
                                 child: const MerchantContainer(
                                   color: deepGreen,

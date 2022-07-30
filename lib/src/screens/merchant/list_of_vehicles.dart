@@ -5,9 +5,10 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/merchant/get_vehicles_list_bloc.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/src/screens/merchant/inactive_vehicle.dart';
-import 'package:trakk/src/screens/merchant/merchant_rider_profile.dart';
+import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
@@ -47,7 +48,7 @@ class ListOfVehicles extends StatefulWidget {
 }
 
 class _ListOfVehiclesState extends State<ListOfVehicles>
-    with MerchantUpdateRiderAndVehicleHelper {
+    with MerchantUpdateRiderAndVehicleHelper, ProfileHelper {
   bool _isButtonPress = false;
 
   dynamic itemCount;

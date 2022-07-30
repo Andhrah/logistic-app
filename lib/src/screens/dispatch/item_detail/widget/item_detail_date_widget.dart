@@ -7,8 +7,14 @@ import 'package:trakk/src/widgets/input_field.dart';
 
 class ItemDetailDateWidget extends StatefulWidget {
   final Function(String? pickup, String? dropOff) onDateSelected;
+  final String startTitle;
+  final String endTitle;
 
-  const ItemDetailDateWidget(this.onDateSelected, {Key? key}) : super(key: key);
+  const ItemDetailDateWidget(this.onDateSelected,
+      {Key? key,
+      this.startTitle = 'Pickup Date',
+      this.endTitle = 'Dropoff Date'})
+      : super(key: key);
 
   @override
   _ItemDetailDateWidgetState createState() => _ItemDetailDateWidgetState();
@@ -83,7 +89,7 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
             },
             child: InputField(
               obscureText: false,
-              text: 'Pickup Date',
+              text: widget.startTitle,
               hintText: '24/03/2022',
               textHeight: 5.0,
               maxLines: 1,
@@ -160,7 +166,7 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
             },
             child: InputField(
               obscureText: false,
-              text: 'Dropoff Date',
+              text: widget.endTitle,
               hintText: '26/03/2022',
               textHeight: 5.0,
               enabled: false,
