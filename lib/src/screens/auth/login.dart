@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
@@ -123,14 +125,14 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
             height: MediaQuery.of(context).size.height * 0.5,
             padding: EdgeInsets.symmetric(vertical: 60),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
                 color: whiteColor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(50.0),
                     topRight: Radius.circular(50.0))),
             child: Column(
               children: [
-                Text(
+                const Text(
                   "Authentication Required",
                   textScaleFactor: 1.2,
                   style: TextStyle(fontWeight: FontWeight.bold),
@@ -138,7 +140,7 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                 SizedBox(
                   height: 10,
                 ),
-                Text(
+                const Text(
                   "Authenticate your biometrics to verify your\n identity",
                   textAlign: TextAlign.center,
                 ),
@@ -148,6 +150,9 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                 Align(
                   alignment: Alignment.center,
                   child: InkWell(
+                    onLongPress: () {
+                        log("message");
+                      },
                     onTap: () {
                       _show = true;
                       setState(() {});
@@ -196,9 +201,10 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                         onPrimary: Colors.white,
                         primary: whiteColor,
                       ),
+                      
                       onPressed: () {
-                        _show = false;
-                        setState(() {});
+                        Navigator.pop(context);
+                       // setState(() {});
                       },
                     ),
                   ),
@@ -330,39 +336,39 @@ class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
                       ),
                     ),
                     const SizedBox(height: 40.0),
-                    // Align(
-                    //   alignment: Alignment.center,
-                    //   child: InkWell(
-                    //     onTap: () => displayBottomSheet(context),
-                    //     //  {
+                    Align(
+                      alignment: Alignment.center,
+                      child: InkWell(
+                        onTap: () => displayBottomSheet(context),
+                        //  {
 
-                    //     //   Navigator.pushNamed(context, MyPage.id);
-                    //     //   // _show = true;
-                    //     //   // setState(() {});
-                    //     // },
-                    //     child: Container(
-                    //       height: 60,
-                    //       width: 60,
-                    //       decoration: BoxDecoration(
-                    //         color: whiteColor,
-                    //         shape: BoxShape.circle,
-                    //         boxShadow: [
-                    //           BoxShadow(
-                    //             color: Colors.grey.withOpacity(0.5),
-                    //             spreadRadius: -3,
-                    //             blurRadius: 11,
-                    //             offset:
-                    //                 Offset(0, 8), // changes position of shadow
-                    //           ),
-                    //         ],
-                    //       ),
-                    //       child: Center(
-                    //         child:
-                    //             SvgPicture.asset("assets/images/biometric.svg"),
-                    //       ),
-                    //     ),
-                    //   ),
-                    // ),
+                        //   Navigator.pushNamed(context, MyPage.id);
+                        //   // _show = true;
+                        //   // setState(() {});
+                        // },
+                        child: Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                            color: whiteColor,
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: -3,
+                                blurRadius: 11,
+                                offset:
+                                    Offset(0, 8), // changes position of shadow
+                              ),
+                            ],
+                          ),
+                          child: Center(
+                            child:
+                                SvgPicture.asset("assets/images/biometric.svg"),
+                          ),
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 40.0),
                     Align(
                         alignment: Alignment.center,
