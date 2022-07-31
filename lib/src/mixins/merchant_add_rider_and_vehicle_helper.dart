@@ -12,7 +12,6 @@ import 'package:trakk/src/models/rider/add_vehicle_to_merchant_model.dart';
 import 'package:trakk/src/screens/merchant/add_rider_2/widgets/doc_selector_widget.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
-import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/services/auth/signup_service.dart';
 import 'package:trakk/src/services/merchant/add_rider_service.dart';

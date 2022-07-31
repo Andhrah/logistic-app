@@ -12,7 +12,17 @@ import 'package:trakk/src/widgets/general_widget.dart';
 class EditProfileImageSelectorWidget extends StatefulWidget {
   final Function(File? itemImage) callback;
 
-  const EditProfileImageSelectorWidget(this.callback, {Key? key})
+  final MainAxisAlignment rowMainAxisAlignment;
+  final double width;
+  final double height;
+  final String? avatarURL;
+
+  const EditProfileImageSelectorWidget(this.callback,
+      {Key? key,
+      this.height = 110,
+      this.width = 110,
+      this.rowMainAxisAlignment = MainAxisAlignment.start,
+      this.avatarURL})
       : super(key: key);
 
   @override
@@ -74,6 +84,7 @@ class _EditProfileImageSelectorWidgetState
     var theme = Theme.of(context);
 
     return Row(
+      mainAxisAlignment: widget.rowMainAxisAlignment,
       children: [
         Hero(
           tag: 'profile_pic',
@@ -96,19 +107,21 @@ class _EditProfileImageSelectorWidgetState
                           builder: (context, snapshot) {
                             String avatar = '';
 
-                            if (snapshot.hasData) {
+                            if (widget.avatarURL == null && snapshot.hasData) {
                               avatar = snapshot.data?.loginResponse?.data?.user
                                       ?.avatar ??
                                   '';
+                            } else {
+                              avatar = widget.avatarURL ?? '';
                             }
                             return CachedNetworkImage(
                               imageUrl: avatar,
-                              width: 110,
-                              height: 110,
+                              width: widget.width,
+                              height: widget.height,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Container(
-                                width: 110,
-                                height: 110,
+                                width: widget.width,
+                                height: widget.height,
                                 decoration: BoxDecoration(
                                     color: appPrimaryColor.withOpacity(0.3),
                                     shape: BoxShape.circle),
@@ -119,8 +132,8 @@ class _EditProfileImageSelectorWidgetState
                                 ),
                               ),
                               errorWidget: (context, url, err) => Container(
-                                width: 110,
-                                height: 110,
+                                width: widget.width,
+                                height: widget.height,
                                 decoration: BoxDecoration(
                                     color: appPrimaryColor.withOpacity(0.3),
                                     shape: BoxShape.circle),
@@ -135,14 +148,14 @@ class _EditProfileImageSelectorWidgetState
                     ),
                     secondChild: ClipOval(
                       child: file == null
-                          ? const SizedBox(
-                              width: 110,
-                              height: 110,
+                          ? SizedBox(
+                              width: widget.width,
+                              height: widget.height,
                             )
                           : Image.file(
                               file!,
-                              width: 110,
-                              height: 110,
+                              width: widget.width,
+                              height: widget.height,
                               fit: BoxFit.cover,
                             ),
                     ),

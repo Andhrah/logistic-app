@@ -71,7 +71,16 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
       var list = (await geocoding.placemarkFromCoordinates(
           pickUpLatLng?.latitude ?? 0.0, pickUpLatLng?.longitude ?? 0.0));
       if (list.isNotEmpty) {
-        _pickUp = list.first.name;
+        // for (var data in list) {
+        //   print(data.name);
+        //   print(data.street);
+        //   print(data.subLocality);
+        //   print(data.subAdministrativeArea);
+        //   print(data.thoroughfare);
+        //   print(data.subThoroughfare);
+        //   print(data.country);
+        // }
+        _pickUp = list.first.street;
 
         setState(() {
           _pickUpController.text = _pickUp ?? '';

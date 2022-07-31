@@ -1,4 +1,4 @@
-package com.example.trakk
+package com.zebrra.trakk
 
 import io.flutter.embedding.android.FlutterActivity
 
