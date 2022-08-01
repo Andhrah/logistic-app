@@ -63,7 +63,7 @@ double safeAreaHeight(context, double height) {
 
 extension SizedboxUitls on num {
   Widget heightInPixel() {
-    return SizedBox(height: this * 2.0);
+    return SizedBox(height: this * 1.0);
   }
 
   Widget widthInPixel() {
@@ -240,4 +240,14 @@ String camelCase(String? input) {
     return input;
   }
   return input[0].toUpperCase() + input.substring(1);
+}
+
+bool isFileMoreThanMaxInMB(File file,
+    {int value = 5, String message = 'Maximum file size upload is 5MB'}) {
+  if (file.lengthSync() > (1000000 * value)) {
+    runToast(message);
+    return true;
+  }
+
+  return false;
 }

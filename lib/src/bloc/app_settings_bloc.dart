@@ -43,6 +43,11 @@ class _AppSettingsBloc {
     _appSettingsStreamController.sink.add(saved);
   }
 
+  setBiometrics(bool setBiometrics) async {
+    var saved = await appSettingsProvider.setBiometrics(setBiometrics);
+    _appSettingsStreamController.sink.add(saved);
+  }
+
   setLogOut() async {
     var saved = await appSettingsProvider.setLogOut();
     _appSettingsStreamController.sink.add(saved);

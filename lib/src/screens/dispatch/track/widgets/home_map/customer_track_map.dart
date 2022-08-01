@@ -11,6 +11,8 @@ import 'package:trakk/src/bloc/misc_bloc.dart';
 import 'package:trakk/src/screens/dispatch/track/widgets/home_map/customer_bottom_sheet.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
+import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/widgets/back_icon.dart';
 
 class CustomerHomeMapScreen extends StatefulWidget {
   final MiscBloc locaBloc;
@@ -85,6 +87,18 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
                             const CameraPosition(target: LatLng(0, 0)));
                   })),
           const CustomerBottomSheet(),
+          Positioned(
+            top: 12,
+            left: kDefaultLayoutPadding,
+            child: SafeArea(
+              child: BackIcon(
+                onPress: () {
+                  Navigator.pop(context);
+                },
+                padding: EdgeInsets.zero,
+              ),
+            ),
+          ),
         ],
       ),
     );

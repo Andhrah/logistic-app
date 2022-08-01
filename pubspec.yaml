@@ -84,6 +84,8 @@ dependencies:
   expandable: ^5.0.1
   readmore: ^2.1.0
   fluttertoast: ^8.0.9
+  image_picker:
+  local_auth: ^1.1.7
 
 dev_dependencies:
   flutter_test:
@@ -98,7 +100,6 @@ dev_dependencies:
   mockito: ^5.1.0
 #  hive_generator: ^1.1.2
   build_runner: ^2.1.10
-  pusher_client: ^2.0.0
 
   
 

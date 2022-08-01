@@ -55,15 +55,13 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
     var user =
         (await appSettingsBloc.fetchAppSettings()).loginResponse?.data?.user;
 
-    UserType userType = await appSettingsBloc.getUserType;
+    // UserType userType = await appSettingsBloc.getUserType;
     setState(() {
       _firstNameController.text = user?.firstName ?? '';
       _lastNameController.text = user?.lastName ?? '';
       _emailController.text = user?.email ?? '';
       _phoneNumberController.text = user?.phoneNumber ?? '';
-      _addressController.text = userType == UserType.rider
-          ? (user?.rider?.residentialAddress ?? '')
-          : user?.address ?? '';
+      _addressController.text = user?.address ?? '';
     });
   }
 
@@ -92,20 +90,18 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                     Navigator.pop(context);
                   },
                 ),
-                Container(height: 98,
-                  margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.2),
+                Container(
+                  height: 98,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.2),
                   alignment: Alignment.center,
-                  child: InkWell(
-                    onTap: () {},
-                    customBorder: const CircleBorder(),
-                    child: const Text(
-                      'PROFILE MENU',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
-                      ),
+                  child: const Text(
+                    'PROFILE MENU',
+                    textScaleFactor: 1.2,
+                    style: TextStyle(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.bold,
+                      // decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
@@ -269,22 +265,25 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                             },
                           ),
                           const SizedBox(height: 30.0),
-                          InputField(
-                            key: const Key('Company\'s email address'),
-                            textController: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            node: _emailNode,
-                            // autovalidateMode: AutovalidateMode.onUserInteraction,
-                            obscureText: false,
-                            text: 'Email Address',
-                            hintText: '@gmail.com',
-                            textHeight: 10.0,
-                            borderColor: appPrimaryColor.withOpacity(0.9),
+                          Opacity(
+                            opacity: 0.5,
+                            child: InputField(
+                              key: const Key('Company\'s email address'),
+                              textController: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              node: _emailNode,
+                              // autovalidateMode: AutovalidateMode.onUserInteraction,
+                              obscureText: false, enabled: false,
+                              text: 'Email Address',
+                              hintText: '@gmail.com',
+                              textHeight: 10.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
 
-                            validator: validationBloc.emailValidator,
-                            onSaved: (value) {
-                              return null;
-                            },
+                              validator: validationBloc.emailValidator,
+                              onSaved: (value) {
+                                return null;
+                              },
+                            ),
                           ),
                           const SizedBox(height: 30.0),
                           InputField(

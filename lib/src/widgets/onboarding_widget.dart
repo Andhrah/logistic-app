@@ -27,7 +27,7 @@ class OnboardingList {
         image: 'assets/images/onboarding_img3.png',
         title: 'Checkout and Make payment',
         description:
-            'Pay with zebbra and get 20% off or choose preferred payment method',
+            'Pay with zebrra and get 20% off or choose preferred payment method',
       ),
       OnboardingWidget(
         image: 'assets/images/onboarding_img4.png',

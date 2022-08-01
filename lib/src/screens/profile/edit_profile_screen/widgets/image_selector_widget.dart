@@ -1,17 +1,28 @@
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 class EditProfileImageSelectorWidget extends StatefulWidget {
   final Function(File? itemImage) callback;
 
-  const EditProfileImageSelectorWidget(this.callback, {Key? key})
+  final MainAxisAlignment rowMainAxisAlignment;
+  final double width;
+  final double height;
+  final String? avatarURL;
+
+  const EditProfileImageSelectorWidget(this.callback,
+      {Key? key,
+      this.height = 110,
+      this.width = 110,
+      this.rowMainAxisAlignment = MainAxisAlignment.start,
+      this.avatarURL})
       : super(key: key);
 
   @override
@@ -33,18 +44,37 @@ class _EditProfileImageSelectorWidgetState
     super.dispose();
   }
 
-  uploadItemImage() async {
-    final result = await FilePicker.platform.pickFiles(
-        type: FileType.custom, allowedExtensions: ['png', 'jpg', 'jpeg']);
-    if (result != null &&
-        result.files.isNotEmpty &&
-        result.files.first.path != null) {
-      setState(() {
-        file = File(result.files.first.path!);
-      });
+  final ImagePicker _picker = ImagePicker();
 
-      doCallback();
-    }
+  uploadItemImage() async {
+    modalImageSelector((index) async {
+      switch (index) {
+        case 0:
+          var result = await _picker.pickImage(source: ImageSource.camera);
+
+          if (result != null && result.path.isNotEmpty) {
+            setState(() {
+              file = File(result.path);
+            });
+
+            doCallback();
+          }
+
+          break;
+        case 1:
+          var result = await _picker.pickImage(source: ImageSource.gallery);
+
+          if (result != null && result.path.isNotEmpty) {
+            setState(() {
+              file = File(result.path);
+            });
+
+            doCallback();
+          }
+
+          break;
+      }
+    });
   }
 
   doCallback() => widget.callback(file);
@@ -54,6 +84,7 @@ class _EditProfileImageSelectorWidgetState
     var theme = Theme.of(context);
 
     return Row(
+      mainAxisAlignment: widget.rowMainAxisAlignment,
       children: [
         Hero(
           tag: 'profile_pic',
@@ -76,19 +107,21 @@ class _EditProfileImageSelectorWidgetState
                           builder: (context, snapshot) {
                             String avatar = '';
 
-                            if (snapshot.hasData) {
+                            if (widget.avatarURL == null && snapshot.hasData) {
                               avatar = snapshot.data?.loginResponse?.data?.user
                                       ?.avatar ??
                                   '';
+                            } else {
+                              avatar = widget.avatarURL ?? '';
                             }
                             return CachedNetworkImage(
                               imageUrl: avatar,
-                              width: 110,
-                              height: 110,
+                              width: widget.width,
+                              height: widget.height,
                               fit: BoxFit.cover,
                               placeholder: (context, url) => Container(
-                                width: 110,
-                                height: 110,
+                                width: widget.width,
+                                height: widget.height,
                                 decoration: BoxDecoration(
                                     color: appPrimaryColor.withOpacity(0.3),
                                     shape: BoxShape.circle),
@@ -99,8 +132,8 @@ class _EditProfileImageSelectorWidgetState
                                 ),
                               ),
                               errorWidget: (context, url, err) => Container(
-                                width: 110,
-                                height: 110,
+                                width: widget.width,
+                                height: widget.height,
                                 decoration: BoxDecoration(
                                     color: appPrimaryColor.withOpacity(0.3),
                                     shape: BoxShape.circle),
@@ -115,14 +148,14 @@ class _EditProfileImageSelectorWidgetState
                     ),
                     secondChild: ClipOval(
                       child: file == null
-                          ? const SizedBox(
-                              width: 110,
-                              height: 110,
+                          ? SizedBox(
+                              width: widget.width,
+                              height: widget.height,
                             )
                           : Image.file(
                               file!,
-                              width: 110,
-                              height: 110,
+                              width: widget.width,
+                              height: widget.height,
                               fit: BoxFit.cover,
                             ),
                     ),

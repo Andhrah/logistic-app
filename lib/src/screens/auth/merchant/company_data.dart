@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
+import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
 import 'package:trakk/src/screens/auth/merchant/widgets/company_data_doc_selector_widget.dart';
 import 'package:trakk/src/values/values.dart';
@@ -19,7 +20,7 @@ class CompanyData extends StatefulWidget {
 }
 
 class _CompanyDataState extends State<CompanyData>
-    with SignupHelper, ConnectivityHelper {
+    with SignupHelper, ConnectivityHelper, LogoutHelper {
   ValidationBloc validationBloc = ValidationBloc();
 
   FocusNode? _nameNode;
@@ -163,7 +164,7 @@ class _CompanyDataState extends State<CompanyData>
                       InputField(
                         key: const Key('cac'),
                         textController: rcNumberController,
-                        keyboardType: TextInputType.phone,
+                        keyboardType: TextInputType.text,
                         node: _rcNumberNode,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         obscureText: false,

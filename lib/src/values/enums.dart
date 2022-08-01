@@ -31,3 +31,10 @@ enum ValidationState { isEmpty, isValidateSuccess, isValidateFailed }
 enum PaymentType { payOnDelivery, card, bankTransfer }
 
 enum UrlLaunchType { call, email, sms, web }
+
+enum RiderProfileOptions {
+  Edit,
+  Suspend,
+  Delete,
+  Null,
+}

@@ -5,11 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/merchant/get_vehicles_list_bloc.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/src/screens/merchant/inactive_vehicle.dart';
-import 'package:trakk/src/screens/merchant/merchant_rider_profile.dart';
-import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 import '../../widgets/back_icon.dart';
@@ -47,7 +48,7 @@ class ListOfVehicles extends StatefulWidget {
 }
 
 class _ListOfVehiclesState extends State<ListOfVehicles>
-    with MerchantUpdateRiderAndVehicleHelper {
+    with MerchantUpdateRiderAndVehicleHelper, ProfileHelper {
   bool _isButtonPress = false;
 
   dynamic itemCount;
@@ -112,7 +113,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 65,
+                  width: 70,
                   child: Row(
                     children: [
                       BackIcon(
@@ -127,14 +128,14 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                 Text(
                   'LIST OF VEHICLES',
                   style: theme.textTheme.subtitle2!.copyWith(
-                    color: appPrimaryColor,
+                    color: appPrimaryColor, fontSize: 14,
                     fontWeight: FontWeight.bold,
                     // decoration: TextDecoration.underline,
                   ),
                 ),
                 SizedBox(
                   height: 50,
-                  width: 65,
+                  width: 70,
                   child: DropdownButton<String>(
                     value: filter,
                     icon: const Icon(
@@ -406,7 +407,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                                         Center(
                                                                           child:
                                                                               Text(
-                                                                            '  You have succefully removed\n${name} Veh.No${number} from the list \nof riders',
+                                                                            '  You have successfully removed\n${name} Veh.No${number} from the list \nof riders',
                                                                             // maxLines: 2,
                                                                             textAlign:
                                                                                 TextAlign.center,

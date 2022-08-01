@@ -264,7 +264,7 @@ class OnBoardingSteps {
               : json['riderContactCompleted'],
           riderNOKCompleted: json['riderNOKCompleted'] == null
               ? null
-              : json['riderContactCompleted'],
+              : json['riderNOKCompleted'],
           riderVehicleCompleted: json['riderVehicleCompleted'] == null
               ? null
               : json['riderVehicleCompleted']);

@@ -44,18 +44,26 @@ android {
         jvmTarget = '1.8'
     }
 
+    lintOptions {
+        disable 'InvalidPackage'
+        disable "Instantiatable"
+        checkReleaseBuilds false
+        abortOnError false
+    }
+
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
     }
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "com.example.trakk"
+        applicationId "com.zebrra.trakk"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         minSdkVersion 20
+        multiDexEnabled true
     }
 
     signingConfigs {
@@ -68,16 +76,11 @@ android {
     }
 
     buildTypes {
-       release {
-           signingConfig signingConfigs.release
-       }
-    }
-
-    buildTypes {
         release {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             minifyEnabled true
+//            useProguard true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.debug
         }

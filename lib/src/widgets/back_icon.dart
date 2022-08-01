@@ -6,7 +6,7 @@ class BackIcon extends StatelessWidget {
     Key? key,
     this.onPress,
     this.width = 36,
-    this.padding = const EdgeInsets.only(left: 25.0),
+    this.padding = const EdgeInsets.only(left: 24.0),
     this.isPlaceHolder = false,
   }) : super(key: key);
 

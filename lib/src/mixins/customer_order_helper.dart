@@ -118,7 +118,7 @@ class CustomerOrderHelper {
       if (userType == UserType.customer) {
         Navigator.pushNamedAndRemoveUntil(
             _authContext, Tabs.id, ModalRoute.withName(Tabs.id),
-            arguments: {'_selectedIndex': 2});
+            arguments: {'_selectedIndex': 0});
       } else {
         //  navigate back to screen for other user types
       }

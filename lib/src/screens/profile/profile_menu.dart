@@ -381,8 +381,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                             context,
                             title: 'Log out',
                             message: 'Are you sure you want to log out?',
-                            positiveCallback: () =>
-                                logout(context, completeLogout: () {
+                            positiveCallback: () => logout(completeLogout: () {
                               Navigator.popUntil(
                                   context, ModalRoute.withName(GetStarted.id));
                               Navigator.of(context).pushNamed(Login.id);
@@ -450,8 +449,8 @@ class _ProfileMenuState extends State<ProfileMenu>
                                             context,
                                             message:
                                                 'You will be logged out to continue',
-                                            positiveCallback: () => logout(
-                                                context, completeLogout: () {
+                                            positiveCallback: () =>
+                                                logout(completeLogout: () {
                                               Navigator.popUntil(
                                                   context,
                                                   ModalRoute.withName(

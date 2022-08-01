@@ -2,13 +2,8 @@ import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-
-import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/widgets/default_container.dart';
-import 'package:trakk/src/widgets/input_field.dart';
 
 import '../../widgets/back_icon.dart';
 import '../profile/dispatch_history_screen/widgets/date_widget.dart';
@@ -182,11 +177,13 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                     Navigator.pop(context);
                   },
                 ),
-                Container(height: 98,
-                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.06),
-                //padding: EdgeInsets.symmetric(horizontal: 40 ),
-                //padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.03 ),
-                //margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.06),
+                Container(
+                  height: 98,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.06),
+                  //padding: EdgeInsets.symmetric(horizontal: 40 ),
+                  //padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.03 ),
+                  //margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.06),
                   alignment: Alignment.center,
                   child: const Expanded(
                     child: Text(
@@ -213,10 +210,9 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                         //crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           DateDispatchHistory(
-                      startDate: startDate,
-                      endDate: endDate,
-                    ),
-                      
+                            startDate: startDate,
+                            endDate: endDate,
+                          ),
                         ],
                       ),
                     ),
@@ -229,7 +225,7 @@ class _FulfilledDispatchState extends State<FulfilledDispatch> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: const [
                           Text(
-                            'Today\'s referrred ride',
+                            'Today\'s referred ride',
                             textScaleFactor: 1.2,
                             style: TextStyle(
                               color: appPrimaryColor,

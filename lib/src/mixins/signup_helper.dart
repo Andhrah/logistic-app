@@ -7,10 +7,14 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
+import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/models/auth/signup_model.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
+import 'package:trakk/src/screens/auth/login.dart';
+import 'package:trakk/src/screens/auth/merchant/company_data.dart';
 import 'package:trakk/src/screens/auth/verify_account.dart';
+import 'package:trakk/src/screens/onboarding/get_started.dart';
 import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/services/auth/signup_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
@@ -21,7 +25,7 @@ import '../utils/operation.dart';
 
 typedef LoginCompleted = Function(AuthResponse loginResponse);
 
-class SignupHelper with ConnectivityHelper {
+class SignupHelper with ConnectivityHelper, LogoutHelper {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   late TextEditingController firstNameController = TextEditingController();
@@ -100,12 +104,20 @@ class SignupHelper with ConnectivityHelper {
   _completeVerify(Operation operation, Function() onCloseLoader) async {
     if (operation.code == 200 || operation.code == 201) {
       UserType userType = await appSettingsBloc.getUserType;
-      // if (userType == UserType.merchant) {
-      //   SingletonData.singletonData.navKey.currentState!
-      //       .pushNamed(CompanyData.id);
-      // } else {
-      SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
-      // }
+      if (userType == UserType.merchant) {
+        SingletonData.singletonData.navKey.currentState!
+            .pushNamed(CompanyData.id);
+      } else {
+        await logout();
+        await appToast('You will be redirected to login',
+            appToastType: AppToastType.success);
+
+        SingletonData.singletonData.navKey.currentState!
+            .popUntil(ModalRoute.withName(GetStarted.id));
+        SingletonData.singletonData.navKey.currentState!.pushNamed(Login.id);
+
+        // SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
+      }
     } else {
       onCloseLoader();
       MessageOnlyResponse error = operation.result;
@@ -173,7 +185,13 @@ class SignupHelper with ConnectivityHelper {
         appToastType: AppToastType.success,
       );
 
-      SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
+      await logout();
+      await appToast('You will be redirected to login',
+          appToastType: AppToastType.success);
+
+      SingletonData.singletonData.navKey.currentState!
+          .popUntil(ModalRoute.withName(GetStarted.id));
+      SingletonData.singletonData.navKey.currentState!.pushNamed(Login.id);
     } else {
       MessageOnlyResponse error = operation.result;
 

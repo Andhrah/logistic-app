@@ -1,16 +1,10 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/src/screens/wallet/all_cards.dart';
-import 'package:trakk/src/screens/wallet/buy_airtime.dart';
-import 'package:trakk/src/screens/wallet/fund_wallet.dart';
-import 'package:trakk/src/screens/wallet/payments.dart';
-import 'package:trakk/src/screens/wallet/transfers.dart';
-
-import 'dart:math' as math;
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
-import 'package:trakk/src/widgets/icon_container.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 class WalletHistory extends StatefulWidget {
@@ -218,7 +212,7 @@ class _WalletHistoryState extends State<WalletHistory> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: const [
                             Text(
-                              'Zebbra wallet balance',
+                              'Zebrra wallet balance',
                               textScaleFactor: 0.9,
                               style: TextStyle(
                                   color: Color(0xFFFFFFFF),

@@ -3,8 +3,11 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
+import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
 import 'package:trakk/src/screens/auth/login.dart';
+import 'package:trakk/src/screens/auth/terms_and_condition_widget.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
@@ -19,7 +22,8 @@ class Signup extends StatefulWidget {
   _SignupState createState() => _SignupState();
 }
 
-class _SignupState extends State<Signup> with SignupHelper, ConnectivityHelper {
+class _SignupState extends State<Signup>
+    with SignupHelper, ConnectivityHelper, LogoutHelper {
   String? _firstName;
   String? _lastName;
   String? _email;
@@ -31,6 +35,7 @@ class _SignupState extends State<Signup> with SignupHelper, ConnectivityHelper {
   bool _passwordIsValid = false;
   bool _hidePassword = true;
   bool _emailIsValid = false;
+  bool termsAndCondition = false;
 
   @override
   void initState() {
@@ -66,6 +71,11 @@ class _SignupState extends State<Signup> with SignupHelper, ConnectivityHelper {
   }
 
   _onSubmit(String userType) async {
+    if (!termsAndCondition) {
+      runToast('Please accept terms and condition to continue');
+      return;
+    }
+
     doSignUpOperation(
         userType,
         () => setState(() {
@@ -271,6 +281,12 @@ class _SignupState extends State<Signup> with SignupHelper, ConnectivityHelper {
                           return null;
                         },
                       ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      TermsAndConditionWidget((bool _value) {
+                        termsAndCondition = _value;
+                      }),
                       const SizedBox(height: 40.0),
                       Align(
                           alignment: Alignment.center,

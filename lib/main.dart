@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:overlay_support/overlay_support.dart';
 import 'package:provider/provider.dart';
-import 'package:pusher_client/pusher_client.dart';
+// import 'package:pusher_client/pusher_client.dart';
 import 'package:trakk/src/.env.dart';
 import 'package:trakk/src/provider/provider_list.dart';
 import 'package:trakk/src/provider/settings_options/settings_options.dart';
@@ -34,10 +34,9 @@ import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
-import 'package:trakk/src/screens/merchant/merchant_rider_profile.dart';
+import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
 import 'package:trakk/src/screens/merchant/referred_rides.dart';
 import 'package:trakk/src/screens/merchant/rejected_rides.dart';
-import 'package:trakk/src/screens/merchant/rider_profile.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -109,11 +108,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  PusherOptions pusherOptions = PusherOptions(
-    host: "https://trakk-server.herokuapp.com",
-    encrypted: false,
-  );
-
   @override
   void dispose() {
     super.dispose();
@@ -214,7 +208,6 @@ class _MyAppState extends State<MyApp> {
               RiderOrderScreen.id: (context) => const RiderHomeScreen(),
               RiderHomeScreen.id: (context) => const RiderHomeScreen(),
               CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
-              RiderProfile.id: (context) => const RiderProfile(),
               Beneficiaries.id: (context) => const Beneficiaries(),
               // MyDatePicker.id: (context) => MyDatePicker(),
               // Country.id: (context) => const Country(),
@@ -228,8 +221,8 @@ class _MyAppState extends State<MyApp> {
               EditProfile.id: (context) => const EditProfile(),
               FundWalletScreen.id: (context) => const FundWalletScreen(),
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
-              MerchantRiderProfile.id: (context) =>
-                  const MerchantRiderProfile(),
+              // MerchantRiderProfile.id: (context) =>
+              //     const MerchantRiderProfile(),
               Transfers.id: (context) => const Transfers(),
               PayWithTransfer.id: (context) => const PayWithTransfer(),
               AllCards.id: (context) => const AllCards(),

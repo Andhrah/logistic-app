@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 
 class CompanyDataDocSelectorWidget extends StatefulWidget {
@@ -41,6 +42,9 @@ class _CompanyDataDocSelectorWidgetState
     if (result != null &&
         result.files.isNotEmpty &&
         result.files.first.path != null) {
+      if (isFileMoreThanMaxInMB(File(result.files.first.path!))) {
+        return;
+      }
       setState(() {
         isImage = result.files.first.extension == 'png' ||
             result.files.first.extension == 'jpg' ||

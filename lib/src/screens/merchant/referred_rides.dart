@@ -2,13 +2,8 @@ import 'dart:ui';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:google_place/google_place.dart';
-
-import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/widgets/default_container.dart';
-import 'package:trakk/src/widgets/input_field.dart';
 
 import '../../widgets/back_icon.dart';
 import '../profile/dispatch_history_screen/widgets/date_widget.dart';
@@ -59,7 +54,7 @@ class _ReferredRidesState extends State<ReferredRides> {
   String? _dropOffDate;
   dynamic _buttonText = "";
 
-     String startDate =
+  String startDate =
       DateTime.now().subtract(const Duration(days: 1)).toIso8601String();
   String endDate = DateTime.now().toIso8601String();
   late GooglePlace googlePlace;
@@ -170,7 +165,8 @@ class _ReferredRidesState extends State<ReferredRides> {
         body: SafeArea(
             child: Column(
           children: [
-            Container(height: 98,
+            Container(
+              height: 98,
               child: Row(
                 children: [
                   BackIcon(
@@ -180,10 +176,12 @@ class _ReferredRidesState extends State<ReferredRides> {
                   ),
                   //SizedBox(width: MediaQuery.of(context).size.width*0.3,),
                   Container(
-                  //padding: EdgeInsets.symmetric(horizontal: 30 ),
+                    //padding: EdgeInsets.symmetric(horizontal: 30 ),
                     //margin:  EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.2),
-                    padding: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.05 ),
-                margin: EdgeInsets.symmetric(horizontal: MediaQuery.of(context).size.width*0.06),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.05),
+                    margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.06),
                     alignment: Alignment.center,
                     child: const Text(
                       'REFRRED RIDES',
@@ -206,8 +204,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 30),
                       child: DateDispatchHistory(
-                      startDate: startDate,
-                      endDate: endDate,
+                        startDate: startDate,
+                        endDate: endDate,
                       ),
                     ),
                     SizedBox(
@@ -219,7 +217,7 @@ class _ReferredRidesState extends State<ReferredRides> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           const Text(
-                            'Today\'s referrred ride',
+                            'Today\'s referred ride',
                             textScaleFactor: 1.2,
                             style: TextStyle(
                               color: appPrimaryColor,

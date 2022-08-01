@@ -3,8 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/mixins/biometrics_helper.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/login_helper.dart';
+import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/screens/auth/forgot_password.dart';
 import 'package:trakk/src/screens/auth/new.dart';
 import 'package:trakk/src/screens/auth/signup.dart';
@@ -23,7 +26,13 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-class _LoginState extends State<Login> with LoginHelper, ConnectivityHelper {
+class _LoginState extends State<Login>
+    with
+        LoginHelper,
+        ConnectivityHelper,
+        MerchantAddRiderAndVehicleHelper,
+        ProfileHelper,
+        BiometricsHelper {
   FocusNode? _emailNode;
   FocusNode? _passwordNode;
 

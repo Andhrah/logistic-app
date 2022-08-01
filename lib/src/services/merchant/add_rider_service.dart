@@ -11,13 +11,50 @@ class AddRiderService extends BaseNetworkCallHandler {
         body: addRiderToMerchantModel.toAddRiderToServerJson());
   }
 
-  Future<Operation> deleteRiderFromMerchant(String riderID) async {
+  Future<Operation> updateRiderUnderAMerchant(
+      AddRiderToMerchantModel addRiderToMerchantModel) async {
+    return runAPI('api/merchant/update-rider', HttpRequestType.put,
+        body: addRiderToMerchantModel.toJson(isToServer: true));
+  }
+
+  Future<Operation> removeRiderFromMerchant(String riderID) async {
     return runAPI('api/riders/$riderID', HttpRequestType.put, body: {
       "data": {"merchantId": ""}
     });
   }
 
+  Future<Operation> deleteRiderByMerchant(String riderID) async {
+    return runAPI(
+      'api/riders/$riderID',
+      HttpRequestType.delete,
+    );
+  }
+
   Future<Operation> getRiders() async {
+    String userID = await appSettingsBloc.getUserID;
+
+    return runAPI(
+        'api/riders?populate=*&[filters][merchantId][id][\$eq]=$userID',
+        HttpRequestType.get);
+  }
+
+  Future<Operation> suspendRider(
+      String riderID,
+      String reasonForSuspension,
+      String suspensionEndDate,
+      String suspensionStartDate,
+      String status) async {
+    return runAPI('api/riders/$riderID', HttpRequestType.put, body: {
+      "data": {
+        "reasonForSuspension": reasonForSuspension,
+        "suspensionEndDate": suspensionEndDate,
+        "suspensionStartDate": suspensionStartDate,
+        "status": status
+      }
+    });
+  }
+
+  Future<Operation> updateRiderByMerchant() async {
     String userID = await appSettingsBloc.getUserID;
 
     return runAPI(

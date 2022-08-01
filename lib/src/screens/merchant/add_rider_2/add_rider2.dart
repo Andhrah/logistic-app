@@ -161,7 +161,9 @@ class _AddRider2State extends State<AddRider2>
                       fontWeight: kMediumWeight,
                     ),
                   ),
-                  10.heightInPixel(),
+                  const SizedBox(
+                    height: 10,
+                  ),
                   DecoratedBox(
                       decoration: BoxDecoration(
                         border: Border.all(
@@ -182,9 +184,8 @@ class _AddRider2State extends State<AddRider2>
                             style: theme.textTheme.bodyText2!
                                 .copyWith(color: const Color(0xFFBDBDBD)),
                           ),
-                          style: TextStyle(
+                          style: theme.textTheme.bodyText2!.copyWith(
                             color: appPrimaryColor.withOpacity(0.8),
-                            fontSize: 18.0,
                           ),
                           underline: Container(),
                           //empty line
@@ -211,7 +212,7 @@ class _AddRider2State extends State<AddRider2>
                           ),
                         )
                       : Container(),
-                  const SizedBox(height: 20.0),
+                  20.heightInPixel(),
                   InputField(
                     key: const Key('vehiclenumber'),
                     textController: _vehicleNumberController,
@@ -233,7 +234,7 @@ class _AddRider2State extends State<AddRider2>
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20.0),
+                  20.heightInPixel(),
                   InputField(
                     key: const Key('vehicleModel'),
                     textController: _vehicleModelController,
@@ -249,7 +250,7 @@ class _AddRider2State extends State<AddRider2>
                       return null;
                     },
                   ),
-                  const SizedBox(height: 20.0),
+                  20.heightInPixel(),
                   InputField(
                     key: const Key('vehicleCapacity'),
                     textController: _vehicleCapacityController,
@@ -258,7 +259,7 @@ class _AddRider2State extends State<AddRider2>
                     autovalidateMode: AutovalidateMode.onUserInteraction,
                     obscureText: false,
                     text: 'Vehicle Capacity',
-                    hintText: 'Vehicle capacity',
+                    hintText: 'Vehicle capacity (Optional)',
                     textHeight: 10.0,
                     borderColor: appPrimaryColor.withOpacity(0.9),
                     onSaved: (value) {
@@ -273,7 +274,7 @@ class _AddRider2State extends State<AddRider2>
                   AddRiderVehicleDocSelectorWidget((Map<String, String> files) {
                     _files = files;
                   }),
-                  const SizedBox(height: 40.0),
+                  35.heightInPixel(),
                   Align(
                     alignment: Alignment.center,
                     child: Button(
