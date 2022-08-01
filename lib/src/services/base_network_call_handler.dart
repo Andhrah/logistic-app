@@ -129,14 +129,13 @@ class BaseNetworkCallHandler with LogoutHelper {
       return handler.next(options);
     }, onResponse: (response, handler) async {
       AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
-
+      print('onResponse');
+      print(response.statusCode);
+      print(response.data);
       if ((appSettings.isLoggedIn && response.statusCode == 401) ||
           response.data['message']
               .toString()
               .contains('Missing or invalid credentials')) {
-        print('onResponse');
-        print(response.statusCode);
-        print(response.data);
         await appToast('Session expired', appToastType: AppToastType.failed);
         logoutGlobal();
 

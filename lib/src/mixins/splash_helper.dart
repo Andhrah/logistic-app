@@ -21,7 +21,7 @@ class SplashHelper {
     Timer(const Duration(milliseconds: 0), () {
       if (appSettings.hasViewedAppTour) {
         if (appSettings.isLoggedIn) {
-          _navigationHomePage();
+          _navigationToLogin();
         } else {
           _navigationToLandingPage();
         }

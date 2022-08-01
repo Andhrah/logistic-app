@@ -1,15 +1,17 @@
-import 'dart:developer';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:local_auth/local_auth.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/biometrics_helper.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/login_helper.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
+import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/screens/auth/forgot_password.dart';
-import 'package:trakk/src/screens/auth/new.dart';
 import 'package:trakk/src/screens/auth/signup.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
@@ -33,48 +35,53 @@ class _LoginState extends State<Login>
         MerchantAddRiderAndVehicleHelper,
         ProfileHelper,
         BiometricsHelper {
-  FocusNode? _emailNode;
-  FocusNode? _passwordNode;
-
   bool _loading = false;
-  bool _emailIsValid = false;
   bool _hidePassword = true;
-  bool _show = false;
-
-  String? _email;
-  String? _password;
-
-  final List<String> _list = ['Customer', 'Rider', 'Company'];
 
   @override
   void initState() {
     super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      init();
+    });
   }
 
-  _validateEmail() {
-    RegExp regex;
-    String pattern =
-        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+";
-    String email = emailCC.text;
-    if (email.trim().isEmpty) {
-      setState(() {
-        _emailIsValid = false;
-      });
-      return "Email address cannot be empty";
-    } else {
-      regex = RegExp(pattern);
-      setState(() {
-        _emailIsValid = regex.hasMatch(email);
-      });
-      if (_emailIsValid == false) {
-        return "Enter a valid email address";
+  init() async {
+    AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+    if (appSettings.loginResponse != null &&
+        appSettings.loginResponse!.data != null) {
+      final arg = ModalRoute.of(context)!.settings.arguments;
+
+      bool isFromLogout = (arg != null) &&
+          (arg as Map).isNotEmpty &&
+          (arg['isFromLogout'] ?? false);
+      if (appSettings.biometricsEnabled && !isFromLogout) {
+        performVerify();
       }
     }
   }
 
-  /*
-   * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
-  */
+  performVerify() {
+    doBiometricActivity(context, () {
+      doGetProfileOperation(
+        onShowLoader: () {
+          showDialog(
+              context: context,
+              builder: (context) =>
+                  const Center(child: kCircularProgressIndicator));
+        },
+        onCloseLoader: () {},
+        profileFetchSuccess: (authData) async {
+          Navigator.pop(context);
+          AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+
+          finaliseLogin(appSettings.loginResponse!, false);
+        },
+      );
+    });
+  }
+
   _onSubmit() async {
     doLoginOperation(
         true,
@@ -84,54 +91,14 @@ class _LoginState extends State<Login>
         () => setState(() {
               _loading = false;
             }));
-
-    // final FormState? form = _formKey.currentState;
-    // if (form!.validate()) {
-    //   form.save();
-    //
-    //   try {
-    //     var response = await LoginProvider.authProvider(context).loginUser(
-    //       _email.toString(),
-    //       _password.toString(),
-    //     );
-    //     setState(() {
-    //       _loading = false;
-    //     });
-    //
-    //     print(response);
-    //     if (response["status"] == "success" &&
-    //         response["data"]["user"]["confirmed"] == false) {
-    //       await appToast('Login Successful, please verify your account', green);
-    //       var box = await Hive.openBox('appState');
-    //       Navigator.of(context).pushNamed(VerifiyAccountScreen.id, arguments: {
-    //         "email": _email,
-    //         "phoneNumber": box.get("phoneNumber")
-    //       });
-    //     } else {
-    //       await appToast('Login Successful', green);
-    //       Navigator.of(context).pushNamed(Tabs.id);
-    //     }
-    //   } catch (err) {
-    //     setState(() {
-    //       _loading = false;
-    //     });
-    //     await appToast(err.toString(), redColor);
-    //     rethrow;
-    //   }
-    // }
-    // setState(() {
-    //   _loading = false;
-    // });
   }
 
   void displayBottomSheet(BuildContext context) {
     showModalBottomSheet(
         context: context,
-        isScrollControlled: true,
         backgroundColor: Colors.transparent,
         builder: (ctx) {
           return Container(
-            height: MediaQuery.of(context).size.height * 0.5,
             padding: EdgeInsets.symmetric(vertical: 60),
             alignment: Alignment.center,
             decoration: const BoxDecoration(
@@ -140,6 +107,7 @@ class _LoginState extends State<Login>
                     topLeft: Radius.circular(50.0),
                     topRight: Radius.circular(50.0))),
             child: Column(
+              mainAxisSize: MainAxisSize.min,
               children: [
                 const Text(
                   "Authentication Required",
@@ -159,12 +127,10 @@ class _LoginState extends State<Login>
                 Align(
                   alignment: Alignment.center,
                   child: InkWell(
-                    onLongPress: () {
-                        log("message");
-                      },
+                    onLongPress: () {},
                     onTap: () {
-                      _show = true;
-                      setState(() {});
+                      Navigator.pop(context);
+                      performVerify();
                     },
                     child: Container(
                       height: 60,
@@ -210,10 +176,9 @@ class _LoginState extends State<Login>
                         onPrimary: Colors.white,
                         primary: whiteColor,
                       ),
-                      
                       onPressed: () {
                         Navigator.pop(context);
-                       // setState(() {});
+                        // setState(() {});
                       },
                     ),
                   ),
@@ -222,6 +187,12 @@ class _LoginState extends State<Login>
             ),
           );
         });
+  }
+
+  @override
+  void dispose() {
+    disposeControllers();
+    super.dispose();
   }
 
   @override
@@ -276,7 +247,6 @@ class _LoginState extends State<Login>
                       obscureText: false,
                       textController: emailCC,
                       keyboardType: TextInputType.emailAddress,
-                      node: _emailNode,
                       text: 'Email Address',
                       hintText: 'jane@email.com',
                       textHeight: 10.0,
@@ -286,11 +256,8 @@ class _LoginState extends State<Login>
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),
-                      validator: (value) {
-                        return _validateEmail();
-                      },
+                      validator: validationBloc.emailValidator,
                       onSaved: (value) {
-                        _email = value!.trim();
                         return null;
                       },
                     ),
@@ -299,7 +266,6 @@ class _LoginState extends State<Login>
                       key: const Key('password'),
                       textController: passwordCC,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      node: _passwordNode,
                       obscureText: _hidePassword,
                       text: 'Password',
                       hintText: 'password',
@@ -327,7 +293,6 @@ class _LoginState extends State<Login>
                         return null;
                       },
                       onSaved: (value) {
-                        _password = value!.trim();
                         return null;
                       },
                     ),
@@ -345,39 +310,70 @@ class _LoginState extends State<Login>
                       ),
                     ),
                     const SizedBox(height: 40.0),
-                    Align(
-                      alignment: Alignment.center,
-                      child: InkWell(
-                        onTap: () => displayBottomSheet(context),
-                        //  {
+                    StreamBuilder<AppSettings>(
+                        stream: appSettingsBloc.appSettings,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData &&
+                              snapshot.data!.biometricsEnabled &&
+                              snapshot.data!.loginResponse?.data?.token !=
+                                  null) {
+                            return FutureBuilder<List<BiometricType>?>(
+                                future: getAvailableBiometrics(),
+                                builder: (context, snapshot) {
+                                  BiometricType biometricType =
+                                      BiometricType.fingerprint;
+                                  if (snapshot.hasData) {
+                                    if (Platform.isIOS) {
+                                      if (snapshot.data!
+                                          .contains(BiometricType.face)) {
+                                        biometricType = BiometricType.face;
+                                      }
+                                    } else {
+                                      if (snapshot.data!
+                                          .contains(BiometricType.iris)) {
+                                        biometricType = BiometricType.iris;
+                                      }
+                                    }
+                                  }
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: InkWell(
+                                      onTap: () => displayBottomSheet(context),
+                                      //  {
 
-                        //   Navigator.pushNamed(context, MyPage.id);
-                        //   // _show = true;
-                        //   // setState(() {});
-                        // },
-                        child: Container(
-                          height: 60,
-                          width: 60,
-                          decoration: BoxDecoration(
-                            color: whiteColor,
-                            shape: BoxShape.circle,
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.5),
-                                spreadRadius: -3,
-                                blurRadius: 11,
-                                offset:
-                                    Offset(0, 8), // changes position of shadow
-                              ),
-                            ],
-                          ),
-                          child: Center(
-                            child:
-                                SvgPicture.asset("assets/images/biometric.svg"),
-                          ),
-                        ),
-                      ),
-                    ),
+                                      //   Navigator.pushNamed(context, MyPage.id);
+                                      //   // _show = true;
+                                      //   // setState(() {});
+                                      // },
+                                      child: Container(
+                                        height: 60,
+                                        width: 60,
+                                        decoration: BoxDecoration(
+                                          color: whiteColor,
+                                          shape: BoxShape.circle,
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color:
+                                                  Colors.grey.withOpacity(0.5),
+                                              spreadRadius: -3,
+                                              blurRadius: 11,
+                                              offset: Offset(0,
+                                                  8), // changes position of shadow
+                                            ),
+                                          ],
+                                        ),
+                                        child: Center(
+                                          child: SvgPicture.asset(
+                                              Assets.biometric_icon_svg),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                });
+                          }
+
+                          return const SizedBox();
+                        }),
                     const SizedBox(height: 40.0),
                     Align(
                         alignment: Alignment.center,
@@ -391,7 +387,8 @@ class _LoginState extends State<Login>
                     const SizedBox(height: 15.0),
                     InkWell(
                       onTap: () {
-                        modalSearchableList(_list, (int index, String value) {
+                        modalSearchableList(['Customer', 'Rider', 'Company'],
+                            (int index, String value) {
                           String userType = 'customer';
                           switch (value) {
                             case 'Customer':
@@ -513,104 +510,104 @@ class _LoginState extends State<Login>
     );
   }
 
-  Widget? _loginBottomSheet() {
-    //bool _show;
-    if (_show) {
-      return BottomSheet(
-        onClosing: () {},
-        builder: (context) {
-          return Container(
-            padding: EdgeInsets.symmetric(vertical: 50),
-            height: 400,
-            width: double.infinity,
-            decoration: BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50.0),
-                    topRight: Radius.circular(50.0))),
-            alignment: Alignment.center,
-            child: Column(
-              children: [
-                Text(
-                  "Authentication Required",
-                  textScaleFactor: 1.2,
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Authenticate your biometrics to verify your\n identity",
-                  textAlign: TextAlign.center,
-                ),
-                SizedBox(
-                  height: 36,
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: InkWell(
-                    onTap: () {
-                      _show = true;
-                      setState(() {});
-                    },
-                    child: Container(
-                      height: 60,
-                      width: 60,
-                      decoration: BoxDecoration(
-                        color: whiteColor,
-                        shape: BoxShape.circle,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.5),
-                            spreadRadius: -3,
-                            blurRadius: 11,
-                            offset: Offset(0, 8), // changes position of shadow
-                          ),
-                        ],
-                      ),
-                      child: Center(
-                        child: SvgPicture.asset("assets/images/biometric.svg"),
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  "Touch the fingerprint sensor",
-                  textScaleFactor: 0.8,
-                ),
-                const SizedBox(
-                  height: 50,
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20),
-                  child: Align(
-                    alignment: Alignment.bottomLeft,
-                    child: ElevatedButton(
-                      child: Text(
-                        "Cancel",
-                        style: TextStyle(color: appPrimaryColor),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        onPrimary: Colors.white,
-                        primary: whiteColor,
-                      ),
-                      onPressed: () {
-                        _show = false;
-                        setState(() {});
-                      },
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          );
-        },
-      );
-    } else {
-      return null;
-    }
-  }
+// Widget? _loginBottomSheet() {
+//   //bool _show;
+//   if (_show) {
+//     return BottomSheet(
+//       onClosing: () {},
+//       builder: (context) {
+//         return Container(
+//           padding: EdgeInsets.symmetric(vertical: 50),
+//           height: 400,
+//           width: double.infinity,
+//           decoration: BoxDecoration(
+//               color: whiteColor,
+//               borderRadius: BorderRadius.only(
+//                   topLeft: Radius.circular(50.0),
+//                   topRight: Radius.circular(50.0))),
+//           alignment: Alignment.center,
+//           child: Column(
+//             children: [
+//               Text(
+//                 "Authentication Required",
+//                 textScaleFactor: 1.2,
+//                 style: TextStyle(fontWeight: FontWeight.bold),
+//               ),
+//               SizedBox(
+//                 height: 10,
+//               ),
+//               Text(
+//                 "Authenticate your biometrics to verify your\n identity",
+//                 textAlign: TextAlign.center,
+//               ),
+//               SizedBox(
+//                 height: 36,
+//               ),
+//               Align(
+//                 alignment: Alignment.center,
+//                 child: InkWell(
+//                   onTap: () {
+//                     _show = true;
+//                     setState(() {});
+//                   },
+//                   child: Container(
+//                     height: 60,
+//                     width: 60,
+//                     decoration: BoxDecoration(
+//                       color: whiteColor,
+//                       shape: BoxShape.circle,
+//                       boxShadow: [
+//                         BoxShadow(
+//                           color: Colors.grey.withOpacity(0.5),
+//                           spreadRadius: -3,
+//                           blurRadius: 11,
+//                           offset: Offset(0, 8), // changes position of shadow
+//                         ),
+//                       ],
+//                     ),
+//                     child: Center(
+//                       child: SvgPicture.asset("assets/images/biometric.svg"),
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//               const SizedBox(
+//                 height: 20,
+//               ),
+//               Text(
+//                 "Touch the fingerprint sensor",
+//                 textScaleFactor: 0.8,
+//               ),
+//               const SizedBox(
+//                 height: 50,
+//               ),
+//               Padding(
+//                 padding: const EdgeInsets.only(left: 20),
+//                 child: Align(
+//                   alignment: Alignment.bottomLeft,
+//                   child: ElevatedButton(
+//                     child: Text(
+//                       "Cancel",
+//                       style: TextStyle(color: appPrimaryColor),
+//                     ),
+//                     style: ElevatedButton.styleFrom(
+//                       onPrimary: Colors.white,
+//                       primary: whiteColor,
+//                     ),
+//                     onPressed: () {
+//                       _show = false;
+//                       setState(() {});
+//                     },
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//         );
+//       },
+//     );
+//   } else {
+//     return null;
+//   }
+// }
 }
