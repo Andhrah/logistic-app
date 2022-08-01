@@ -40,11 +40,16 @@ class _PrivacyAndPolicyState extends State<PrivacyAndPolicy> {
 
   String securityDescription =
       """In order to have continued access to use the Platform, you will have to register on the Platform and create an account with a unique user identity and password ("Account"). If you are using the Platform on a compatible mobile or tablet, you will have to install the application and then proceed with registration.
+
 You will be responsible for maintaining the confidentiality of the Account information, and are fully responsible for all activities that occur under Your Account. You agree that you will 
-   a) Immediately notify Trakk of any unauthorized use of Your Account information or any other breach of security, and
-   b) Ensure that You exit from Your Account at the end of each session.
+
+a) Immediately notify Trakk of any unauthorized use of Your Account information or any other breach of security, and
+
+b) Ensure that You exit from Your Account at the end of each session.
+
    TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. 
-Use of another User’s Account information for using the Platform is expressly prohibited.
+    
+   Use of another User’s Account information for using the Platform is expressly prohibited.
 
 """;
   String privacyPolicy = """
@@ -243,19 +248,6 @@ class privacyContainer extends StatelessWidget {
   }
 }
 
-class divider extends StatelessWidget {
-  const divider({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const Divider(
-      thickness: 1.0,
-      color: Color(0xff909090),
-    );
-  }
-}
 
 class SettingsRow extends StatelessWidget {
   final String title;
