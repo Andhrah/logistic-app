@@ -184,7 +184,7 @@ class _ReferredRidesState extends State<ReferredRides> {
                         horizontal: MediaQuery.of(context).size.width * 0.06),
                     alignment: Alignment.center,
                     child: const Text(
-                      'REFRRED RIDES',
+                      'REFERRED RIDES',
                       textScaleFactor: 1.1,
                       style: TextStyle(
                         color: appPrimaryColor,
@@ -295,9 +295,8 @@ class _ReferredRidesState extends State<ReferredRides> {
                                                         style: TextStyle(
                                                             color: Colors.black,
                                                             fontSize: 18,
-                                                            fontWeight:
-                                                                FontWeight
-                                                                    .w400),
+                                                            
+                                                                    ),
                                                       ),
                                                     ),
                                                     SizedBox(
