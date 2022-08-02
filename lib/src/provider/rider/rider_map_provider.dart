@@ -10,8 +10,9 @@ import 'package:trakk/src/bloc/misc_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class RiderMapProvider extends ChangeNotifier {
   static RiderMapProvider riderMapProvider(BuildContext context,
@@ -33,7 +34,7 @@ class RiderMapProvider extends ChangeNotifier {
 
     print('token: $token');
 
-    socket = io("http://134.122.92.247:1440", <String, dynamic>{
+    socket = io(SingletonData.singletonData.socketURL, <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
       'path': '/socket/v1/',

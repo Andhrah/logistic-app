@@ -6,10 +6,12 @@
 
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/mixins/biometrics_helper.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
+import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
@@ -33,8 +35,15 @@ class LoginHelper
   late Function() _onShowLoader;
   late Function() _onCloseLoader;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  ValidationBloc validationBloc = ValidationBloc();
   TextEditingController emailCC = TextEditingController();
   TextEditingController passwordCC = TextEditingController();
+
+  disposeControllers() {
+    emailCC.dispose();
+    passwordCC.dispose();
+    validationBloc.dispose();
+  }
 
   bool _isPersistentLogin = false;
 
@@ -90,18 +99,7 @@ class LoginHelper
           return;
         }
 
-        await appToast('Login Successful', appToastType: AppToastType.success);
-        // toggleBiometrics(_authContext!, true, false, (bool status) async {
-        //   AuthResponse authResponse = operation.result;
-        //
-        //   await appSettingsBloc.saveLoginDetails(authResponse);
-        //   await appSettingsBloc.setPersistentLogin(_isPersistentLogin);
-        //   await appSettingsBloc.setBiometrics(status);
-
-        await SingletonData.singletonData.navKey.currentState!
-            .pushNamed(Tabs.id);
-        // });
-
+        finaliseLogin(authResponse, true);
       } else {
         await appToast('Login Successful, please verify your account',
             appToastType: AppToastType.success);
@@ -111,13 +109,40 @@ class LoginHelper
           "phoneNumber": authResponse.data?.user?.phoneNumber ?? '',
           'userType': authResponse.data?.user?.userType ?? ''
         });
-      }
 
-      passwordCC.clear();
+        passwordCC.clear();
+      }
     } else {
       MessageOnlyResponse error = operation.result;
 
       appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
+  }
+
+  finaliseLogin(AuthResponse authResponse, bool setBiometric) async {
+    await appToast('Login Successful', appToastType: AppToastType.success);
+
+    if (setBiometric) {
+      toggleBiometrics(
+          SingletonData.singletonData.navKey.currentState!.overlay!.context,
+          true,
+          false, (bool status) {
+        _finalStep(authResponse, status);
+      });
+    } else {
+      AppSettings appSettings = await appSettingsBloc.fetchAppSettings();
+
+      _finalStep(authResponse, appSettings.biometricsEnabled);
+    }
+  }
+
+  _finalStep(AuthResponse authResponse, bool enableBiometric) async {
+    await appSettingsBloc.saveLoginDetails(authResponse);
+    await appSettingsBloc.setPersistentLogin(_isPersistentLogin);
+    await appSettingsBloc.setBiometrics(enableBiometric);
+
+    await SingletonData.singletonData.navKey.currentState!.pushNamed(Tabs.id);
+
+    passwordCC.clear();
   }
 }

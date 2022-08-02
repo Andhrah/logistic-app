@@ -9,8 +9,8 @@ import 'package:uploadcare_client/uploadcare_client.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SingletonData.singletonData.initBaseURL('https://api.trakkhq.com/');
-  SingletonData.singletonData.initSocketURL('https://api.trakkhq.com');
+  SingletonData.singletonData.initBaseURL('https://api.staging.trakkhq.com/');
+  SingletonData.singletonData.initSocketURL('https://api.staging.trakkhq.com');
   SingletonData.singletonData.initImageURL('https://ucarecdn.com/');
   SingletonData.singletonData
       .initUploadCareClient(UploadcareClient.withSimpleAuth(

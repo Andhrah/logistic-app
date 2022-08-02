@@ -57,7 +57,7 @@ class _DispatchHistoryState extends State<DispatchHistory> {
                   Navigator.of(context).pushNamed(FulfilledDispatch.id);
                 },
                 child: const DefaultContainer(
-                  title: 'Succesful dispatch',
+                  title: 'Successful dispatch',
                 )),
             const SizedBox(
               height: 30,

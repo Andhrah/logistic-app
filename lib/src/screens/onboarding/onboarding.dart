@@ -200,7 +200,7 @@ class _OnboardingState extends State<Onboarding> {
                           Container(
                               margin: const EdgeInsets.only(bottom: 20),
                               child: SizedBox(
-                                  height: 60.0,
+                                  height: 70.0,
                                   width: 300.0,
                                   child: Center(
                                       child: AnimatedOpacity(
@@ -209,15 +209,17 @@ class _OnboardingState extends State<Onboarding> {
                                     curve: animationCurve,
                                     child: Column(
                                       children: [
-                                        Text(
-                                          screenStates[currentScreenIndex]
-                                              ['pageText'][1],
-                                          style: const TextStyle(
-                                            fontSize: 18,
-                                            color: appPrimaryColor,
-                                            fontWeight: FontWeight.w400,
+                                        Expanded(
+                                          child: Text(
+                                            screenStates[currentScreenIndex]
+                                                ['pageText'][1],
+                                            style: const TextStyle(
+                                              fontSize: 18,
+                                              color: appPrimaryColor,
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                            textAlign: TextAlign.center,
                                           ),
-                                          textAlign: TextAlign.center,
                                         ),
                                       ],
                                     ),
