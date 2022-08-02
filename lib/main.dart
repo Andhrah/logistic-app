@@ -44,6 +44,7 @@ import 'package:trakk/src/screens/onboarding/onboarding.dart';
 import 'package:trakk/src/screens/onboarding/splashscreen.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
+import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
@@ -176,13 +177,13 @@ class _MyAppState extends State<MyApp> {
               DispatchSummary.id: (context) => const DispatchSummary(),
               Payment.id: (context) => const Payment(),
               Login.id: (context) => const Login(),
-              MyPage.id: (context) =>  MyPage(),
               ForgetPassword.id: (context) => const ForgetPassword(),
               ForgetPasswordPin.id: (context) => const ForgetPasswordPin(),
               ResetPassword.id: (context) => const ResetPassword(),
               // PersonalData.id: (context) => const PersonalData(),
               // VehicleData.id: (context) => const VehicleData(),
               NextOfKin.id: (context) => const NextOfKin(),
+              EditVehicle.id:(context) =>  EditVehicle(),
               PickUpScreen.id: (context) => const PickUpScreen(),
               CartScreen.id: (context) => const CartScreen(),
               // PolylineScreen.id: (context) => PolylineScreen(),
