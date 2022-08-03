@@ -1,11 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/update_profile/update_profile.dart';
+import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/widgets/image_selector_widget.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
@@ -302,7 +304,33 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                               return null;
                             },
                           ),
-                          const SizedBox(height: 40.0),
+                          const SizedBox(height: 20.0),
+                          Visibility(
+                            //the widget is only visible to rider that why i use dvisibily widget
+                              child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                'Click to edit Vehicle',
+                                style: TextStyle(
+                                    fontSize: 18, fontWeight: FontWeight.w600),
+                              ),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pushNamed(context, EditVehicle.id);
+                                },
+                                child: Container(
+                                  height: 60,
+                                  width: 60,
+                                  decoration: const BoxDecoration(
+                                      color: appPrimaryColor,
+                                      shape: BoxShape.circle),
+                                      child: Icon(Remix.add_line, color: whiteColor,),
+                                ),
+                              ),
+                            ],
+                          )),
+                          const SizedBox(height: 20.0),
                           Align(
                               alignment: Alignment.center,
                               child: Button(

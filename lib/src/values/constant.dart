@@ -3,7 +3,8 @@ Map<String, String> _headers(String token) {
 }
 
 const String kFirstTimeUser = 'firstTimeUser';
-const String baseUrl = 'zebrra.itskillscenter.com';
+//const String baseUrl = 'zebrra.itskillscenter.com';
+const String baseUrl = 'api.trakkhq.com';
 const kHeaders = _headers;
 const ssoUrl = "zebrrasso.herokuapp.com";
 
