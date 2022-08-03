@@ -113,7 +113,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 70,
+                  width: 75,
                   child: Row(
                     children: [
                       BackIcon(
@@ -135,7 +135,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                 ),
                 SizedBox(
                   height: 50,
-                  width: 70,
+                  width: 75,
                   child: DropdownButton<String>(
                     value: filter,
                     icon: const Icon(
@@ -156,6 +156,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                 e,
                                 style: theme.textTheme.caption!.copyWith(
                                   color: appPrimaryColor,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   // decoration: TextDecoration.underline,
                                 ),

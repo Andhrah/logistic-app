@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/rider/rider_order_history_bloc.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/widgets/date_widget.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/widgets/list_history.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/padding.dart';
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/values.dart';
 
 import '../../../widgets/back_icon.dart';
 
@@ -27,7 +27,20 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
   @override
   void initState() {
     super.initState();
-    getRiderOrderHistoryBloc.fetchCurrent(startDate, endDate);
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      OrderHistoryType type = OrderHistoryType.all;
+      if (ModalRoute.of(context)!.settings.arguments != null) {
+        final data = ((ModalRoute.of(context)!.settings.arguments)
+            as Map<String, dynamic>);
+
+        if (data['type'] != null) {
+          type = data['type'];
+        }
+      }
+
+      getRiderOrderHistoryBloc.fetchCurrent(startDate, endDate, type: type);
+    });
   }
 
   @override
@@ -62,10 +75,12 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                 Text(
                   'DISPATCH HISTORY',
                   style: theme.textTheme.subtitle1!.copyWith(
-                    color: appPrimaryColor,fontSize: 18,
-                    fontWeight: kBoldWeight, fontFamily: kDefaultFontFamilyHeading
-                    // decoration: TextDecoration.underline,
-                  ),
+                      color: appPrimaryColor,
+                      fontSize: 18,
+                      fontWeight: kBoldWeight,
+                      fontFamily: kDefaultFontFamilyHeading
+                      // decoration: TextDecoration.underline,
+                      ),
                 ),
                 Opacity(
                   opacity: 0,
@@ -77,7 +92,7 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                 ),
               ],
             ),
-           12.heightInPixel(),
+            12.heightInPixel(),
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(

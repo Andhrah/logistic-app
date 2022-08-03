@@ -160,12 +160,9 @@ class _NextOfKinState extends State<NextOfKin> with ProfileHelper {
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),
-                      validator: (value) {
-                        if (value!.trim().isEmpty) {
-                          return "Enter next of kin phone number";
-                        }
-                        return null;
-                      },
+                      validator: (String? value) =>
+                          validationBloc.phoneValidator(value,
+                              response: "Enter next of kin phone number"),
                       onSaved: (value) {
                         return null;
                       },

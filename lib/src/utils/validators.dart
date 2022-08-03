@@ -33,6 +33,16 @@ class FormValidators {
     }
   }
 
+  ValidationState validatePhone(String? value) {
+    if (value == null || (value.isEmpty)) {
+      return ValidationState.isEmpty;
+    } else if (value.length != 11) {
+      return ValidationState.isValidateFailed;
+    } else {
+      return ValidationState.isValidateSuccess;
+    }
+  }
+
   final validateEmailOnlyBloc =
       StreamTransformer<String, String>.fromHandlers(handleData: (email, sink) {
     final RegExp emailExp = RegExp(_kEmailRule);

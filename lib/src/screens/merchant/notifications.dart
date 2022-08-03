@@ -1,9 +1,5 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:trakk/src/screens/merchant/fulfilled_dispatch.dart';
-import 'package:trakk/src/screens/merchant/referred_rides.dart';
-import 'package:trakk/src/screens/merchant/rejected_rides.dart';
+import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/default_container.dart';
 
@@ -22,9 +18,9 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: whiteColor,
-        body: SafeArea(
-            child: Column(
+      backgroundColor: whiteColor,
+      body: SafeArea(
+        child: Column(
           children: [
             const SizedBox(height: 10.0),
             Row(
@@ -54,33 +50,40 @@ class _NotificationsState extends State<Notifications> {
             ),
             InkWell(
               onTap: () {
-                 Navigator.of(context).pushNamed(FulfilledDispatch.id);
+                Navigator.of(context).pushNamed(UserDispatchHistory.id);
               },
-              child: const DefaultContainer(title: 'Completed delivery ',
-              num: "(3)",),
+              child: const DefaultContainer(
+                title: 'Completed delivery ',
+                num: "(3)",
+              ),
             ),
             const SizedBox(
               height: 30,
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(ReferredRides.id);
+                Navigator.of(context).pushNamed(UserDispatchHistory.id);
               },
-              child: const DefaultContainer(title: 'Referred dispatch ',
-              num: "(0)",),
+              child: const DefaultContainer(
+                title: 'Referred dispatch ',
+                num: "(0)",
+              ),
             ),
             const SizedBox(
               height: 30,
             ),
             InkWell(
               onTap: () {
-                Navigator.of(context).pushNamed(RejectedRides.id);
+                Navigator.of(context).pushNamed(UserDispatchHistory.id);
               },
-              child: const DefaultContainer(title: 'Rejected request ',
-              num: "(0)",),
+              child: const DefaultContainer(
+                title: 'Rejected request ',
+                num: "(0)",
+              ),
             ),
           ],
-        ),),);
+        ),
+      ),
+    );
   }
 }
-

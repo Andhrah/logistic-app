@@ -308,7 +308,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
     if (operation.code == 200 || operation.code == 201) {
       if (_riderToMerchantModel != null) {
         await _showSuccessfulDialog(
-            "${_riderToMerchantModel?.data?.firstName ?? ''} has been added to rider's list",
+            "${camelCase(_riderToMerchantModel?.data?.firstName ?? '')} has been added to rider's list",
             'View All Riders', () async {
           Navigator.pop(_authContext);
           // if ((await appSettingsBloc.getUserType) == UserType.merchant) {

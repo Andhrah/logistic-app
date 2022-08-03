@@ -2,8 +2,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/order/order.dart';
 import 'package:trakk/src/services/base_network_call_handler.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/operation.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class OrderAPI extends BaseNetworkCallHandler {
   /// * start
@@ -34,11 +34,13 @@ class OrderAPI extends BaseNetworkCallHandler {
   }
 
   Future<Operation> getRiderOrderHistory(
-      String startDate, String endDate) async {
+      OrderHistoryType type, String startDate, String endDate) async {
     String userID = await appSettingsBloc.getUserID;
 
     return runAPI(
-        'api/orders?populate=*&filters[pickupDate][\$gt]=$startDate&filters[pickupDate][\$lte]=$endDate&filters[userId][id][\$eq]=$userID',
+        type == OrderHistoryType.all
+            ? 'api/orders?populate=*&filters[pickupDate][\$gt]=$startDate&filters[pickupDate][\$lte]=$endDate&filters[userId][id][\$eq]=$userID'
+            : '/orders?populate=*&filters[status][\$eq]=${type.name}&filters[riderId][id][\$eq]=31',
         HttpRequestType.get);
   }
 
