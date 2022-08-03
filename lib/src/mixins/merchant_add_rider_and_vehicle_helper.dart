@@ -308,7 +308,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
     if (operation.code == 200 || operation.code == 201) {
       if (_riderToMerchantModel != null) {
         await _showSuccessfulDialog(
-            '${_riderToMerchantModel?.data?.firstName ?? ''} has been added to rider list',
+            "${_riderToMerchantModel?.data?.firstName ?? ''} has been added to rider's list",
             'View All Riders', () async {
           Navigator.pop(_authContext);
           // if ((await appSettingsBloc.getUserType) == UserType.merchant) {
@@ -330,7 +330,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
         });
       } else {
         await _showSuccessfulDialog(
-            '${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle list',
+            "${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle's list",
             userType == UserType.rider ? 'Go back' : 'View All Vehicles', () {
           Navigator.pop(_authContext);
           if (onSuccessCallback != null) onSuccessCallback();
