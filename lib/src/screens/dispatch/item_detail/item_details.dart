@@ -20,9 +20,6 @@ import 'package:trakk/src/widgets/button.dart';
 import '../../../models/app_settings.dart';
 import '../../../widgets/menu_button.dart';
 
-import '../../../models/app_settings.dart';
-import '../../../widgets/menu_button.dart';
-
 class ItemDetails extends StatefulWidget {
   static const String id = 'itemDetails';
 
@@ -403,7 +400,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                         alignment: Alignment.centerLeft,
                         width: MediaQuery.of(context).size.width / 3,
                         child: CachedNetworkImage(
-                            imageUrl: riders.first.avatar ?? '',
+                            imageUrl: riders.first.userId?.avatar ?? '',
                             height: 50,
                             width: MediaQuery.of(context).size.width / 3,
                             placeholder: (context, url) => SizedBox(
@@ -419,7 +416,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                                     width:
                                         MediaQuery.of(context).size.width / 3,
                                   ),
-                                  errorWidget: (context, url, err) => SizedBox(
+                                  errorWidget: (context, url, err) =>
+                                      Image.asset(
+                                    Assets.ride,
                                     width:
                                         MediaQuery.of(context).size.width / 3,
                                   ),
@@ -431,6 +430,27 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                               fontSize: 15.0,
                               color: appPrimaryColor,
                               fontWeight: FontWeight.w500))
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
+                  Row(
+                    children: [
+                      Container(
+                        alignment: Alignment.centerLeft,
+                        width: MediaQuery.of(context).size.width / 3,
+                        child: const Text(
+                          'Name:',
+                          style: TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
+                      Text(riders.first.userId?.firstName ?? '-',
+                          style: const TextStyle(
+                              fontSize: 15.0,
+                              color: appPrimaryColor,
+                              fontWeight: FontWeight.w500)),
                     ],
                   ),
                   const SizedBox(height: 20.0),
@@ -566,7 +586,9 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                         return Row(
                           children: [
                             CachedNetworkImage(
-                                imageUrl: riders.first.avatar ?? '',
+                                imageUrl:
+                                    riders.elementAt(index).userId?.avatar ??
+                                        '',
                                 height: 50.0,
                                 width: 50,
                                 placeholder: (context, url) => SizedBox(
@@ -576,7 +598,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                                 errorWidget: (context, url, err) =>
                                     CachedNetworkImage(
                                       imageUrl:
-                                          '${(riders.first.vehicles?.length ?? 0) > 0 ? riders.first.vehicles?.first.image : '-'}',
+                                          '${(riders.elementAt(index).vehicles?.length ?? 0) > 0 ? riders.elementAt(index).vehicles?.first.image : '-'}',
                                       height: 50.0,
                                       width: 50,
                                       placeholder: (context, url) =>
@@ -599,7 +621,10 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                      riders.elementAt(index).firstName ??
+                                      riders
+                                              .elementAt(index)
+                                              .userId
+                                              ?.firstName ??
                                           ((riders
                                                           .elementAt(index)
                                                           .vehicles

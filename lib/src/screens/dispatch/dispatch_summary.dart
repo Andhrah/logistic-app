@@ -111,30 +111,35 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                                     )
                                   ],
                                 ),
-                                14.heightInPixel(),
-                                Row(
-                                  children: [
-                                    const Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        'Email Address:',
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: appPrimaryColor,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Text(
-                                          orderModel.data?.receiverEmail ?? '',
-                                          style: const TextStyle(
+                                if ((orderModel.data?.receiverEmail ?? '')
+                                    .isNotEmpty)
+                                  14.heightInPixel(),
+                                if ((orderModel.data?.receiverEmail ?? '')
+                                    .isNotEmpty)
+                                  Row(
+                                    children: [
+                                      const Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          'Email Address:',
+                                          style: TextStyle(
                                               fontSize: 14.0,
                                               color: appPrimaryColor,
-                                              fontWeight: FontWeight.w400)),
-                                    )
-                                  ],
-                                ),
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(
+                                            orderModel.data?.receiverEmail ??
+                                                '',
+                                            style: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: appPrimaryColor,
+                                                fontWeight: FontWeight.w400)),
+                                      )
+                                    ],
+                                  ),
                                 14.heightInPixel(),
                                 Row(
                                   children: [
@@ -429,7 +434,7 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                                     Expanded(
                                       flex: 3,
                                       child: Text(
-                                          '${rider.firstName ?? ''} ${rider.lastName ?? ''}',
+                                          '${rider.userId?.firstName ?? ''} ${rider.userId?.lastName ?? ''}',
                                           style: const TextStyle(
                                               fontSize: 15.0,
                                               color: appPrimaryColor,
@@ -437,29 +442,31 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                                     )
                                   ],
                                 ),
-                                14.heightInPixel(),
-                                Row(
-                                  children: [
-                                    const Expanded(
-                                      flex: 2,
-                                      child: Text(
-                                        'Email Address:',
-                                        style: TextStyle(
-                                            fontSize: 14.0,
-                                            color: appPrimaryColor,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ),
-                                    Expanded(
-                                      flex: 3,
-                                      child: Text(rider.email ?? '',
-                                          style: const TextStyle(
+                                if ((rider.userId?.email ?? '').isNotEmpty)
+                                  14.heightInPixel(),
+                                if ((rider.userId?.email ?? '').isNotEmpty)
+                                  Row(
+                                    children: [
+                                      const Expanded(
+                                        flex: 2,
+                                        child: Text(
+                                          'Email Address:',
+                                          style: TextStyle(
                                               fontSize: 14.0,
                                               color: appPrimaryColor,
-                                              fontWeight: FontWeight.w400)),
-                                    )
-                                  ],
-                                ),
+                                              fontWeight: FontWeight.w700),
+                                        ),
+                                      ),
+                                      Expanded(
+                                        flex: 3,
+                                        child: Text(rider.userId?.email ?? '',
+                                            style: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: appPrimaryColor,
+                                                fontWeight: FontWeight.w400)),
+                                      )
+                                    ],
+                                  ),
                                 14.heightInPixel(),
                                 Row(
                                   children: [

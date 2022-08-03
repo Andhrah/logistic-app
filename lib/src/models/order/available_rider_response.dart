@@ -1,4 +1,3 @@
-import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
 import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 
 class AvailableRiderResponse {
@@ -93,7 +92,7 @@ class AvailableRiderDataRider {
   final DateTime? publishedAt;
   final String? status;
   final double? cost;
-  final dynamic userId;
+  final Rider? userId;
   final List<GetVehiclesDatumAttributes>? vehicles;
   final List<dynamic>? ratings;
   final List<dynamic>? nextOfKins;
@@ -136,7 +135,7 @@ class AvailableRiderDataRider {
             : DateTime.parse(json["publishedAt"]),
         status: json["status"] == null ? null : json["status"],
         cost: json["cost"] == null ? null : json["cost"].toDouble(),
-        userId: json["userId"],
+        userId: json["userId"] == null ? null : Rider.fromJson(json["userId"]),
         vehicles: json["vehicles"] == null
             ? null
             : List<GetVehiclesDatumAttributes>.from(json["vehicles"]
@@ -180,7 +179,7 @@ class AvailableRiderDataRider {
             publishedAt == null ? null : publishedAt!.toIso8601String(),
         "status": status == null ? null : status,
         "cost": cost == null ? null : cost,
-        "userId": userId,
+        "userId": userId == null ? null : userId!.toJson(),
         "vehicles": vehicles == null
             ? null
             : List<dynamic>.from(vehicles!.map((x) => x.toJson())),
@@ -263,5 +262,73 @@ class MerchantId {
         "amountPerKm": amountPerKm == null ? null : amountPerKm,
         "baseFare": baseFare == null ? null : baseFare,
         "priceCap": priceCap == null ? null : priceCap,
+      };
+}
+
+class Rider {
+  Rider({
+    this.id,
+    this.avatar,
+    this.dateOfBirth,
+    this.phone,
+    this.username,
+    this.email,
+    this.middleName,
+    this.firstName,
+    this.lastName,
+    this.address,
+    this.confirmed,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  final int? id;
+  final String? username;
+  final String? email;
+  final String? middleName;
+  final String? firstName;
+  final String? lastName;
+  final String? address;
+  final String? avatar;
+  final String? dateOfBirth;
+  final bool? confirmed;
+  final String? phone;
+  final DateTime? createdAt;
+  final DateTime? updatedAt;
+
+  factory Rider.fromJson(Map<String, dynamic> json) => Rider(
+        id: json["id"],
+        avatar: json["avatar"],
+        dateOfBirth: json["dateOfBirth"],
+        username: json["username"],
+        email: json["email"],
+        middleName: json["middleName"],
+        firstName: json["firstName"],
+        lastName: json["lastName"],
+        address: json["address"],
+        phone: json["phoneNumber"],
+        confirmed: json["confirmed"],
+        createdAt: json["createdAt"] == null
+            ? null
+            : DateTime.parse(json["createdAt"]),
+        updatedAt: json["updatedAt"] == null
+            ? null
+            : DateTime.parse(json["updatedAt"]),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "id": id,
+        "avatar": avatar,
+        "dateOfBirth": dateOfBirth,
+        "username": username,
+        "email": email,
+        "middleName": middleName,
+        "firstName": firstName,
+        "lastName": lastName,
+        "address": address,
+        "phoneNumber": phone,
+        "confirmed": confirmed,
+        "createdAt": createdAt == null ? null : createdAt!.toIso8601String(),
+        "updatedAt": updatedAt == null ? null : updatedAt!.toIso8601String(),
       };
 }

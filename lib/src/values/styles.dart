@@ -13,11 +13,11 @@ import 'package:shimmer/shimmer.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:trakk/src/models/order/user_order_history_response.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/custom_clipboard.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 const kCircularProgressIndicator =
@@ -148,12 +148,12 @@ Future dialogOrderPaymentSuccess(
                 ),
                 RichText(
                   text: TextSpan(
-                      text: "ID: ",
+                      text: "",
                       style: theme.textTheme.bodyText1!.copyWith(
                           fontWeight: kBoldWeight, color: appPrimaryColor),
                       children: [
                         TextSpan(
-                          text: "#${datum?.attributes?.orderRef ?? ''}",
+                          text: datum?.attributes?.deliveryCode ?? '',
                           style: theme.textTheme.bodyText1!.copyWith(
                               fontWeight: kMediumWeight,
                               color: appPrimaryColor),
@@ -171,8 +171,7 @@ Future dialogOrderPaymentSuccess(
                         child: GestureDetector(
                           onTap: () {
                             CustomClipboard.copy(
-                              "$orderIdentifier${datum?.attributes?.orderRef ?? ''}",
-                            );
+                                datum?.attributes?.deliveryCode ?? '');
                           },
                           child: Container(
                             color: Colors.transparent,
@@ -200,7 +199,7 @@ Future dialogOrderPaymentSuccess(
                       child: GestureDetector(
                         onTap: () {
                           try {
-                            Share.share("#${datum?.attributes?.orderRef ?? ''}",
+                            Share.share(datum?.attributes?.deliveryCode ?? '',
                                 subject: 'Delivery Code');
                           } catch (err) {
                             appToast('Could not share empty text',
