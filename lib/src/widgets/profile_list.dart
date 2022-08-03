@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/values/values.dart';
 
 class ProfileList extends StatelessWidget {
   final Widget icon;
-  final String title;
+  final String? title;
+  final Widget? titleWidget;
   final Widget? trailingWidget;
 
   const ProfileList({
     Key? key,
     required this.icon,
-    required this.title,
+    this.title,
+    this.titleWidget,
     this.trailingWidget,
-
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Container(padding: EdgeInsets.only(left: 20),
+    return Container(
+      padding: EdgeInsets.only(left: 20),
       height: 48,
       decoration: const BoxDecoration(
         color: whiteColor,
@@ -35,10 +35,15 @@ class ProfileList extends StatelessWidget {
         alignment: Alignment.center,
         child: ListTile(
           leading: icon,
-          title: Text(
-            title,
-            style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w400, color: appPrimaryColor,),
-          ),
+          title: titleWidget ??
+              Text(
+                title ?? '',
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w400,
+                  color: appPrimaryColor,
+                ),
+              ),
           trailing: trailingWidget,
         ),
       ),

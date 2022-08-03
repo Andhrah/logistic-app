@@ -4,6 +4,7 @@ class Assets {
   static const String check_success_outline =
       'assets/images/check_success_outline.png';
   static const String Logout_svg = 'assets/images/Logout.svg';
+  static const String biometric_icon_svg = 'assets/images/biometric.svg';
 
   //rider
   static const String distance_icon = 'assets/images/rider/distance_icon.png';

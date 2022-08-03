@@ -26,7 +26,7 @@ class BiometricsHelper {
       final isAvailable = await localAuth.canCheckBiometrics;
       final isDeviceSupported = await localAuth.isDeviceSupported();
       List<BiometricType> biometrics = (await getAvailableBiometrics()) ?? [];
-      return isAvailable && isDeviceSupported && biometrics.length > 0;
+      return isAvailable && isDeviceSupported && biometrics.isNotEmpty;
     } on PlatformException catch (e) {
       return false;
     }
@@ -51,6 +51,7 @@ class BiometricsHelper {
       bool isFromSettings, ProcessCompleted processCompleted) async {
     bool value = await deviceHasBiometrics;
 
+    print('deviceHasBiometrics: $value');
     if (await deviceHasBiometrics) {
       bool result = false;
       bool isYesPressed = false;
@@ -60,8 +61,10 @@ class BiometricsHelper {
               ? 'Do you want to enable Fingerprint/Face ID for authorization?'
               : 'Do you want to disable Fingerprint/Face ID for authorization?',
           positiveCallback: () async {
+        Navigator.pop(context);
         isYesPressed = true;
       }, negativeCallback: () {
+        Navigator.pop(context);
         isYesPressed = false;
       });
       if (isYesPressed) {

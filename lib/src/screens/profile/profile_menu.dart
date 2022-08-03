@@ -1,10 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 // import 'package:hive/hive.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/mixins/biometrics_helper.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
@@ -16,14 +16,11 @@ import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
-import 'package:trakk/src/screens/support/send_message.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:trakk/src/widgets/profile_list.dart';
-
-import '../support/send_message.dart';
 
 class ProfileMenu extends StatefulWidget {
   static const String id = "ProfileMenu";
@@ -35,10 +32,18 @@ class ProfileMenu extends StatefulWidget {
 }
 
 class _ProfileMenuState extends State<ProfileMenu>
-    with ProfileHelper, ConnectivityHelper, LogoutHelper {
+    with ProfileHelper, ConnectivityHelper, BiometricsHelper, LogoutHelper {
 // var box = Hive.box('userData');
 //    String firstName = box.get('firstName');
-  bool _isToggled = false;
+
+  bool isBiometricsEnabled = false;
+
+  Map<IconData, String> list = {
+    Remix.history_line: 'Dispatch History',
+    Remix.settings_2_line: 'Privacy & Security',
+    Remix.question_line: 'Help & Support',
+    Remix.lock_2_line: 'Enable Touch ID'
+  };
 
   @override
   void initState() {
@@ -76,44 +81,46 @@ class _ProfileMenuState extends State<ProfileMenu>
             ),
             12.heightInPixel(),
             Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Divider(
-                        thickness: 1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                            left: 35.0, right: 35.0, top: 0, bottom: 0),
-                        child: StreamBuilder<AppSettings>(
-                            stream: appSettingsBloc.appSettings,
-                            builder: (context, snapshot) {
-                              String avatar = '';
-                              String firstName = '';
-                              String lastName = '';
-                              String phone = '';
-                              String email = '';
+              child: StreamBuilder<AppSettings>(
+                  stream: appSettingsBloc.appSettings,
+                  builder: (context, snapshot) {
+                    String avatar = '';
+                    String firstName = '';
+                    String lastName = '';
+                    String phone = '';
+                    String email = '';
 
-                              if (snapshot.hasData) {
-                                avatar = snapshot.data?.loginResponse?.data
-                                        ?.user?.avatar ??
-                                    '';
-                                firstName = snapshot.data?.loginResponse?.data
-                                        ?.user?.firstName ??
-                                    '';
-                                lastName = snapshot.data?.loginResponse?.data
-                                        ?.user?.lastName ??
-                                    '';
-                                phone = snapshot.data?.loginResponse?.data?.user
-                                        ?.phoneNumber ??
-                                    '';
-                                email = snapshot.data?.loginResponse?.data?.user
-                                        ?.email ??
-                                    '';
-                              }
-
-                              return Column(
+                    if (snapshot.hasData &&
+                        snapshot.data!.loginResponse != null) {
+                      isBiometricsEnabled = snapshot.hasData
+                          ? snapshot.data!.biometricsEnabled
+                          : false;
+                      avatar =
+                          snapshot.data?.loginResponse?.data?.user?.avatar ??
+                              '';
+                      firstName =
+                          snapshot.data?.loginResponse?.data?.user?.firstName ??
+                              '';
+                      lastName =
+                          snapshot.data?.loginResponse?.data?.user?.lastName ??
+                              '';
+                      phone = snapshot
+                              .data?.loginResponse?.data?.user?.phoneNumber ??
+                          '';
+                      email =
+                          snapshot.data?.loginResponse?.data?.user?.email ?? '';
+                    }
+                    return SingleChildScrollView(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Divider(
+                              thickness: 1,
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  left: 35.0, right: 35.0, top: 0, bottom: 0),
+                              child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   12.heightInPixel(),
@@ -186,301 +193,249 @@ class _ProfileMenuState extends State<ProfileMenu>
                                     ],
                                   ),
                                 ],
-                              );
-                            }),
-                      ),
-                      const Divider(
-                        thickness: 1,
-                      ),
-
-                      // Container(
-                      //   padding: EdgeInsets.only(left: 20),
-                      //   height: 87,
-                      //   decoration: const BoxDecoration(
-                      //     color: secondaryColor,
-                      //     boxShadow: [
-                      //       BoxShadow(
-                      //         spreadRadius: 2,
-                      //         color: Color.fromARGB(255, 233, 233, 233),
-                      //         offset: Offset(2.0, 4.0), //(x,y)
-                      //         blurRadius: 10,
-                      //       ),
-                      //     ],
-                      //   ),
-                      //   child: Align(
-                      //     alignment: Alignment.center,
-                      //     child: ListTile(
-                      //       title: Row(
-                      //         children: [
-                      //           ConstrainedBox(
-                      //             constraints:
-                      //                 const BoxConstraints(maxWidth: 200),
-                      //             child: Text(
-                      //               'Share App with your Trakk code and get ₦500 bonus in your wallet',
-                      //               textAlign: TextAlign.justify,
-                      //               style: theme.textTheme.bodyText2!
-                      //                   .copyWith(height: 1.4),
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //       trailing: StreamBuilder<AppSettings>(
-                      //           stream: appSettingsBloc.appSettings,
-                      //           builder: (context, snapshot) {
-                      //             String code = '';
-
-                      //             if (snapshot.hasData) {
-                      //               // code = snapshot.data?.loginResponse?.data
-                      //               //   ?.user?.code ??
-                      //               // '';
-                      //             }
-                      //             return GestureDetector(
-                      //               onTap: () {
-                      //                 try {
-                      //                   Share.share(code,
-                      //                       subject: 'Delivery Code');
-                      //                 } catch (err) {
-                      //                   appToast('Could not share empty text',
-                      //                       appToastType: AppToastType.failed);
-                      //                 }
-                      //               },
-                      //               child: const Icon(
-                      //                 Remix.share_line,
-                      //                 color: appPrimaryColor,
-                      //               ),
-                      //             );
-                      //           }),
-                      //     ),
-                      //   ),
-                      // ),
-                      // InkWell(
-                      //   onTap: () {
-                      //     Navigator.of(context)
-                      //         .pushNamed(UserDispatchHistory.id);
-                      //   },
-                      //   child: const ProfileList(
-                      //     icon: Icon(
-                      //       Remix.wallet_3_line,
-                      //       color: appPrimaryColor,
-                      //     ),
-                      //     //svg: 'assets/images/history.svg',
-                      //     title: 'Wallet',
-                      //   ),
-                      // ),
-                      // const SizedBox(
-                      //   height: 18,
-                      // ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context)
-                              .pushNamed(UserDispatchHistory.id);
-                        },
-                        child: const ProfileList(
-                          icon: Icon(
-                            Remix.history_line,
-                            color: appPrimaryColor,
-                          ),
-                          //svg: 'assets/images/history.svg',
-                          title: 'Dispatch History',
-                          trailingWidget:
-                              Icon(Icons.arrow_forward_ios, color: kTextColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(PrivacyAndPolicy.id);
-                        },
-                        child: const ProfileList(
-                          icon: Icon(
-                            Remix.settings_2_line,
-                            color: appPrimaryColor,
-                          ),
-                          //svg: 'assets/images/settings.svg',
-                          title: 'Privacy & Security',
-                          trailingWidget:
-                              Icon(Icons.arrow_forward_ios, color: kTextColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(HelpAndSupport.id);
-                        },
-                        child: const ProfileList(
-                          icon: Icon(
-                            Remix.question_line,
-                            color: appPrimaryColor,
-                          ),
-                          //svg: 'assets/images/help.svg',
-                          title: 'Help and Support',
-                          trailingWidget: Icon(Icons.arrow_forward_ios,
-                              color: secondaryColor),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 18,
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: const ProfileList(
-                          icon: Icon(
-                            Remix.lock_2_line,
-                            color: appPrimaryColor,
-                          ),
-                          title: 'Enable Touch ID',
-                          // trailingWidget: FlutterSwitch(
-                          //   height: 20.0,
-                          //   width: 40.0,
-                          //   padding: 4.0,
-                          //   toggleSize: 15.0,
-                          //   borderRadius: 10.0,
-                          //   inactiveColor: whiteColor,
-                          //   activeColor: whiteColor,
-                          //   activeSwitchBorder: Border.all(
-                          //       color: secondaryColor,
-                          //       style: BorderStyle.solid),
-                          //   activeToggleBorder:
-                          //       Border.all(color: secondaryColor),
-                          //   activeToggleColor: secondaryColor,
-                          //   inactiveToggleBorder:
-                          //       Border.all(color: appPrimaryColor),
-                          //   inactiveToggleColor: appPrimaryColor,
-                          //   inactiveSwitchBorder:
-                          //       Border.all(color: appPrimaryColor),
-                          //   value: _isToggled,
-                          //   onToggle: (value) {
-                          //     print("VALUE : $value");
-                          //     setState(() {
-                          //       _isToggled = value;
-                          //     });
-                          //   },
-                          // ),
-                        ),
-                      ),
-                      // const SizedBox(
-                      //   height: 18,
-                      // ),
-                      // InkWell(
-                      //   onTap: () {},
-                      //   child: const ProfileList(
-                      //     svg: 'assets/images/insurance.svg',
-                      //     title: 'Insurance',
-                      //   ),
-                      // ),
-                      const SizedBox(
-                        height: 50,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          yesNoDialog(
-                            context,
-                            title: 'Log out',
-                            message: 'Are you sure you want to log out?',
-                            positiveCallback: () => logout(completeLogout: () {
-                              Navigator.popUntil(
-                                  context, ModalRoute.withName(GetStarted.id));
-                              Navigator.of(context).pushNamed(Login.id);
-                            }),
-                            negativeCallback: () => Navigator.pop(context),
-                          );
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.only(left: 30),
-                          height: 48,
-                          decoration: const BoxDecoration(
-                            color: whiteColor,
-                            boxShadow: [
-                              BoxShadow(
-                                spreadRadius: 2,
-                                color: Color.fromARGB(255, 235, 235, 235),
-                                offset: Offset(2.0, 2.0), //(x,y)
-                                blurRadius: 16,
                               ),
-                            ],
-                          ),
-                          child: Align(
-                              alignment: Alignment.center,
-                              child: Row(
-                                children: [
-                                  SvgPicture.asset(
-                                    Assets.Logout_svg,
-                                    color: redColor,
-                                  ),
-                                  const SizedBox(
-                                    width: 22,
-                                  ),
-                                  const Text(
-                                    "Log out",
-                                    style: TextStyle(
-                                        color: redColor,
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.w400),
-                                  ),
-                                ],
-                              )),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 60,
-                      ),
-                      StreamBuilder<AppSettings>(
-                          stream: appSettingsBloc.appSettings,
-                          builder: (context, snapshot) {
-                            bool isCustomer = false;
-                            if (snapshot.hasData) {
-                              isCustomer = (snapshot.data?.loginResponse?.data
-                                          ?.user?.userType ??
-                                      '') ==
-                                  'customer';
-                            }
+                            ),
+                            const Divider(
+                              thickness: 1,
+                            ),
+                            FutureBuilder<bool>(
+                                future: deviceHasBiometrics,
+                                builder: (context, snapshot) {
+                                  bool deviceHasBiometrics = false;
 
-                            return isCustomer
-                                ? Align(
+                                  if (snapshot.hasData) {
+                                    deviceHasBiometrics =
+                                        snapshot.data ?? false;
+                                  }
+
+                                  return ListView.builder(
+                                      shrinkWrap: true,
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: list.length,
+                                      padding: EdgeInsets.zero,
+                                      itemBuilder: (context, index) {
+                                        if (index == 3 &&
+                                            !deviceHasBiometrics) {
+                                          return Container();
+                                        }
+                                        return InkWell(
+                                          onTap: (index != 3 && index != 4)
+                                              ? () {
+                                                  _onTap(context, index);
+                                                }
+                                              : null,
+                                          child: Container(
+                                            height: 60,
+                                            margin: const EdgeInsets.symmetric(
+                                                vertical: 10),
+                                            // padding: const EdgeInsets.symmetric(vertical: 24),
+                                            child: ProfileList(
+                                              title:
+                                                  list.values.elementAt(index),
+                                              icon: Icon(
+                                                list.keys.elementAt(index),
+                                                color: appPrimaryColor,
+                                              ),
+                                              trailingWidget: Padding(
+                                                padding: EdgeInsets.only(
+                                                    right:
+                                                        (index != 3) ? 8 : 10),
+                                                child: index == 3
+                                                    ? _SwitchWidget(
+                                                        isBiometricsEnabled,
+                                                        (bool value) {
+                                                        return _onTap(
+                                                            context, index,
+                                                            value: value);
+                                                      })
+                                                    : const Icon(
+                                                        Icons.arrow_forward_ios,
+                                                        color: kTextColor,
+                                                        size: 18,
+                                                      ),
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      });
+                                }),
+                            const SizedBox(
+                              height: 50,
+                            ),
+                            InkWell(
+                              onTap: () {
+                                yesNoDialog(
+                                  context,
+                                  title: 'Log out',
+                                  message: 'Are you sure you want to log out?',
+                                  positiveCallback: () =>
+                                      logout(completeLogout: () {
+                                    Navigator.popUntil(context,
+                                        ModalRoute.withName(GetStarted.id));
+                                    Navigator.of(context).pushNamed(Login.id,
+                                        arguments: {'isFromLogout': true});
+                                  }),
+                                  negativeCallback: () =>
+                                      Navigator.pop(context),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(left: 30),
+                                height: 48,
+                                decoration: const BoxDecoration(
+                                  color: whiteColor,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      spreadRadius: 2,
+                                      color: Color.fromARGB(255, 235, 235, 235),
+                                      offset: Offset(2.0, 2.0), //(x,y)
+                                      blurRadius: 16,
+                                    ),
+                                  ],
+                                ),
+                                child: Align(
                                     alignment: Alignment.center,
-                                    child: Button(
-                                        text: 'Become a Rider and Earn',
-                                        onPress: () {
-                                          yesNoDialog(
-                                            context,
-                                            message:
-                                                'You will be logged out to continue',
-                                            positiveCallback: () =>
-                                                logout(completeLogout: () {
-                                              Navigator.popUntil(
+                                    child: Row(
+                                      children: [
+                                        SvgPicture.asset(
+                                          Assets.Logout_svg,
+                                          color: redColor,
+                                        ),
+                                        const SizedBox(
+                                          width: 22,
+                                        ),
+                                        const Text(
+                                          "Log out",
+                                          style: TextStyle(
+                                              color: redColor,
+                                              fontSize: 14,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ],
+                                    )),
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 60,
+                            ),
+                            StreamBuilder<AppSettings>(
+                                stream: appSettingsBloc.appSettings,
+                                builder: (context, snapshot) {
+                                  bool isCustomer = false;
+                                  if (snapshot.hasData) {
+                                    isCustomer = (snapshot.data?.loginResponse
+                                                ?.data?.user?.userType ??
+                                            '') ==
+                                        'customer';
+                                  }
+
+                                  return isCustomer
+                                      ? Align(
+                                          alignment: Alignment.center,
+                                          child: Button(
+                                              text: 'Become a Rider and Earn',
+                                              onPress: () {
+                                                yesNoDialog(
                                                   context,
-                                                  ModalRoute.withName(
-                                                      GetStarted.id));
-                                              Navigator.of(context).pushNamed(
-                                                  Signup.id,
-                                                  arguments: {
-                                                    "userType": "rider",
-                                                  });
-                                            }),
-                                            negativeCallback: () =>
-                                                Navigator.pop(context),
-                                          );
-                                        },
-                                        color: kTextColor,
-                                        width: 344,
-                                        textColor: whiteColor,
-                                        isLoading: false),
-                                  )
-                                : const SizedBox();
-                          }),
-                      const SizedBox(
-                        height: 30,
-                      ),
-                    ]),
-              ),
+                                                  message:
+                                                      'You will be logged out to continue',
+                                                  positiveCallback: () =>
+                                                      logout(
+                                                          completeLogout: () {
+                                                    Navigator.popUntil(
+                                                        context,
+                                                        ModalRoute.withName(
+                                                            GetStarted.id));
+                                                    Navigator.of(context)
+                                                        .pushNamed(Signup.id,
+                                                            arguments: {
+                                                          "userType": "rider",
+                                                        });
+                                                  }),
+                                                  negativeCallback: () =>
+                                                      Navigator.pop(context),
+                                                );
+                                              },
+                                              color: kTextColor,
+                                              width: 344,
+                                              textColor: whiteColor,
+                                              isLoading: false),
+                                        )
+                                      : const SizedBox();
+                                }),
+                            const SizedBox(
+                              height: 30,
+                            ),
+                          ]),
+                    );
+                  }),
             ),
           ],
         ),
       ),
     );
+  }
+
+  Future _onTap(BuildContext context, int index, {bool? value}) async {
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushNamed(UserDispatchHistory.id);
+        break;
+      case 1:
+        Navigator.of(context).pushNamed(PrivacyAndPolicy.id);
+        break;
+      case 2:
+        Navigator.of(context).pushNamed(HelpAndSupport.id);
+        break;
+
+      case 3:
+        bool result = await toggleBiometrics(
+            context, value!, true, (validationSuccess) async {});
+
+        if (result) {
+          await appSettingsBloc.setBiometrics(value);
+          return value;
+        } else {
+          await appSettingsBloc.setBiometrics(!value);
+
+          return !value;
+        }
+    }
+
+    return false;
+  }
+}
+
+typedef _SwitchCallback = Future? Function(bool value);
+
+class _SwitchWidget extends StatefulWidget {
+  final bool value;
+  final _SwitchCallback __switchCallback;
+
+  const _SwitchWidget(this.value, this.__switchCallback, {Key? key})
+      : super(key: key);
+
+  @override
+  _SwitchWidgetState createState() => _SwitchWidgetState();
+}
+
+class _SwitchWidgetState extends State<_SwitchWidget> {
+  late bool value = widget.value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Switch.adaptive(
+        materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+        value: widget.value,
+        activeColor: secondaryColor,
+        onChanged: (bool _value) async {
+          var result = await widget.__switchCallback(_value);
+          if (result != null && result is bool) {
+            setState(() {
+              value = result;
+            });
+          }
+        });
   }
 }

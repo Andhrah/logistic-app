@@ -10,6 +10,7 @@ import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/src/models/customer/customer_order_listener_response.dart';
+import 'package:trakk/src/utils/singleton_data.dart';
 
 class CustomerMapProvider extends ChangeNotifier {
   static CustomerMapProvider customerMapProvider(BuildContext context,
@@ -33,7 +34,7 @@ class CustomerMapProvider extends ChangeNotifier {
       print('token: $token');
     }
 
-    socket = io("http://134.122.92.247:1440", <String, dynamic>{
+    socket = io(SingletonData.singletonData.socketURL, <String, dynamic>{
       "transports": ["websocket"],
       "autoConnect": false,
       'path': '/socket/v1/',

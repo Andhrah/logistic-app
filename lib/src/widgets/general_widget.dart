@@ -6,14 +6,14 @@ import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/image_selector_modal.dart';
 import 'package:trakk/src/widgets/searchable_list_modal.dart';
 
-yesNoDialog(
+Future yesNoDialog(
   BuildContext context, {
   String title = '',
   String message = '',
   Function()? positiveCallback,
   Function()? negativeCallback,
-}) {
-  showDialog<String>(
+}) async {
+  return await showDialog<String>(
     context: context,
     builder: (BuildContext context) => AlertDialog(
       title: title.isEmpty
