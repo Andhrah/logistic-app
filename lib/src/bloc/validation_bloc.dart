@@ -68,4 +68,15 @@ class ValidationBloc extends FormValidators {
                 ? (response ?? "Field is required")
                 : (response ?? "Email address cannot be empty");
   }
+
+  String? phoneValidator(String? value, {String? response}) {
+    ValidationState state = validatePhone(value);
+    return state == ValidationState.isValidateSuccess
+        ? null
+        : state == ValidationState.isValidateFailed
+            ? (response ?? "Enter a valid phone number")
+            : state == ValidationState.isEmpty
+                ? (response ?? "Field is required")
+                : (response ?? "Phone cannot be empty");
+  }
 }

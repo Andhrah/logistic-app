@@ -1,19 +1,18 @@
-class AddVehicleToMerchantModel {
-  AddVehicleToMerchantModel({
+class VehicleRequest {
+  VehicleRequest({
     this.data,
   });
 
   final AddRiderToMerchantData? data;
 
-  AddVehicleToMerchantModel copyWith({
+  VehicleRequest copyWith({
     AddRiderToMerchantData? data,
   }) =>
-      AddVehicleToMerchantModel(
+      VehicleRequest(
         data: data ?? this.data,
       );
 
-  factory AddVehicleToMerchantModel.fromJson(Map<String, dynamic> json) =>
-      AddVehicleToMerchantModel(
+  factory VehicleRequest.fromJson(Map<String, dynamic> json) => VehicleRequest(
         data: json["data"] == null
             ? null
             : AddRiderToMerchantData.fromJson(json["data"]),

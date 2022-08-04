@@ -1,8 +1,12 @@
+import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
+import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/models/rider/add_vehicle_to_merchant_model.dart';
 import 'package:trakk/src/screens/merchant/add_rider1.dart';
@@ -17,16 +21,20 @@ import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 class AddRider2 extends StatefulWidget {
+  final bool isUpdate;
   static String id = "addRider2";
 
-  const AddRider2({Key? key}) : super(key: key);
+  const AddRider2({Key? key, this.isUpdate = false}) : super(key: key);
 
   @override
   State<AddRider2> createState() => _AddRider2State();
 }
 
 class _AddRider2State extends State<AddRider2>
-    with MerchantAddRiderAndVehicleHelper, ProfileHelper {
+    with
+        MerchantAddRiderAndVehicleHelper,
+        MerchantUpdateRiderAndVehicleHelper,
+        ProfileHelper {
   Map<String, String> _files = {};
 
   bool _isButtonPress = false;
@@ -47,6 +55,12 @@ class _AddRider2State extends State<AddRider2>
   FocusNode? _vehicleModelNode;
 
   bool deliveryBox = false;
+  Map<String, String> files = {
+    vehicleImageKey: '',
+    driverLicense: '',
+    roadWorthiness: '',
+    haulageReport: '',
+  };
 
   @override
   void initState() {
@@ -55,6 +69,23 @@ class _AddRider2State extends State<AddRider2>
     _vehicleModelController = TextEditingController();
     _vehicleCapacityController = TextEditingController();
     _vehicleNumberController = TextEditingController();
+    init();
+  }
+
+  init() async {
+    UserType userType = await appSettingsBloc.getUserType;
+    if (userType == UserType.rider) {
+      var attribute = getVehiclesForRiderListBloc
+          .behaviorSubject.value.model?.first.attributes;
+      setState(() {
+        _vehicleNameController.text = attribute?.name ?? '';
+        _vehicleNumberController.text = attribute?.number ?? '';
+        _colorsTypes = attribute?.color ?? '';
+        _vehicleModelController.text = attribute?.model ?? '';
+        _vehicleCapacityController.text = attribute?.capacity ?? '';
+        deliveryBox = attribute?.deliveryBox ?? false;
+      });
+    }
   }
 
   @override
@@ -90,7 +121,7 @@ class _AddRider2State extends State<AddRider2>
                   padding: EdgeInsets.zero,
                 ),
                 Text(
-                  'ADD VEHICLE',
+                  widget.isUpdate ? 'EDIT VEHICLE' : 'ADD VEHICLE',
                   style: theme.textTheme.subtitle1!.copyWith(
                     color: appPrimaryColor,
                     fontWeight: FontWeight.bold,
@@ -267,13 +298,45 @@ class _AddRider2State extends State<AddRider2>
                     },
                   ),
                   24.heightInPixel(),
-                  _DeliverBoxWidget((bool _deliveryBox) {
+                  _DeliverBoxWidget(deliveryBox, (bool _deliveryBox) {
                     deliveryBox = deliveryBox;
                   }),
                   24.heightInPixel(),
-                  AddRiderVehicleDocSelectorWidget((Map<String, String> files) {
-                    _files = files;
-                  }),
+                  widget.isUpdate
+                      ? StreamBuilder<
+                              BaseModel<List<GetVehiclesForMerchantDatum>,
+                                  String>>(
+                          stream: getVehiclesForRiderListBloc.behaviorSubject,
+                          builder: (context, snapshot) {
+                            files = {
+                              vehicleImageKey: '',
+                              driverLicense: '',
+                              roadWorthiness: '',
+                              haulageReport: '',
+                            };
+                            if (snapshot.hasData) {
+                              files[vehicleImageKey] = snapshot
+                                      .data?.model?.first.attributes?.image ??
+                                  '';
+                              // files[driverLicense] = snapshot
+                              //     .data?.model?.first.attributes?.image ??
+                              //     '';
+                              // files[roadWorthiness] = snapshot
+                              //     .data?.model?.first.attributes?.image ??
+                              //     '';
+                              // files[haulageReport] = snapshot
+                              //     .data?.model?.first.attributes?.image ??
+                              //     '';
+                            }
+                            return AddRiderVehicleDocSelectorWidget(files,
+                                (Map<String, String> files) {
+                              _files = files;
+                            });
+                          })
+                      : AddRiderVehicleDocSelectorWidget(files,
+                          (Map<String, String> files) {
+                          _files = files;
+                        }),
                   35.heightInPixel(),
                   Align(
                     alignment: Alignment.center,
@@ -281,23 +344,22 @@ class _AddRider2State extends State<AddRider2>
                         text: 'Register',
                         //onPress:// _onSubmit,
                         onPress: () async {
-                          AddVehicleToMerchantModel vehicleModel =
-                              AddVehicleToMerchantModel(
-                                  data: AddRiderToMerchantData(
-                                      name: _vehicleNameController.text,
-                                      color: _colorsTypes,
-                                      number: _vehicleNumberController.text,
-                                      model: _vehicleModelController.text,
-                                      capacity: _vehicleCapacityController.text,
-                                      deliveryBox: deliveryBox,
-                                      files: _files));
+                          VehicleRequest vehicleModel = VehicleRequest(
+                              data: AddRiderToMerchantData(
+                                  name: _vehicleNameController.text,
+                                  color: _colorsTypes,
+                                  number: _vehicleNumberController.text,
+                                  model: _vehicleModelController.text,
+                                  capacity: _vehicleCapacityController.text,
+                                  deliveryBox: deliveryBox,
+                                  files: _files));
 
                           if (model != null &&
                               ((await appSettingsBloc.getUserType) ==
                                   UserType.merchant)) {
                             String merchantId = await appSettingsBloc.getUserID;
 
-                            ///This flow is for when the user is from add ride
+                            ///This flow is for when the user is from addRider1 (Complete flow)
                             model = model!.copyWith(
                                 data: model!.data!.copyWith(
                               merchantId: merchantId,
@@ -310,7 +372,7 @@ class _AddRider2State extends State<AddRider2>
                               UserType.merchant) {
                             String merchantId = await appSettingsBloc.getUserID;
 
-                            ///This flow is for when the user is from add ride
+                            ///This flow is for when the user is from vehicle (Single)
                             vehicleModel = vehicleModel.copyWith(
                                 data: vehicleModel.data!.copyWith(
                               merchantId: merchantId,
@@ -328,12 +390,18 @@ class _AddRider2State extends State<AddRider2>
                                 data: vehicleModel.data!.copyWith(
                                     riderId:
                                         (await appSettingsBloc.getUserID)));
-                            addVehicle(vehicleModel,
-                                onSuccessCallback: () async {
-                              Navigator.pop(context);
-                              await appToast('Successful',
-                                  appToastType: AppToastType.success);
-                            });
+                            if (widget.isUpdate) {
+                              updateVehicle(
+                                  '${getVehiclesForRiderListBloc.behaviorSubject.value.model?.first.id ?? ''}',
+                                  vehicleModel);
+                            } else {
+                              addVehicle(vehicleModel,
+                                  onSuccessCallback: () async {
+                                Navigator.pop(context);
+                                await appToast('Successful',
+                                    appToastType: AppToastType.success);
+                              });
+                            }
                           }
                         },
                         color: appPrimaryColor,
@@ -356,7 +424,11 @@ class _AddRider2State extends State<AddRider2>
 }
 
 class _DeliverBoxWidget extends StatefulWidget {
-  const _DeliverBoxWidget(Function(bool _deliveryBox) function, {Key? key})
+  final bool deliveryBox;
+
+  const _DeliverBoxWidget(
+      this.deliveryBox, Function(bool _deliveryBox) function,
+      {Key? key})
       : super(key: key);
 
   @override
@@ -364,7 +436,7 @@ class _DeliverBoxWidget extends StatefulWidget {
 }
 
 class _DeliverBoxWidgetState extends State<_DeliverBoxWidget> {
-  int radioValue = 1;
+  late int radioValue = widget.deliveryBox ? 1 : 0;
 
   @override
   Widget build(BuildContext context) {

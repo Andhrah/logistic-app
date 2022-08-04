@@ -356,8 +356,8 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                       onPress: () {
                                         Navigator.pop(context);
                                         doDeleteRider('${model.id ?? ''}',
-                                            isRemove: true, onSuccessful: () {
-                                          getRidersListBloc.fetchCurrent();
+                                            isRemove: false, onSuccessful: () {
+                                          getRidersForMerchantListBloc.fetchCurrent();
                                           showDialog<String>(
                                             // barrierDismissible: true,
                                             context: context,
@@ -776,8 +776,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
 
                             Navigator.pop(context);
                             suspendRider(
-                                riderID:
-                                    '${model.attributes?.userId?.data?.id ?? ''}',
+                                riderID: '${model.id ?? ''}',
                                 reasonForSuspension: _reasonSuspension.text,
                                 suspensionEndDate: endDate ??
                                     DateTime.now()

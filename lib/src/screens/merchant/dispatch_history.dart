@@ -1,16 +1,15 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:trakk/src/screens/merchant/fulfilled_dispatch.dart';
-import 'package:trakk/src/screens/merchant/referred_rides.dart';
-import 'package:trakk/src/screens/merchant/rejected_rides.dart';
+import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/default_container.dart';
 
 import '../../widgets/back_icon.dart';
 
 class DispatchHistory extends StatefulWidget {
-  static const String id = 'dispatchhistory';
+  static const String id = 'dispatchHistory';
 
   const DispatchHistory({Key? key}) : super(key: key);
 
@@ -34,7 +33,8 @@ class _DispatchHistoryState extends State<DispatchHistory> {
                     Navigator.pop(context);
                   },
                 ),
-                Container(height: 98,
+                Container(
+                  height: 98,
                   margin: const EdgeInsets.only(left: 40.0),
                   alignment: Alignment.center,
                   child: const Text(
@@ -54,7 +54,8 @@ class _DispatchHistoryState extends State<DispatchHistory> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(FulfilledDispatch.id);
+                  Navigator.of(context).pushNamed(UserDispatchHistory.id,
+                      arguments: {'type': OrderHistoryType.fulfilled});
                 },
                 child: const DefaultContainer(
                   title: 'Successful dispatch',
@@ -64,7 +65,8 @@ class _DispatchHistoryState extends State<DispatchHistory> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(ReferredRides.id);
+                  Navigator.of(context).pushNamed(UserDispatchHistory.id,
+                      arguments: {'type': OrderHistoryType.referred});
                 },
                 child: const DefaultContainer(
                   title: 'Referred dispatch',
@@ -74,7 +76,8 @@ class _DispatchHistoryState extends State<DispatchHistory> {
             ),
             InkWell(
                 onTap: () {
-                  Navigator.of(context).pushNamed(RejectedRides.id);
+                  Navigator.of(context).pushNamed(UserDispatchHistory.id,
+                      arguments: {'type': OrderHistoryType.rejected});
                 },
                 child: const DefaultContainer(
                   title: 'Rejected request',

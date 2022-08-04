@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
+import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
+import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/colors.dart';
 
-import '../../../bloc/app_settings_bloc.dart';
 import '../../../bloc/validation_bloc.dart';
 import '../../../values/font.dart';
 import '../../../widgets/back_icon.dart';
@@ -11,14 +13,15 @@ import '../../../widgets/button.dart';
 import '../../../widgets/input_field.dart';
 
 class EditVehicle extends StatefulWidget {
-  EditVehicle({Key? key}) : super(key: key);
+  const EditVehicle({Key? key}) : super(key: key);
   static const String id = "editVehicle";
 
   @override
   State<EditVehicle> createState() => _EditVehicleState();
 }
 
-class _EditVehicleState extends State<EditVehicle> {
+class _EditVehicleState extends State<EditVehicle>
+    with MerchantUpdateRiderAndVehicleHelper, ProfileHelper {
   ValidationBloc validationBloc = ValidationBloc();
 
   bool _isButtonPress = false;
@@ -30,14 +33,10 @@ class _EditVehicleState extends State<EditVehicle> {
   final TextEditingController _vehicleNumberController =
       TextEditingController();
   final TextEditingController _vhicleModelController = TextEditingController();
-  final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _addressController = TextEditingController();
 
   final FocusNode _nameOfVehicleNode = FocusNode();
   final FocusNode _vehicleNumberNode = FocusNode();
   final FocusNode _vhicleModelNode = FocusNode();
-  final FocusNode _emailNode = FocusNode();
-  final FocusNode _addressNode = FocusNode();
 
   bool _loading = false;
 
@@ -48,23 +47,22 @@ class _EditVehicleState extends State<EditVehicle> {
   }
 
   init() async {
-    var user =
-        (await appSettingsBloc.fetchAppSettings()).loginResponse?.data?.user;
-
     // UserType userType = await appSettingsBloc.getUserType;
+
+    var attribute = getVehiclesForRiderListBloc
+        .behaviorSubject.value.model?.first.attributes;
     setState(() {
-      _nameOfVehicleController.text = user?.firstName ?? '';
-      _vehicleNumberController.text = user?.lastName ?? '';
-      _vhicleModelController.text = user?.email ?? '';
-      _phoneNumberController.text = user?.phoneNumber ?? '';
-      _addressController.text = user?.address ?? '';
+      _nameOfVehicleController.text = attribute?.name ?? '';
+      _vehicleNumberController.text = attribute?.number ?? '';
+      _colorsTypes = attribute?.color ?? '';
+      _vhicleModelController.text = attribute?.model ?? '';
     });
   }
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-  
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -102,7 +100,7 @@ class _EditVehicleState extends State<EditVehicle> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
+                  const Text(
                     'Vehicle data',
                     style: TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
                   ),
@@ -169,17 +167,7 @@ class _EditVehicleState extends State<EditVehicle> {
                           }).toList(),
                         ),
                       )),
-                  _isButtonPress && _colorsTypes == "Vehicle capacity"
-                      ? const Text(
-                          "Select weight",
-                          textScaleFactor: 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        )
-                      : Container(),
-                      24.heightInPixel(),
+                  24.heightInPixel(),
                   InputField(
                     key: const Key('Vehicle number'),
                     textController: _vehicleNumberController,
@@ -195,30 +183,25 @@ class _EditVehicleState extends State<EditVehicle> {
                     },
                   ),
                   24.heightInPixel(),
-                  Opacity(
-                    opacity: 0.5,
-                    child: InputField(
-                      key: const Key('Vehicle Model'),
-                      textController: _vhicleModelController,
-                      node: _vhicleModelNode,
-                      autovalidateMode: AutovalidateMode.onUserInteraction,
-                      obscureText: false,
-                      text: 'Vehicle Model',
-                      hintText: 'Vehicle model',
-                       enabled: false,
-                      textHeight: 10.0,
-                      borderColor: appPrimaryColor.withOpacity(0.9),
-                      onSaved: (value) {
-                        return null;
-                      },
-                    ),
+                  InputField(
+                    key: const Key('Vehicle Model'),
+                    textController: _vhicleModelController,
+                    node: _vhicleModelNode,
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    obscureText: false,
+                    text: 'Vehicle Model',
+                    hintText: 'Vehicle model',
+                    textHeight: 10.0,
+                    borderColor: appPrimaryColor.withOpacity(0.9),
+                    onSaved: (value) {
+                      return null;
+                    },
                   ),
                   60.heightInPixel(),
                   Align(
                       alignment: Alignment.center,
                       child: Button(
                           text: 'Add',
-                          //onPress:// _onSubmit,
                           onPress: () => {},
                           color: appPrimaryColor,
                           textColor: whiteColor,

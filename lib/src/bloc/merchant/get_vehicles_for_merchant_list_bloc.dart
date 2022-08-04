@@ -22,7 +22,8 @@ class GetVehiclesListBloc
     setAsLoading();
     checkInternetConnection(
         hasInternetCallback: () async {
-          var operation = await vehiclesListService.getVehicles(unassigned);
+          var operation =
+              await vehiclesListService.getVehiclesForMerchant(unassigned);
 
           if (operation.code == 200 || operation.code == 201) {
             GetVehiclesForMerchantResponse response =
@@ -53,4 +54,4 @@ class GetVehiclesListBloc
   }
 }
 
-final getVehiclesListBloc = GetVehiclesListBloc();
+final getVehiclesForMerchantListBloc = GetVehiclesListBloc();

@@ -3,7 +3,7 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
-import 'package:trakk/src/bloc/merchant/get_vehicles_list_bloc.dart';
+import 'package:trakk/src/bloc/merchant/get_vehicles_for_merchant_list_bloc.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
@@ -62,7 +62,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
   @override
   void initState() {
     filter = filters.first;
-    getVehiclesListBloc.fetchCurrent(filter == 'Unassigned');
+    getVehiclesForMerchantListBloc.fetchCurrent(filter == 'Unassigned');
     fetchVehicleList().whenComplete(() {
       setState(() {});
     });
@@ -113,7 +113,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 70,
+                  width: 75,
                   child: Row(
                     children: [
                       BackIcon(
@@ -135,7 +135,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                 ),
                 SizedBox(
                   height: 50,
-                  width: 70,
+                  width: 75,
                   child: DropdownButton<String>(
                     value: filter,
                     icon: const Icon(
@@ -156,6 +156,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                 e,
                                 style: theme.textTheme.caption!.copyWith(
                                   color: appPrimaryColor,
+                                  fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                   // decoration: TextDecoration.underline,
                                 ),
@@ -167,7 +168,8 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                         filter = value ?? filters.first;
                       });
 
-                      getVehiclesListBloc.fetchCurrent(filter == 'Unassigned');
+                      getVehiclesForMerchantListBloc
+                          .fetchCurrent(filter == 'Unassigned');
                     },
                   ),
                 ),
@@ -258,7 +260,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
               Expanded(
                 child: CustomStreamBuilder<List<GetVehiclesForMerchantDatum>,
                     String>(
-                  stream: getVehiclesListBloc.behaviorSubject,
+                  stream: getVehiclesForMerchantListBloc.behaviorSubject,
                   dataBuilder: (context, data) {
                     return ListView.builder(
                         shrinkWrap: true,

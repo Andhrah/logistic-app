@@ -251,3 +251,18 @@ bool isFileMoreThanMaxInMB(File file,
 
   return false;
 }
+
+UserType userTypeDeterminant(String userType) {
+  switch (userType) {
+    case 'customer':
+      return UserType.customer;
+    case 'rider':
+      return UserType.rider;
+    case 'merchant':
+      return UserType.merchant;
+    case 'guest':
+      return UserType.guest;
+    default:
+      return UserType.none;
+  }
+}

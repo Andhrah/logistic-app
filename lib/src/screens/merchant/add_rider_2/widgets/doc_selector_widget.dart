@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
@@ -7,11 +8,15 @@ import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 
 const vehicleImageKey = 'vehicle_image';
+const driverLicense = 'driver_license';
+const roadWorthiness = 'road_worthiness';
+const haulageReport = 'haulage_report';
 
 class AddRiderVehicleDocSelectorWidget extends StatefulWidget {
+  final Map<String, String> files;
   final Function(Map<String, String> files) callback;
 
-  const AddRiderVehicleDocSelectorWidget(this.callback, {Key? key})
+  const AddRiderVehicleDocSelectorWidget(this.files, this.callback, {Key? key})
       : super(key: key);
 
   @override
@@ -23,9 +28,9 @@ class _AddRiderVehicleDocSelectorWidgetState
     extends State<AddRiderVehicleDocSelectorWidget> {
   Map<String, String> files = {
     vehicleImageKey: '',
-    'driver_license': '',
-    'road_worthiness': '',
-    'haulage_report': '',
+    driverLicense: '',
+    roadWorthiness: '',
+    haulageReport: '',
   };
 
   @override
@@ -62,6 +67,7 @@ class _AddRiderVehicleDocSelectorWidgetState
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
+    print(widget.files);
     return Column(
       children: List.generate(
           files.length,
@@ -69,14 +75,16 @@ class _AddRiderVehicleDocSelectorWidgetState
                 padding: const EdgeInsets.symmetric(vertical: 4.0),
                 child: Row(
                   children: [
-                    AnimatedCrossFade(
-                      duration: const Duration(milliseconds: 300),
-                      crossFadeState: files.values.elementAt(index).isEmpty
-                          ? CrossFadeState.showFirst
-                          : CrossFadeState.showSecond,
-                      firstChild: InkWell(
-                        splashColor: Colors.black12.withAlpha(30),
-                        child: SizedBox(
+                    InkWell(
+                      onTap: () => uploadItemImage(index),
+                      splashColor: Colors.black12.withAlpha(30),
+                      child: AnimatedCrossFade(
+                        duration: const Duration(milliseconds: 300),
+                        crossFadeState: files.values.elementAt(index).isEmpty &&
+                                widget.files.values.elementAt(index).isEmpty
+                            ? CrossFadeState.showFirst
+                            : CrossFadeState.showSecond,
+                        firstChild: SizedBox(
                           width: MediaQuery.of(context).size.width / 3.4,
                           height: MediaQuery.of(context).size.height / 8.7,
                           child: Card(
@@ -99,53 +107,112 @@ class _AddRiderVehicleDocSelectorWidgetState
                                 ]),
                           ),
                         ),
-                        onTap: () => uploadItemImage(index),
-                      ),
-                      secondChild: SizedBox(
-                        width: MediaQuery.of(context).size.width / 3.4,
-                        height: MediaQuery.of(context).size.height / 8.7,
-                        child: Stack(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8),
-                              child: files.values.elementAt(index).isEmpty
-                                  ? SizedBox(
-                                      width: MediaQuery.of(context).size.width /
-                                          3.4,
-                                      height:
-                                          MediaQuery.of(context).size.height /
-                                              8.7,
-                                    )
-                                  : ClipRRect(
-                                      borderRadius: Radii.k10pxRadius,
-                                      child: Image.file(
-                                        File(files.values.elementAt(index)),
+                        secondChild: SizedBox(
+                          width: MediaQuery.of(context).size.width / 3.4,
+                          height: MediaQuery.of(context).size.height / 8.7,
+                          child: Stack(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8),
+                                child: (files.values.elementAt(index).isEmpty &&
+                                        widget.files.values
+                                            .elementAt(index)
+                                            .isEmpty)
+                                    ? SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width /
                                                 3.4,
                                         height:
                                             MediaQuery.of(context).size.height /
                                                 8.7,
-                                        fit: BoxFit.cover,
+                                      )
+                                    : ClipRRect(
+                                        borderRadius: Radii.k10pxRadius,
+                                        child: (files.values
+                                                    .elementAt(index)
+                                                    .isEmpty &&
+                                                widget.files.values
+                                                    .elementAt(index)
+                                                    .startsWith('https://'))
+                                            ? CachedNetworkImage(
+                                                imageUrl: widget.files.values
+                                                    .elementAt(index),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3.4,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    8.7,
+                                                fit: BoxFit.cover,
+                                                placeholder: (context, url) =>
+                                                    SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      3.4,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      8.7,
+                                                ),
+                                                errorWidget:
+                                                    (context, url, err) =>
+                                                        SizedBox(
+                                                  width: MediaQuery.of(context)
+                                                          .size
+                                                          .width /
+                                                      3.4,
+                                                  height: MediaQuery.of(context)
+                                                          .size
+                                                          .height /
+                                                      8.7,
+                                                ),
+                                              )
+                                            : Image.file(
+                                                File(files.values
+                                                    .elementAt(index)),
+                                                width: MediaQuery.of(context)
+                                                        .size
+                                                        .width /
+                                                    3.4,
+                                                height: MediaQuery.of(context)
+                                                        .size
+                                                        .height /
+                                                    8.7,
+                                                fit: BoxFit.cover,
+                                              ),
                                       ),
-                                    ),
-                            ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: InkWell(
-                                onTap: () {
-                                  setState(() =>
-                                      files[files.keys.elementAt(index)] = '');
-                                  doCallback();
-                                },
-                                child: const Icon(
-                                  Icons.cancel,
-                                  color: redColor,
-                                  size: 20,
-                                ),
                               ),
-                            )
-                          ],
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: InkWell(
+                                  onTap: () {
+                                    setState(() =>
+                                        files[files.keys.elementAt(index)] =
+                                            '');
+                                    doCallback();
+                                  },
+                                  child:
+                                      (files.values.elementAt(index).isEmpty &&
+                                              widget.files.values
+                                                  .elementAt(index)
+                                                  .startsWith('https://'))
+                                          ? const Icon(
+                                              Icons.find_replace,
+                                              color: secondaryColor,
+                                              size: 20,
+                                            )
+                                          : const Icon(
+                                              Icons.cancel,
+                                              color: redColor,
+                                              size: 20,
+                                            ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
                       ),
                     ),

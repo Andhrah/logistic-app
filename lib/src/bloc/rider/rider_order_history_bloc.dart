@@ -11,17 +11,22 @@ import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/models/order/order_history_response.dart';
 import 'package:trakk/src/services/base_network_call_handler.dart';
 import 'package:trakk/src/services/order/order_api.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class GetRiderOrderHistoryBloc
     with BaseBloc<List<OrderHistoryDatum>, String>, ConnectivityHelper {
   CancelableOperation? _cancelableOperation;
 
-  fetchCurrent(String startDate, String endDate) async {
+  OrderHistoryType _type = OrderHistoryType.all;
+
+  fetchCurrent(String startDate, String endDate,
+      {OrderHistoryType? type}) async {
+    if (type != null) _type = type;
     setAsLoading();
     checkInternetConnection(
         hasInternetCallback: () async {
           var operation =
-              await orderAPI.getRiderOrderHistory(startDate, endDate);
+              await orderAPI.getRiderOrderHistory(_type, startDate, endDate);
 
           if (operation.code == 200 || operation.code == 201) {
             OrderHistoryResponse response =

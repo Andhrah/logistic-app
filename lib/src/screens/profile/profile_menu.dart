@@ -17,6 +17,7 @@ import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart'
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
@@ -56,7 +57,7 @@ class _ProfileMenuState extends State<ProfileMenu>
   //       .getRidersHistory();
   //   print(
   //       "responseData=> ${response["data"]["attributes"]["orders"]["data"][0]["attributes"]}");
-
+  //
   //   responseHolder =
   //       response["data"]["attributes"]["orders"]["data"][0]["attributes"];
   // }
@@ -380,7 +381,8 @@ class _ProfileMenuState extends State<ProfileMenu>
   Future _onTap(BuildContext context, int index, {bool? value}) async {
     switch (index) {
       case 0:
-        Navigator.of(context).pushNamed(UserDispatchHistory.id);
+        Navigator.of(context).pushNamed(UserDispatchHistory.id,
+            arguments: {'type': OrderHistoryType.all});
         break;
       case 1:
         Navigator.of(context).pushNamed(PrivacyAndPolicy.id);

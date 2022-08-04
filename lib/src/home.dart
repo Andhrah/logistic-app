@@ -28,12 +28,9 @@ import 'package:trakk/src/screens/merchant/add_rider1.dart';
 import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
 import 'package:trakk/src/screens/merchant/company_home.dart';
 import 'package:trakk/src/screens/merchant/dispatch_history.dart';
-import 'package:trakk/src/screens/merchant/fulfilled_dispatch.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
-import 'package:trakk/src/screens/merchant/referred_rides.dart';
-import 'package:trakk/src/screens/merchant/rejected_rides.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -41,6 +38,7 @@ import 'package:trakk/src/screens/onboarding/onboarding.dart';
 import 'package:trakk/src/screens/onboarding/splashscreen.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
+import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
@@ -159,16 +157,18 @@ class _HomeState extends State<Home> {
               Riders.id: (context) => const Riders(),
               DispatchHistory.id: (context) => const DispatchHistory(),
               ListOfVehicles.id: (context) => const ListOfVehicles(),
+              EditVehicle.id: (context) => const EditVehicle(),
+
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
               AddRider.id: (context) => const AddRider(),
               AddRider1.id: (context) => const AddRider1(),
               AddRider2.id: (context) => const AddRider2(),
-              ReferredRides.id: (context) => const ReferredRides(),
+              // ReferredRides.id: (context) => const ReferredRides(),
               MerchantRiderProfile.id: (context) =>
                   const MerchantRiderProfile(),
               ListOfRiders.id: (context) => const ListOfRiders(),
-              RejectedRides.id: (context) => const RejectedRides(),
-              FulfilledDispatch.id: (context) => const FulfilledDispatch(),
+              // RejectedRides.id: (context) => const RejectedRides(),
+              // FulfilledDispatch.id: (context) => const FulfilledDispatch(),
               RiderOrderScreen.id: (context) => const RiderHomeScreen(),
               RiderHomeScreen.id: (context) => const RiderHomeScreen(),
               CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),

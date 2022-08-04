@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/enums.dart';
+
 class AuthResponse {
   AuthResponse({this.data, this.message});
 
@@ -242,6 +245,10 @@ class User {
             orders == null ? null : List<dynamic>.from(orders!.map((x) => x)),
         "merchant": merchant == null ? null : merchant!.toJson(),
       };
+
+  UserType getUserType() {
+    return userTypeDeterminant(userType ?? '');
+  }
 }
 
 class OnBoardingSteps {

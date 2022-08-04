@@ -8,6 +8,7 @@ import 'package:rxdart/rxdart.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/services/local_storage/app_settings_data.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/enums.dart';
 
 class _AppSettingsBloc {
@@ -108,18 +109,8 @@ class _AppSettingsBloc {
   Future<UserType> get getUserType async {
     var appSettings = await appSettingsProvider.fetchAppSettings();
 
-    switch (appSettings.loginResponse?.data?.user?.userType ?? '') {
-      case 'customer':
-        return UserType.customer;
-      case 'rider':
-        return UserType.rider;
-      case 'merchant':
-        return UserType.merchant;
-      case 'guest':
-        return UserType.guest;
-      default:
-        return UserType.none;
-    }
+    return userTypeDeterminant(
+        appSettings.loginResponse?.data?.user?.userType ?? '');
   }
 }
 
