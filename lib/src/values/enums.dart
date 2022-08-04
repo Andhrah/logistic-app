@@ -40,3 +40,5 @@ enum RiderProfileOptions {
 }
 
 enum OrderHistoryType { all, fulfilled, inTransit, rejected, referred }
+
+enum RiderAccountRemovalType { remove, delete, reactivate }

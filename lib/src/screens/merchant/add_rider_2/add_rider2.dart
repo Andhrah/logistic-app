@@ -365,7 +365,8 @@ class _AddRider2State extends State<AddRider2>
                               merchantId: merchantId,
                             ));
 
-                            doCreateRider(model!, vehicleModel,
+                            doCreateRider(model!,
+                                vehicleModel: vehicleModel,
                                 onSuccess: () => Navigator.popUntil(
                                     context, ModalRoute.withName(Riders.id)));
                           } else if ((await appSettingsBloc.getUserType) ==

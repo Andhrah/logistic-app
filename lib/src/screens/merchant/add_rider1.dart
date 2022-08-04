@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/models/update_profile/update_profile.dart';
 import 'package:trakk/src/screens/merchant/add_rider.dart';
-import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
+import 'package:trakk/src/screens/merchant/list_of_riders.dart';
+import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_location_card.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
@@ -23,7 +26,8 @@ class AddRider1 extends StatefulWidget {
   State<AddRider1> createState() => _AddRider1State();
 }
 
-class _AddRider1State extends State<AddRider1> with ProfileHelper {
+class _AddRider1State extends State<AddRider1>
+    with ProfileHelper, MerchantAddRiderAndVehicleHelper {
   final _formKey = GlobalKey<FormState>();
 
   String? _stateOfOrigin;
@@ -250,7 +254,7 @@ class _AddRider1State extends State<AddRider1> with ProfileHelper {
                       child: Button(
                           text: 'Next',
                           //onPress:// _onSubmit,
-                          onPress: () {
+                          onPress: () async {
                             if (_formKey.currentState!.validate()) {
                               if (_stateOfResidence == null) {
                                 appToast('State of residence is required');
@@ -268,10 +272,46 @@ class _AddRider1State extends State<AddRider1> with ProfileHelper {
                                           _residentialAddressController.text));
 
                               if (continueFlow) {
-                                Navigator.of(context).pushNamed(AddRider2.id,
-                                    arguments: {
-                                      'rider_bio_data': model.toJson()
+                                ///This has been changed to when mean the process would stop.
+                                ///Comment below and uncomment full flow to use a flow that navigates
+                                /// merchant o add rider, add and assign vehicle at the same time
+                                if (((await appSettingsBloc.getUserType) ==
+                                    UserType.merchant)) {
+                                  String merchantId =
+                                      await appSettingsBloc.getUserID;
+
+                                  ///This flow is for when the user is from addRider1 (Complete flow)
+                                  model = model.copyWith(
+                                      data: model.data!.copyWith(
+                                    merchantId: merchantId,
+                                  ));
+
+                                  doCreateRider(model, onSuccess: () async {
+                                    appToast('Rider added successfully',
+                                        appToastType: AppToastType.success);
+                                    await showSuccessfulDialog(
+                                        "${camelCase(model.data?.firstName ?? '')} has been added to rider's list",
+                                        'View All Riders', () async {
+                                      Navigator.pop(context);
+
+                                      Navigator.popUntil(context,
+                                          ModalRoute.withName(Riders.id));
+
+                                      Navigator.pushNamed(
+                                          context, ListOfRiders.id);
+                                    }, nextAction: () async {
+                                      Navigator.pop(context);
+                                      Navigator.popUntil(context,
+                                          ModalRoute.withName(Riders.id));
                                     });
+                                  }, continueStepAfterCompletion: false);
+                                }
+
+                                ///full flow
+                                // Navigator.of(context).pushNamed(AddRider2.id,
+                                //     arguments: {
+                                //       'rider_bio_data': model.toJson()
+                                //     });
                               } else {
                                 doUpdateRiderContactDetailsOperation(
                                     UpdateProfile.riderContact(

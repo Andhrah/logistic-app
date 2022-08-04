@@ -2,16 +2,15 @@ import 'dart:ui';
 
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/merchant/get_riders_list_bloc.dart';
 import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
+import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
 import 'package:trakk/src/screens/merchant/rider_list_container.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/styles.dart';
 import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/widgets/button.dart';
 
 import '../../widgets/back_icon.dart';
 
@@ -37,7 +36,7 @@ List<Item> generateItems(int numberOfItems) {
 }
 
 class ListOfRiders extends StatefulWidget {
-  static const String id = 'listofriders';
+  static const String id = 'ListOfRiders';
 
   const ListOfRiders({Key? key}) : super(key: key);
 
@@ -68,6 +67,16 @@ class _ListOfRidersState extends State<ListOfRiders> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     MediaQueryData mediaQuery = MediaQuery.of(context);
+    bool isFromAssignVehicle = false;
+
+    if (ModalRoute.of(context)!.settings.arguments != null) {
+      var arg =
+          ModalRoute.of(context)!.settings.arguments as Map<String, dynamic>;
+
+      isFromAssignVehicle = arg[previousScreenTag] != null &&
+          arg[previousScreenTag] == ListOfVehicles.id;
+    }
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -83,7 +92,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
                   },
                 ),
                 Text(
-                  'LIST OF RIDERS',
+                  isFromAssignVehicle ? 'CHOOSE RIDER' : 'LIST OF RIDERS',
                   style: theme.textTheme.subtitle2!.copyWith(
                       color: appPrimaryColor,
                       fontWeight: FontWeight.bold,
@@ -157,12 +166,17 @@ class _ListOfRidersState extends State<ListOfRiders> {
                       itemBuilder: (BuildContext context, int index) {
                         return InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(
-                                  MerchantRiderProfile.id,
-                                  arguments: {
-                                    'rider_datum':
-                                        data.elementAt(index).toJson()
-                                  });
+                              if (isFromAssignVehicle) {
+                                Navigator.pop(
+                                    context, data.elementAt(index).toJson());
+                              } else {
+                                Navigator.of(context).pushNamed(
+                                    MerchantRiderProfile.id,
+                                    arguments: {
+                                      'rider_datum':
+                                          data.elementAt(index).toJson()
+                                    });
+                              }
                             },
                             child: RiderListContainer(data.elementAt(index)));
                       });
@@ -177,74 +191,6 @@ class _ListOfRidersState extends State<ListOfRiders> {
                 )),
               ),
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class ActiveContainer extends StatelessWidget {
-  const ActiveContainer({
-    Key? key,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 200,
-      decoration: const BoxDecoration(color: whiteColor, boxShadow: [
-        BoxShadow(
-          color: Color.fromARGB(255, 230, 230, 230),
-          spreadRadius: 1,
-          offset: Offset(2.0, 2.0), //(x,y)
-          blurRadius: 8.0,
-        ),
-      ]),
-      margin: EdgeInsets.only(left: 22, right: 22),
-      child: Padding(
-        padding: const EdgeInsets.all(22.0),
-        child: Column(
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                SvgPicture.asset(
-                  'assets/images/cancel.svg',
-                  color: Colors.black,
-                )
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Image.asset('assets/images/bike.png'),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'Suzuki',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                    Text(
-                      'Vehicle no. 887',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            Button(
-                text: 'Assigned to Malik Johnson',
-                onPress: () {
-                  Navigator.of(context).pushNamed(MerchantRiderProfile.id);
-                },
-                color: appPrimaryColor,
-                width: 290,
-                textColor: whiteColor,
-                isLoading: false)
           ],
         ),
       ),
