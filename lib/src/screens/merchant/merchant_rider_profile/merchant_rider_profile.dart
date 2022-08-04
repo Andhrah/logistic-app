@@ -15,6 +15,7 @@ import 'package:trakk/src/screens/merchant/company_home.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/widgets/image_selector_widget.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
@@ -76,26 +77,6 @@ class _ProfileWidgetState extends State<ProfileIdget>
 
   FocusNode? _firstNameNode;
 
-  String? _firstName;
-
-  static String userType = "user";
-
-  var duration = [
-    "Choose duration",
-    "1 week",
-    "1 month",
-    "2 months",
-    "indefinite",
-    "add",
-  ];
-
-  bool _isButtonPress = false;
-  bool _isActive = false;
-  bool _isActive1 = false;
-  bool _isActive2 = false;
-
-  String _suspensionDuration = 'Choose duration';
-
   late TextEditingController _firstNameController;
   late TextEditingController _lastNameController;
   late TextEditingController _emailController;
@@ -120,6 +101,11 @@ class _ProfileWidgetState extends State<ProfileIdget>
   bool _emailIsValid = false;
 
   File? image;
+
+  String? startDate;
+  String? endDate;
+  bool isSuspended = false;
+  bool isDeleted = false;
 
   @override
   void initState() {
@@ -151,12 +137,17 @@ class _ProfileWidgetState extends State<ProfileIdget>
         _emailController.text = model?.userId?.data?.attributes?.email ?? '';
         _phoneNumberController.text =
             model?.userId?.data?.attributes?.phoneNumber ?? '';
-        _homeAddressController.text =
-            model?.userId?.data?.attributes?.address ?? '';
+        _homeAddressController.text = model?.residentialAddress ?? '';
         _assignedvehicleController.text =
             ((model?.vehicles?.data?.length ?? 0) > 0)
                 ? model?.vehicles?.data?.first.attributes?.name ?? ''
                 : '';
+        // _reasonSuspension.text =
+        //     model?.userId?.data?.attributes?.reasonForSuspension ?? '';
+        // startDate = model?.userId?.data?.attributes?.suspensionStartDate;
+        // endDate = model?.userId?.data?.attributes?.suspensionEndDate;
+        isSuspended = model?.status == 'suspended';
+        isDeleted = model?.status == 'deleted';
       });
     }
   }
@@ -340,7 +331,9 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                     ),
                                     20.heightInPixel(),
                                     Text(
-                                      'You are about to delete $name from the list of riders',
+                                      isDeleted
+                                          ? 'You are about to reactivate $name account'
+                                          : 'You are about to delete $name from the list of riders',
                                       // maxLines: 2,
                                       style: const TextStyle(
                                         fontSize: 13,
@@ -352,15 +345,25 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                       height: 14,
                                     ),
                                     Button(
-                                      text: 'Delete',
+                                      text: isDeleted ? 'Reactivate' : 'Delete',
                                       onPress: () {
                                         Navigator.pop(context);
                                         doDeleteRider('${model.id ?? ''}',
-                                            isRemove: false, onSuccessful: () {
-                                          getRidersForMerchantListBloc.fetchCurrent();
+                                            accountRemovalType: isDeleted
+                                                ? RiderAccountRemovalType
+                                                    .reactivate
+                                                : RiderAccountRemovalType
+                                                    .delete, onSuccessful: () {
+                                          getRidersForMerchantListBloc
+                                              .fetchCurrent();
                                           showDialog<String>(
                                             // barrierDismissible: true,
-                                            context: context,
+                                            context: SingletonData
+                                                .singletonData
+                                                .navKey
+                                                .currentState!
+                                                .overlay!
+                                                .context,
                                             builder: (BuildContext context) =>
                                                 AlertDialog(
                                               // title: const Text('AlertDialog Title'),
@@ -390,12 +393,14 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                                       ],
                                                     ),
                                                     Container(
-                                                      padding:
-                                                          EdgeInsets.symmetric(
-                                                              vertical: 30),
+                                                      padding: const EdgeInsets
+                                                              .symmetric(
+                                                          vertical: 30),
                                                       child: Center(
                                                         child: Text(
-                                                          'You have successfully deleted $name from the list of riders',
+                                                          isDeleted
+                                                              ? 'You have successfully reactivated $name account'
+                                                              : 'You have successfully deleted $name from the list of riders',
                                                           // maxLines: 2,
                                                           style:
                                                               const TextStyle(
@@ -421,7 +426,9 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                     ),
                                     14.heightInPixel(),
                                     Button(
-                                      text: 'Don\'t delete',
+                                      text: isDeleted
+                                          ? 'Don\'t activate'
+                                          : 'Don\'t delete',
                                       onPress: () {
                                         Navigator.of(context).pop();
                                       },
@@ -436,7 +443,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                           );
                         },
                         child: Text(
-                          "Delete",
+                          isDeleted ? 'Reactivate' : "Delete",
                           style: TextStyle(
                               color: (selectedProfileOptions ==
                                       RiderProfileOptions.Delete)
@@ -505,7 +512,6 @@ class _ProfileWidgetState extends State<ProfileIdget>
                 return "Enter a valid first name";
               },
               onSaved: (value) {
-                _firstName = value!.trim();
                 return null;
               },
             ),
@@ -532,7 +538,6 @@ class _ProfileWidgetState extends State<ProfileIdget>
                 return "Enter a valid last name";
               },
               onSaved: (value) {
-                _firstName = value!.trim();
                 return null;
               },
             ),
@@ -648,9 +653,6 @@ class _ProfileWidgetState extends State<ProfileIdget>
     ]);
   }
 
-  String? startDate;
-  String? endDate;
-
   Widget suspendContainer() {
     var theme = Theme.of(context);
 
@@ -659,71 +661,9 @@ class _ProfileWidgetState extends State<ProfileIdget>
       // crossAxisAlignment: CrossAxisAlignment.start,
       child: Padding(
         padding: const EdgeInsets.only(top: 30),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20.0),
-            InputField(
-              text: 'Reason for suspension',
-              textHeight: 10,
-              textController: _reasonSuspension,
-              maxLines: 8,
-            ),
-            20.heightInPixel(),
-            Text(
-              'Choose suspension duration',
-              style: theme.textTheme.bodyText2!.copyWith(
-                color: appPrimaryColor,
-                fontWeight: FontWeight.w500,
-              ),
-            ),
-            10.heightInPixel(),
-            ItemDetailDateWidget(
-              (String? start, String? end) {
-                startDate = start;
-                endDate = end;
-              },
-              startTitle: 'Start Date',
-              endTitle: 'End date',
-            ),
-            // DecoratedBox(
-            //   decoration: BoxDecoration(
-            //     border: Border.all(
-            //         color: appPrimaryColor.withOpacity(0.9),
-            //         width: 0.3), //border of dropdown button
-            //     borderRadius: BorderRadius.circular(
-            //         5.0), //border raiuds of dropdown button
-            //   ),
-            //   child: Padding(
-            //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            //     child: DropdownButton<String>(
-            //       value: _suspensionDuration,
-            //       icon: const Icon(Remix.arrow_down_s_line),
-            //       elevation: 16,
-            //       isExpanded: true,
-            //       style: theme.textTheme.bodyText2!.copyWith(
-            //         color: appPrimaryColor.withOpacity(0.8),
-            //       ),
-            //       underline: Container(),
-            //       //empty line
-            //       onChanged: (String? newValue) {
-            //         setState(() {
-            //           _suspensionDuration = newValue!;
-            //         });
-            //       },
-            //       items: duration.map((String value) {
-            //         return DropdownMenuItem(
-            //           value: value,
-            //           child: Text(value),
-            //         );
-            //       }).toList(),
-            //     ),
-            //   ),
-            // ),
-
-            35.heightInPixel(),
-            Button(
-                text: 'Send',
+        child: isSuspended
+            ? Button(
+                text: 'Remove Suspension',
                 onPress: () {
                   var arg = ModalRoute.of(context)!.settings.arguments
                       as Map<String, dynamic>;
@@ -753,7 +693,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                         ),
                         20.heightInPixel(),
                         Text(
-                          'You are about to suspend $name for the period of 1 month',
+                          'You are about to remove suspension for ${camelCase(name)}',
                           // maxLines: 2,
                           style: const TextStyle(
                             fontSize: 13,
@@ -763,7 +703,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                         ),
                         14.heightInPixel(),
                         Button(
-                          text: 'Suspend',
+                          text: 'Remove suspension',
                           onPress: () {
                             if (startDate == null) {
                               runToast('Start date is required');
@@ -775,30 +715,20 @@ class _ProfileWidgetState extends State<ProfileIdget>
                             }
 
                             Navigator.pop(context);
-                            suspendRider(
-                                riderID: '${model.id ?? ''}',
-                                reasonForSuspension: _reasonSuspension.text,
-                                suspensionEndDate: endDate ??
-                                    DateTime.now()
-                                        .add(const Duration(days: 1))
-                                        .toIso8601String(),
-                                suspensionStartDate: startDate ??
-                                    DateTime.now().toIso8601String(),
-                                status: 'suspended',
-                                name: name);
+                            unSuspendRider(riderID: '${model.id ?? ''}');
                           },
-                          color: redColor,
+                          color: appPrimaryColor,
                           textColor: whiteColor,
                           isLoading: false,
                           width: MediaQuery.of(context).size.width / 1.6,
                         ),
                         14.heightInPixel(),
                         Button(
-                          text: 'Don\'t suspend',
+                          text: 'Don\'t remove',
                           onPress: () {
                             Navigator.of(context).pop();
                           },
-                          color: appPrimaryColor,
+                          color: redColor,
                           textColor: whiteColor,
                           isLoading: false,
                           width: MediaQuery.of(context).size.width / 1.6,
@@ -810,9 +740,168 @@ class _ProfileWidgetState extends State<ProfileIdget>
                 color: Colors.black,
                 width: mediaQuery.size.width * 1,
                 textColor: Colors.white,
-                isLoading: false),
-          ],
-        ),
+                isLoading: false)
+            : Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 20.0),
+                  InputField(
+                    text: 'Reason for suspension',
+                    textHeight: 10,
+                    textController: _reasonSuspension,
+                    maxLines: 8,
+                  ),
+                  20.heightInPixel(),
+                  Text(
+                    'Choose suspension duration',
+                    style: theme.textTheme.bodyText2!.copyWith(
+                      color: appPrimaryColor,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  10.heightInPixel(),
+                  ItemDetailDateWidget(
+                    (String? start, String? end) {
+                      startDate = start;
+                      endDate = end;
+                    },
+                    startTitle: 'Start Date',
+                    endTitle: 'End date',
+                    startDate: startDate,
+                    endDate: endDate,
+                  ),
+                  // DecoratedBox(
+                  //   decoration: BoxDecoration(
+                  //     border: Border.all(
+                  //         color: appPrimaryColor.withOpacity(0.9),
+                  //         width: 0.3), //border of dropdown button
+                  //     borderRadius: BorderRadius.circular(
+                  //         5.0), //border raiuds of dropdown button
+                  //   ),
+                  //   child: Padding(
+                  //     padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                  //     child: DropdownButton<String>(
+                  //       value: _suspensionDuration,
+                  //       icon: const Icon(Remix.arrow_down_s_line),
+                  //       elevation: 16,
+                  //       isExpanded: true,
+                  //       style: theme.textTheme.bodyText2!.copyWith(
+                  //         color: appPrimaryColor.withOpacity(0.8),
+                  //       ),
+                  //       underline: Container(),
+                  //       //empty line
+                  //       onChanged: (String? newValue) {
+                  //         setState(() {
+                  //           _suspensionDuration = newValue!;
+                  //         });
+                  //       },
+                  //       items: duration.map((String value) {
+                  //         return DropdownMenuItem(
+                  //           value: value,
+                  //           child: Text(value),
+                  //         );
+                  //       }).toList(),
+                  //     ),
+                  //   ),
+                  // ),
+
+                  35.heightInPixel(),
+                  Button(
+                      text: 'Send',
+                      onPress: () {
+                        var arg = ModalRoute.of(context)!.settings.arguments
+                            as Map<String, dynamic>;
+                        final model =
+                            GetRidersForMerchantResponseDatum.fromJson(
+                                arg['rider_datum']);
+
+                        String name =
+                            '${model.attributes?.userId?.data?.attributes?.firstName ?? ''} ${model.attributes?.userId?.data?.attributes?.lastName ?? ''}';
+                        showDialog<String>(
+                          // barrierDismissible: true,
+                          context: context,
+                          builder: (BuildContext context) => AlertDialog(
+                            // title: const Text('AlertDialog Title'),
+                            contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 20.0, vertical: 15.0),
+                            content: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      InkWell(
+                                          onTap: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                          child: const CancelButton())
+                                    ],
+                                  ),
+                                  20.heightInPixel(),
+                                  Text(
+                                    'You are about to suspend $name for the period of 1 month',
+                                    // maxLines: 2,
+                                    style: const TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  14.heightInPixel(),
+                                  Button(
+                                    text: 'Suspend',
+                                    onPress: () {
+                                      if (startDate == null) {
+                                        runToast('Start date is required');
+                                        return;
+                                      }
+                                      if (endDate == null) {
+                                        runToast('End date is required');
+                                        return;
+                                      }
+
+                                      Navigator.pop(context);
+                                      suspendRider(
+                                          riderID: '${model.id ?? ''}',
+                                          reasonForSuspension:
+                                              _reasonSuspension.text,
+                                          suspensionEndDate: endDate ??
+                                              DateTime.now()
+                                                  .add(const Duration(days: 1))
+                                                  .toIso8601String(),
+                                          suspensionStartDate: startDate ??
+                                              DateTime.now().toIso8601String(),
+                                          status: 'c',
+                                          name: name);
+                                    },
+                                    color: redColor,
+                                    textColor: whiteColor,
+                                    isLoading: false,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.6,
+                                  ),
+                                  14.heightInPixel(),
+                                  Button(
+                                    text: 'Don\'t suspend',
+                                    onPress: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    color: appPrimaryColor,
+                                    textColor: whiteColor,
+                                    isLoading: false,
+                                    width:
+                                        MediaQuery.of(context).size.width / 1.6,
+                                  )
+                                ]),
+                          ),
+                        );
+                      },
+                      color: Colors.black,
+                      width: mediaQuery.size.width * 1,
+                      textColor: Colors.white,
+                      isLoading: false),
+                ],
+              ),
       ),
     );
   }

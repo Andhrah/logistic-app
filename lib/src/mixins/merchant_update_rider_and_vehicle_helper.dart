@@ -56,23 +56,32 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
   }
 
   doDeleteRider(String riderID,
-      {Function()? onSuccessful, bool isRemove = true}) async {
+      {Function()? onSuccessful,
+      RiderAccountRemovalType accountRemovalType =
+          RiderAccountRemovalType.remove}) async {
     showDialog(
         context: _authContext,
         builder: (context) => const Center(
               child: kCircularProgressIndicator,
             ));
 
-    var operation = isRemove
+    var operation = (accountRemovalType == RiderAccountRemovalType.remove)
         ? (await addRiderService.removeRiderFromMerchant(riderID))
-        : (await addRiderService.deleteRiderByMerchant(riderID));
+        : (await addRiderService.deleteRiderByMerchant(
+            riderID,
+            accountRemovalType == RiderAccountRemovalType.reactivate
+                ? 'active'
+                : 'deleted'));
 
-    _completeDeleteRiderOperation(operation,
+    _completeDeleteRiderOperation(operation, accountRemovalType,
         onSuccessful: onSuccessful,
-        onRetry: () => doDeleteRider(riderID, onSuccessful: onSuccessful));
+        onRetry: () => doDeleteRider(riderID,
+            onSuccessful: onSuccessful,
+            accountRemovalType: accountRemovalType));
   }
 
-  _completeDeleteRiderOperation(Operation operation,
+  _completeDeleteRiderOperation(
+      Operation operation, RiderAccountRemovalType accountRemovalType,
       {Function()? onSuccessful, Function()? onRetry}) async {
     Navigator.pop(_authContext);
     if (operation.code == 200 || operation.code == 201) {
@@ -80,7 +89,12 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
           MessageOnlyResponse.fromJson(operation.result);
 
       await appToast(
-          messageOnlyResponse.message ?? 'Rider removed successfully',
+          messageOnlyResponse.message ??
+              (accountRemovalType == RiderAccountRemovalType.delete
+                  ? 'Rider deleted successfully'
+                  : accountRemovalType == RiderAccountRemovalType.remove
+                      ? 'Rider removed successfully'
+                      : 'Rider activated successfully'),
           appToastType: AppToastType.success);
 
       if (onSuccessful != null) onSuccessful();
@@ -241,6 +255,72 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
                     'You have successfully suspended $name for $duration',
                     // maxLines: 2,
                     style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w400,
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } else {
+      MessageOnlyResponse messageOnlyResponse = operation.result;
+      appToast(messageOnlyResponse.message ?? '',
+          appToastType: AppToastType.failed);
+    }
+  }
+
+  unSuspendRider({required String riderID}) {
+    showDialog(
+        context: _authContext,
+        builder: (context) => const Center(
+              child: kCircularProgressIndicator,
+            ));
+
+    addRiderService
+        .removeSuspensionOfARider(
+          riderID,
+        )
+        .then((value) => _completeUnSuspendRiderOperation(value));
+  }
+
+  _completeUnSuspendRiderOperation(Operation operation) async {
+    Navigator.pop(_authContext);
+    if (operation.code == 200 || operation.code == 201) {
+      await appToast('Successful', appToastType: AppToastType.success);
+      Navigator.pop(_authContext);
+      getRidersForMerchantListBloc.fetchCurrent();
+      showDialog<String>(
+        // barrierDismissible: true,
+        context: _authContext,
+        builder: (BuildContext context) => AlertDialog(
+          // title: const Text('AlertDialog Title'),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const CancelButton(),
+                  ),
+                ],
+              ),
+              Container(
+                padding: const EdgeInsets.symmetric(vertical: 20.0),
+                child: const Center(
+                  child: Text(
+                    'You have successfully remove suspension',
+                    // maxLines: 2,
+                    style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w400,
                     ),

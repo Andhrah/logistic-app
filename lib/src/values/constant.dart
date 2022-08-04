@@ -80,3 +80,5 @@ const List<String> states = [
 ];
 
 const orderIdentifier = 'trk';
+
+const previousScreenTag = 'previousScreen';

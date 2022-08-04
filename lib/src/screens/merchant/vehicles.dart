@@ -38,7 +38,8 @@ class _VehiclesState extends State<Vehicles> {
                   child: const Text(
                     'VEHICLES',
                     textScaleFactor: 1.2,
-                    style: TextStyle( fontFamily: 'HelveticaRoundedLTStd',
+                    style: TextStyle(
+                      fontFamily: 'HelveticaRoundedLTStd',
                       color: appPrimaryColor,
                       fontWeight: FontWeight.bold,
                       // decoration: TextDecoration.underline,
@@ -69,17 +70,17 @@ class _VehiclesState extends State<Vehicles> {
                 title: 'Register new vehicle',
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
-            InkWell(
-              onTap: () {
-                Navigator.of(context).pushNamed(ListOfVehicles.id);
-              },
-              child: const DefaultContainer(
-                title: 'Remove vehicle from list',
-              ),
-            ),
+            // const SizedBox(
+            //   height: 30,
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     Navigator.of(context).pushNamed(ListOfVehicles.id);
+            //   },
+            //   child: const DefaultContainer(
+            //     title: 'Remove vehicle from list',
+            //   ),
+            // ),
           ],
         )));
   }
@@ -113,7 +114,10 @@ class DefaultContainer extends StatelessWidget {
               title,
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w400),
             ),
-            const Icon(Icons.arrow_forward_ios, color: appPrimaryColor,),
+            const Icon(
+              Icons.arrow_forward_ios,
+              color: appPrimaryColor,
+            ),
           ],
         ),
       ),

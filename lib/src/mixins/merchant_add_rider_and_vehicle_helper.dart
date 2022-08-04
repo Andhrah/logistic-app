@@ -38,8 +38,9 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
 
   ///step 1a
   doCreateRider(AddRiderToMerchantModel addRiderToMerchantModel,
-      VehicleRequest vehicleModel,
-      {Function()? onSuccess}) async {
+      {VehicleRequest? vehicleModel,
+      Function()? onSuccess,
+      bool continueStepAfterCompletion = true}) async {
     _riderToMerchantModel = addRiderToMerchantModel;
     _vehicleModel = vehicleModel;
 
@@ -61,14 +62,19 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
 
     _completeCreateRiderOperation(operation,
         onSuccess: onSuccess,
-        onRetry: () => doCreateRider(addRiderToMerchantModel, vehicleModel,
-            onSuccess: onSuccess));
+        onRetry: () => doCreateRider(addRiderToMerchantModel,
+            vehicleModel: vehicleModel,
+            onSuccess: onSuccess,
+            continueStepAfterCompletion: continueStepAfterCompletion),
+        continueStepAfterCompletion: continueStepAfterCompletion);
     // });
   }
 
   ///step 1b
   _completeCreateRiderOperation(Operation operation,
-      {Function()? onSuccess, Function()? onRetry}) async {
+      {Function()? onSuccess,
+      Function()? onRetry,
+      bool continueStepAfterCompletion = true}) async {
     Navigator.pop(_authContext);
     if (operation.code == 200 || operation.code == 201) {
       AuthResponse authResponse = AuthResponse.fromJson(operation.result);
@@ -78,7 +84,9 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
       ));
 
       addRiderBioData(_riderToMerchantModel!,
-          vehicleModel: _vehicleModel!, onSuccessCallback: onSuccess);
+          vehicleModel: _vehicleModel,
+          onSuccessCallback: onSuccess,
+          continueStepAfterCompletion: continueStepAfterCompletion);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
@@ -306,7 +314,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
     UserType userType = await appSettingsBloc.getUserType;
     if (operation.code == 200 || operation.code == 201) {
       if (_riderToMerchantModel != null) {
-        await _showSuccessfulDialog(
+        await showSuccessfulDialog(
             "${camelCase(_riderToMerchantModel?.data?.firstName ?? '')} has been added to rider's list",
             'View All Riders', () async {
           Navigator.pop(_authContext);
@@ -317,7 +325,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
           Navigator.pushNamed(_authContext, ListOfRiders.id);
         }, nextAction: () async {
           Navigator.pop(_authContext);
-          await _showSuccessfulDialog(
+          await showSuccessfulDialog(
               '${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle list',
               userType == UserType.rider ? 'Go back' : 'View All Vehicles', () {
             Navigator.pop(_authContext);
@@ -328,7 +336,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
           });
         });
       } else {
-        await _showSuccessfulDialog(
+        await showSuccessfulDialog(
             "${camelCase(_vehicleModel?.data?.name ?? '')} has been added to vehicle's list",
             userType == UserType.rider ? 'Go back' : 'View All Vehicles', () {
           Navigator.pop(_authContext);
@@ -368,7 +376,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
     }
   }
 
-  Future _showSuccessfulDialog(
+  Future showSuccessfulDialog(
       String title, String buttonText, Function() onClose,
       {Function()? nextAction}) async {
     return await showDialog<String>(

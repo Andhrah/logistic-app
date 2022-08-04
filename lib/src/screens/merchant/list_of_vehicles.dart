@@ -6,12 +6,16 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/merchant/get_vehicles_for_merchant_list_bloc.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
+import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
 import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
+import 'package:trakk/src/models/rider/add_vehicle_to_merchant_model.dart';
 import 'package:trakk/src/screens/merchant/inactive_vehicle.dart';
+import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 import '../../widgets/back_icon.dart';
 import '../../widgets/cancel_button.dart';
@@ -39,7 +43,7 @@ List<Item> generateItems(int numberOfItems) {
 }
 
 class ListOfVehicles extends StatefulWidget {
-  static const String id = 'listofvehicles';
+  static const String id = 'listOfVehicles';
 
   const ListOfVehicles({Key? key}) : super(key: key);
 
@@ -284,6 +288,14 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                               data.elementAt(index).attributes?.name ?? '';
                           String number =
                               data.elementAt(index).attributes?.number ?? '';
+
+                          bool isAssigned = data
+                                  .elementAt(index)
+                                  .attributes
+                                  ?.riderId
+                                  ?.data
+                                  ?.attributes !=
+                              null;
 
                           return Container(
                             padding: const EdgeInsets.all(8),
@@ -530,10 +542,50 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                     ],
                                   ),
                                   Button(
-                                      text: 'Assigned to',
-                                      onPress: () {
-                                        Navigator.of(context)
-                                            .pushNamed(MerchantRiderProfile.id);
+                                      text: isAssigned
+                                          ? 'Assigned to ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}'
+                                          : 'Assign to',
+                                      onPress: () async {
+                                        if (isAssigned) {
+                                          VehicleRequest vehicleModel =
+                                              VehicleRequest(
+                                                  data: AddRiderToMerchantData(
+                                                      riderId: ''));
+
+                                          yesNoDialog(context,
+                                              title:
+                                                  'Remove vehicle from ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}',
+                                              positiveCallback: () {
+                                                Navigator.pop(context);
+                                                updateVehicle(id, vehicleModel);
+                                              },
+                                              negativeCallback: () =>
+                                                  Navigator.pop(context));
+                                        } else {
+                                          var result =
+                                              await Navigator.of(context)
+                                                  .pushNamed(ListOfRiders.id,
+                                                      arguments: {
+                                                previousScreenTag:
+                                                    ListOfVehicles.id
+                                              });
+                                          if (result != null &&
+                                              result is Map<String, dynamic>) {
+                                            GetRidersForMerchantResponseDatum
+                                                datum =
+                                                GetRidersForMerchantResponseDatum
+                                                    .fromJson(result);
+
+                                            //  do add vehicle to merchant
+
+                                            VehicleRequest vehicleModel =
+                                                VehicleRequest(
+                                                    data: AddRiderToMerchantData(
+                                                        riderId:
+                                                            '${datum.id ?? ''}'));
+                                            updateVehicle(id, vehicleModel);
+                                          }
+                                        }
                                       },
                                       color: appPrimaryColor,
                                       width:

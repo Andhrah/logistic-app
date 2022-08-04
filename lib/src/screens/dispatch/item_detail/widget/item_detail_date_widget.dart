@@ -9,11 +9,15 @@ class ItemDetailDateWidget extends StatefulWidget {
   final Function(String? pickup, String? dropOff) onDateSelected;
   final String startTitle;
   final String endTitle;
+  final String? startDate;
+  final String? endDate;
 
   const ItemDetailDateWidget(this.onDateSelected,
       {Key? key,
       this.startTitle = 'Pickup Date',
-      this.endTitle = 'Dropoff Date'})
+      this.endTitle = 'Dropoff Date',
+      this.startDate,
+      this.endDate})
       : super(key: key);
 
   @override
@@ -33,6 +37,8 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
   @override
   void initState() {
     super.initState();
+    _pickupDate = widget.startDate;
+    _dropOffDate = widget.endDate;
   }
 
   @override
@@ -85,7 +91,11 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
 
                 widget.onDateSelected(_pickupDate, _dropOffDate);
                 print('confirm $date');
-              }, currentTime: DateTime.now(), locale: LocaleType.en);
+              },
+                  currentTime: widget.startDate != null
+                      ? DateTime.tryParse(widget.startDate ?? '')
+                      : DateTime.now(),
+                  locale: LocaleType.en);
             },
             child: InputField(
               obscureText: false,
@@ -162,7 +172,11 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
 
                 _dropOffDate = date.toIso8601String();
                 widget.onDateSelected(_pickupDate, _dropOffDate);
-              }, currentTime: DateTime.now(), locale: LocaleType.en);
+              },
+                  currentTime: widget.endDate != null
+                      ? DateTime.tryParse(widget.endDate ?? '')
+                      : DateTime.now(),
+                  locale: LocaleType.en);
             },
             child: InputField(
               obscureText: false,

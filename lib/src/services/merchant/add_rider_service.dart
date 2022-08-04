@@ -23,11 +23,10 @@ class AddRiderService extends BaseNetworkCallHandler {
     });
   }
 
-  Future<Operation> deleteRiderByMerchant(String riderID) async {
-    return runAPI(
-      'api/riders/$riderID',
-      HttpRequestType.delete,
-    );
+  Future<Operation> deleteRiderByMerchant(String riderID, String status) async {
+    return runAPI('api/riders/$riderID', HttpRequestType.put, body: {
+      "data": {"status": status}
+    });
   }
 
   Future<Operation> getRiders() async {
@@ -51,6 +50,12 @@ class AddRiderService extends BaseNetworkCallHandler {
         "suspensionStartDate": suspensionStartDate,
         "status": status
       }
+    });
+  }
+
+  Future<Operation> removeSuspensionOfARider(String riderID) async {
+    return runAPI('api/riders/$riderID', HttpRequestType.put, body: {
+      "data": {"status": 'active'}
     });
   }
 
