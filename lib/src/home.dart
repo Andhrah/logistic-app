@@ -38,6 +38,7 @@ import 'package:trakk/src/screens/onboarding/onboarding.dart';
 import 'package:trakk/src/screens/onboarding/splashscreen.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/user_dispatch_history.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart';
+import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
@@ -156,6 +157,8 @@ class _HomeState extends State<Home> {
               Riders.id: (context) => const Riders(),
               DispatchHistory.id: (context) => const DispatchHistory(),
               ListOfVehicles.id: (context) => const ListOfVehicles(),
+              EditVehicle.id: (context) => const EditVehicle(),
+
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
               AddRider.id: (context) => const AddRider(),
               AddRider1.id: (context) => const AddRider1(),

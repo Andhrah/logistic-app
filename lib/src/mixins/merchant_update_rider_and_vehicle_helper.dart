@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/merchant/get_riders_list_bloc.dart';
+import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
+import 'package:trakk/src/models/rider/add_vehicle_to_merchant_model.dart';
+import 'package:trakk/src/screens/merchant/add_rider_2/widgets/doc_selector_widget.dart';
 import 'package:trakk/src/services/merchant/add_rider_service.dart';
 import 'package:trakk/src/services/merchant/vehicle_list_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
@@ -12,6 +18,7 @@ import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/styles.dart';
 import 'package:trakk/src/widgets/cancel_button.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
+import 'package:uploadcare_client/uploadcare_client.dart';
 
 class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
   final BuildContext _authContext =
@@ -38,7 +45,7 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
   _completeUpdateRiderOperation(Operation operation) async {
     Navigator.pop(_authContext);
     if (operation.code == 200 || operation.code == 201) {
-      getRidersListBloc.fetchCurrent();
+      getRidersForMerchantListBloc.fetchCurrent();
       await appToast('Successful');
       Navigator.pop(_authContext);
     } else {
@@ -92,6 +99,43 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
           onNegativeCallback: () {
             Navigator.pop(_authContext);
           });
+    }
+  }
+
+  updateVehicle(String vehicleID, VehicleRequest request) {
+    uploadToCloudinary(request.data!.files, (
+        {Map<String, String>? images}) async {
+      if (images != null) {
+        request = request.copyWith(
+            data: request.data!.copyWith(image: images[vehicleImageKey]));
+
+        images.removeWhere((key, value) => key == vehicleImageKey);
+      }
+      request = request.copyWith(data: request.data!.copyWith(files: images));
+      showDialog(
+          context: _authContext,
+          builder: (context) => const Center(
+                child: kCircularProgressIndicator,
+              ));
+
+      vehiclesListService
+          .updateVehiclesForRider(vehicleID, request)
+          .then((value) => _completeUpdateVehicleOperation(value));
+    });
+  }
+
+  _completeUpdateVehicleOperation(Operation operation) async {
+    Navigator.pop(_authContext);
+    if (operation.code == 200 || operation.code == 201) {
+      if ((await appSettingsBloc.getUserType) == UserType.rider) {
+        getVehiclesForRiderListBloc.fetchCurrent();
+      }
+      await appToast('Successful');
+      Navigator.pop(_authContext);
+    } else {
+      MessageOnlyResponse messageOnlyResponse = operation.result;
+      appToast(messageOnlyResponse.message ?? '',
+          appToastType: AppToastType.failed);
     }
   }
 
@@ -168,7 +212,7 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
     if (operation.code == 200 || operation.code == 201) {
       await appToast('Successful', appToastType: AppToastType.success);
       Navigator.pop(_authContext);
-      getRidersListBloc.fetchCurrent();
+      getRidersForMerchantListBloc.fetchCurrent();
       showDialog<String>(
         // barrierDismissible: true,
         context: _authContext,
@@ -212,6 +256,60 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',
           appToastType: AppToastType.failed);
+    }
+  }
+
+  uploadToCloudinary(Map<String, String>? files,
+      Function({Map<String, String>? images}) callback) async {
+    ///This checks if the image exist and upload, the proceeds to create order.
+    ///If image is null, it proceeds to image order
+    if (files != null && files.isNotEmpty) {
+      files.removeWhere((key, value) => value.isEmpty);
+      showDialog(
+          context: _authContext,
+          builder: (context) =>
+              const Center(child: kCircularProgressIndicator));
+
+      final CancelToken _cancelToken = CancelToken('canceled by user');
+      try {
+        final resources = await Future.wait(files.values.map((filePath) async =>
+            await SingletonData.singletonData.uploadCareClient!.upload.auto(
+              UCFile(File(filePath)),
+              cancelToken: _cancelToken,
+              storeMode: false,
+              runInIsolate: true,
+              onProgress: (progress) {
+                // debugPrint('Uploading image from file with progress: $progress');
+              },
+              metadata: {
+                'metakey': 'metavalue',
+              },
+            )));
+
+        Navigator.pop(_authContext);
+
+        for (int i = 0; i < resources.length; i++) {
+          files[files.keys.elementAt(i)] =
+              '${SingletonData.singletonData.imageURL}${resources.elementAt(i)}/';
+
+          // responses.elementAt(i).secureUrl ?? '';
+        }
+        callback(images: files);
+      } on CancelUploadException catch (e) {
+        Navigator.pop(_authContext);
+
+        debugPrint(e.toString());
+        appToast('Could not process request at the moment.\nPlease try again',
+            appToastType: AppToastType.failed);
+      } catch (err) {
+        Navigator.pop(_authContext);
+        appToast('Could not process request at the moment.\nPlease try again',
+            appToastType: AppToastType.failed);
+
+        debugPrint(err.toString());
+      }
+    } else {
+      callback();
     }
   }
 }

@@ -61,7 +61,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
   void initState() {
     super.initState();
 
-    getRidersListBloc.fetchCurrent();
+    getRidersForMerchantListBloc.fetchCurrent();
   }
 
   @override
@@ -147,7 +147,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
             Expanded(
               child: CustomStreamBuilder<
                   List<GetRidersForMerchantResponseDatum>, String>(
-                stream: getRidersListBloc.behaviorSubject,
+                stream: getRidersForMerchantListBloc.behaviorSubject,
                 dataBuilder: (context, data) {
                   return ListView.separated(
                       separatorBuilder: (context, index) => const SizedBox(

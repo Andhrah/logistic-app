@@ -1,13 +1,16 @@
 import 'dart:io';
 
+import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/app_settings.dart';
+import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/src/models/update_profile/update_profile.dart';
-import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
+import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/widgets/image_selector_widget.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
@@ -57,7 +60,10 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
     var user =
         (await appSettingsBloc.fetchAppSettings()).loginResponse?.data?.user;
 
-    // UserType userType = await appSettingsBloc.getUserType;
+    UserType userType = await appSettingsBloc.getUserType;
+    if (userType == UserType.rider) {
+      getVehiclesForRiderListBloc.fetchCurrent();
+    }
     setState(() {
       _firstNameController.text = user?.firstName ?? '';
       _lastNameController.text = user?.lastName ?? '';
@@ -80,6 +86,8 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
       backgroundColor: whiteColor,
       body: SafeArea(
@@ -275,7 +283,8 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                               keyboardType: TextInputType.emailAddress,
                               node: _emailNode,
                               // autovalidateMode: AutovalidateMode.onUserInteraction,
-                              obscureText: false, enabled: false,
+                              obscureText: false,
+                              enabled: false,
                               text: 'Email Address',
                               hintText: '@gmail.com',
                               textHeight: 10.0,
@@ -305,31 +314,69 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                             },
                           ),
                           const SizedBox(height: 20.0),
-                          Visibility(
-                            //the widget is only visible to rider that why i use dvisibily widget
-                              child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              const Text(
-                                'Click to edit Vehicle',
-                                style: TextStyle(
-                                    fontSize: 18, fontWeight: FontWeight.w600),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  Navigator.pushNamed(context, EditVehicle.id);
-                                },
-                                child: Container(
-                                  height: 60,
-                                  width: 60,
-                                  decoration: const BoxDecoration(
-                                      color: appPrimaryColor,
-                                      shape: BoxShape.circle),
-                                      child: Icon(Remix.add_line, color: whiteColor,),
-                                ),
-                              ),
-                            ],
-                          )),
+                          StreamBuilder<AppSettings>(
+                              stream: appSettingsBloc.appSettings,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData &&
+                                    snapshot.data?.loginResponse?.data?.user
+                                            ?.getUserType() ==
+                                        UserType.rider) {
+                                  return CustomStreamBuilder<
+                                          List<GetVehiclesForMerchantDatum>,
+                                          String>(
+                                      stream: getVehiclesForRiderListBloc
+                                          .behaviorSubject,
+                                      dataBuilder: (context, data) {
+                                        if (data.isNotEmpty) {
+                                          return Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                'Click to edit Vehicle',
+                                                style: theme
+                                                    .textTheme.bodyText1!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            FontWeight.w600),
+                                              ),
+                                              InkWell(
+                                                onTap: () {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const AddRider2(
+                                                                isUpdate: true,
+                                                              ),
+                                                          settings:
+                                                              RouteSettings(
+                                                                  name: AddRider2
+                                                                      .id)));
+                                                },
+                                                child: Container(
+                                                  height: 50,
+                                                  width: 50,
+                                                  decoration:
+                                                      const BoxDecoration(
+                                                          color:
+                                                              appPrimaryColor,
+                                                          shape:
+                                                              BoxShape.circle),
+                                                  child: const Icon(
+                                                    Remix.add_line,
+                                                    color: whiteColor,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                        return const SizedBox();
+                                      });
+                                }
+                                return const SizedBox();
+                              }),
                           const SizedBox(height: 20.0),
                           Align(
                               alignment: Alignment.center,

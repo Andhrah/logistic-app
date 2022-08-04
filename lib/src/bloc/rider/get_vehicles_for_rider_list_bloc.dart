@@ -7,14 +7,14 @@
 import 'package:async/async.dart';
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
-import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
+import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/services/base_network_call_handler.dart';
-import 'package:trakk/src/services/merchant/add_rider_service.dart';
+import 'package:trakk/src/services/merchant/vehicle_list_service.dart';
 
-class GetRidersListBloc
+class GetVehiclesForRiderListBloc
     with
-        BaseBloc<List<GetRidersForMerchantResponseDatum>, String>,
+        BaseBloc<List<GetVehiclesForMerchantDatum>, String>,
         ConnectivityHelper {
   CancelableOperation? _cancelableOperation;
 
@@ -22,18 +22,16 @@ class GetRidersListBloc
     setAsLoading();
     checkInternetConnection(
         hasInternetCallback: () async {
-          var operation = await addRiderService.getRiders();
+          var operation = await vehiclesListService.getVehiclesForRider();
 
           if (operation.code == 200 || operation.code == 201) {
-            GetRidersForMerchantResponse response =
-                GetRidersForMerchantResponse.fromJson(operation.result);
+            GetVehiclesForMerchantResponse response =
+                GetVehiclesForMerchantResponse.fromJson(operation.result);
 
             if (response.data != null && response.data!.isNotEmpty) {
-              //   response.data!.sort((a, b) =>
-              //       b.attributes!.createdAt!.compareTo(a.attributes!.createdAt!));
               addToModel(response.data!);
             } else {
-              addToError("Riders not found");
+              addToError("Vehicles not found");
             }
           } else {
             addToError((operation.result as MessageOnlyResponse).message!);
@@ -55,4 +53,4 @@ class GetRidersListBloc
   }
 }
 
-final getRidersForMerchantListBloc = GetRidersListBloc();
+final getVehiclesForRiderListBloc = GetVehiclesForRiderListBloc();

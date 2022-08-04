@@ -357,7 +357,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                         Navigator.pop(context);
                                         doDeleteRider('${model.id ?? ''}',
                                             isRemove: false, onSuccessful: () {
-                                          getRidersListBloc.fetchCurrent();
+                                          getRidersForMerchantListBloc.fetchCurrent();
                                           showDialog<String>(
                                             // barrierDismissible: true,
                                             context: context,

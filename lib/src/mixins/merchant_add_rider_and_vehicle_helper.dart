@@ -34,11 +34,11 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
       SingletonData.singletonData.navKey.currentState!.overlay!.context;
   AddRiderToMerchantModel? _riderToMerchantModel;
 
-  AddVehicleToMerchantModel? _vehicleModel;
+  VehicleRequest? _vehicleModel;
 
   ///step 1a
   doCreateRider(AddRiderToMerchantModel addRiderToMerchantModel,
-      AddVehicleToMerchantModel vehicleModel,
+      VehicleRequest vehicleModel,
       {Function()? onSuccess}) async {
     _riderToMerchantModel = addRiderToMerchantModel;
     _vehicleModel = vehicleModel;
@@ -99,7 +99,7 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
 
   ///step 2a
   addRiderBioData(AddRiderToMerchantModel addRiderToMerchantModel,
-      {AddVehicleToMerchantModel? vehicleModel,
+      {VehicleRequest? vehicleModel,
       Function()? onSuccessCallback,
       bool continueStepAfterCompletion = true}) {
     _riderToMerchantModel = addRiderToMerchantModel;
@@ -170,7 +170,8 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
       Function({Map<String, String>? images}) callback) async {
     ///This checks if the image exist and upload, the proceeds to create order.
     ///If image is null, it proceeds to image order
-    if (files != null) {
+    if (files != null && files.isNotEmpty) {
+      files.removeWhere((key, value) => value.isEmpty);
       showDialog(
           context: _authContext,
           builder: (context) =>
@@ -220,11 +221,9 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
   }
 
   ///step 4a, Note: This is also used for direct/single add vehicle only
-  addVehicle(
-    AddVehicleToMerchantModel vehicleModel, {
-    Function()? onSuccessCallback,
-    AddRiderToMerchantModel? addRiderToMerchantModel,
-  }) {
+  addVehicle(VehicleRequest vehicleModel,
+      {Function()? onSuccessCallback,
+      AddRiderToMerchantModel? addRiderToMerchantModel}) {
     _vehicleModel = vehicleModel;
     _riderToMerchantModel = addRiderToMerchantModel;
 
