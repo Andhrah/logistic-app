@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'dart:developer';
 import 'dart:io';
 
@@ -384,48 +390,46 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper {
       context: _authContext,
       builder: (BuildContext context) => AlertDialog(
         // title: const Text('AlertDialog Title'),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
-        content: SizedBox(
-          height: 250.0,
-          child: Column(children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+        contentPadding: const EdgeInsets.symmetric(
+            horizontal: 24.0, vertical: kDefaultLayoutPadding),
+        content: Column(mainAxisSize: MainAxisSize.min, children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                  onTap: () {
+                    if (nextAction != null) nextAction();
+                  },
+                  child: const CancelButton())
+            ],
+          ),
+          20.heightInPixel(),
+          Align(
+            alignment: Alignment.center,
+            child: Column(
               children: [
-                InkWell(
-                    onTap: () {
-                      if (nextAction != null) nextAction();
+                Text(
+                  title,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                      fontSize: 14, fontWeight: FontWeight.w400),
+                ),
+                const SizedBox(height: 30),
+                Button(
+                    text: buttonText,
+                    onPress: () {
+                      onClose();
                     },
-                    child: const CancelButton())
+                    color: appPrimaryColor,
+                    textColor: whiteColor,
+                    isLoading: false,
+                    width: 300
+                    //MediaQuery.of(context).size.width/1.6,
+                    ),
               ],
             ),
-            20.heightInPixel(),
-            Align(
-              alignment: Alignment.center,
-              child: Column(
-                children: [
-                  Text(
-                    title,
-                    style: const TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.w400),
-                  ),
-                  const SizedBox(height: 30),
-                  Button(
-                      text: buttonText,
-                      onPress: () {
-                        onClose();
-                      },
-                      color: appPrimaryColor,
-                      textColor: whiteColor,
-                      isLoading: false,
-                      width: 300
-                      //MediaQuery.of(context).size.width/1.6,
-                      ),
-                ],
-              ),
-            ),
-          ]),
-        ),
+          ),
+        ]),
       ),
     );
   }

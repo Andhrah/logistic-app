@@ -11,11 +11,11 @@ import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_date_widget.dart';
-import 'package:trakk/src/screens/merchant/company_home.dart';
 import 'package:trakk/src/screens/profile/edit_profile_screen/widgets/image_selector_widget.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/utils/time_ago.dart';
 import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
@@ -67,7 +67,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
         MerchantUpdateRiderAndVehicleHelper,
         MerchantAddRiderAndVehicleHelper,
         ProfileHelper {
-  RiderProfileOptions selectedProfileOptions = RiderProfileOptions.Edit;
+  RiderProfileOptions selectedProfileOptions = RiderProfileOptions.none;
 
   final formValidation = ValidationBloc();
 
@@ -177,6 +177,8 @@ class _ProfileWidgetState extends State<ProfileIdget>
     final model = GetRidersForMerchantResponseDatum.fromJson(arg['rider_datum'])
         .attributes;
 
+    print(model?.toJson());
+
     return Column(
       children: [
         Padding(
@@ -198,7 +200,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
           (File? file) {
             image = file;
           },
-          avatarURL: model?.avatar,
+          avatarURL: model?.userId?.data?.attributes?.avatar,
           width: 80,
           height: 80,
           rowMainAxisAlignment: MainAxisAlignment.center,
@@ -323,8 +325,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                       children: [
                                         InkWell(
                                             onTap: () {
-                                              Navigator.of(context)
-                                                  .pushNamed(CompanyHome.id);
+                                              Navigator.of(context).pop();
                                             },
                                             child: const CancelButton())
                                       ],
@@ -345,7 +346,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                       height: 14,
                                     ),
                                     Button(
-                                      text: isDeleted ? 'Reactivate' : 'Delete',
+                                      text: isDeleted ? 'Activate' : 'Delete',
                                       onPress: () {
                                         Navigator.pop(context);
                                         doDeleteRider('${model.id ?? ''}',
@@ -356,6 +357,11 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                                     .delete, onSuccessful: () {
                                           getRidersForMerchantListBloc
                                               .fetchCurrent();
+                                          Navigator.pop(SingletonData
+                                              .singletonData
+                                              .navKey
+                                              .currentState!
+                                              .context);
                                           showDialog<String>(
                                             // barrierDismissible: true,
                                             context: SingletonData
@@ -383,9 +389,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                                           onTap: () {
                                                             Navigator.of(
                                                                     context)
-                                                                .pushNamed(
-                                                                    CompanyHome
-                                                                        .id);
+                                                                .pop();
                                                           },
                                                           child:
                                                               const CancelButton(),
@@ -443,7 +447,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                           );
                         },
                         child: Text(
-                          isDeleted ? 'Reactivate' : "Delete",
+                          isDeleted ? 'Activate' : "Delete",
                           style: TextStyle(
                               color: (selectedProfileOptions ==
                                       RiderProfileOptions.Delete)
@@ -472,11 +476,9 @@ class _ProfileWidgetState extends State<ProfileIdget>
         return suspendContainer();
       case RiderProfileOptions.Delete:
         return deleteContainer();
-      case RiderProfileOptions.Null:
-        // TODO: Handle this case.
-        break;
+      case RiderProfileOptions.none:
+        return AbsorbPointer(absorbing: true, child: editContainer());
     }
-    return editContainer();
   }
 
   Widget editContainer() {
@@ -616,36 +618,39 @@ class _ProfileWidgetState extends State<ProfileIdget>
             //   textHeight: 10.0,
             //   borderColor: appPrimaryColor.withOpacity(0.9),
             // ),
-            const SizedBox(height: 48.0),
-            Align(
-                alignment: Alignment.center,
-                child: Button(
-                    text: 'Save',
-                    //onPress:// _onSubmit,
-                    onPress: () async {
-                      var arg = ModalRoute.of(context)!.settings.arguments
-                          as Map<String, dynamic>;
-                      final model = GetRidersForMerchantResponseDatum.fromJson(
-                          arg['rider_datum']);
+            if (selectedProfileOptions == RiderProfileOptions.Edit)
+              const SizedBox(height: 48.0),
+            if (selectedProfileOptions == RiderProfileOptions.Edit)
+              Align(
+                  alignment: Alignment.center,
+                  child: Button(
+                      text: 'Save',
+                      //onPress:// _onSubmit,
+                      onPress: () async {
+                        var arg = ModalRoute.of(context)!.settings.arguments
+                            as Map<String, dynamic>;
+                        final model =
+                            GetRidersForMerchantResponseDatum.fromJson(
+                                arg['rider_datum']);
 
-                      updateRiderBioData(AddRiderToMerchantModel(
-                          data: AddRiderToMerchantModelData(
-                              profilePicFile: image,
-                              userId:
-                                  '${model.attributes?.userId?.data?.id ?? ''}',
-                              merchantId: (await appSettingsBloc.getUserID),
-                              firstName: _firstNameController.text,
-                              lastName: _lastNameController.text,
-                              avatar: '',
-                              phone: _phoneNumberController.text,
-                              email: _emailController.text,
-                              residentialAddress:
-                                  _homeAddressController.text)));
-                    },
-                    color: appPrimaryColor,
-                    textColor: whiteColor,
-                    isLoading: _loading,
-                    width: mediaQuery.size.width * 1)),
+                        updateRiderBioData(AddRiderToMerchantModel(
+                            data: AddRiderToMerchantModelData(
+                                profilePicFile: image,
+                                userId:
+                                    '${model.attributes?.userId?.data?.id ?? ''}',
+                                merchantId: (await appSettingsBloc.getUserID),
+                                firstName: _firstNameController.text,
+                                lastName: _lastNameController.text,
+                                avatar: '',
+                                phone: _phoneNumberController.text,
+                                email: _emailController.text,
+                                residentialAddress:
+                                    _homeAddressController.text)));
+                      },
+                      color: appPrimaryColor,
+                      textColor: whiteColor,
+                      isLoading: _loading,
+                      width: mediaQuery.size.width * 1)),
             const SizedBox(height: 10.0),
           ],
         ),
@@ -657,6 +662,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
     var theme = Theme.of(context);
 
     MediaQueryData mediaQuery = MediaQuery.of(context);
+
     return SingleChildScrollView(
       // crossAxisAlignment: CrossAxisAlignment.start,
       child: Padding(
@@ -705,15 +711,6 @@ class _ProfileWidgetState extends State<ProfileIdget>
                         Button(
                           text: 'Remove suspension',
                           onPress: () {
-                            if (startDate == null) {
-                              runToast('Start date is required');
-                              return;
-                            }
-                            if (endDate == null) {
-                              runToast('End date is required');
-                              return;
-                            }
-
                             Navigator.pop(context);
                             unSuspendRider(riderID: '${model.id ?? ''}');
                           },
@@ -817,6 +814,14 @@ class _ProfileWidgetState extends State<ProfileIdget>
 
                         String name =
                             '${model.attributes?.userId?.data?.attributes?.firstName ?? ''} ${model.attributes?.userId?.data?.attributes?.lastName ?? ''}';
+
+                        String suspensionStartDate =
+                            startDate ?? DateTime.now().toIso8601String();
+                        String suspensionEndDate = endDate ??
+                            DateTime.now()
+                                .add(const Duration(days: 1))
+                                .toIso8601String();
+
                         showDialog<String>(
                           // barrierDismissible: true,
                           context: context,
@@ -839,7 +844,7 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                   ),
                                   20.heightInPixel(),
                                   Text(
-                                    'You are about to suspend $name for the period of 1 month',
+                                    'You are about to suspend $name for the period of ${TimeAgo.getTimeWithSuffix(startTime: (DateTime.tryParse(suspensionStartDate) ?? DateTime.now()).millisecondsSinceEpoch, endTime: (DateTime.tryParse(suspensionEndDate) ?? DateTime.now()).millisecondsSinceEpoch, suffixText: '')}',
                                     // maxLines: 2,
                                     style: const TextStyle(
                                       fontSize: 13,
@@ -865,13 +870,10 @@ class _ProfileWidgetState extends State<ProfileIdget>
                                           riderID: '${model.id ?? ''}',
                                           reasonForSuspension:
                                               _reasonSuspension.text,
-                                          suspensionEndDate: endDate ??
-                                              DateTime.now()
-                                                  .add(const Duration(days: 1))
-                                                  .toIso8601String(),
-                                          suspensionStartDate: startDate ??
-                                              DateTime.now().toIso8601String(),
-                                          status: 'c',
+                                          suspensionStartDate:
+                                              suspensionStartDate,
+                                          suspensionEndDate: suspensionEndDate,
+                                          status: 'suspended',
                                           name: name);
                                     },
                                     color: redColor,
@@ -910,50 +912,6 @@ class _ProfileWidgetState extends State<ProfileIdget>
     return Container(
       color: Colors.black,
       height: 200,
-    );
-  }
-}
-
-class Profillebox extends StatelessWidget {
-  final String title;
-  final String detail;
-
-  const Profillebox({
-    Key? key,
-    required this.title,
-    required this.detail,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          title,
-          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
-        ),
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 10),
-          padding: const EdgeInsets.symmetric(
-            horizontal: 15,
-          ),
-          decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(8),
-            ),
-            border: Border.all(color: grayColor),
-          ),
-          height: 56,
-          width: 344,
-          child: Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                detail,
-                style: TextStyle(color: grayColor),
-              )),
-        ),
-      ],
     );
   }
 }

@@ -211,7 +211,7 @@ Uint8List createByteFromString(String base64Encoded) {
 }
 
 urlLauncher(String url,
-    {UrlLaunchType urlLaunchType = UrlLaunchType.call,
+    {required UrlLaunchType urlLaunchType,
     bool forceWebView = false,
     bool forceSafariVC = false}) async {
   Uri urlString = Uri.parse(url);
