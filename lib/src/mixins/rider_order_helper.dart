@@ -1,11 +1,17 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/services/order/order_api.dart';
 import 'package:trakk/src/utils/app_toast.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/operation.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/styles.dart';
 
 class RiderOrderHelper {

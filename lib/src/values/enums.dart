@@ -36,7 +36,7 @@ enum RiderProfileOptions {
   Edit,
   Suspend,
   Delete,
-  Null,
+  none,
 }
 
 enum OrderHistoryType { all, fulfilled, inTransit, rejected, referred }

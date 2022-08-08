@@ -61,11 +61,11 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
 
   String filter = 'Assigned';
 
-  List<String> filters = ['Assigned', 'Unassigned'];
+  // List<String> filters = ['Assigned', 'Unassigned'];
 
   @override
   void initState() {
-    filter = filters.first;
+    // filter = filters.first;
     getVehiclesForMerchantListBloc.fetchCurrent(filter == 'Unassigned');
     fetchVehicleList().whenComplete(() {
       setState(() {});
@@ -88,11 +88,11 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
   // }
 
   var vehicles = [
-    "All vehicles",
-    "Search",
+    // "All vehicles",
+    "Assigned", 'Unassigned'
   ];
 
-  String _listOfVehicles = 'All vehicles';
+  String _listOfVehicles = 'Assigned';
 
   double _width = 160;
   final List<Item> _data = generateItems(1);
@@ -117,7 +117,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 75,
+                  width: 40,
                   child: Row(
                     children: [
                       BackIcon(
@@ -138,44 +138,44 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                   ),
                 ),
                 SizedBox(
-                  height: 50,
-                  width: 75,
-                  child: DropdownButton<String>(
-                    value: filter,
-                    icon: const Icon(
-                      Icons.filter_alt,
-                      size: 18,
-                    ),
-                    elevation: 16,
-                    isExpanded: true,
-                    style: TextStyle(
-                      color: appPrimaryColor.withOpacity(0.8),
-                      fontSize: 18.0,
-                    ),
-                    underline: Container(),
-                    items: filters
-                        .map((e) => DropdownMenuItem<String>(
-                              value: e,
-                              child: Text(
-                                e,
-                                style: theme.textTheme.caption!.copyWith(
-                                  color: appPrimaryColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  // decoration: TextDecoration.underline,
-                                ),
-                              ),
-                            ))
-                        .toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        filter = value ?? filters.first;
-                      });
-
-                      getVehiclesForMerchantListBloc
-                          .fetchCurrent(filter == 'Unassigned');
-                    },
-                  ),
+                  // height: 50,
+                  width: 40,
+                  // child: DropdownButton<String>(
+                  //   value: filter,
+                  //   icon: const Icon(
+                  //     Icons.filter_alt,
+                  //     size: 18,
+                  //   ),
+                  //   elevation: 16,
+                  //   isExpanded: true,
+                  //   style: TextStyle(
+                  //     color: appPrimaryColor.withOpacity(0.8),
+                  //     fontSize: 18.0,
+                  //   ),
+                  //   underline: Container(),
+                  //   items: filters
+                  //       .map((e) => DropdownMenuItem<String>(
+                  //             value: e,
+                  //             child: Text(
+                  //               e,
+                  //               style: theme.textTheme.caption!.copyWith(
+                  //                 color: appPrimaryColor,
+                  //                 fontSize: 10,
+                  //                 fontWeight: FontWeight.bold,
+                  //                 // decoration: TextDecoration.underline,
+                  //               ),
+                  //             ),
+                  //           ))
+                  //       .toList(),
+                  //   onChanged: (String? value) {
+                  //     setState(() {
+                  //       filter = value ?? filters.first;
+                  //     });
+                  //
+                  //     getVehiclesForMerchantListBloc
+                  //         .fetchCurrent(filter == 'Unassigned');
+                  //   },
+                  // ),
                 ),
               ],
             ),
@@ -231,6 +231,8 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                               ? const AllVehicleContainer()
                               : const InactiveContainer();
                         });
+                        getVehiclesForMerchantListBloc
+                            .fetchCurrent(_listOfVehicles == 'Unassigned');
 
                         print(newValue);
                       },
@@ -289,13 +291,21 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                           String number =
                               data.elementAt(index).attributes?.number ?? '';
 
-                          bool isAssigned = data
-                                  .elementAt(index)
-                                  .attributes
-                                  ?.riderId
-                                  ?.data
-                                  ?.attributes !=
-                              null;
+                          bool isAssigned = (data
+                                      .elementAt(index)
+                                      .attributes
+                                      ?.riderId
+                                      ?.data
+                                      ?.attributes !=
+                                  null &&
+                              data
+                                      .elementAt(index)
+                                      .attributes
+                                      ?.riderId
+                                      ?.data
+                                      ?.attributes
+                                      ?.userId !=
+                                  null);
 
                           return Container(
                             padding: const EdgeInsets.all(8),
@@ -551,10 +561,11 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                               VehicleRequest(
                                                   data: AddRiderToMerchantData(
                                                       riderId: ''));
-
+                                          String riderName =
+                                              '${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}';
                                           yesNoDialog(context,
                                               title:
-                                                  'Remove vehicle from ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}',
+                                                  'Remove vehicle from ${riderName.isEmpty ? 'rider' : riderName}',
                                               positiveCallback: () {
                                                 Navigator.pop(context);
                                                 updateVehicle(id, vehicleModel);
