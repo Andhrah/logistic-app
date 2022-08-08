@@ -25,7 +25,7 @@ class _DispatchHistoryState extends State<DispatchHistory> {
         body: SafeArea(
             child: Column(
           children: [
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 20.0),
             Row(
               children: [
                 BackIcon(
@@ -34,7 +34,7 @@ class _DispatchHistoryState extends State<DispatchHistory> {
                   },
                 ),
                 Container(
-                  height: 98,
+                  //height: 98,
                   margin: const EdgeInsets.only(left: 40.0),
                   alignment: Alignment.center,
                   child: const Text(
@@ -42,7 +42,9 @@ class _DispatchHistoryState extends State<DispatchHistory> {
                     textScaleFactor: 1.2,
                     style: TextStyle(
                       color: appPrimaryColor,
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
+                      fontWeight: kBoldWeight,
+                      fontFamily: kDefaultFontFamilyHeading
                       // decoration: TextDecoration.underline,
                     ),
                   ),

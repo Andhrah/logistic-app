@@ -110,9 +110,7 @@ class _RiderTopPartState extends State<RiderTopPart> {
                 return const SizedBox();
               }),
         ),
-        const SizedBox(
-          height: 10,
-        ),
+        
         Padding(
           padding:
               const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),

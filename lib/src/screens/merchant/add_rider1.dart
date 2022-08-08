@@ -62,7 +62,7 @@ class _AddRider1State extends State<AddRider1>
       backgroundColor: whiteColor,
       body: SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          10.heightInPixel(),
+          20.heightInPixel(),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
@@ -84,7 +84,9 @@ class _AddRider1State extends State<AddRider1>
                         : 'ADD RIDER',
                     style: theme.textTheme.subtitle1!.copyWith(
                       color: appPrimaryColor,
-                      fontWeight: FontWeight.bold,
+                      //fontWeight: FontWeight.bold,
+                      fontWeight: kBoldWeight,
+                      fontFamily: kDefaultFontFamilyHeading
                       // decoration: TextDecoration.underline,
                     ),
                   ),

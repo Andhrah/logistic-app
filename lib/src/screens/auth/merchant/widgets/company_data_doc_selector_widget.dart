@@ -65,7 +65,7 @@ class _CompanyDataDocSelectorWidgetState
 
     return Center(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 140),
+        constraints: const BoxConstraints(maxWidth: 160),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -84,16 +84,19 @@ class _CompanyDataDocSelectorWidgetState
                           color: appPrimaryColor.withOpacity(0.3), width: 1),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(Remix.upload_2_line),
-                          const SizedBox(height: 5.0),
-                          Text('Upload CAC Certificate not more than 5mb',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.caption!
-                                  .copyWith(color: appPrimaryColor))
-                        ]),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Remix.upload_2_line),
+                            const SizedBox(height: 5.0),
+                            Text('Upload CAC Certificate not more than 5mb',
+                                textAlign: TextAlign.center,
+                                style: theme.textTheme.caption!
+                                    .copyWith(color: appPrimaryColor))
+                          ]),
+                    ),
                   ),
                 ),
                 onTap: uploadItemImage,
