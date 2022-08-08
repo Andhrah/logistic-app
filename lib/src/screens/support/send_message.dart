@@ -6,6 +6,9 @@ import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
+import '../../utils/app_toast.dart';
+import '../../values/enums.dart';
+
 class SendMessage extends StatefulWidget {
   static const String id = 'sendMessage';
 
@@ -62,6 +65,8 @@ class _SendMessageState extends State<SendMessage> {
             message: _messageController.text);
         if (response == true) {
           Navigator.pop(context);
+          appToast('Complaint sent successfully',
+              appToastType: AppToastType.success);
         }
         print(response.toString());
       } catch (e) {
@@ -158,7 +163,7 @@ class _SendMessageState extends State<SendMessage> {
                         // decoration: TextDecoration.underline,
                       ),
                     ),
-                    SizedBox(height: 30.0),
+                    const SizedBox(height: 30.0),
                     Form(
                       key: _formKey,
                       child: Column(
@@ -220,7 +225,7 @@ class _SendMessageState extends State<SendMessage> {
                             decoration: InputDecoration(
                               contentPadding: const EdgeInsets.symmetric(
                                   vertical: 13.0, horizontal: 10.0),
-                              enabledBorder: OutlineInputBorder(
+                              enabledBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: appPrimaryColor, width: 0.0),
                               ),
@@ -237,7 +242,7 @@ class _SendMessageState extends State<SendMessage> {
                                     color: appPrimaryColor.withOpacity(0.9),
                                     width: 0.0),
                               ),
-                              border: OutlineInputBorder(
+                              border: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: appPrimaryColor, width: 0.0),
                               ),

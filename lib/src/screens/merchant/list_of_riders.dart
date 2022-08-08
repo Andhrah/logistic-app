@@ -82,7 +82,7 @@ class _ListOfRidersState extends State<ListOfRiders> {
       body: SafeArea(
         child: Column(
           children: [
-            12.heightInPixel(),
+            20.heightInPixel(),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

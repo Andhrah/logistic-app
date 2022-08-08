@@ -112,10 +112,10 @@ class _ForgetPasswordState extends State<ForgetPassword>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Please enter the email address associated\nwith your trakk account, we will send a\nreset code to you',
-                        textScaleFactor: 1.2,
+                        'Please enter the email address associated\nwith your trakk account, we will send a\nreset code to you.',
+                        textScaleFactor: 1.2, textAlign: TextAlign.start,
                         style: TextStyle(
-                          color: appPrimaryColor.withOpacity(0.5),
+                          color: appPrimaryColor,
                           // fontWeight: FontWeight.bold,
                         ),
                       ),

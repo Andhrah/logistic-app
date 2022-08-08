@@ -99,11 +99,14 @@ class _AddRiderVehicleDocSelectorWidgetState
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   const Icon(Remix.upload_2_line),
-                                  const SizedBox(height: 5.0),
-                                  Text('Upload item image',
-                                      textAlign: TextAlign.center,
-                                      style: theme.textTheme.caption!
-                                          .copyWith(color: appPrimaryColor))
+                                  const SizedBox(height: 3.0),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text('Upload item image',
+                                        textAlign: TextAlign.center,
+                                        style: theme.textTheme.caption!
+                                            .copyWith(color: appPrimaryColor)),
+                                  )
                                 ]),
                           ),
                         ),

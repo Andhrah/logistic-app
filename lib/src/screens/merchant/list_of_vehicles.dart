@@ -59,14 +59,14 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
   dynamic responseKey;
   dynamic responseId;
 
-  String filter = 'Assigned';
+  String filter = 'Active Vehicles';
 
-  // List<String> filters = ['Assigned', 'Unassigned'];
+  List<String> filters = ['Active Vehicles', 'All Vehicles'];
 
   @override
   void initState() {
-    // filter = filters.first;
-    getVehiclesForMerchantListBloc.fetchCurrent(filter == 'Unassigned');
+    filter = filters.first;
+    getVehiclesForMerchantListBloc.fetchCurrent(filter == 'All Vehicles');
     fetchVehicleList().whenComplete(() {
       setState(() {});
     });
@@ -109,15 +109,16 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
         backgroundColor: whiteColor,
         body: SafeArea(
             child: Column(children: [
-          const SizedBox(height: 10.0),
+          const SizedBox(height: 20.0),
           Padding(
             padding:
                 const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 SizedBox(
-                  width: 40,
+                  width: 85,
+
                   child: Row(
                     children: [
                       BackIcon(
@@ -130,53 +131,55 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                   ),
                 ),
                 Text(
-                  'LIST OF VEHICLES',
+                  'LIST OF VEHICLES', textScaleFactor: 1.2,
                   style: theme.textTheme.subtitle2!.copyWith(
-                    color: appPrimaryColor, fontSize: 14,
-                    fontWeight: FontWeight.bold,
+                    color: appPrimaryColor, 
+                    //fontWeight: FontWeight.bold,
+                    fontWeight: kBoldWeight,
+                      fontFamily: kDefaultFontFamilyHeading
                     // decoration: TextDecoration.underline,
                   ),
                 ),
-                SizedBox(
-                  // height: 50,
-                  width: 40,
-                  // child: DropdownButton<String>(
-                  //   value: filter,
-                  //   icon: const Icon(
-                  //     Icons.filter_alt,
-                  //     size: 18,
-                  //   ),
-                  //   elevation: 16,
-                  //   isExpanded: true,
-                  //   style: TextStyle(
-                  //     color: appPrimaryColor.withOpacity(0.8),
-                  //     fontSize: 18.0,
-                  //   ),
-                  //   underline: Container(),
-                  //   items: filters
-                  //       .map((e) => DropdownMenuItem<String>(
-                  //             value: e,
-                  //             child: Text(
-                  //               e,
-                  //               style: theme.textTheme.caption!.copyWith(
-                  //                 color: appPrimaryColor,
-                  //                 fontSize: 10,
-                  //                 fontWeight: FontWeight.bold,
-                  //                 // decoration: TextDecoration.underline,
-                  //               ),
-                  //             ),
-                  //           ))
-                  //       .toList(),
-                  //   onChanged: (String? value) {
-                  //     setState(() {
-                  //       filter = value ?? filters.first;
-                  //     });
-                  //
-                  //     getVehiclesForMerchantListBloc
-                  //         .fetchCurrent(filter == 'Unassigned');
-                  //   },
-                  // ),
-                ),
+                // SizedBox(
+                //   height: 50,
+                //   width: 75,
+                //   child: DropdownButton<String>(
+                //     value: filter,
+                //     icon: const Icon(
+                //       Icons.filter_alt,
+                //       size: 18,
+                //     ),
+                //     elevation: 16,
+                //     isExpanded: true,
+                //     style: TextStyle(
+                //       color: appPrimaryColor.withOpacity(0.8),
+                //       fontSize: 18.0,
+                //     ),
+                //     underline: Container(),
+                //     items: filters
+                //         .map((e) => DropdownMenuItem<String>(
+                //               value: e,
+                //               child: Text(
+                //                 e,
+                //                 style: theme.textTheme.caption!.copyWith(
+                //                   color: appPrimaryColor,
+                //                   fontSize: 10,
+                //                   fontWeight: FontWeight.bold,
+                //                   // decoration: TextDecoration.underline,
+                //                 ),
+                //               ),
+                //             ))
+                //         .toList(),
+                //     onChanged: (String? value) {
+                //       setState(() {
+                //         filter = value ?? filters.first;
+                //       });
+
+                //       getVehiclesForMerchantListBloc
+                //           .fetchCurrent(filter == 'All Vehicles');
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -200,54 +203,62 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                         horizontal: kDefaultLayoutPadding),
                     child: DropdownButton<String>(
                       borderRadius: BorderRadius.circular(8),
-                      value: _listOfVehicles,
+                      value: filter,
                       icon: const Icon(Remix.arrow_down_s_line),
                       elevation: 16,
                       isExpanded: true,
+                      
                       style: theme.textTheme.bodyText2!.copyWith(
                         color: appPrimaryColor.withOpacity(0.8),
                       ),
                       underline: Container(),
                       //empty line
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _listOfVehicles = newValue!;
-                          // if (newValue.contains("All vahicles")) {
-                          //   showAll = showAll;
-                          //   isActive = false;
-                          // } else if (newValue
-                          //     .contains("Active vehicles")) {
-                          //   isActive = true;
-                          //   showAll = false;
-                          // } else if (newValue
-                          //     .contains("Inactive vehicles")) {
-                          //   isActive = false;
-                          //   showAll = false;
-                          // } else if (newValue.contains("search")) {
-                          //   showAll = showAll;
-                          //   isActive = false;
-                          // }
-                          isActive
-                              ? const AllVehicleContainer()
-                              : const InactiveContainer();
-                        });
-                        getVehiclesForMerchantListBloc
-                            .fetchCurrent(_listOfVehicles == 'Unassigned');
+                      // onChanged: (String? newValue) {
+                      //   setState(() {
+                      //     _listOfVehicles = newValue!;
+                      //     // if (newValue.contains("All vahicles")) {
+                      //     //   showAll = showAll;
+                      //     //   isActive = false;
+                      //     // } else if (newValue
+                      //     //     .contains("Active Vehicles vehicles")) {
+                      //     //   isActive = true;
+                      //     //   showAll = false;
+                      //     // } else if (newValue
+                      //     //     .contains("Inactive vehicles")) {
+                      //     //   isActive = false;
+                      //     //   showAll = false;
+                      //     // } else if (newValue.contains("search")) {
+                      //     //   showAll = showAll;
+                      //     //   isActive = false;
+                      //     // }
+                      //     isActive
+                      //         ? const AllVehicleContainer()
+                      //         : const InactiveContainer();
+                      //   });
 
-                        print(newValue);
-                      },
-                      items: vehicles.map((String value) {
-                        return DropdownMenuItem(
-                          onTap: () {
-                            setState(() {
-                              showAll = showAll;
-                              isActive = false;
-                            });
-                          },
-                          value: value,
-                          child: Text(value),
-                        );
-                      }).toList(),
+                      //   print(newValue);
+                      // },
+                      items: filters
+                        .map((e) => DropdownMenuItem<String>(
+                              value: e,
+                              child: Text(
+                                e,
+                                style: theme.textTheme.caption!.copyWith(
+                                  color: appPrimaryColor,
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  // decoration: TextDecoration.underline,
+                                ),
+                              ),
+                            ))
+                        .toList(),
+                    onChanged: (String? value) {
+                      setState(() {
+                        filter = value ?? filters.first;
+                      });
+                      getVehiclesForMerchantListBloc
+                          .fetchCurrent(filter == 'All Vehicles');
+                    },
                     ),
                   ),
                 ),
@@ -446,7 +457,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                                             height:
                                                                                 10),
                                                                         const Icon(
-                                                                            Remix.delete_bin_6_line),
+                                                                            Remix.delete_bin_6_line,),
                                                                       ],
                                                                     ),
                                                                   )
@@ -503,7 +514,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                   ),
                                                 ]),
                                             child: const Icon(
-                                                Remix.delete_bin_5_line)),
+                                                Remix.delete_bin_5_line, color: appPrimaryColor,)),
                                       )
                                     ],
                                   ),
@@ -551,9 +562,10 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                       )
                                     ],
                                   ),
+                                  const SizedBox(height: 3,),
                                   Button(
                                       text: isAssigned
-                                          ? 'Assigned to ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}'
+                                          ? 'Asigned to ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}'
                                           : 'Assign to',
                                       onPress: () async {
                                         if (isAssigned) {
@@ -767,7 +779,7 @@ class ActiveContainer extends StatelessWidget {
               ],
             ),
             Button(
-                text: 'Assigned to Malik Johnson',
+                text: 'Active Vehicles to Malik Johnson',
                 onPress: () {
                   Navigator.of(context).pushNamed(MerchantRiderProfile.id);
                 },

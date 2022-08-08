@@ -275,7 +275,7 @@ class _LoginState extends State<Login>
                       suffixIcon: IconButton(
                         icon: Icon(
                           _hidePassword == false
-                              ? Remix.eye_fill
+                              ? Remix.eye_line
                               : Remix.eye_close_line,
                           size: 18.0,
                           color: const Color(0xFF909090),
