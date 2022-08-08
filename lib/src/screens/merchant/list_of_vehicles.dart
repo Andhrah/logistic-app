@@ -88,11 +88,11 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
   // }
 
   var vehicles = [
-    "All vehicles",
-    "Search",
+    // "All vehicles",
+    "Assigned", 'Unassigned'
   ];
 
-  String _listOfVehicles = 'All vehicles';
+  String _listOfVehicles = 'Assigned';
 
   double _width = 160;
   final List<Item> _data = generateItems(1);
@@ -118,6 +118,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
               children: [
                 SizedBox(
                   width: 85,
+
                   child: Row(
                     children: [
                       BackIcon(
@@ -255,7 +256,6 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                       setState(() {
                         filter = value ?? filters.first;
                       });
-
                       getVehiclesForMerchantListBloc
                           .fetchCurrent(filter == 'All Vehicles');
                     },
@@ -302,13 +302,21 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                           String number =
                               data.elementAt(index).attributes?.number ?? '';
 
-                          bool isAssigned = data
-                                  .elementAt(index)
-                                  .attributes
-                                  ?.riderId
-                                  ?.data
-                                  ?.attributes !=
-                              null;
+                          bool isAssigned = (data
+                                      .elementAt(index)
+                                      .attributes
+                                      ?.riderId
+                                      ?.data
+                                      ?.attributes !=
+                                  null &&
+                              data
+                                      .elementAt(index)
+                                      .attributes
+                                      ?.riderId
+                                      ?.data
+                                      ?.attributes
+                                      ?.userId !=
+                                  null);
 
                           return Container(
                             padding: const EdgeInsets.all(8),
@@ -565,10 +573,11 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                               VehicleRequest(
                                                   data: AddRiderToMerchantData(
                                                       riderId: ''));
-
+                                          String riderName =
+                                              '${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}';
                                           yesNoDialog(context,
                                               title:
-                                                  'Remove vehicle from ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}',
+                                                  'Remove vehicle from ${riderName.isEmpty ? 'rider' : riderName}',
                                               positiveCallback: () {
                                                 Navigator.pop(context);
                                                 updateVehicle(id, vehicleModel);
