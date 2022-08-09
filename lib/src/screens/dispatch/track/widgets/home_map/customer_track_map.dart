@@ -8,6 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
+import 'package:trakk/src/models/order/user_order_history_response.dart';
+import 'package:trakk/src/provider/customer/customer_map_provider.dart';
 import 'package:trakk/src/screens/dispatch/track/widgets/home_map/customer_bottom_sheet.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
@@ -47,8 +49,6 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    // final datum = UserOrderHistoryDatum.fromJson(
-    //     (ModalRoute.of(context)!.settings.arguments) as Map<String, dynamic>);
 
     return Container(
       constraints: const BoxConstraints.expand(),
@@ -108,48 +108,39 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
   }
 
   void moveCameraToUser({LatLng? riderLatLng}) async {
-    // final loca = await miscBloc.fetchLocation();
-    // if (loca != null) {
-    //   final latitude = loca.latitude ?? 0;
-    //   final longitude = loca.longitude ?? 0;
-    //   final center = LatLng(latitude, longitude);
-    //
-    //   setState(() {
-    //     _controller?.animateCamera(CameraUpdate.newCameraPosition(
-    //         CameraPosition(target: center, zoom: 15.0)));
-    //   });
-    // }
-
-    print('riderLatLng: ${riderLatLng?.longitude}');
     if (riderLatLng != null) {
       final GoogleMapController controller = await _controller.future;
 
-      print('called setsta');
-      // setState(() {
       controller.animateCamera(CameraUpdate.newCameraPosition(
-          CameraPosition(target: riderLatLng, zoom: 15.0)));
-      // });
+          CameraPosition(target: riderLatLng, zoom: 16.0)));
     }
   }
 
   void _onMapCreated(GoogleMapController controller) async {
-    // ThemeData theme = Theme.of(context);
-    // final bool isDark = theme.brightness == Brightness.dark;
-    // setState(() {
-    //   if (isDark) {
-    //     controller.setMapStyle(MapStyle().night);
-    //   } else {
-    //     controller.setMapStyle(MapStyle().retro);
-    //   }
-    // });
-    // // await miscBloc.fetchLocation();
-
-    // moveCameraToUser();
     customerStreamSocket.behaviorSubject.listen((value) {
       if (value.model != null) {
-        print('detecting route');
         moveCameraToUser(riderLatLng: value.model!);
 
+        var arg = ModalRoute.of(context)!.settings.arguments;
+        if (arg != null) {
+          final model =
+              UserOrderHistoryDatum.fromJson(arg as Map<String, dynamic>);
+
+          if (model.id != null) {
+            mapExtraUIBloc.updateMarkersWithCircle(
+              [
+                LatLng(
+                  model.attributes?.destinationLatitude ?? 0.0,
+                  model.attributes?.destinationLongitude ?? 0.0,
+                )
+              ],
+              'Destination',
+              true,
+              true,
+              fromLatLng: value.model!,
+            );
+          }
+        }
         // isLoadedAtLeastOnce = true;
       }
     });

@@ -99,13 +99,14 @@ class CustomerMapProvider extends ChangeNotifier {
 
       CustomerOrderListenerResponse response =
           CustomerOrderListenerResponse.fromJson(data);
+
       LatLng fromLatLng = LatLng(
           double.tryParse(response.info?.currentLatitude ?? '0.0') ?? 0.0,
-          (double.tryParse(response.info?.currentLocation ?? '0.0') ?? 0.0));
-      mapExtraUIBloc.updateMarkersWithCircle(
-          [toLatLng], 'Destination', true, true,
-          fromLatLng: fromLatLng);
+          (double.tryParse(response.info?.currentLongitude ?? '0.0') ?? 0.0));
 
+      print('order_request_data ${jsonEncode(data)}');
+      print(fromLatLng.latitude);
+      print(fromLatLng.longitude);
       customerStreamSocket.addResponseOnMove(fromLatLng);
     });
   }
