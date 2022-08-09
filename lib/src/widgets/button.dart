@@ -36,9 +36,11 @@ class Button extends StatelessWidget {
         : ElevatedButton(
             onPressed: onPress,
             child: Text(
-              text,textScaleFactor: 1.1,
-              style: theme.textTheme.button!.copyWith(                  color: textColor,
-                  fontWeight: FontWeight.w400,  fontFamily: kDefaultFontFamily),
+              text,
+              style: theme.textTheme.button!.copyWith(
+                  color: textColor,
+                  fontWeight: FontWeight.w400,
+                  fontFamily: kDefaultFontFamily),
             ),
             style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all(color),

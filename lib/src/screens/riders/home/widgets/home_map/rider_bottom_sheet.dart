@@ -27,8 +27,6 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
   DraggableScrollableController draggableScrollableController =
       DraggableScrollableController();
 
-  final TextEditingController _controller = TextEditingController();
-
   @override
   void initState() {
     super.initState();
@@ -36,7 +34,6 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
 
   @override
   void dispose() {
-    _controller.dispose();
     draggableScrollableController.dispose();
     super.dispose();
   }
@@ -218,30 +215,12 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
     } else if (data == RiderOrderState.isAlmostAtDestinationLocation) {
       riderHomeStateBloc.updateState(RiderOrderState.isAtDestinationLocation);
     } else if (data == RiderOrderState.isAtDestinationLocation) {
-      modalDialog(
+      modalCodeDialog(
         context,
         title: 'Enter delivery code',
-        child: Column(
-          children: [
-            TextFormField(
-              controller: _controller,
-              keyboardType: TextInputType.number,
-              inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-              decoration: InputDecoration(
-                labelText: 'Code',
-                labelStyle:
-                    const TextStyle(fontSize: 18.0, color: Color(0xFFCDCDCD)),
-                enabledBorder: OutlineInputBorder(
-                  borderSide: BorderSide(
-                      color: darkerPurple.withOpacity(0.3), width: 0.0),
-                ),
-              ),
-            )
-          ],
-        ),
         positiveLabel: 'Confirm',
-        onPositiveCallback: () {
-          if (_controller.text == deliveryCode) {
+        onPositiveCallback: (String value) {
+          if (value == deliveryCode) {
             doDeliverOrder(orderNo);
             return;
           }

@@ -867,7 +867,8 @@ class _ProfileWidgetState extends State<ProfileIdget>
 
                                       Navigator.pop(context);
                                       suspendRider(
-                                          riderID: '${model.id ?? ''}',
+                                          riderUserID:
+                                              '${model.attributes?.userId?.data?.id ?? ''}',
                                           reasonForSuspension:
                                               _reasonSuspension.text,
                                           suspensionStartDate:

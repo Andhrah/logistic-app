@@ -205,7 +205,7 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
   }
 
   suspendRider(
-      {required String riderID,
+      {required String riderUserID,
       required String reasonForSuspension,
       required String suspensionEndDate,
       required String suspensionStartDate,
@@ -220,7 +220,7 @@ class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
         .difference(DateTime.parse(suspensionStartDate))
         .inDays;
     addRiderService
-        .suspendRider(riderID, reasonForSuspension, suspensionEndDate,
+        .suspendRider(riderUserID, reasonForSuspension, suspensionEndDate,
             suspensionStartDate, status)
         .then((value) => _completeSuspendRiderOperation(
             value, name, '$days day${days > 1 ? 's' : ''}'));

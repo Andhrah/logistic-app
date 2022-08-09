@@ -45,7 +45,8 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
   Timer? _debounce;
 
   void autoCompleteSearch(String value) async {
-    var result = await googlePlace.autocomplete.get(value);
+    var result = await googlePlace.autocomplete
+        .get(value, components: [Component('country', "NG")]);
     if (result != null && result.predictions != null && mounted) {
       print(result.predictions!.first.description);
       setState(() {
@@ -250,30 +251,32 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                   ),
                 ),
                 title: Text(
-                  predictions[index].description.toString(),
+                  predictions.elementAt(index).description.toString(),
                   style: theme.textTheme.bodyText2,
                 ),
                 onTap: () async {
-                  final placeId = predictions[index].placeId!;
+                  final placeId = predictions.elementAt(index).placeId!;
+                  final streetAddress =
+                      predictions.elementAt(index).description!;
                   final details = await googlePlace.details.get(placeId);
                   if (details != null && details.result != null && mounted) {
                     print("+++++++++++++++++++++++++++++");
                     print(details.result!.addressComponents);
                     if (_pickUpNode.hasFocus) {
                       setState(() {
-                        _pickUp = details.result!.name!;
+                        _pickUp = streetAddress;
                         pickUpLatLng = LatLng(
                             details.result?.geometry?.location?.lat ?? 0.0,
                             details.result?.geometry?.location?.lng ?? 0.0);
                         print('******************************');
-                        print(_pickUp.runtimeType);
-                        _pickUpController.text = details.result!.name!;
+                        print(details.result?.vicinity);
+                        _pickUpController.text = streetAddress;
                         predictions = [];
                       });
                     } else {
                       setState(() {
-                        _dropOff = details.result!.name!;
-                        _dropOffController.text = details.result!.name!;
+                        _dropOff = streetAddress;
+                        _dropOffController.text = streetAddress;
                         dropOffLatLng = LatLng(
                             details.result?.geometry?.location?.lat ?? 0.0,
                             details.result?.geometry?.location?.lng ?? 0.0);

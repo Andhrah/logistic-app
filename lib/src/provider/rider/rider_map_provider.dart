@@ -74,12 +74,12 @@ class RiderMapProvider extends ChangeNotifier {
   }
 
   _listeners(String riderID) async {
-    if (SingletonData.singletonData.isDebug) {
-      socket?.onAny((event, data) {
-        print('event: $event');
-        print('riderID: $riderID');
-      });
-    }
+    // if (SingletonData.singletonData.isDebug) {
+    //   socket?.onAny((event, data) {
+    //     print('event: $event');
+    //     print('riderID: $riderID');
+    //   });
+    // }
     socket?.on("rider_request_$riderID", (data) {
       log('rider_request_data ${jsonEncode(data)}');
       riderStreamSocket.addResponseOnMove(OrderResponse.fromJson(data));

@@ -26,7 +26,7 @@ class CustomerHomeMapScreen extends StatefulWidget {
 class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
   MapExtraUIBloc mapExtraUIBloc = MapExtraUIBloc();
 
-  final Completer<GoogleMapController> _controller = Completer();
+  Completer<GoogleMapController> _controller = Completer();
 
   @override
   void initState() {
@@ -68,7 +68,10 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
                         snapshot.data?.model?.polyline ?? {};
 
                     return GoogleMap(
-                        onMapCreated: _onMapCreated,
+                        onMapCreated: (controller) {
+                          _controller.complete(controller);
+                          _onMapCreated(controller);
+                        },
                         myLocationEnabled: false,
                         myLocationButtonEnabled: false,
                         zoomGesturesEnabled: true,
@@ -105,32 +108,31 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
   }
 
   void moveCameraToUser({LatLng? riderLatLng}) async {
-    final GoogleMapController controller = await _controller.future;
+    // final loca = await miscBloc.fetchLocation();
+    // if (loca != null) {
+    //   final latitude = loca.latitude ?? 0;
+    //   final longitude = loca.longitude ?? 0;
+    //   final center = LatLng(latitude, longitude);
+    //
+    //   setState(() {
+    //     _controller?.animateCamera(CameraUpdate.newCameraPosition(
+    //         CameraPosition(target: center, zoom: 15.0)));
+    //   });
+    // }
 
-    final loca = await miscBloc.fetchLocation();
-    if (loca != null) {
-      final latitude = loca.latitude ?? 0;
-      final longitude = loca.longitude ?? 0;
-      final center = LatLng(latitude, longitude);
+    print('riderLatLng: ${riderLatLng?.longitude}');
+    if (riderLatLng != null) {
+      final GoogleMapController controller = await _controller.future;
 
-      setState(() {
-        controller.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: center, zoom: 15.0)));
-      });
-    }
-    if (riderLatLng != null && mounted) {
-      setState(() {
-        controller.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(target: riderLatLng, zoom: 15.0)));
-      });
+      print('called setsta');
+      // setState(() {
+      controller.animateCamera(CameraUpdate.newCameraPosition(
+          CameraPosition(target: riderLatLng, zoom: 15.0)));
+      // });
     }
   }
 
-  bool isLoadedAtLeastOnce = false;
-
   void _onMapCreated(GoogleMapController controller) async {
-    _controller.complete(controller);
-
     // ThemeData theme = Theme.of(context);
     // final bool isDark = theme.brightness == Brightness.dark;
     // setState(() {
@@ -142,12 +144,13 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
     // });
     // // await miscBloc.fetchLocation();
 
-    moveCameraToUser();
+    // moveCameraToUser();
     customerStreamSocket.behaviorSubject.listen((value) {
-      if (value.model != null && !isLoadedAtLeastOnce) {
+      if (value.model != null) {
+        print('detecting route');
         moveCameraToUser(riderLatLng: value.model!);
 
-        isLoadedAtLeastOnce = true;
+        // isLoadedAtLeastOnce = true;
       }
     });
   }

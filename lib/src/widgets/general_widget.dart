@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/delivery_code_widget.dart';
 import 'package:trakk/src/widgets/image_selector_modal.dart';
 import 'package:trakk/src/widgets/searchable_list_modal.dart';
 
@@ -129,7 +131,8 @@ modalDialog(BuildContext context,
                 Center(
                   child: Text(
                     title,
-                    style: Theme.of(context).textTheme.headline6!.copyWith(),
+                    textAlign: TextAlign.center,
+                    style: Theme.of(context).textTheme.subtitle1!.copyWith(),
                   ),
                 ),
               if (title.isNotEmpty) 24.heightInPixel(),
@@ -168,6 +171,23 @@ modalDialog(BuildContext context,
               ),
             ],
           )));
+}
+
+modalCodeDialog(BuildContext context,
+    {String title = '',
+    required String positiveLabel,
+    required Function(String value) onPositiveCallback,
+    required String negativeLabel,
+    required Function() onNegativeCallback}) {
+  showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) =>
+          StatefulBuilder(builder: (context, StateSetter setState) {
+            return DeliveryCodeWidget(title, positiveLabel, onPositiveCallback,
+                negativeLabel, onNegativeCallback);
+          }));
 }
 
 modalImageSelector(ImageSelectorCallback callback, {BuildContext? context}) {
