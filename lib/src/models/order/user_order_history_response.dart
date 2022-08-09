@@ -267,24 +267,24 @@ class OrderHistoryDatumAttributesRiderIdData {
 }
 
 class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
-  OrderHistoryDatumAttributesRiderIdDataPurpleAttributes({
-    this.avatar,
-    this.firstName,
-    this.lastName,
-    this.dateOfBirth,
-    this.currentLocation,
-    this.currentLongitude,
-    this.currentLatitude,
-    this.stateOfOrigin,
-    this.stateOfResidence,
-    this.residentialAddress,
-    this.phone,
-    this.createdAt,
-    this.updatedAt,
-    this.publishedAt,
-    this.status,
-    this.cost,
-  });
+  OrderHistoryDatumAttributesRiderIdDataPurpleAttributes(
+      {this.avatar,
+      this.firstName,
+      this.lastName,
+      this.dateOfBirth,
+      this.currentLocation,
+      this.currentLongitude,
+      this.currentLatitude,
+      this.stateOfOrigin,
+      this.stateOfResidence,
+      this.residentialAddress,
+      this.phone,
+      this.createdAt,
+      this.updatedAt,
+      this.publishedAt,
+      this.status,
+      this.cost,
+      this.userId});
 
   final String? avatar;
   final String? firstName;
@@ -302,6 +302,7 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
   final DateTime? publishedAt;
   final String? status;
   final String? cost;
+  final OrderHistoryDatumAttributesUserId? userId;
 
   factory OrderHistoryDatumAttributesRiderIdDataPurpleAttributes.fromJson(
           Map<String, dynamic> json) =>
@@ -337,6 +338,9 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
             : DateTime.parse(json["publishedAt"]),
         status: json["status"] == null ? null : json["status"],
         cost: json["cost"] == null ? null : json["avatar"].toString(),
+        userId: json["userId"] == null
+            ? null
+            : OrderHistoryDatumAttributesUserId.fromJson(json["userId"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -358,6 +362,7 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
             publishedAt == null ? null : publishedAt!.toIso8601String(),
         "status": status == null ? null : status,
         "cost": cost == null ? null : cost,
+        "userId": userId == null ? null : userId!.toJson(),
       };
 }
 

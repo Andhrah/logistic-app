@@ -85,8 +85,15 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                                   children: [
                                     ClipOval(
                                       child: CachedNetworkImage(
-                                        imageUrl: model.attributes?.riderId
-                                                ?.data?.attributes?.avatar ??
+                                        imageUrl: model
+                                                .attributes
+                                                ?.riderId
+                                                ?.data
+                                                ?.attributes
+                                                ?.userId
+                                                ?.data
+                                                ?.attributes
+                                                ?.avatar ??
                                             '',
                                         height: 60,
                                         width: 60,
@@ -114,8 +121,15 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            model.attributes?.riderId?.data
-                                                    ?.attributes?.firstName ??
+                                            model
+                                                    .attributes
+                                                    ?.riderId
+                                                    ?.data
+                                                    ?.attributes
+                                                    ?.userId
+                                                    ?.data
+                                                    ?.attributes
+                                                    ?.firstName ??
                                                 '',
                                             style: theme.textTheme.bodyText2!
                                                 .copyWith(color: whiteColor),

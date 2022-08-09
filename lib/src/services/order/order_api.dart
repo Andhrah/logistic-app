@@ -61,7 +61,8 @@ class OrderAPI extends BaseNetworkCallHandler {
   Future<Operation> getCustomerOrders() async {
     String userID = await appSettingsBloc.getUserID;
 
-    return runAPI('api/orders?populate=*&filters[userId][id][\$eq]=$userID',
+    return runAPI(
+        'api/orders?populate=riderId,riderId.userId,riderId.merchantId&filters[userId][id][\$eq]=$userID',
         HttpRequestType.get);
   }
 }

@@ -84,12 +84,14 @@ class CustomerMapProvider extends ChangeNotifier {
   }
 
   _listeners(LatLng toLatLng, String orderID) {
-    socket?.onAny((event, data) {
-      if (kDebugMode) {
-        print('event: $event');
-        print('orderID: $orderID');
-      }
-    });
+    if (SingletonData.singletonData.isDebug) {
+      socket?.onAny((event, data) {
+        if (kDebugMode) {
+          print('event: $event');
+          print('orderID: $orderID');
+        }
+      });
+    }
 
     runToast('Checking order status');
     socket?.on("customer_order_$orderID", (data) {
