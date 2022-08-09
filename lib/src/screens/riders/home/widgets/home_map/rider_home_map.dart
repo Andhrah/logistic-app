@@ -135,7 +135,7 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
 
                               return GoogleMap(
                                   onMapCreated: _onMapCreated,
-                                  myLocationEnabled: true,
+                                  myLocationEnabled: false,
                                   zoomGesturesEnabled: true,
                                   onCameraMove: (CameraPosition pos) {},
                                   gestureRecognizers: {}..addAll([

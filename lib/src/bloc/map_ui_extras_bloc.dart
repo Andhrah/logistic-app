@@ -73,25 +73,37 @@ class MapExtraUIBloc with BaseBloc<MapExtraUI, String> {
 
       final Uint8List? markerIcon = await getBytesFromAsset(
           destinationDefaultMarker ??
-              (snippet == 'Pickup' ? Assets.marker_icon : Assets.marker_icon),
+              (snippet == 'Pickup'
+                  ? Assets.marker_icon
+                  : snippet == 'Pickup'
+                      ? Assets.marker_icon
+                      : Assets.marker_icon),
           55);
       BitmapDescriptor? markerbitmap =
           markerIcon == null ? null : BitmapDescriptor.fromBytes(markerIcon);
+      final Uint8List? bikeMarkerIcon =
+          await getBytesFromAsset(Assets.ride, 55);
+      BitmapDescriptor? bikeMarkerbitmap = bikeMarkerIcon == null
+          ? null
+          : BitmapDescriptor.fromBytes(bikeMarkerIcon);
       if (refreshMarker) _markers = {};
       _markers.addAll(List.generate(
-        latLng.length,
-        (index) => markerbitmap != null
-            ? Marker(
-                markerId: MarkerId(latLng.toString()),
-                position: latLng.elementAt(index),
-                draggable: false,
-                icon: markerbitmap)
-            : Marker(
-                markerId: MarkerId(latLng.toString()),
-                position: latLng.elementAt(index),
-                draggable: false),
+        1,
+        (index) => Marker(
+            markerId: MarkerId(latLng.toString()),
+            position: latLng.elementAt(index),
+            draggable: false,
+            icon: markerbitmap ?? BitmapDescriptor.defaultMarker),
       ));
-
+      if (fromLatLng != null) {
+        _markers.add(
+          Marker(
+              markerId: MarkerId(fromLatLng.toString()),
+              position: fromLatLng,
+              draggable: false,
+              icon: bikeMarkerbitmap ?? BitmapDescriptor.defaultMarker),
+        );
+      }
       print('MapExtraUI');
       addToModel(MapExtraUI(marker: _markers, polyline: _polyLines));
 
