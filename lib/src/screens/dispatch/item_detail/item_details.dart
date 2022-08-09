@@ -160,7 +160,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
               }),
 
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
+            padding: const EdgeInsets.only(top: 20, left: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -205,8 +205,8 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  kSizeBox,
-                  15.heightInPixel(),
+                  //kSizeBox,
+                  //15.heightInPixel(),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(

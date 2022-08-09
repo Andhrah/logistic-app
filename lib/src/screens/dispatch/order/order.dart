@@ -35,7 +35,7 @@ class _UserOrderScreenState extends State<UserOrderScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            12.heightInPixel(),
+            20.heightInPixel(),
             Text(
               'YOUR DISPATCH',
               style: theme.textTheme.subtitle1!.copyWith(

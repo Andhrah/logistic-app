@@ -71,7 +71,7 @@ class _AddRiderState extends State<AddRider> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            10.heightInPixel(),
+            20.heightInPixel(),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
@@ -91,7 +91,9 @@ class _AddRiderState extends State<AddRider> {
                       'ADD RIDER',
                       style: theme.textTheme.subtitle1!.copyWith(
                         color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
+                        ///fontWeight: FontWeight.bold,
+                        fontWeight: kBoldWeight,
+                      fontFamily: kDefaultFontFamilyHeading
                         // decoration: TextDecoration.underline,
                       ),
                     ),
@@ -239,7 +241,7 @@ class _AddRiderState extends State<AddRider> {
                         suffixIcon: IconButton(
                           icon: Icon(
                             _hidePassword == false
-                                ? Remix.eye_fill
+                                ? Remix.eye_line
                                 : Remix.eye_close_line,
                             size: 18.0,
                             color: const Color(0xFF909090),
@@ -275,7 +277,7 @@ class _AddRiderState extends State<AddRider> {
                         suffixIcon: IconButton(
                           icon: Icon(
                             _hideConfirmPassword == false
-                                ? Remix.eye_fill
+                                ? Remix.eye_line
                                 : Remix.eye_close_line,
                             size: 18.0,
                             color: const Color(0xFF909090),

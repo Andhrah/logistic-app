@@ -57,7 +57,7 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
         body: SafeArea(
             child: Column(
           children: [
-            12.heightInPixel(),
+            20.heightInPixel(),
             // const SizedBox(height: 12.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
