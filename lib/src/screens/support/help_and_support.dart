@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:readmore/readmore.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/screens/support/send_message.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
+
 import '../../widgets/item_model.dart';
 
 class HelpAndSupport extends StatefulWidget {
@@ -56,6 +58,7 @@ TRAKK shall not use your information for any other purpose other than that which
 All information received by TRAKK shall be managed according to the Nigerian Data Protection Laws.
 
 """;
+
   /*
    * This method handles the onsubmit event annd validates users input. It triggers validation and sends data to the API
   */
@@ -104,28 +107,26 @@ All information received by TRAKK shall be managed according to the Nigerian Dat
                       onTap: (() {
                         setState(() {
                           Navigator.pushNamed(context, SendMessage.id);
-                         });
+                        });
                       }),
                       child: privacyContainer(
                         isVisible: _isVisible,
                         leadIcon: Remix.message_2_line,
                         title: 'Send a message',
                         description: securityDescription,
-                       trailingIcon: Icons.arrow_forward_ios,
+                        trailingIcon: Icons.arrow_forward_ios,
                       ),
                     ),
                     InkWell(
                       onTap: (() {
-                        setState(() {
-                          //_isVisible1 = true;
-                        });
+                        urlLauncher('08016857532',
+                            urlLaunchType: UrlLaunchType.call);
                       }),
                       child: privacyContainer(
                         isVisible: _isVisible1,
                         leadIcon: Remix.phone_line,
                         title: 'Call our support line',
                         description: privacyPolicy,
-                        
                       ),
                     ),
                   ],
@@ -179,16 +180,19 @@ class privacyContainer extends StatelessWidget {
               ),
               const Spacer(),
               Text(
-                title,textScaleFactor: 1,
+                title,
+                textScaleFactor: 1,
                 style: const TextStyle(
                     color: Colors.white,
                     //fontSize: 18,
                     fontFamily: kDefaultFontFamily),
               ),
               const Spacer(),
-             
-                    Icon(trailingIcon, color: whiteColor, size: 20,),
-                 
+              Icon(
+                trailingIcon,
+                color: whiteColor,
+                size: 20,
+              ),
             ],
           ),
         ],
@@ -205,7 +209,6 @@ class privacyContainer extends StatelessWidget {
     );
   }
 }
-
 
 class SettingsRow extends StatelessWidget {
   final String title;

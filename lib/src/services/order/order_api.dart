@@ -40,7 +40,7 @@ class OrderAPI extends BaseNetworkCallHandler {
     return runAPI(
         type == OrderHistoryType.all
             ? 'api/orders?populate=*&filters[pickupDate][\$gt]=$startDate&filters[pickupDate][\$lte]=$endDate&filters[userId][id][\$eq]=$userID'
-            : '/orders?populate=*&filters[status][\$eq]=${type.name}&filters[riderId][id][\$eq]=31',
+            : 'api/orders?populate=*&filters[status][\$eq]=${type.name}&filters[riderId][id][\$eq]=31',
         HttpRequestType.get);
   }
 
@@ -61,7 +61,8 @@ class OrderAPI extends BaseNetworkCallHandler {
   Future<Operation> getCustomerOrders() async {
     String userID = await appSettingsBloc.getUserID;
 
-    return runAPI('api/orders?populate=*&filters[userId][id][\$eq]=$userID',
+    return runAPI(
+        'api/orders?populate=riderId,riderId.userId,riderId.merchantId&filters[userId][id][\$eq]=$userID',
         HttpRequestType.get);
   }
 }

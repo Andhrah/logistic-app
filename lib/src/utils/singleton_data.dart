@@ -110,4 +110,18 @@ class SingletonData {
     _uploadCareClient = client;
     return _uploadCareClient;
   }
+
+  //debug Flag
+  static bool? _isDebug;
+
+  bool get isDebug {
+    if (_isDebug != null) return _isDebug ?? false;
+    _isDebug = true;
+    return _isDebug ?? false;
+  }
+
+  initIsDebug(bool isDebug) {
+    _isDebug = isDebug;
+    return _isDebug;
+  }
 }

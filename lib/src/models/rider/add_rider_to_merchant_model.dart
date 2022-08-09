@@ -139,28 +139,33 @@ class AddRiderToMerchantModelData {
             : json["currentLongitude"].toDouble(),
       );
 
-  Map<String, dynamic> toJson({bool isToServer = false}) => {
-        "firstName": firstName == null ? null : firstName,
-        "lastName": lastName == null ? null : lastName,
-        "email": email == null ? null : email,
-        "userId": userId == null ? null : userId,
-        "merchantId": merchantId == null ? null : merchantId,
-        "avatar": avatar == null ? null : avatar,
-        "dateOfBirth": dateOfBirth == null ? null : dateOfBirth,
-        "currentLocation": currentLocation == null ? null : currentLocation,
-        "stateOfOrigin": stateOfOrigin == null ? null : stateOfOrigin,
-        "stateOfResidence": stateOfResidence == null ? null : stateOfResidence,
-        if (isToServer)
-          "address": residentialAddress == null ? null : residentialAddress
-        else
-          "residentialAddress":
-              residentialAddress == null ? null : residentialAddress,
-        "phone": phone == null ? null : phone,
-        "password": password == null ? null : password,
-        "status": status == null ? null : status,
-        "currentLatitude": currentLatitude == null ? null : currentLatitude,
-        "currentLongitude": currentLongitude == null ? null : currentLongitude,
-      };
+  Map<String, dynamic> toJson({bool isToServer = false}) {
+    Map<String, dynamic> map = {
+      "firstName": firstName == null ? null : firstName,
+      "lastName": lastName == null ? null : lastName,
+      "email": email == null ? null : email,
+      "userId": userId == null ? null : userId,
+      "merchantId": merchantId == null ? null : merchantId,
+      "avatar": avatar == null ? null : avatar,
+      "dateOfBirth": dateOfBirth == null ? null : dateOfBirth,
+      "currentLocation": currentLocation == null ? null : currentLocation,
+      "stateOfOrigin": stateOfOrigin == null ? null : stateOfOrigin,
+      "stateOfResidence": stateOfResidence == null ? null : stateOfResidence,
+      if (isToServer)
+        "address": residentialAddress == null ? null : residentialAddress
+      else
+        "residentialAddress":
+            residentialAddress == null ? null : residentialAddress,
+      "phone": phone == null ? null : phone,
+      "password": password == null ? null : password,
+      "status": status == null ? null : status,
+      "currentLatitude": currentLatitude == null ? null : currentLatitude,
+      "currentLongitude": currentLongitude == null ? null : currentLongitude,
+    };
+    map.removeWhere((key, value) =>
+        (value == null || (value != null && value.toString().isEmpty)));
+    return map;
+  }
 
   Map<String, dynamic> toAddRiderToServerJson() {
     Map<String, dynamic> map = {

@@ -14,6 +14,7 @@ void main() async {
   // SingletonData.singletonData.initBaseURL('https://api.dev.trakkhq.com/');
   SingletonData.singletonData.initSocketURL('http://134.122.92.247:1440');
   SingletonData.singletonData.initImageURL('https://ucarecdn.com/');
+  SingletonData.singletonData.initIsDebug(true);
   SingletonData.singletonData
       .initUploadCareClient(UploadcareClient.withSimpleAuth(
     publicKey: uploadCarePublicKey,
