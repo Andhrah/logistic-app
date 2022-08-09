@@ -264,7 +264,7 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                     print(details.result!.addressComponents);
                     if (_pickUpNode.hasFocus) {
                       setState(() {
-                        _pickUp = details.result!.name!;
+                        _pickUp = streetAddress;
                         pickUpLatLng = LatLng(
                             details.result?.geometry?.location?.lat ?? 0.0,
                             details.result?.geometry?.location?.lng ?? 0.0);
@@ -275,7 +275,7 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                       });
                     } else {
                       setState(() {
-                        _dropOff = details.result!.name!;
+                        _dropOff = streetAddress;
                         _dropOffController.text = streetAddress;
                         dropOffLatLng = LatLng(
                             details.result?.geometry?.location?.lat ?? 0.0,

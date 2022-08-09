@@ -38,19 +38,18 @@ class AddRiderService extends BaseNetworkCallHandler {
   }
 
   Future<Operation> suspendRider(
-      String riderID,
+      String riderUserID,
       String reasonForSuspension,
       String suspensionEndDate,
       String suspensionStartDate,
       String status) async {
-    return runAPI('api/riders/$riderID', HttpRequestType.put, body: {
-      "data": {
-        "reasonForSuspension": reasonForSuspension,
-        "suspensionEndDate": suspensionEndDate,
-        "suspensionStartDate": suspensionStartDate,
-        "status": status
-      }
-    });
+    return runAPI('api/user/update-status/$riderUserID', HttpRequestType.put,
+        body: {
+          "reasonForSuspension": reasonForSuspension,
+          "suspensionEndDate": suspensionEndDate,
+          "suspensionStartDate": suspensionStartDate,
+          "status": status
+        });
   }
 
   Future<Operation> removeSuspensionOfARider(String riderID) async {

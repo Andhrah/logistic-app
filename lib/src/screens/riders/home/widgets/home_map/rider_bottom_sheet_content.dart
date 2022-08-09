@@ -255,7 +255,7 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'PICKUP TIME',
+                  'PICKUP DATE',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyText1!.copyWith(
                       fontWeight: kSemiBoldWeight, color: dividerColor),
@@ -290,7 +290,7 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'DELIVERY TIME',
+                  'DELIVERY DATE',
                   textAlign: TextAlign.center,
                   style: theme.textTheme.bodyText1!.copyWith(
                       fontWeight: kSemiBoldWeight, color: dividerColor),
