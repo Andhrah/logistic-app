@@ -43,7 +43,7 @@ class AddRiderService extends BaseNetworkCallHandler {
       String suspensionEndDate,
       String suspensionStartDate,
       String status) async {
-    return runAPI('api/user/update-status/$riderUserID', HttpRequestType.put,
+    return runAPI('api/user/update-status/$riderUserID', HttpRequestType.post,
         body: {
           "reasonForSuspension": reasonForSuspension,
           "suspensionEndDate": suspensionEndDate,

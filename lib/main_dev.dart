@@ -9,9 +9,9 @@ import 'package:uploadcare_client/uploadcare_client.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
+  // SingletonData.singletonData.initBaseURL('https://zebrra.itskillscenter.com/');
   // SingletonData.singletonData.initSocketURL('http://134.122.92.247:1440');
-  // SingletonData.singletonData.initBaseURL('https://api.dev.trakkhq.com/');
+  SingletonData.singletonData.initBaseURL('https://api.dev.trakkhq.com/');
   SingletonData.singletonData.initSocketURL('http://134.122.92.247:1440');
   SingletonData.singletonData.initImageURL('https://ucarecdn.com/');
   SingletonData.singletonData.initIsDebug(true);
