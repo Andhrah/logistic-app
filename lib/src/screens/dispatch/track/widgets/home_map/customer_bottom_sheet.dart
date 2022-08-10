@@ -11,6 +11,7 @@ import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
+import 'package:steps_indicator/steps_indicator.dart';
 
 class CustomerBottomSheet extends StatefulWidget {
   const CustomerBottomSheet({Key? key}) : super(key: key);
@@ -25,6 +26,19 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
       DraggableScrollableController();
 
   final TextEditingController _controller = TextEditingController();
+
+  int trackIndex = 1;
+  int textIndex = 0;
+
+  int nbSteps = 4;
+
+  final List<int> steps = [1, 2, 3, 4];
+  List<String> deliveryStatus = [
+    "Going to pick-up",
+    "Going to delivery",
+    "Item delivered",
+    "Delivery confirmed"
+  ];
 
   @override
   void initState() {
@@ -77,10 +91,11 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                       child: ConstrainedBox(
                           constraints: const BoxConstraints(maxWidth: 450),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Padding(
                                 padding: const EdgeInsets.symmetric(
-                                    vertical: 24.0, horizontal: 24),
+                                    vertical: 24.0, horizontal: 30),
                                 child: Row(
                                   children: [
                                     ClipOval(
@@ -198,6 +213,80 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                                   ],
                                 ),
                               ),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 0.0, horizontal: 25),
+                                child: Column(
+                                  //crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(deliveryStatus[textIndex], style: TextStyle(
+                                      color: secondaryColor
+                                    ),),
+                                    StepsIndicator(
+                                      unselectedStepColorIn: whiteColor,
+                                      selectedStep: trackIndex,
+                                      nbSteps: nbSteps,
+                                      selectedStepSize: 15,
+                                      unselectedStepSize: 15,
+                                      doneStepSize: 15,
+                                      doneLineColor: secondaryColor,
+                                      doneStepColor: secondaryColor,
+                                      undoneLineColor: Colors.white,
+                                      lineLength: 50,
+                                      lineLengthCustomStep: [
+                                        StepsIndicatorCustomLine(
+                                            nbStep: 4, length: 60)
+                                      ],
+                                      enableLineAnimation: true,
+                                      enableStepAnimation: true,
+                                    ),
+                                    const SizedBox(
+                                      height: 0,
+                                    ),
+                                    //i made use of the materialm buttons to enable the StepsIndicator
+                                    Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: <Widget>[
+                                        MaterialButton(
+                                          color: Colors.red,
+                                          onPressed: () {
+                                            if (trackIndex > 0 &&
+                                                textIndex > 0) {
+                                              setState(() {
+                                                trackIndex--;
+                                                textIndex--;
+                                                print(trackIndex);
+                                                print(
+                                                    deliveryStatus[textIndex]);
+                                              });
+                                            }
+                                          },
+                                          child: const Text('Prev'),
+                                        ),
+                                        MaterialButton(
+                                          color: Colors.green,
+                                          onPressed: () {
+                                            if (textIndex <
+                                                deliveryStatus.length - 1) {
+                                              setState(() {
+                                                trackIndex++;
+                                                textIndex++;
+                                                print(trackIndex);
+                                                print(
+                                                    deliveryStatus[textIndex]);
+                                              });
+                                            }
+                                          },
+                                          child: const Text('Next'),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           )),
                     ),
@@ -205,7 +294,7 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                 ),
               ),
               Positioned(
-                top: 100,
+                top: 180,
                 left: 0,
                 right: 0,
                 child: ClipRRect(
@@ -216,8 +305,8 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                     color: whiteColor,
                     child: SingleChildScrollView(
                       padding: const EdgeInsets.symmetric(
-                          horizontal:
-                              kDefaultLayoutPadding + kDefaultLayoutPadding,
+                          // horizontal:
+                          //     kDefaultLayoutPadding + kDefaultLayoutPadding,
                           vertical: 24),
                       controller: scrollController,
                       child: CustomerTrackBottomSheetContentOnGoing(

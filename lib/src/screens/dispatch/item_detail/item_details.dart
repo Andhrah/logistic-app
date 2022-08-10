@@ -160,7 +160,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
               }),
 
           Padding(
-            padding: const EdgeInsets.only(top: 20, left: 20),
+            padding: const EdgeInsets.only(top: 10, left: 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [

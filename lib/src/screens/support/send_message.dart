@@ -119,180 +119,178 @@ class _SendMessageState extends State<SendMessage> {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: SafeArea(
-            child: Padding(
-          padding: const EdgeInsets.only(left: 0.0, right: 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  BackIcon(
-                    onPress: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Container(
-                    height: 98,
-                    margin: const EdgeInsets.only(left: 60.0),
-                    alignment: Alignment.center,
-                    child: const Text(
-                      'HELP & SUPPORT',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                          color: appPrimaryColor,
-                          fontWeight: kBoldWeight,
-                          fontFamily: kDefaultFontFamilyHeading
-                          // decoration: TextDecoration.underline,
-                          ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 20.0),
-              Padding(
-                padding: const EdgeInsets.only(left: 35.0, right: 35.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
                   children: [
-                    const Text(
-                      'Get support with Ride issues',
-                      textScaleFactor: 1.2,
-                      style: TextStyle(
-                        color: appPrimaryColor,
-                        fontWeight: FontWeight.bold,
-                        // decoration: TextDecoration.underline,
-                      ),
+                    BackIcon(
+                      onPress: () {
+                        Navigator.pop(context);
+                      },
                     ),
-                    const SizedBox(height: 30.0),
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        children: [
-                          InputField(
-                            key: const Key('email'),
-                            textController: _emailController,
-                            keyboardType: TextInputType.emailAddress,
-                            node: _emailNode,
-                            obscureText: false,
-                            text: 'Email Address',
-                            hintText: 'jane@email.com',
-                            textHeight: 5.0,
-                            borderColor: appPrimaryColor.withOpacity(0.9),
-                            suffixIcon: const Icon(
-                              Remix.mail_line,
-                              size: 18.0,
-                              color: Color(0xFF909090),
+                    Container(
+                      height: 60,
+                      margin: EdgeInsets.symmetric(
+                        horizontal: MediaQuery.of(context).size.width * 0.1),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'HELP & SUPPORT',
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                            color: appPrimaryColor,
+                            fontWeight: kBoldWeight,
+                            fontFamily: kDefaultFontFamilyHeading
+                            // decoration: TextDecoration.underline,
                             ),
-                            validator: (value) {
-                              return _validateEmail();
-                            },
-                            onSaved: (value) {
-                              _email = value!.trim();
-                              return null;
-                            },
-                          ),
-                          // const Text(
-                          //   "Choose your complaint type",
-                          //   textScaleFactor: 0.9,
-                          //   textAlign: TextAlign.center,
-                          //   style: TextStyle(
-                          //     color: Colors.red,
-                          //   ),
-                          // ),
-                          const SizedBox(height: 30.0),
-                          DropdownButtonFormField<String>(
-                            value: _complaintType,
-                            icon: const Icon(Remix.arrow_down_s_line),
-                            elevation: 16,
-                            isExpanded: true,
-                            hint: Text(
-                              'Choose Complaint',
-                              style: TextStyle(
-                                color: appPrimaryColor.withOpacity(0.5),
-                                fontSize: 14.0,
-                              ),
-                            ),
-                            style: theme.textTheme.bodyText2!.copyWith(
-                              color: appPrimaryColor.withOpacity(0.8),
-                            ),
-                            validator: (value) {
-                              if (value == null || (value.isEmpty)) {
-                                return 'Choose your complaint type';
-                              }
-
-                              return null;
-                            },
-                            decoration: InputDecoration(
-                              contentPadding: const EdgeInsets.symmetric(
-                                  vertical: 13.0, horizontal: 10.0),
-                              enabledBorder: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: appPrimaryColor, width: 0.0),
-                              ),
-                              focusedBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: secondaryColor.withOpacity(0.8)),
-                              ),
-                              errorBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: redColor.withOpacity(0.8)),
-                              ),
-                              disabledBorder: OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: appPrimaryColor.withOpacity(0.9),
-                                    width: 0.0),
-                              ),
-                              border: const OutlineInputBorder(
-                                borderSide: BorderSide(
-                                    color: appPrimaryColor, width: 0.0),
-                              ),
-                              // labelText: labelText,
-                              labelStyle: theme.textTheme.bodyText2!.copyWith(
-                                  color: const Color(0xFF8C8C8C),
-                                  fontWeight: kSemiBoldWeight),
-
-                              hintStyle: theme.textTheme.bodyText2!
-                                  .copyWith(color: const Color(0xFFBDBDBD)),
-                            ),
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                _complaintType = newValue!;
-                              });
-                              _formKey.currentState!.validate();
-                            },
-                            items: complaints.map((String value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(value),
-                              );
-                            }).toList(),
-                          ),
-                          const SizedBox(height: 30.0),
-                          TextField(
-                            controller: _messageController,
-                            maxLines: 7,
-                            keyboardType: TextInputType.multiline,
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(8.0))),
-                          ),
-                          const SizedBox(height: 50),
-                          Button(
-                              text: 'Send',
-                              onPress: _onSave,
-                              color: Colors.black,
-                              width: mediaQuery.size.width * 1,
-                              textColor: Colors.white,
-                              isLoading: _isLoading)
-                        ],
                       ),
                     ),
                   ],
                 ),
-              ),
-            ],
-          ),
-        )),
+                const SizedBox(height: 20.0),
+                Padding(
+                  padding: const EdgeInsets.only(left: 35.0, right: 35.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Get support with Ride issues',
+                        textScaleFactor: 1.2,
+                        style: TextStyle(
+                          color: appPrimaryColor,
+                          fontWeight: FontWeight.bold,
+                          // decoration: TextDecoration.underline,
+                        ),
+                      ),
+                      const SizedBox(height: 30.0),
+                      Form(
+                        key: _formKey,
+                        child: Column(
+                          children: [
+                            InputField(
+                              key: const Key('email'),
+                              textController: _emailController,
+                              keyboardType: TextInputType.emailAddress,
+                              node: _emailNode,
+                              obscureText: false,
+                              text: 'Email Address',
+                              hintText: 'jane@email.com',
+                              textHeight: 5.0,
+                              borderColor: appPrimaryColor.withOpacity(0.9),
+                              suffixIcon: const Icon(
+                                Remix.mail_line,
+                                size: 18.0,
+                                color: Color(0xFF909090),
+                              ),
+                              validator: (value) {
+                                return _validateEmail();
+                              },
+                              onSaved: (value) {
+                                _email = value!.trim();
+                                return null;
+                              },
+                            ),
+                            // const Text(
+                            //   "Choose your complaint type",
+                            //   textScaleFactor: 0.9,
+                            //   textAlign: TextAlign.center,
+                            //   style: TextStyle(
+                            //     color: Colors.red,
+                            //   ),
+                            // ),
+                            const SizedBox(height: 30.0),
+                            DropdownButtonFormField<String>(
+                              value: _complaintType,
+                              icon: const Icon(Remix.arrow_down_s_line),
+                              elevation: 16,
+                              isExpanded: true,
+                              hint: Text(
+                                'Choose Complaint',
+                                style: TextStyle(
+                                  color: appPrimaryColor.withOpacity(0.5),
+                                  fontSize: 14.0,
+                                ),
+                              ),
+                              style: theme.textTheme.bodyText2!.copyWith(
+                                color: appPrimaryColor.withOpacity(0.8),
+                              ),
+                              validator: (value) {
+                                if (value == null || (value.isEmpty)) {
+                                  return 'Choose your complaint type';
+                                }
+
+                                return null;
+                              },
+                              decoration: InputDecoration(
+                                contentPadding: const EdgeInsets.symmetric(
+                                    vertical: 13.0, horizontal: 10.0),
+                                enabledBorder: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: appPrimaryColor, width: 0.0),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: secondaryColor.withOpacity(0.8)),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: redColor.withOpacity(0.8)),
+                                ),
+                                disabledBorder: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: appPrimaryColor.withOpacity(0.9),
+                                      width: 0.0),
+                                ),
+                                border: const OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                      color: appPrimaryColor, width: 0.0),
+                                ),
+                                // labelText: labelText,
+                                labelStyle: theme.textTheme.bodyText2!.copyWith(
+                                    color: const Color(0xFF8C8C8C),
+                                    fontWeight: kSemiBoldWeight),
+
+                                hintStyle: theme.textTheme.bodyText2!
+                                    .copyWith(color: const Color(0xFFBDBDBD)),
+                              ),
+                              onChanged: (String? newValue) {
+                                setState(() {
+                                  _complaintType = newValue!;
+                                });
+                                _formKey.currentState!.validate();
+                              },
+                              items: complaints.map((String value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(value),
+                                );
+                              }).toList(),
+                            ),
+                            const SizedBox(height: 30.0),
+                            TextField(
+                              controller: _messageController,
+                              maxLines: 7,
+                              keyboardType: TextInputType.multiline,
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderRadius: BorderRadius.circular(8.0))),
+                            ),
+                            const SizedBox(height: 50),
+                            Button(
+                                text: 'Send',
+                                onPress: _onSave,
+                                color: Colors.black,
+                                width: mediaQuery.size.width * 1,
+                                textColor: Colors.white,
+                                isLoading: _isLoading)
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            )),
       ),
     );
   }
