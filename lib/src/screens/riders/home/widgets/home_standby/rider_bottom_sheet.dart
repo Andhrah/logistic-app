@@ -38,7 +38,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-
+    
     //todo: separate both [_incomingRequest] and [_standby] into their own state
     return CustomStreamBuilder<RiderOrderState, String>(
         stream: riderHomeStateBloc.behaviorSubject,
@@ -62,15 +62,16 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
 
   Widget _standby() {
     var theme = Theme.of(context);
+    var mediaQuery = MediaQuery.of(context);
 
     return Positioned(
       bottom: 0,
       left: 0,
       right: 0,
       child: Container(
-        padding: const EdgeInsets.symmetric(
+        padding:  EdgeInsets.symmetric(
             horizontal: kDefaultLayoutPadding + kDefaultLayoutPadding,
-            vertical: 34),
+            vertical: mediaQuery.size.height/25),
         decoration: const BoxDecoration(
             color: whiteColor,
             borderRadius: BorderRadius.only(
@@ -111,8 +112,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 24),
+                            padding:  EdgeInsets.symmetric(
+                                horizontal: 20, vertical: mediaQuery.size.height/40),
                             alignment: Alignment.center,
                             child: Text(
                               'Request a Dispatch',
@@ -157,8 +158,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                             ),
                           ),
                           Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 24, vertical: 24),
+                            padding:  EdgeInsets.symmetric(
+                                horizontal: 20, vertical: mediaQuery.size.height/40),
                             alignment: Alignment.center,
                             child: Text(
                               'Initiate self Delivery',

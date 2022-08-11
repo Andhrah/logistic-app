@@ -64,6 +64,7 @@ class _ProfileMenuState extends State<ProfileMenu>
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    var mediaQuery = MediaQuery.of(context);
 
     return Scaffold(
       backgroundColor: whiteColor,
@@ -160,20 +161,22 @@ class _ProfileMenuState extends State<ProfileMenu>
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            phone,
-                                            style: theme.textTheme.caption,
-                                          ),
-                                          2.heightInPixel(),
-                                          Text(
-                                            email,
-                                            style: theme.textTheme.caption,
-                                          ),
-                                        ],
+                                      Expanded(
+                                        child: Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              phone,
+                                              style: theme.textTheme.caption,
+                                            ),
+                                            2.heightInPixel(),
+                                            Text(
+                                              email,
+                                              style: theme.textTheme.caption,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                       Button(
                                           text: 'Edit Profile',
@@ -187,7 +190,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                                                 .pushNamed(EditProfile.id);
                                           },
                                           color: Colors.black,
-                                          width: 80.0,
+                                          width: mediaQuery.size.width*0.2,
                                           height: 40,
                                           textColor: whiteColor,
                                           isLoading: false),
@@ -359,7 +362,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                                                 );
                                               },
                                               color: kTextColor,
-                                              width: 344,
+                                              width: mediaQuery.size.width*0.8,
                                               textColor: whiteColor,
                                               isLoading: false),
                                         )
