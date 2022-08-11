@@ -11,6 +11,13 @@ class RiderHomeStateBloc with BaseBloc<RiderOrderState, String> {
   updateState(RiderOrderState _riderOrderState) async {
     setAsLoading();
 
+    if (_riderOrderState == RiderOrderState.isNewRequestIncoming) {
+      riderOrderStateBloc.updateState(NewOrderState.isOngoing);
+    } else if ((_riderOrderState == RiderOrderState.isHomeScreen) ||
+        (_riderOrderState == RiderOrderState.isOrderCompleted)) {
+      riderOrderStateBloc.updateState(NewOrderState.isNew);
+    }
+
     riderOrderState = _riderOrderState;
     addToModel(riderOrderState);
   }
@@ -25,3 +32,28 @@ class RiderHomeStateBloc with BaseBloc<RiderOrderState, String> {
 }
 
 final riderHomeStateBloc = RiderHomeStateBloc();
+
+class RiderOrderStateBloc with BaseBloc<NewOrderState, String> {
+  RiderOrderStateBloc() {
+    updateState(NewOrderState.isNew);
+  }
+
+  NewOrderState newOrderState = NewOrderState.isNew;
+
+  updateState(NewOrderState state) async {
+    setAsLoading();
+
+    newOrderState = state;
+    addToModel(newOrderState);
+  }
+
+  invalidate() {
+    invalidateBaseBloc();
+  }
+
+  dispose() async {
+    disposeBaseBloc();
+  }
+}
+
+final riderOrderStateBloc = RiderOrderStateBloc();

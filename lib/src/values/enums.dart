@@ -22,6 +22,8 @@ enum RiderOrderState {
   isOrderCompleted
 }
 
+enum NewOrderState { isNew, isOngoing }
+
 enum NetworkState {
   connecting,
   connected,

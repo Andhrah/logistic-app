@@ -12,6 +12,7 @@ import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/src/bloc/socket_state_bloc.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/enums.dart';
@@ -92,7 +93,13 @@ class RiderMapProvider extends ChangeNotifier {
     socket?.on("rider_request_$riderID", (data) {
       log('rider_request_data ${jsonEncode(data)}');
       riderStreamSocket.addResponseOnMove(OrderResponse.fromJson(data));
-      riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
+
+      if (riderOrderStateBloc.newOrderState == NewOrderState.isOngoing) {
+        appToast('New order');
+        //  do stack order operation
+      } else {
+        riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
+      }
       FlutterRingtonePlayer.playNotification();
     });
 

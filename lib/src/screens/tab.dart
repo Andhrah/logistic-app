@@ -59,7 +59,7 @@ class _TabsState extends State<Tabs> {
                 return snapshot.data?.loginResponse?.data?.user?.userType ==
                         "rider"
                     ? RiderHomeScreen(_onItemTapped)
-                    : const CompanyHome();
+                    : CompanyHome(_onItemTapped);
               }
               return const SizedBox();
             });

@@ -26,11 +26,11 @@ import 'package:trakk/src/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/src/screens/merchant/add_rider.dart';
 import 'package:trakk/src/screens/merchant/add_rider1.dart';
 import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
-import 'package:trakk/src/screens/merchant/company_home.dart';
 import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
+import 'package:trakk/src/screens/merchant/notifications.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -150,7 +150,7 @@ class _HomeState extends State<Home> {
               ProfileMenu.id: (context) => const ProfileMenu(),
               EditProfile.id: (context) => const EditProfile(),
               FundWalletScreen.id: (context) => const FundWalletScreen(),
-              CompanyHome.id: (context) => const CompanyHome(),
+              // CompanyHome.id: (context) => const CompanyHome(),
               Vehicles.id: (context) => const Vehicles(),
               Riders.id: (context) => const Riders(),
               DispatchHistory.id: (context) => const DispatchHistory(),
@@ -165,6 +165,7 @@ class _HomeState extends State<Home> {
               MerchantRiderProfile.id: (context) =>
                   const MerchantRiderProfile(),
               ListOfRiders.id: (context) => const ListOfRiders(),
+              Notifications.id: (context) => const Notifications(),
               // RejectedRides.id: (context) => const RejectedRides(),
               // FulfilledDispatch.id: (context) => const FulfilledDispatch(),
               // RiderOrderScreen.id: (context) => const RiderHomeScreen(),
