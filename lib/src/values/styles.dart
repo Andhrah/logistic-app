@@ -254,7 +254,7 @@ Future dialogOrderPaymentSuccess(
           text: 'Cancel',
           onPress: () {
             Navigator.pop(context);
-            if (onPositiveCallback != null) onPositiveCallback();
+            if (onNegativeCallback != null) onNegativeCallback();
           },
           color: whiteColor,
           textColor: appPrimaryColor,

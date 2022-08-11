@@ -5,7 +5,7 @@
     */
 
 import 'package:flutter/material.dart';
-import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/services/order/order_api.dart';
 import 'package:trakk/src/utils/app_toast.dart';

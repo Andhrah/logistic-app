@@ -5,22 +5,15 @@ import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_locatio
 import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_top_part.dart';
 import 'package:trakk/src/values/assets.dart';
 
-class RiderHomeStandbyScreen extends StatefulWidget {
+class RiderHomeStandbyScreen extends StatelessWidget {
   final MiscBloc locaBloc;
+  final Function(int index) forHomeNavigation;
 
   static const String id = 'riderHome';
 
-  const RiderHomeStandbyScreen(this.locaBloc, {Key? key}) : super(key: key);
-
-  @override
-  _RiderHomeStandbyScreenState createState() => _RiderHomeStandbyScreenState();
-}
-
-class _RiderHomeStandbyScreenState extends State<RiderHomeStandbyScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
+  const RiderHomeStandbyScreen(this.locaBloc, this.forHomeNavigation,
+      {Key? key})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -36,9 +29,9 @@ class _RiderHomeStandbyScreenState extends State<RiderHomeStandbyScreen> {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const RiderTopPart(),
+              RiderTopPart(forHomeNavigation),
               const Spacer(),
-              RiderLocationCard(widget.locaBloc),
+              RiderLocationCard(locaBloc),
               const Spacer(flex: 2),
             ],
           ),

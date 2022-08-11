@@ -3,8 +3,8 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
-import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/src/mixins/rider_order_helper.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
@@ -38,7 +38,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    
+
     //todo: separate both [_incomingRequest] and [_standby] into their own state
     return CustomStreamBuilder<RiderOrderState, String>(
         stream: riderHomeStateBloc.behaviorSubject,
@@ -62,123 +62,131 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
 
   Widget _standby() {
     var theme = Theme.of(context);
-    var mediaQuery = MediaQuery.of(context);
 
-    return Positioned(
-      bottom: 0,
-      left: 0,
-      right: 0,
-      child: Container(
-        padding:  EdgeInsets.symmetric(
-            horizontal: kDefaultLayoutPadding + kDefaultLayoutPadding,
-            vertical: mediaQuery.size.height/25),
-        decoration: const BoxDecoration(
-            color: whiteColor,
-            borderRadius: BorderRadius.only(
-                topRight: Radius.circular(50), topLeft: Radius.circular(50))),
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 450),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: Radii.k8pxRadius,
-                          boxShadow: [
-                            BoxShadow(
-                              color: darkBrownColor.withOpacity(0.08),
-                              spreadRadius: 4,
-                              blurRadius: 4,
-                              offset: const Offset(0, 1),
-                            )
-                          ]),
-                      child: Stack(
+    return DraggableScrollableSheet(
+        initialChildSize: 0.1,
+        maxChildSize: 0.4,
+        minChildSize: 0.1,
+        builder: (BuildContext context, ScrollController scrollController) {
+          return Container(
+            decoration: const BoxDecoration(
+                color: whiteColor,
+                borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(50),
+                    topLeft: Radius.circular(50))),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(50), topLeft: Radius.circular(50)),
+              child: SingleChildScrollView(
+                controller: scrollController,
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultLayoutPadding + kDefaultLayoutPadding,
+                    vertical: 34),
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 450),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
                         children: [
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(8),
-                                  bottomRight: Radius.circular(8)),
-                              child: Image.asset(
-                                Assets.request_a_dispatch,
-                                height: 25,
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: Radii.k8pxRadius,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: darkBrownColor.withOpacity(0.08),
+                                      spreadRadius: 4,
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 1),
+                                    )
+                                  ]),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          bottomRight: Radius.circular(8)),
+                                      child: Image.asset(
+                                        Assets.request_a_dispatch,
+                                        height: 25,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24, vertical: 24),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Request a Dispatch',
+                                      textAlign: TextAlign.center,
+                                      style: theme.textTheme.bodyText1!
+                                          .copyWith(fontWeight: kMediumWeight),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           ),
-                          Container(
-                            padding:  EdgeInsets.symmetric(
-                                horizontal: 20, vertical: mediaQuery.size.height/40),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Request a Dispatch',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(fontWeight: kMediumWeight),
+                          const SizedBox(
+                            width: 24,
+                          ),
+                          Expanded(
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  color: whiteColor,
+                                  borderRadius: Radii.k8pxRadius,
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: darkBrownColor.withOpacity(0.08),
+                                      spreadRadius: 4,
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 1),
+                                    )
+                                  ]),
+                              child: Stack(
+                                children: [
+                                  Positioned(
+                                    bottom: 0,
+                                    right: 0,
+                                    child: ClipRRect(
+                                      borderRadius: const BorderRadius.only(
+                                          topRight: Radius.circular(8),
+                                          bottomRight: Radius.circular(8)),
+                                      child: Image.asset(
+                                        Assets.initiate_self_delivery,
+                                        height: 25,
+                                      ),
+                                    ),
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 24, vertical: 24),
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Initiate self Delivery',
+                                      textAlign: TextAlign.center,
+                                      style: theme.textTheme.bodyText1!
+                                          .copyWith(fontWeight: kMediumWeight),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ],
                       ),
-                    ),
+                    ],
                   ),
-                  const SizedBox(
-                    width: 24,
-                  ),
-                  Expanded(
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: whiteColor,
-                          borderRadius: Radii.k8pxRadius,
-                          boxShadow: [
-                            BoxShadow(
-                              color: darkBrownColor.withOpacity(0.08),
-                              spreadRadius: 4,
-                              blurRadius: 4,
-                              offset: const Offset(0, 1),
-                            )
-                          ]),
-                      child: Stack(
-                        children: [
-                          Positioned(
-                            bottom: 0,
-                            right: 0,
-                            child: ClipRRect(
-                              borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(8),
-                                  bottomRight: Radius.circular(8)),
-                              child: Image.asset(
-                                Assets.initiate_self_delivery,
-                                height: 25,
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding:  EdgeInsets.symmetric(
-                                horizontal: 20, vertical: mediaQuery.size.height/40),
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Initiate self Delivery',
-                              textAlign: TextAlign.center,
-                              style: theme.textTheme.bodyText1!
-                                  .copyWith(fontWeight: kMediumWeight),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
-            ],
-          ),
-        ),
-      ),
-    );
+            ),
+          );
+        });
   }
 
   Widget _incomingRequest(OrderResponse orderResponse) {

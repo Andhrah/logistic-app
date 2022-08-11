@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/values/values.dart';
 
+typedef OnChangedCallback = Function(String value);
+
 class InputField extends StatelessWidget {
   const InputField(
       {Key? key,
@@ -47,7 +49,7 @@ class InputField extends StatelessWidget {
   final String? Function(String?)? validator;
   final VoidCallback? onTap;
   final String? Function(String?)? onSaved;
-  final String? Function(String?)? onChanged;
+  final OnChangedCallback? onChanged;
   final AutovalidateMode? autovalidateMode;
   final bool obscureText;
   final int? maxLines;

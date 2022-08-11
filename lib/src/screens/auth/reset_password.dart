@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/forgot_password_helper.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
@@ -51,39 +52,38 @@ class _ResetPasswordState extends State<ResetPassword>
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
         backgroundColor: whiteColor,
         body: SingleChildScrollView(
-          child: SafeArea(
-              child: Column(
+          child: Column(
             children: [
-              const SizedBox(height: 10.0),
+              SafeArea(child: 12.heightInPixel()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackIcon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
                     onPress: () {
                       Navigator.pop(context);
                     },
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 70.0),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {},
-                      customBorder: const CircleBorder(),
-                      child: const Text(
-                        'RESET PASSWORD',
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                          color: appPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
+                  Text(
+                    'RESET PASSWORD',
+                    style: theme.textTheme.subtitle1!.copyWith(
+                        fontWeight: kBoldWeight,
+                        fontFamily: kDefaultFontFamilyHeading
+                        // decoration: TextDecoration.underline,
                         ),
-                      ),
-                    ),
                   ),
-                  const SizedBox(),
+                  BackIcon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
+                    isPlaceHolder: true,
+                    onPress: () {},
+                  ),
                 ],
               ),
               const SizedBox(height: 30.0),
@@ -175,7 +175,7 @@ class _ResetPasswordState extends State<ResetPassword>
                     ),
                   )),
             ],
-          )),
+          ),
         ));
   }
 }

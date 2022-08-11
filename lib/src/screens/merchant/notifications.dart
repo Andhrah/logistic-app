@@ -6,7 +6,7 @@ import 'package:trakk/src/widgets/default_container.dart';
 import '../../widgets/back_icon.dart';
 
 class Notifications extends StatefulWidget {
-  static const String id = 'notifications';
+  static const String id = '/notifications';
 
   const Notifications({Key? key}) : super(key: key);
 

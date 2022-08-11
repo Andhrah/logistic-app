@@ -2,17 +2,17 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
-import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
 import 'package:trakk/src/provider/rider/rider_map_provider.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_map/rider_home_map.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_home_standby.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/assets.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class RiderHomeScreen extends StatefulWidget {
-  static const String id = 'riderHome';
+  final Function(int index) forHomeNavigation;
 
-  const RiderHomeScreen({Key? key}) : super(key: key);
+  const RiderHomeScreen(this.forHomeNavigation, {Key? key}) : super(key: key);
 
   @override
   _RiderHomeScreenState createState() => _RiderHomeScreenState();
@@ -71,7 +71,7 @@ class _RiderHomeScreenState extends State<RiderHomeScreen> {
             if (data == RiderOrderState.isHomeScreen ||
                 data == RiderOrderState.isNewRequestIncoming ||
                 data == RiderOrderState.isNewRequestClicked) {
-              return RiderHomeStandbyScreen(locaBloc);
+              return RiderHomeStandbyScreen(locaBloc, widget.forHomeNavigation);
             }
 
             return RiderHomeMapScreen(locaBloc, data);

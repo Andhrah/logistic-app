@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
+import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
-import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
@@ -95,7 +95,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
         width: double.infinity,
         child: CircularGlow(
           glowColor: secondaryColor,
-          endRadius: 180.0,
+          endRadius: safeAreaHeight(context, 20),
           duration: const Duration(milliseconds: 2000),
           repeat: true,
           reverse: true,
@@ -122,20 +122,22 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                     style: theme.textTheme.subtitle1!
                         .copyWith(fontWeight: kMediumWeight),
                   ),
-                  18.heightInPixel(),
-                  Button(
-                    text: 'View Details',
-                    fontSize: 14,
-                    onPress: () {
-                      riderHomeStateBloc
-                          .updateState(RiderOrderState.isNewRequestClicked);
-                    },
-                    color: appPrimaryColor,
-                    textColor: whiteColor,
-                    isLoading: false,
-                    width: 125.0,
-                    height: 47,
-                    borderRadius: 10,
+                  2.safeAreaHeight(context),
+                  ConstrainedBox(
+                    constraints: const BoxConstraints(maxHeight: 50),
+                    child: Button(
+                      text: 'View Details',
+                      fontSize: 14,
+                      onPress: () {
+                        riderHomeStateBloc
+                            .updateState(RiderOrderState.isNewRequestClicked);
+                      },
+                      color: appPrimaryColor,
+                      textColor: whiteColor,
+                      isLoading: false,
+                      width: 125.0,
+                      borderRadius: 10,
+                    ),
                   )
                 ],
               ),

@@ -5,6 +5,7 @@ import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/forgot_password_helper.dart';
 import 'package:trakk/src/screens/auth/reset_password.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 
@@ -66,42 +67,41 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin>
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     _email = arg["email"];
 
     return Scaffold(
         backgroundColor: whiteColor,
         body: SingleChildScrollView(
-          child: SafeArea(
-              child: Column(
+          child: Column(
             children: [
-              kSizeBox,
+              SafeArea(child: 12.heightInPixel()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackIcon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
                     onPress: () {
                       Navigator.pop(context);
                     },
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 70.0),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {},
-                      customBorder: const CircleBorder(),
-                      child: const Text(
-                        'FORGOT PASSWORD',
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                          color: appPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
+                  Text(
+                    'FORGOT PASSWORD',
+                    style: theme.textTheme.subtitle1!.copyWith(
+                        fontWeight: kBoldWeight,
+                        fontFamily: kDefaultFontFamilyHeading
+                        // decoration: TextDecoration.underline,
                         ),
-                      ),
-                    ),
                   ),
-                  const SizedBox(),
+                  BackIcon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
+                    isPlaceHolder: true,
+                    onPress: () {},
+                  ),
                 ],
               ),
               const SizedBox(height: 30.0),
@@ -256,7 +256,7 @@ class _ForgetPasswordPinState extends State<ForgetPasswordPin>
                 ),
               ),
             ],
-          )),
+          ),
         ));
   }
 }

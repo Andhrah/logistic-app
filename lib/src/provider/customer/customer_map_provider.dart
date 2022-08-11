@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
-import 'package:trakk/src/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/src/models/customer/customer_order_listener_response.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
@@ -85,12 +84,12 @@ class CustomerMapProvider extends ChangeNotifier {
 
   _listeners(LatLng toLatLng, String orderID) {
     // if (SingletonData.singletonData.isDebug) {
-    //   socket?.onAny((event, data) {
-    //     if (kDebugMode) {
-    //       print('event: $event');
-    //       print('orderID: $orderID');
-    //     }
-    //   });
+    socket?.onAny((event, data) {
+      if (kDebugMode) {
+        print('event: $event');
+        print('orderID: $orderID');
+      }
+    });
     // }
 
     runToast('Checking order status');
