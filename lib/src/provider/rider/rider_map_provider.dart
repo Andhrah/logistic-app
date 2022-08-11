@@ -95,7 +95,7 @@ class RiderMapProvider extends ChangeNotifier {
       riderStreamSocket.addResponseOnMove(OrderResponse.fromJson(data));
 
       if (riderOrderStateBloc.newOrderState == NewOrderState.isOngoing) {
-        appToast('New order');
+        appToast('New order. Swipe right to view Order');
         //  do stack order operation
       } else {
         riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
@@ -151,12 +151,13 @@ class RiderMapProvider extends ChangeNotifier {
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
       print('loation has changed');
-      sendData(
-          riderID,
-          _loca,
-          riderStreamSocket.behaviorSubject.hasValue
-              ? riderStreamSocket.behaviorSubject.value.model?.order?.id
-              : null);
+      if (riderStreamSocket.behaviorSubject.hasValue &&
+          riderStreamSocket.behaviorSubject.value.model != null) {
+        for (var data in riderStreamSocket.behaviorSubject.value.model ??
+            <OrderResponse>[]) {
+          sendData(riderID, _loca, data.order?.id);
+        }
+      }
     });
   }
 }

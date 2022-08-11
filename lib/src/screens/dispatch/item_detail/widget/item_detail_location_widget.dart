@@ -187,7 +187,7 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                         // prevent the autoCompleteSearch from search on every little keypress
                         _debounce =
                             Timer(const Duration(milliseconds: 1000), () {
-                          if (value!.isNotEmpty) {
+                          if (value.isNotEmpty) {
                             // placces api
                             autoCompleteSearch(value);
                           } else {
@@ -221,7 +221,7 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                         // prevent the autoCompleteSearch from search on every little keypress
                         _debounce =
                             Timer(const Duration(milliseconds: 500), () {
-                          if (value!.isNotEmpty) {
+                          if (value.isNotEmpty) {
                             // placces api
                             autoCompleteSearch(value);
                           } else {
