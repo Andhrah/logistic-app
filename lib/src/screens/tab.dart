@@ -58,7 +58,7 @@ class _TabsState extends State<Tabs> {
               if (snapshot.hasData) {
                 return snapshot.data?.loginResponse?.data?.user?.userType ==
                         "rider"
-                    ? const RiderHomeScreen()
+                    ? RiderHomeScreen(_onItemTapped)
                     : const CompanyHome();
               }
               return const SizedBox();
@@ -80,7 +80,7 @@ class _TabsState extends State<Tabs> {
     }
   }
 
-  void _onItemTapped(int index) {
+  _onItemTapped(int index) {
     if (index == 2) {
       runToast('Coming soon!!');
     }

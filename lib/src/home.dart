@@ -41,9 +41,7 @@ import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart'
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
-import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
-import 'package:trakk/src/screens/riders/rider_order.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
 import 'package:trakk/src/screens/support/send_message.dart';
 import 'package:trakk/src/screens/tab.dart';
@@ -169,8 +167,8 @@ class _HomeState extends State<Home> {
               ListOfRiders.id: (context) => const ListOfRiders(),
               // RejectedRides.id: (context) => const RejectedRides(),
               // FulfilledDispatch.id: (context) => const FulfilledDispatch(),
-              RiderOrderScreen.id: (context) => const RiderHomeScreen(),
-              RiderHomeScreen.id: (context) => const RiderHomeScreen(),
+              // RiderOrderScreen.id: (context) => const RiderHomeScreen(),
+              // RiderHomeScreen.id: (context) => const RiderHomeScreen(),
               CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
               Beneficiaries.id: (context) => const Beneficiaries(),
               // MyDatePicker.id: (context) => MyDatePicker(),

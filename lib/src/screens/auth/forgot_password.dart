@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/forgot_password_helper.dart';
+import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
@@ -67,45 +68,44 @@ class _ForgetPasswordState extends State<ForgetPassword>
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     return Scaffold(
         backgroundColor: whiteColor,
         body: SingleChildScrollView(
-          child: SafeArea(
-              child: Column(
+          child: Column(
             children: [
-              kSizeBox,
+              SafeArea(child: 12.heightInPixel()),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   BackIcon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
                     onPress: () {
                       Navigator.pop(context);
                     },
                   ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 70.0),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {},
-                      customBorder: const CircleBorder(),
-                      child: const Text(
-                        'FORGOT PASSWORD',
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                          color: appPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
+                  Text(
+                    'FORGOT PASSWORD',
+                    style: theme.textTheme.subtitle1!.copyWith(
+                        fontWeight: kBoldWeight,
+                        fontFamily: kDefaultFontFamilyHeading
+                        // decoration: TextDecoration.underline,
                         ),
-                      ),
-                    ),
                   ),
-                  const SizedBox(),
+                  BackIcon(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: kDefaultLayoutPadding),
+                    isPlaceHolder: true,
+                    onPress: () {},
+                  ),
                 ],
               ),
               const SizedBox(height: 30.0),
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.symmetric(horizontal: 30.0),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: kDefaultLayoutPadding),
                 child: Form(
                   key: formKey,
                   child: Column(
@@ -113,8 +113,8 @@ class _ForgetPasswordState extends State<ForgetPassword>
                     children: [
                       Text(
                         'Please enter the email address associated\nwith your trakk account, we will send a\nreset code to you.',
-                        textScaleFactor: 1.2, textAlign: TextAlign.start,
-                        style: TextStyle(
+                        textAlign: TextAlign.start,
+                        style: theme.textTheme.bodyText1!.copyWith(
                           color: appPrimaryColor,
                           // fontWeight: FontWeight.bold,
                         ),
@@ -152,14 +152,14 @@ class _ForgetPasswordState extends State<ForgetPassword>
                               color: appPrimaryColor,
                               textColor: whiteColor,
                               isLoading: _loading,
-                              width: 350.0)),
+                              width: double.infinity)),
                       const SizedBox(height: 15.0),
                     ],
                   ),
                 ),
               ),
             ],
-          )),
+          ),
         ));
   }
 }

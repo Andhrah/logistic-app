@@ -35,6 +35,14 @@ class PasswordValidationStage {
 
 class ValidationBloc extends FormValidators {
   final _emailOnlyController = BehaviorSubject<String>();
+  final _passwordOldController = BehaviorSubject<String>();
+  final _passwordController = BehaviorSubject<String>();
+
+  Stream<PasswordValidationStage> get oldPassword =>
+      _passwordOldController.transform(validatePasswordBloc);
+
+  Stream<PasswordValidationStage> get password =>
+      _passwordController.transform(validatePasswordBloc);
 
   // Add data to stream
   Stream<String> get emailOnly =>
@@ -43,8 +51,14 @@ class ValidationBloc extends FormValidators {
   // change data
   Function(String) get changeEmailOnly => _emailOnlyController.sink.add;
 
+  Function(String) get changeOldPassword => _passwordOldController.sink.add;
+
+  Function(String) get changePassword => _passwordController.sink.add;
+
   dispose() {
     _emailOnlyController.close();
+    _passwordOldController.close();
+    _passwordController.close();
   }
 
   ///below are for function
@@ -78,5 +92,17 @@ class ValidationBloc extends FormValidators {
             : state == ValidationState.isEmpty
                 ? (response ?? "Field is required")
                 : (response ?? "Phone cannot be empty");
+  }
+
+  String? passwordValidator(String? password, {String? response}) {
+    ValidationState state = validatePassword(password);
+    return state == ValidationState.isValidateSuccess
+        ? null
+        : state == ValidationState.isValidateFailed
+            ? (response ??
+                "The password must be at least 8 characters, 1 uppercase, 1 lowercase, 1 number and 1 special character.")
+            : state == ValidationState.isEmpty
+                ? (response ?? "Field is required")
+                : (response ?? "Password cannot be empty");
   }
 }

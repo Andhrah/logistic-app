@@ -2,13 +2,15 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:location/location.dart' as Loca;
 import 'package:provider/provider.dart';
 import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
+import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
-import 'package:trakk/src/bloc/rider_home_state_bloc.dart';
+import 'package:trakk/src/bloc/socket_state_bloc.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
@@ -41,32 +43,39 @@ class RiderMapProvider extends ChangeNotifier {
       'auth': {"token": token}
     }).connect();
 
-    if (onConnected != null) onConnected();
     socket?.onConnect((data) {
-      if (socket?.id != null)
+      socketStateBloc.updateState(NetworkState.connected);
+      if (socket?.id != null) {
         riderStreamSocket.updateSocketID(socket?.id ?? '');
+      }
 
       startUpdatingUserLocation(riderID);
 
       if (onConnected != null) onConnected();
       isNewConnection = true;
       print('connected: ${socket?.id}');
+      if (onConnected != null) onConnected();
     });
 
     socket?.onConnecting((_) {
       print('connecting');
+      socketStateBloc.updateState(NetworkState.connecting);
     });
 
     socket?.onConnectError((err) {
+      socketStateBloc.updateState(NetworkState.connected);
       if (onConnectionError != null) onConnectionError();
       print('connection error: ${err.toString()}');
     });
 
-    socket?.onError((data) => print('error: ${data.toString()}'));
+    socket?.onError((data) {
+      print('error: ${data.toString()}');
+      socketStateBloc.updateState(NetworkState.noInternet);
+    });
 
     socket?.onDisconnect((dis) {
       isNewConnection = false;
-
+      socketStateBloc.updateState(NetworkState.disconnected);
       print('disconnect: ${dis.toString()}');
     });
 
@@ -84,6 +93,7 @@ class RiderMapProvider extends ChangeNotifier {
       log('rider_request_data ${jsonEncode(data)}');
       riderStreamSocket.addResponseOnMove(OrderResponse.fromJson(data));
       riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
+      FlutterRingtonePlayer.playNotification();
     });
 
     // socket?.on('on:surrounding:packages', (data) {
