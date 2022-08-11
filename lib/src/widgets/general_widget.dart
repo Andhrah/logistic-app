@@ -143,7 +143,7 @@ modalDialog(BuildContext context,
                   Expanded(
                     child: Button(
                         text: positiveLabel,
-                        fontSize: 12,
+                        fontSize: 10,
                         onPress: () {
                           onPositiveCallback();
                         },
