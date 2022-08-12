@@ -66,11 +66,13 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                 stream: riderHomeStateBloc.behaviorSubject,
                 dataBuilder: (context, data) {
                   if (data == RiderOrderState.isNewRequestIncoming) {
-                    return StreamBuilder<BaseModel<OrderResponse, String>>(
+                    return StreamBuilder<
+                            BaseModel<List<OrderResponse>, String>>(
                         stream: riderStreamSocket.behaviorSubject,
                         builder: (context, snapshot) {
                           if (snapshot.hasData &&
-                              snapshot.data!.model != null) {
+                              snapshot.data?.model != null &&
+                              snapshot.data!.model!.isNotEmpty) {
                             return cardWithNewRequest(context);
                           }
                           return cardWithLocation(context);

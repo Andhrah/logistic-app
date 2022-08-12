@@ -6,6 +6,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
+import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/services/order/order_api.dart';
 import 'package:trakk/src/utils/app_toast.dart';
@@ -27,15 +28,16 @@ class RiderOrderHelper {
 
     var operation = await orderAPI.acceptOrder(orderID);
 
-    _completeAcceptOperation(operation);
+    _completeAcceptOperation(operation, int.tryParse(orderID) ?? 0);
   }
 
-  _completeAcceptOperation(Operation operation) {
+  _completeAcceptOperation(Operation operation, int orderID) {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
       appToast('Request Accepted', appToastType: AppToastType.success);
       riderHomeStateBloc.updateState(RiderOrderState.isRequestAccepted);
+      orderInFocus.setOrderInFocusID(orderID);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(
@@ -53,15 +55,28 @@ class RiderOrderHelper {
 
     var operation = await orderAPI.declineOrder(orderID);
 
-    _completeDeclineOperation(operation);
+    _completeDeclineOperation(operation, int.tryParse(orderID) ?? 0);
   }
 
-  _completeDeclineOperation(Operation operation) {
+  _completeDeclineOperation(Operation operation, int orderID) {
     Navigator.pop(_authContext);
 
     if (operation.code == 200 || operation.code == 201) {
       appToast('Request Declined', appToastType: AppToastType.success);
       riderHomeStateBloc.updateState(RiderOrderState.isHomeScreen);
+      riderStreamSocket.remove(
+          data: riderStreamSocket.orders
+                      .where((element) => element.order?.id == orderID)
+                      .isNotEmpty &&
+                  riderStreamSocket.orders
+                          .where((element) => element.order?.id == orderID)
+                          .first
+                          .order !=
+                      null
+              ? riderStreamSocket.orders
+                  .where((element) => element.order?.id == orderID)
+                  .first
+              : null);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(messageOnlyResponse.message ?? '',

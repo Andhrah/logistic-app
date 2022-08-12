@@ -40,6 +40,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    // orderInFocus.setOrderInFocusID();
+
     return DraggableScrollableSheet(
         initialChildSize: widget.initialSize,
         maxChildSize: widget.maxSize,
@@ -79,84 +81,126 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                   kDefaultLayoutPadding + kDefaultLayoutPadding,
                               vertical: 34),
                           controller: scrollController,
-                          child: CustomStreamBuilder<RiderOrderState, String>(
-                              stream: riderHomeStateBloc.behaviorSubject,
-                              dataBuilder: (context, orderState) {
-                                return CustomStreamBuilder<OrderResponse,
+                          child: CustomStreamBuilder<int, String>(
+                              stream: orderInFocus.behaviorSubject,
+                              dataBuilder: (context, orderIDInFocus) {
+                                return CustomStreamBuilder<RiderOrderState,
                                         String>(
-                                    stream: riderStreamSocket.behaviorSubject,
-                                    dataBuilder: (context, data) {
-                                      final String orderId =
-                                          '${data.order?.id ?? ''}';
-                                      final String orderNo =
-                                          data.order?.orderRef ?? '';
+                                    stream: riderHomeStateBloc.behaviorSubject,
+                                    dataBuilder: (context, orderState) {
+                                      return CustomStreamBuilder<
+                                              List<OrderResponse>, String>(
+                                          stream:
+                                              riderStreamSocket.behaviorSubject,
+                                          dataBuilder: (context, orders) {
+                                            var data = orders
+                                                        .where((element) =>
+                                                            element.order?.id ==
+                                                            orderInFocus
+                                                                .acceptedOrderID)
+                                                        .isNotEmpty &&
+                                                    orders
+                                                            .where((element) =>
+                                                                element.order
+                                                                    ?.id ==
+                                                                orderInFocus
+                                                                    .acceptedOrderID)
+                                                            .first
+                                                            .order !=
+                                                        null
+                                                ? orders
+                                                    .where((element) =>
+                                                        element.order?.id ==
+                                                        orderInFocus
+                                                            .acceptedOrderID)
+                                                    .first
+                                                : null;
 
-                                      final String deliveryCode =
-                                          data.order?.deliveryCode ?? '';
-                                      final double pickupLatitude =
-                                          data.order?.pickupLatitude ?? 0.0;
-                                      final double pickupLongitude =
-                                          data.order?.pickupLongitude ?? 0.0;
-                                      final double deliveryLatitude =
-                                          data.order?.destinationLatitude ??
-                                              0.0;
-                                      final double deliveryLongitude =
-                                          data.order?.destinationLongitude ??
-                                              0.0;
+                                            // orders.elementAt(orderIDInFocus);
+                                            final String orderId =
+                                                '${data?.order?.id ?? ''}';
+                                            final String orderNo =
+                                                data?.order?.orderRef ?? '';
 
-                                      if (orderState ==
-                                          RiderOrderState.isOrderCompleted) {
-                                        final String deliveryDate =
-                                            data.order?.deliveryDate ?? '';
-                                        final String pickupDate =
-                                            data.order?.pickupDate ?? '';
-                                        return RiderBottomSheetContentCompleted(
-                                          orderState: orderState,
-                                          orderId: orderId,
-                                          orderNo: orderNo,
-                                          deliveryCode: deliveryCode,
-                                          pickupLatitude: pickupLatitude,
-                                          pickupLongitude: pickupLongitude,
-                                          deliveryLatitude: deliveryLatitude,
-                                          deliveryLongitude: deliveryLongitude,
-                                          deliveryDate: deliveryDate,
-                                          pickupDate: pickupDate,
-                                          onButtonClick: _onButtonClick,
-                                        );
-                                      }
-                                      return RiderBottomSheetContentOnGoing(
-                                        orderState: orderState,
-                                        orderId: orderId,
-                                        orderNo: orderNo,
-                                        deliveryCode: deliveryCode,
-                                        pickupLatitude: pickupLatitude,
-                                        pickupLongitude: pickupLongitude,
-                                        deliveryLatitude: deliveryLatitude,
-                                        deliveryLongitude: deliveryLongitude,
-                                        onButtonClick: _onButtonClick,
-                                      );
-                                    },
-                                    loadingBuilder: (context) {
-                                      return Column(
-                                        children: [
-                                          LoadingDataStyle(
-                                            height: 12,
-                                            width: 120,
-                                            bgColor: Colors.black45,
-                                          )
-                                        ],
-                                      );
-                                    },
-                                    errorBuilder: (context, err) {
-                                      return Column(
-                                        children: [
-                                          LoadingDataStyle(
-                                            height: 12,
-                                            width: 120,
-                                            bgColor: Colors.black45,
-                                          )
-                                        ],
-                                      );
+                                            final String deliveryCode =
+                                                data?.order?.deliveryCode ?? '';
+                                            final double pickupLatitude =
+                                                data?.order?.pickupLatitude ??
+                                                    0.0;
+                                            final double pickupLongitude =
+                                                data?.order?.pickupLongitude ??
+                                                    0.0;
+                                            final double deliveryLatitude = data
+                                                    ?.order
+                                                    ?.destinationLatitude ??
+                                                0.0;
+                                            final double deliveryLongitude = data
+                                                    ?.order
+                                                    ?.destinationLongitude ??
+                                                0.0;
+
+                                            if (orderState ==
+                                                RiderOrderState
+                                                    .isOrderCompleted) {
+                                              final String deliveryDate =
+                                                  data?.order?.deliveryDate ??
+                                                      '';
+                                              final String pickupDate =
+                                                  data?.order?.pickupDate ?? '';
+
+                                              return RiderBottomSheetContentCompleted(
+                                                orderState: orderState,
+                                                orderId: orderId,
+                                                orderNo: orderNo,
+                                                deliveryCode: deliveryCode,
+                                                pickupLatitude: pickupLatitude,
+                                                pickupLongitude:
+                                                    pickupLongitude,
+                                                deliveryLatitude:
+                                                    deliveryLatitude,
+                                                deliveryLongitude:
+                                                    deliveryLongitude,
+                                                deliveryDate: deliveryDate,
+                                                pickupDate: pickupDate,
+                                                onButtonClick: _onButtonClick,
+                                              );
+                                            }
+                                            return RiderBottomSheetContentOnGoing(
+                                              orderState: orderState,
+                                              orderId: orderId,
+                                              orderNo: orderNo,
+                                              deliveryCode: deliveryCode,
+                                              pickupLatitude: pickupLatitude,
+                                              pickupLongitude: pickupLongitude,
+                                              deliveryLatitude:
+                                                  deliveryLatitude,
+                                              deliveryLongitude:
+                                                  deliveryLongitude,
+                                              onButtonClick: _onButtonClick,
+                                            );
+                                          },
+                                          loadingBuilder: (context) {
+                                            return Column(
+                                              children: [
+                                                LoadingDataStyle(
+                                                  height: 12,
+                                                  width: 120,
+                                                  bgColor: Colors.black45,
+                                                )
+                                              ],
+                                            );
+                                          },
+                                          errorBuilder: (context, err) {
+                                            return Column(
+                                              children: [
+                                                LoadingDataStyle(
+                                                  height: 12,
+                                                  width: 120,
+                                                  bgColor: Colors.black45,
+                                                )
+                                              ],
+                                            );
+                                          });
                                     });
                               }),
                         ),
@@ -231,6 +275,10 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
       );
     } else if (data == RiderOrderState.isOrderCompleted) {
       riderHomeStateBloc.updateState(RiderOrderState.isHomeScreen);
+      riderStreamSocket.remove();
+      if (riderStreamSocket.orders.isNotEmpty) {
+        riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
+      }
     } else {
       //  minimize bottom sheet
       _updateBottomSheetSize();
