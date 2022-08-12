@@ -20,6 +20,7 @@ import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/custom_app_bar.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:trakk/src/widgets/profile_list.dart';
 
@@ -72,14 +73,9 @@ class _ProfileMenuState extends State<ProfileMenu>
         child: Column(
           children: [
             25.heightInPixel(),
-            Text(
-              'PROFILE MENU',
-              style: theme.textTheme.subtitle1!.copyWith(
-                  fontWeight: kBoldWeight,
-                  fontSize: 18,
-                  fontFamily: kDefaultFontFamilyHeading
-                  // decoration: TextDecoration.underline,
-                  ),
+            const CustomAppBar(
+              titleText: 'PROFILE MENU',
+              leading: SizedBox(),
             ),
             12.heightInPixel(),
             Expanded(
@@ -152,10 +148,23 @@ class _ProfileMenuState extends State<ProfileMenu>
                                     ),
                                   ),
                                   const SizedBox(height: 8),
-                                  Text(
-                                    '$firstName $lastName',
-                                    style: theme.textTheme.headline6!
-                                        .copyWith(fontWeight: kBoldWeight),
+                                  Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          '$firstName $lastName',
+                                          style: theme.textTheme.headline6!
+                                              .copyWith(
+                                                  fontWeight: kBoldWeight),
+                                        ),
+                                      ),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
+                                      SizedBox(
+                                        width: mediaQuery.size.width * 0.2,
+                                      )
+                                    ],
                                   ),
                                   Row(
                                     mainAxisAlignment:
@@ -178,6 +187,9 @@ class _ProfileMenuState extends State<ProfileMenu>
                                           ],
                                         ),
                                       ),
+                                      const SizedBox(
+                                        width: 16,
+                                      ),
                                       Button(
                                           text: 'Edit Profile',
                                           onPress: () {
@@ -190,7 +202,7 @@ class _ProfileMenuState extends State<ProfileMenu>
                                                 .pushNamed(EditProfile.id);
                                           },
                                           color: Colors.black,
-                                          width: mediaQuery.size.width*0.2,
+                                          width: mediaQuery.size.width * 0.2,
                                           height: 40,
                                           textColor: whiteColor,
                                           isLoading: false),
@@ -362,7 +374,8 @@ class _ProfileMenuState extends State<ProfileMenu>
                                                 );
                                               },
                                               color: kTextColor,
-                                              width: mediaQuery.size.width*0.8,
+                                              width:
+                                                  mediaQuery.size.width * 0.8,
                                               textColor: whiteColor,
                                               isLoading: false),
                                         )

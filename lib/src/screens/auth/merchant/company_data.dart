@@ -6,8 +6,8 @@ import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
 import 'package:trakk/src/screens/auth/merchant/widgets/company_data_doc_selector_widget.dart';
 import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/custom_app_bar.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 class CompanyData extends StatefulWidget {
@@ -52,31 +52,8 @@ class _CompanyDataState extends State<CompanyData>
               child: Column(
             children: [
               kSizeBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackIcon(
-                    onPress: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Text(
-                    "ADD COMPANY'S INFORMATION",
-                    style: theme.textTheme.subtitle1!.copyWith(
-                      color: appPrimaryColor,
-                      fontWeight: kBoldWeight,
-                      // decoration: TextDecoration.underline,
-                    ),
-                  ),
-                  AbsorbPointer(
-                    child: Opacity(
-                      opacity: 0,
-                      child: BackIcon(
-                        onPress: () {},
-                      ),
-                    ),
-                  ),
-                ],
+              const CustomAppBar(
+                titleText: "ADD COMPANY'S INFORMATION",
               ),
               const SizedBox(height: 30.0),
               Container(

@@ -85,8 +85,8 @@ class _AddRiderVehicleDocSelectorWidgetState
                             ? CrossFadeState.showFirst
                             : CrossFadeState.showSecond,
                         firstChild: SizedBox(
-                          width: MediaQuery.of(context).size.width / 3.4,
-                          height: MediaQuery.of(context).size.height / 8.7,
+                          width: 120,
+                          height: 120,
                           child: Card(
                             margin: const EdgeInsets.all(8),
                             shape: RoundedRectangleBorder(
@@ -111,8 +111,8 @@ class _AddRiderVehicleDocSelectorWidgetState
                           ),
                         ),
                         secondChild: SizedBox(
-                          width: MediaQuery.of(context).size.width / 3.4,
-                          height: MediaQuery.of(context).size.height / 8.7,
+                          width: 120,
+                          height: 120,
                           child: Stack(
                             children: [
                               Padding(
@@ -121,13 +121,9 @@ class _AddRiderVehicleDocSelectorWidgetState
                                         widget.files.values
                                             .elementAt(index)
                                             .isEmpty)
-                                    ? SizedBox(
-                                        width:
-                                            MediaQuery.of(context).size.width /
-                                                3.4,
-                                        height:
-                                            MediaQuery.of(context).size.height /
-                                                8.7,
+                                    ? const SizedBox(
+                                        width: 120,
+                                        height: 120,
                                       )
                                     : ClipRRect(
                                         borderRadius: Radii.k10pxRadius,
@@ -140,50 +136,26 @@ class _AddRiderVehicleDocSelectorWidgetState
                                             ? CachedNetworkImage(
                                                 imageUrl: widget.files.values
                                                     .elementAt(index),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    3.4,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    8.7,
+                                                width: 120,
+                                                height: 120,
                                                 fit: BoxFit.cover,
                                                 placeholder: (context, url) =>
-                                                    SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      3.4,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      8.7,
+                                                    const SizedBox(
+                                                  width: 120,
+                                                  height: 120,
                                                 ),
                                                 errorWidget:
                                                     (context, url, err) =>
-                                                        SizedBox(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      3.4,
-                                                  height: MediaQuery.of(context)
-                                                          .size
-                                                          .height /
-                                                      8.7,
+                                                        const SizedBox(
+                                                  width: 120,
+                                                  height: 120,
                                                 ),
                                               )
                                             : Image.file(
                                                 File(files.values
                                                     .elementAt(index)),
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    3.4,
-                                                height: MediaQuery.of(context)
-                                                        .size
-                                                        .height /
-                                                    8.7,
+                                                width: 120,
+                                                height: 120,
                                                 fit: BoxFit.cover,
                                               ),
                                       ),
