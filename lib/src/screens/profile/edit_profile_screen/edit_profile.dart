@@ -103,7 +103,7 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                 Container(
                  // height: 98,
                   margin: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.2, vertical: 27),
+                      horizontal: MediaQuery.of(context).size.width * 0.2, vertical: 20),
                   alignment: Alignment.center,
                   child:  Text(
               'PROFILE MENU',

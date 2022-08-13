@@ -109,10 +109,10 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
         backgroundColor: whiteColor,
         body: SafeArea(
             child: Column(children: [
-          const SizedBox(height: 20.0),
+          //const SizedBox(height: 20.0),
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding, vertical: 10),
             child: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

@@ -49,9 +49,9 @@ a) Immediately notify Trakk of any unauthorized use of Your Account information 
 
 b) Ensure that You exit from Your Account at the end of each session.
 
-   TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. 
+TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. 
     
-   Use of another User’s Account information for using the Platform is expressly prohibited.
+Use of another User’s Account information for using the Platform is expressly prohibited.
 
 """;
   String privacyPolicy = """

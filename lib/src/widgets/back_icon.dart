@@ -24,7 +24,7 @@ class BackIcon extends StatelessWidget {
         opacity: isPlaceHolder ? 0 : 1,
         child: Container(
           height: mediaQuery.size.height/15,
-          width: mediaQuery.size.width*0.09,
+          width: mediaQuery.size.width*0.10,
           margin: padding,
           child: InkWell(
             onTap: isPlaceHolder ? null : onPress,

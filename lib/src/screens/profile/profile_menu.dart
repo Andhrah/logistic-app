@@ -72,7 +72,7 @@ class _ProfileMenuState extends State<ProfileMenu>
       body: SafeArea(
         child: Column(
           children: [
-            27.heightInPixel(),
+            20.heightInPixel(),
             Text(
               'PROFILE MENU',
               style: theme.textTheme.subtitle1!.copyWith(
