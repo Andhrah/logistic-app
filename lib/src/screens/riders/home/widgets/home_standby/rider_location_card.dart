@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:location/location.dart';
@@ -14,10 +20,7 @@ import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/glow_widget.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/font.dart';
-import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
