@@ -46,6 +46,8 @@ class MerchantContainer extends StatelessWidget {
                   children: [
                     Text(
               title,
+              //add this
+              // textScaleFactor: 1.2,
               style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ),

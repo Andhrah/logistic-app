@@ -77,9 +77,9 @@ class _EditVehicleState extends State<EditVehicle>
                 },
               ),
               Container(
-                height: 98,
+                //height: 98,
                 margin: EdgeInsets.symmetric(
-                    horizontal: MediaQuery.of(context).size.width * 0.2),
+                    horizontal: MediaQuery.of(context).size.width * 0.2, vertical: 27),
                 alignment: Alignment.center,
                 child: const Text(
                   'EDIT VEHICLE',
@@ -206,7 +206,7 @@ class _EditVehicleState extends State<EditVehicle>
                           color: appPrimaryColor,
                           textColor: whiteColor,
                           isLoading: _loading,
-                          width: 350.0)),
+                          width: MediaQuery.of(context).size.width/1.3)),
                 ],
               ),
             ),

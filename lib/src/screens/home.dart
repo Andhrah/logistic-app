@@ -23,6 +23,8 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
+    
     return Scaffold(
         body: SafeArea(
             child: Column(

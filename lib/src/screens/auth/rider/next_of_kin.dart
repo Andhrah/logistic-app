@@ -114,7 +114,7 @@ class _NextOfKinState extends State<NextOfKin> with ProfileHelper {
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(
-                        Remix.home_7_line,
+                        Remix.user_6_line,
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),
@@ -139,7 +139,7 @@ class _NextOfKinState extends State<NextOfKin> with ProfileHelper {
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(
-                        Remix.home_7_line,
+                        Remix.mail_line,
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),
@@ -156,7 +156,7 @@ class _NextOfKinState extends State<NextOfKin> with ProfileHelper {
                       textHeight: 10.0,
                       borderColor: appPrimaryColor.withOpacity(0.9),
                       suffixIcon: const Icon(
-                        Remix.home_7_line,
+                        Remix.phone_line,
                         size: 18.0,
                         color: Color(0xFF909090),
                       ),

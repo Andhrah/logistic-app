@@ -383,7 +383,7 @@ class _LoginState extends State<Login>
                             color: appPrimaryColor,
                             textColor: whiteColor,
                             isLoading: _loading,
-                            width: 350.0)),
+                            width: MediaQuery.of(context).size.width/1.3)),
                     const SizedBox(height: 15.0),
                     InkWell(
                       onTap: () {

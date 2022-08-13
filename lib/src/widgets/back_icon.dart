@@ -5,25 +5,26 @@ class BackIcon extends StatelessWidget {
   const BackIcon({
     Key? key,
     this.onPress,
-    this.width = 36,
+   // this.width = 36,
     this.padding = const EdgeInsets.only(left: 24.0),
     this.isPlaceHolder = false,
   }) : super(key: key);
 
   final VoidCallback? onPress;
   final EdgeInsets padding;
-  final double width;
+  //final double width;
   final bool isPlaceHolder;
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
     return AbsorbPointer(
       absorbing: isPlaceHolder,
       child: Opacity(
         opacity: isPlaceHolder ? 0 : 1,
         child: Container(
-          height: 36,
-          width: width,
+          height: mediaQuery.size.height/15,
+          width: mediaQuery.size.width*0.09,
           margin: padding,
           child: InkWell(
             onTap: isPlaceHolder ? null : onPress,
@@ -38,7 +39,8 @@ class BackIcon extends StatelessWidget {
           ),
           decoration: const BoxDecoration(
             color: appPrimaryColor,
-            borderRadius: BorderRadius.all(Radius.circular(50.0)),
+            shape: BoxShape.circle,
+            //borderRadius: BorderRadius.all(Radius.circular(50.0)),
             boxShadow: [
               BoxShadow(
                 color: Color(0XFFBDBDBD),

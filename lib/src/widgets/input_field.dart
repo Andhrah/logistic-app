@@ -60,6 +60,7 @@ class InputField extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        //wrap with expanded
         Text(
           text,
           style: TextStyle(

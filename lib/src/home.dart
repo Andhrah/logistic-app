@@ -31,6 +31,7 @@ import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
+import 'package:trakk/src/screens/merchant/merchant_notifications.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -42,6 +43,7 @@ import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart'
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
+import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_notification.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
 import 'package:trakk/src/screens/riders/rider_order.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
@@ -158,7 +160,8 @@ class _HomeState extends State<Home> {
               DispatchHistory.id: (context) => const DispatchHistory(),
               ListOfVehicles.id: (context) => const ListOfVehicles(),
               EditVehicle.id: (context) => const EditVehicle(),
-
+              MerchantNotifications.id:(context) => const MerchantNotifications(),
+              RiderNotification.id:(context) => const RiderNotification(),
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
               AddRider.id: (context) => const AddRider(),
               AddRider1.id: (context) => const AddRider1(),

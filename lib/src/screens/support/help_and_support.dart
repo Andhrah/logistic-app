@@ -79,9 +79,9 @@ All information received by TRAKK shall be managed according to the Nigerian Dat
                   },
                 ),
                 Container(
-                  height: 60,
+                  //height: 60,
                   margin: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.1),
+                      horizontal: MediaQuery.of(context).size.width * 0.1, vertical: 27),
                   alignment: Alignment.center,
                   child: InkWell(
                     onTap: () {},
