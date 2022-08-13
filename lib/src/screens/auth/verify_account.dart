@@ -9,16 +9,16 @@ import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/custom_app_bar.dart';
 
-class VerifiyAccountScreen extends StatefulWidget {
+class VerifyAccountScreen extends StatefulWidget {
   static const String id = 'otp';
 
-  const VerifiyAccountScreen({Key? key}) : super(key: key);
+  const VerifyAccountScreen({Key? key}) : super(key: key);
 
   @override
-  _VerifiyAccountScreenState createState() => _VerifiyAccountScreenState();
+  _VerifyAccountScreenState createState() => _VerifyAccountScreenState();
 }
 
-class _VerifiyAccountScreenState extends State<VerifiyAccountScreen>
+class _VerifyAccountScreenState extends State<VerifyAccountScreen>
     with SignupHelper, ConnectivityHelper, LogoutHelper {
   final _formKey = GlobalKey<FormState>();
 

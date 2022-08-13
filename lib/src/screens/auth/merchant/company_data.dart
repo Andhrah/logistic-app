@@ -90,27 +90,27 @@ class _CompanyDataState extends State<CompanyData>
                         },
                       ),
                       const SizedBox(height: 30.0),
-                      // InputField(
-                      //   key: const Key('email'),
-                      //   textController: emailController,
-                      //   keyboardType: TextInputType.emailAddress,
-                      //   node: _emailNode,
-                      //   obscureText: false,
-                      //   text: 'Company’s email address',
-                      //   hintText: 'email@company.com',
-                      //   textHeight: 5.0,
-                      //   borderColor: appPrimaryColor.withOpacity(0.9),
-                      //   suffixIcon: const Icon(
-                      //     Remix.mail_line,
-                      //     size: 18.0,
-                      //     color: Color(0xFF909090),
-                      //   ),
-                      //   validator: validationBloc.emailValidator,
-                      //   onSaved: (value) {
-                      //     return null;
-                      //   },
-                      // ),
-                      // const SizedBox(height: 30.0),
+                      InputField(
+                        key: const Key('email'),
+                        textController: emailController,
+                        keyboardType: TextInputType.emailAddress,
+                        node: _emailNode,
+                        obscureText: false,
+                        text: 'Company’s email address',
+                        hintText: 'email@company.com',
+                        textHeight: 5.0,
+                        borderColor: appPrimaryColor.withOpacity(0.9),
+                        suffixIcon: const Icon(
+                          Remix.mail_line,
+                          size: 18.0,
+                          color: Color(0xFF909090),
+                        ),
+                        validator: validationBloc.emailValidator,
+                        onSaved: (value) {
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 30.0),
                       // InputField(
                       //   key: const Key('phoneNumber'),
                       //   textController: phoneNumberController,

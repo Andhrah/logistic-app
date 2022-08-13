@@ -104,7 +104,7 @@ class LoginHelper
         await appToast('Login Successful, please verify your account',
             appToastType: AppToastType.success);
         await SingletonData.singletonData.navKey.currentState!
-            .pushNamed(VerifiyAccountScreen.id, arguments: {
+            .pushNamed(VerifyAccountScreen.id, arguments: {
           "email": authResponse.data?.user?.email ?? '',
           "phoneNumber": authResponse.data?.user?.phoneNumber ?? '',
           'userType': authResponse.data?.user?.userType ?? ''
