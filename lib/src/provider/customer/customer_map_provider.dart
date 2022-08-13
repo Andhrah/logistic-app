@@ -9,7 +9,9 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/models/customer/customer_order_listener_response.dart';
+import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class CustomerMapProvider extends ChangeNotifier {
   static CustomerMapProvider customerMapProvider(BuildContext context,
@@ -28,11 +30,6 @@ class CustomerMapProvider extends ChangeNotifier {
       {Function()? onConnected, Function()? onConnectionError}) async {
     var appSettings = await appSettingsBloc.fetchAppSettings();
     String? token = appSettings.loginResponse?.data?.token ?? '';
-    // orderID = '355';
-
-    if (kDebugMode) {
-      print('token: $token');
-    }
 
     socket = io(SingletonData.singletonData.socketURL, <String, dynamic>{
       "transports": ["websocket"],
@@ -96,9 +93,9 @@ class CustomerMapProvider extends ChangeNotifier {
           double.tryParse(response.info?.currentLatitude ?? '0.0') ?? 0.0,
           (double.tryParse(response.info?.currentLongitude ?? '0.0') ?? 0.0));
 
-      print('order_request_data ${jsonEncode(data)}');
-      print(fromLatLng.latitude);
-      print(fromLatLng.longitude);
+      debugPrint('order_request_data ${jsonEncode(data)}');
+      debugPrint(fromLatLng.latitude.toString());
+      debugPrint(fromLatLng.longitude.toString());
       customerStreamSocket.addResponseOnMove(fromLatLng);
     });
   }
@@ -117,6 +114,9 @@ class CustomerMapProvider extends ChangeNotifier {
     //  when rider rejects an order, this is triggered
 
     socket?.on("order_cancelled", (data) {
+      appToast(
+          'An order has been rejected by a rider.\nPlease check order history to see details',
+          appToastType: AppToastType.failed);
       log('order_id ${jsonEncode(data)}');
       String orderID = data['order_id'] ?? '';
     });

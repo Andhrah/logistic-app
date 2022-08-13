@@ -49,18 +49,20 @@ class SignupHelper with ConnectivityHelper, LogoutHelper {
   doSignUpOperation(String userType, Function() onShowLoader,
       Function() onCloseLoader) async {
     if (formKey.currentState!.validate()) {
-      onShowLoader();
-      signupService
-          .doSignUp(
-            SignupModel(
-                firstName: firstNameController.text.trim(),
-                lastName: lastNameController.text.trim(),
-                email: emailController.text.trim(),
-                phoneNumber: phoneNumberController.text.trim(),
-                password: passwordController.text,
-                userType: userType),
-          )
-          .then((value) => _completeLogin(value, userType, onCloseLoader));
+      checkInternetConnection(hasInternetCallback: () async {
+        onShowLoader();
+        signupService
+            .doSignUp(
+              SignupModel(
+                  firstName: firstNameController.text.trim(),
+                  lastName: lastNameController.text.trim(),
+                  email: emailController.text.trim(),
+                  phoneNumber: phoneNumberController.text.trim(),
+                  password: passwordController.text,
+                  userType: userType),
+            )
+            .then((value) => _completeLogin(value, userType, onCloseLoader));
+      });
     }
   }
 
@@ -94,10 +96,12 @@ class SignupHelper with ConnectivityHelper, LogoutHelper {
 
   doVerifyOperation(String code, String email, Function() onShowLoader,
       Function() onCloseLoader) async {
-    onShowLoader();
-    signupService
-        .doVerify(code, email)
-        .then((value) => _completeVerify(value, onCloseLoader));
+    checkInternetConnection(hasInternetCallback: () async {
+      onShowLoader();
+      signupService
+          .doVerify(code, email)
+          .then((value) => _completeVerify(value, onCloseLoader));
+    });
   }
 
   _completeVerify(Operation operation, Function() onCloseLoader) async {
@@ -162,17 +166,19 @@ class SignupHelper with ConnectivityHelper, LogoutHelper {
         appToast('CAC document is required', appToastType: AppToastType.failed);
         return;
       }
-      onShowLoader();
-      signupService
-          .doAddCompanyInfo(
-            SignupModel.toCompanyData(
-                name: nameController.text.trim(),
-                email: emailController.text.trim(),
-                phoneNumber: phoneNumberController.text.trim(),
-                rcNumber: rcNumberController.text.trim()),
-          )
-          .then(
-              (operation) => _completeCompanyInfoAdd(operation, onCloseLoader));
+      checkInternetConnection(hasInternetCallback: () async {
+        onShowLoader();
+        signupService
+            .doAddCompanyInfo(
+              SignupModel.toCompanyData(
+                  name: nameController.text.trim(),
+                  email: emailController.text.trim(),
+                  phoneNumber: phoneNumberController.text.trim(),
+                  rcNumber: rcNumberController.text.trim()),
+            )
+            .then((operation) =>
+                _completeCompanyInfoAdd(operation, onCloseLoader));
+      });
     }
   }
 

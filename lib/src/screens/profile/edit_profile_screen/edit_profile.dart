@@ -6,6 +6,7 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
@@ -29,7 +30,8 @@ class EditProfile extends StatefulWidget {
   State<EditProfile> createState() => _EditProfileState();
 }
 
-class _EditProfileState extends State<EditProfile> with ProfileHelper {
+class _EditProfileState extends State<EditProfile>
+    with ProfileHelper, ConnectivityHelper {
   final _formKey = GlobalKey<FormState>();
 
   ValidationBloc validationBloc = ValidationBloc();
