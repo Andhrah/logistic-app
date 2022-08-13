@@ -39,7 +39,7 @@ class OrderAPI extends BaseNetworkCallHandler {
 
     return runAPI(
         type == OrderHistoryType.all
-            ? 'api/orders?populate=*&filters[pickupDate][\$gt]=$startDate&filters[pickupDate][\$lte]=$endDate&filters[userId][id][\$eq]=$userID'
+            ? 'api/orders?populate=riderId.userId&filters[riderId][id][\$eq]=$userID'
             : 'api/orders?populate=*&filters[status][\$eq]=${type.name}&filters[riderId][id][\$eq]=31',
         HttpRequestType.get);
   }

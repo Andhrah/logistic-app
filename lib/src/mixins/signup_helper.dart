@@ -15,7 +15,6 @@ import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/screens/auth/merchant/company_data.dart';
 import 'package:trakk/src/screens/auth/verify_account.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
-import 'package:trakk/src/screens/tab.dart';
 import 'package:trakk/src/services/auth/signup_service.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
@@ -81,7 +80,7 @@ class SignupHelper with ConnectivityHelper, LogoutHelper {
           appToastType: AppToastType.success);
 
       SingletonData.singletonData.navKey.currentState!
-          .pushNamed(VerifiyAccountScreen.id, arguments: {
+          .pushNamed(VerifyAccountScreen.id, arguments: {
         "email": emailController.text,
         "phoneNumber": phoneNumberController.text,
         'userType': userType

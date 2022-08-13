@@ -5,6 +5,7 @@ class Assets {
       'assets/images/check_success_outline.png';
   static const String Logout_svg = 'assets/images/Logout.svg';
   static const String biometric_icon_svg = 'assets/images/biometric.svg';
+  static const String pickup_route = 'assets/images/pickup_route.png';
 
   //rider
   static const String distance_icon = 'assets/images/rider/distance_icon.png';
@@ -19,7 +20,6 @@ class Assets {
       'assets/images/rider/no_content_notification.png';
   static const String notification_icon_only =
       'assets/images/rider/notification_icon_only.png';
-  static const String pickup_route = 'assets/images/rider/pickup_route.png';
   static const String price_icon = 'assets/images/rider/price_icon.png';
   static const String request_a_dispatch =
       'assets/images/rider/request_a_dispatch.png';
