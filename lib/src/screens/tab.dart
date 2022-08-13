@@ -28,26 +28,6 @@ class _TabsState extends State<Tabs> {
 
   String currentTitle = 'Home';
 
-  Widget _currentUserPage(_selectedIndex) {
-    switch (_selectedIndex) {
-      case 0:
-        currentTitle = 'Home';
-        return const ItemDetails();
-      // case 1:
-      //   currentTitle = 'Cart';
-      //   return const CartScreen();
-      case 1:
-        currentTitle = 'Order';
-        return const UserOrderScreen();
-      case 2:
-        currentTitle = 'Wallet';
-        return const WalletScreen();
-      default:
-        currentTitle = 'Profile';
-        return const ProfileMenu();
-    }
-  }
-
   Widget _currentOtherUserPage(_selectedIndex) {
     switch (_selectedIndex) {
       case 0:
@@ -59,24 +39,51 @@ class _TabsState extends State<Tabs> {
                 return snapshot.data?.loginResponse?.data?.user?.userType ==
                         "rider"
                     ? RiderHomeScreen(_onItemTapped)
-                    : CompanyHome(_onItemTapped);
+                    : snapshot.data?.loginResponse?.data?.user?.userType ==
+                            "customer"
+                        ? const ItemDetails()
+                        : CompanyHome(_onItemTapped);
               }
               return const SizedBox();
             });
       case 1:
-        currentTitle = 'Dispatch history';
-        return const UserDispatchHistory(
-          canPop: false,
-        );
+        return StreamBuilder<AppSettings>(
+            stream: appSettingsBloc.appSettings,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data?.loginResponse?.data?.user?.userType ==
+                    "customer") {
+                  currentTitle = 'Order';
+                  return const UserOrderScreen();
+                } else {
+                  currentTitle = 'Dispatch history';
+                  return const UserDispatchHistory(
+                    canPop: false,
+                  );
+                }
+              }
+              return const SizedBox();
+            });
+
       case 2:
         currentTitle = 'Wallet';
         return const WalletScreen();
-      // case 2:
-      //   currentTitle = 'Cart';
-      //   return const CartScreen();
       default:
-        currentTitle = 'More';
-        return const ProfileMenu();
+        return StreamBuilder<AppSettings>(
+            stream: appSettingsBloc.appSettings,
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                if (snapshot.data?.loginResponse?.data?.user?.userType ==
+                    "customer") {
+                  currentTitle = 'Profile';
+                  return const ProfileMenu();
+                } else {
+                  currentTitle = 'More';
+                  return const ProfileMenu();
+                }
+              }
+              return const SizedBox();
+            });
     }
   }
 
@@ -101,7 +108,6 @@ class _TabsState extends State<Tabs> {
         }
       }
     });
-    // _fetchUser();
   }
 
   @override
@@ -129,172 +135,82 @@ class _TabsState extends State<Tabs> {
                 );
               }
               return Scaffold(
-                body: snapshot.data == UserType.customer
-                    ? _currentUserPage(_selectedIndex)
-                    : _currentOtherUserPage(_selectedIndex),
+                body: _currentOtherUserPage(_selectedIndex),
                 bottomNavigationBar: SizedBox(
                   height: 70,
-                  child: snapshot.data == UserType.customer
-                      ? BottomNavigationBar(
-                          showSelectedLabels: true,
-                          showUnselectedLabels: true,
-                          type: BottomNavigationBarType.fixed,
-                          selectedLabelStyle: theme.textTheme.caption,
-                          unselectedLabelStyle: theme.textTheme.caption,
-                          items: <BottomNavigationBarItem>[
-                            BottomNavigationBarItem(
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: Icon(
-                                  Remix.home_7_line,
-                                  color: _selectedIndex != 0
-                                      ? appPrimaryColor
-                                      : secondaryColor,
-                                  size: 24,
-                                ),
-                              ),
-                              label: 'Home',
-                            ),
-                            // BottomNavigationBarItem(
-                            //   icon: Padding(
-                            //     padding:
-                            //         const EdgeInsets.symmetric(vertical: 3.5),
-                            //     child: Icon(
-                            //       Remix.shopping_cart_2_line,
-                            //       color: _selectedIndex != 1
-                            //           ? appPrimaryColor
-                            //           : secondaryColor,
-                            //       size: 24,
-                            //     ),
-                            //   ),
-                            //   label: 'Cart',
-                            // ),
-                            BottomNavigationBarItem(
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: Icon(
-                                  Remix.file_list_line,
-                                  color: _selectedIndex != 1
-                                      ? appPrimaryColor
-                                      : secondaryColor,
-                                  size: 24,
-                                ),
-                              ),
-                              label: 'Order',
-                            ),
-                            BottomNavigationBarItem(
-                              // icon: SvgPicture.asset("assets/images/cart_icon.svg",
-                              //   color: _selectedIndex != 3 ? appPrimaryColor : secondaryColor
-                              // ),
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: Icon(
-                                  Remix.wallet_2_line,
-                                  color: _selectedIndex != 2
-                                      ? appPrimaryColor
-                                      : secondaryColor,
-                                  size: 24,
-                                ),
-                              ),
-                              label: 'Wallet',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: SvgPicture.asset(
-                                  "assets/images/profile_icon.svg",
-                                  color: _selectedIndex != 3
-                                      ? appPrimaryColor
-                                      : secondaryColor,
-                                  width: 24,
-                                  height: 24,
-                                ),
-                              ),
-                              label: 'Profile',
-                            ),
-                          ],
-                          currentIndex: _selectedIndex,
-                          selectedItemColor: secondaryColor,
-                          unselectedItemColor: appPrimaryColor,
-                          onTap: _onItemTapped,
-                        )
-                      : BottomNavigationBar(
-                          showSelectedLabels: true,
-                          showUnselectedLabels: true,
-                          type: BottomNavigationBarType.fixed,
-                          selectedLabelStyle: theme.textTheme.caption,
-                          unselectedLabelStyle: theme.textTheme.caption,
-                          items: <BottomNavigationBarItem>[
-                            BottomNavigationBarItem(
-                              //  icon: SvgPicture.asset("assets/images/home_icon.svg",
-                              //     color: _selectedIndex != 0 ? Colors.grey.withOpacity(0.3) : secondaryColor
-                              //   ),
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: Icon(
-                                  Remix.home_7_line,
-                                  color: _selectedIndex != 0
-                                      ? appPrimaryColor
-                                      : secondaryColor,
-                                  size: 24,
-                                ),
-                              ),
-                              label: 'Home',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: Icon(
-                                  Remix.history_line,
-                                  color: _selectedIndex != 1
-                                      ? appPrimaryColor
-                                      : secondaryColor,
-                                  size: 24,
-                                ),
-                              ),
-                              label: 'History',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: Icon(
-                                  Remix.wallet_2_line,
-                                  color: _selectedIndex != 2
-                                      ? appPrimaryColor.withOpacity(0.35)
-                                      : secondaryColor.withOpacity(0.35),
-                                  size: 24,
-                                ),
-                              ),
-                              label: 'Wallet',
-                            ),
-                            BottomNavigationBarItem(
-                              icon: Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 3.5),
-                                child: SvgPicture.asset(
-                                  "assets/images/profile_icon.svg",
-                                  color: _selectedIndex != 3
-                                      ? appPrimaryColor
-                                      : secondaryColor,
-                                  width: 24,
-                                  height: 24,
-                                ),
-                              ),
-                              label: 'Profile',
-                            ),
-                          ],
-                          currentIndex: _selectedIndex,
-                          selectedItemColor: secondaryColor,
-                          unselectedItemColor: appPrimaryColor,
-                          onTap: _onItemTapped,
+                  child: BottomNavigationBar(
+                    showSelectedLabels: true,
+                    showUnselectedLabels: true,
+                    type: BottomNavigationBarType.fixed,
+                    selectedLabelStyle: theme.textTheme.caption,
+                    unselectedLabelStyle: theme.textTheme.caption,
+                    items: <BottomNavigationBarItem>[
+                      BottomNavigationBarItem(
+                        //  icon: SvgPicture.asset("assets/images/home_icon.svg",
+                        //     color: _selectedIndex != 0 ? Colors.grey.withOpacity(0.3) : secondaryColor
+                        //   ),
+                        icon: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.5),
+                          child: Icon(
+                            Remix.home_7_line,
+                            color: _selectedIndex != 0
+                                ? appPrimaryColor
+                                : secondaryColor,
+                            size: 24,
+                          ),
                         ),
+                        label: 'Home',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.5),
+                          child: Icon(
+                            snapshot.data == UserType.customer
+                                ? Remix.file_list_line
+                                : Remix.history_line,
+                            color: _selectedIndex != 1
+                                ? appPrimaryColor
+                                : secondaryColor,
+                            size: 24,
+                          ),
+                        ),
+                        label: snapshot.data == UserType.customer
+                            ? 'Order'
+                            : 'History',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.5),
+                          child: Icon(
+                            Remix.wallet_2_line,
+                            color: _selectedIndex != 2
+                                ? appPrimaryColor.withOpacity(0.35)
+                                : secondaryColor.withOpacity(0.35),
+                            size: 24,
+                          ),
+                        ),
+                        label: 'Wallet',
+                      ),
+                      BottomNavigationBarItem(
+                        icon: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 3.5),
+                          child: SvgPicture.asset(
+                            "assets/images/profile_icon.svg",
+                            color: _selectedIndex != 3
+                                ? appPrimaryColor
+                                : secondaryColor,
+                            width: 24,
+                            height: 24,
+                          ),
+                        ),
+                        label: 'Profile',
+                      ),
+                    ],
+                    currentIndex: _selectedIndex,
+                    selectedItemColor: secondaryColor,
+                    unselectedItemColor: appPrimaryColor,
+                    onTap: _onItemTapped,
+                  ),
                 ),
               );
             }

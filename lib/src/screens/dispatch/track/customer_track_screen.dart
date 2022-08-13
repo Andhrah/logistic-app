@@ -39,17 +39,12 @@ class _CustomerTrackScreenState extends State<CustomerTrackScreen> {
         if (model.id != null) {
           injector = CustomerMapProvider.customerMapProvider(context);
           // injector.connect();
-          injector?.connectAndListenToSocket(
+          injector?.trackListener(
               toLatLng: LatLng(
                 model.attributes?.destinationLatitude ?? 0.0,
                 model.attributes?.destinationLongitude ?? 0.0,
               ),
-              orderID: model.id.toString(),
-              onConnected: () {},
-              onConnectionError: () {
-                injector?.disconnectSocket();
-                // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
-              });
+              orderID: model.id.toString());
         }
       }
     });
@@ -57,7 +52,7 @@ class _CustomerTrackScreenState extends State<CustomerTrackScreen> {
 
   @override
   void dispose() {
-    if (injector != null) injector?.disconnectSocket();
+    if (injector != null) injector?.removeTrackingListener();
     super.dispose();
   }
 

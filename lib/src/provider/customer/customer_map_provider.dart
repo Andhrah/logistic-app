@@ -20,11 +20,12 @@ class CustomerMapProvider extends ChangeNotifier {
   bool isNewConnection = false;
   Socket? socket;
 
+  String _orderToListenToID = '';
+
+  String get orderToListenToID => _orderToListenToID;
+
   connectAndListenToSocket(
-      {required LatLng toLatLng,
-      required String orderID,
-      Function()? onConnected,
-      Function()? onConnectionError}) async {
+      {Function()? onConnected, Function()? onConnectionError}) async {
     var appSettings = await appSettingsBloc.fetchAppSettings();
     String? token = appSettings.loginResponse?.data?.token ?? '';
     // orderID = '355';
@@ -78,18 +79,12 @@ class CustomerMapProvider extends ChangeNotifier {
       }
     });
 
-    _listeners(toLatLng, orderID);
+    orderCancelledListener();
   }
 
-  _listeners(LatLng toLatLng, String orderID) {
-    // if (SingletonData.singletonData.isDebug) {
-    socket?.onAny((event, data) {
-      if (kDebugMode) {
-        print('event: $event');
-        print('orderID: $orderID');
-      }
-    });
-    // }
+  trackListener({required LatLng toLatLng, required String orderID}) {
+    _orderToListenToID = orderID;
+    notifyListeners();
 
     socket?.on("customer_order_$orderID", (data) {
       log('order_request_data ${jsonEncode(data)}');
@@ -106,7 +101,19 @@ class CustomerMapProvider extends ChangeNotifier {
       print(fromLatLng.longitude);
       customerStreamSocket.addResponseOnMove(fromLatLng);
     });
+  }
 
+  removeTrackingListener() {
+    socket?.off('customer_order_$_orderToListenToID');
+  }
+
+  orderCancelledListener() {
+    socket?.onAny((event, data) {
+      if (kDebugMode) {
+        print('event: $event');
+        print('event data: $data');
+      }
+    });
     //  when rider rejects an order, this is triggered
 
     socket?.on("order_cancelled", (data) {

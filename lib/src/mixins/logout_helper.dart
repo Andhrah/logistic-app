@@ -6,7 +6,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
+import 'package:trakk/src/provider/customer/customer_map_provider.dart';
 import 'package:trakk/src/provider/rider/rider_map_provider.dart';
 import 'package:trakk/src/screens/auth/login.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -32,6 +34,11 @@ class LogoutHelper {
       injector.disconnectSocket();
       riderStreamSocket.invalidate();
       orderInFocus.invalidate();
+    } else if (userType == UserType.customer) {
+      CustomerMapProvider injector = CustomerMapProvider.customerMapProvider(
+          SingletonData.singletonData.navKey.currentState!.context);
+      injector.disconnectSocket();
+      customerStreamSocket.invalidate();
     }
     await appSettingsBloc.setLogOut();
   }
