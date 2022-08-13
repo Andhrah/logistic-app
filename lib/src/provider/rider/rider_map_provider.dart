@@ -100,12 +100,21 @@ class RiderMapProvider extends ChangeNotifier {
       } else {
         riderHomeStateBloc.updateState(RiderOrderState.isNewRequestIncoming);
       }
-      FlutterRingtonePlayer.playNotification();
+      playNewRequestSound();
     });
 
     // socket?.on('on:surrounding:packages', (data) {
     //   streamSocket.addSurroundingResponse([OrderResponse.fromJson(data)]);
     // });
+  }
+
+  playNewRequestSound() async {
+    await FlutterRingtonePlayer.stop();
+
+    await FlutterRingtonePlayer.play(looping: true);
+    await Future.delayed(const Duration(seconds: 8), () {
+      FlutterRingtonePlayer.stop();
+    });
   }
 
   disconnectSocket() {

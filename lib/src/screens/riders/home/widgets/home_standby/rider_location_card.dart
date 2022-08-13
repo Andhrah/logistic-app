@@ -316,7 +316,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                                 'Add Contact Details',
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
-                                    fontWeight: kSemiBoldWeight, fontSize: 8),
+                                    fontWeight: kSemiBoldWeight,
+                                    fontSize: textFontSize(context, 10)),
                               ),
                             ),
                             // 2.widthInPixel(),
@@ -378,7 +379,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                                 'Add Next of Kin Details',
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
-                                    fontWeight: kSemiBoldWeight, fontSize: 8),
+                                    fontWeight: kSemiBoldWeight,
+                                    fontSize: textFontSize(context, 10)),
                               ),
                             ),
                             // 2.widthInPixel(),
@@ -440,7 +442,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                                 'Add Vehicle Details',
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
-                                    fontWeight: kSemiBoldWeight, fontSize: 8),
+                                    fontWeight: kSemiBoldWeight,
+                                    fontSize: textFontSize(context, 10)),
                               ),
                             ),
                             // 2.widthInPixel(),
