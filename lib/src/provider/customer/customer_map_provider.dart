@@ -9,7 +9,6 @@ import 'package:socket_io_client/socket_io_client.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/models/customer/customer_order_listener_response.dart';
-import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 
 class CustomerMapProvider extends ChangeNotifier {
@@ -92,7 +91,6 @@ class CustomerMapProvider extends ChangeNotifier {
     });
     // }
 
-    runToast('Checking order status');
     socket?.on("customer_order_$orderID", (data) {
       log('order_request_data ${jsonEncode(data)}');
 
@@ -107,6 +105,13 @@ class CustomerMapProvider extends ChangeNotifier {
       print(fromLatLng.latitude);
       print(fromLatLng.longitude);
       customerStreamSocket.addResponseOnMove(fromLatLng);
+    });
+
+    //  when rider rejects an order, this is triggered
+
+    socket?.on("order_cancelled", (data) {
+      log('order_id ${jsonEncode(data)}');
+      String orderID = data['order_id'] ?? '';
     });
   }
 

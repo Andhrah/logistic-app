@@ -20,3 +20,27 @@ class CustomerStreamSocket with BaseBloc<LatLng, String> {
 }
 
 CustomerStreamSocket customerStreamSocket = CustomerStreamSocket();
+
+class CustomerOrderInFocus with BaseBloc<int, String> {
+  CustomerOrderInFocus() {
+    setOrderInFocusID(inFocusOrderId);
+  }
+
+  int inFocusOrderId = -1;
+
+  setOrderInFocusID(int orderId) {
+    inFocusOrderId = orderId;
+    addToModel(inFocusOrderId);
+  }
+
+  invalidate() {
+    inFocusOrderId = -1;
+    invalidateBaseBloc();
+  }
+
+  void dispose() {
+    disposeBaseBloc();
+  }
+}
+
+CustomerOrderInFocus customerOrderInFocus = CustomerOrderInFocus();
