@@ -49,9 +49,9 @@ a) Immediately notify Trakk of any unauthorized use of Your Account information 
 
 b) Ensure that You exit from Your Account at the end of each session.
 
-   TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. 
+TRAKK cannot and will not be liable for any loss or damage arising from your failure to comply with this provision.You may be held liable for losses incurred by TRAKK or any other User of or visitor to the Platform due to authorized or unauthorized use of Your Account as a result of your failure in keeping your Account information secure and confidential. 
     
-   Use of another User’s Account information for using the Platform is expressly prohibited.
+Use of another User’s Account information for using the Platform is expressly prohibited.
 
 """;
   String privacyPolicy = """
@@ -72,80 +72,83 @@ All information received by TRAKK shall be managed according to the Nigerian Dat
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: whiteColor,
-      body: Column(
-        children: [
-          SafeArea(child: 12.heightInPixel()),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              BackIcon(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultLayoutPadding),
-                onPress: () {
-                  Navigator.pop(context);
-                },
-              ),
-              Text(
-                'PRIVACY & SECURITY',
-                style: theme.textTheme.subtitle1!.copyWith(
-                    fontWeight: kBoldWeight,
-                    fontFamily: kDefaultFontFamilyHeading
-                    // decoration: TextDecoration.underline,
-                    ),
-              ),
-              BackIcon(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultLayoutPadding),
-                isPlaceHolder: true,
-                onPress: () {},
-              ),
-            ],
-          ),
-          Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: (() {
-                      setState(() {
-                        _isVisible = true;
-                      });
-                    }),
-                    child: privacyContainer(
-                      isVisible: _isVisible,
-                      leadIcon: Remix.account_pin_circle_line,
-                      title: 'User Account Security',
-                      description: securityDescription,
-                      onPressed: () {
-                        setState(() {
-                          _isVisible = false;
-                        });
-                      },
+      body: SafeArea(
+        child: Column(
+          children: [
+            Row(
+              children: [
+                BackIcon(
+                  onPress: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Container(
+                  height: 60,
+                  margin: EdgeInsets.symmetric(
+                      horizontal: MediaQuery.of(context).size.width * 0.1),
+                  alignment: Alignment.center,
+                  child: InkWell(
+                    onTap: () {},
+                    customBorder: const CircleBorder(),
+                    child: Text(
+                      'PRIVACY & SECURITY',
+                      style: theme.textTheme.subtitle1!.copyWith(
+                          fontWeight: kBoldWeight,
+                          fontSize: 18,
+                          fontFamily: kDefaultFontFamilyHeading
+                          // decoration: TextDecoration.underline,
+                          ),
                     ),
                   ),
-                  InkWell(
-                    onTap: (() {
-                      setState(() {
-                        _isVisible1 = true;
-                      });
-                    }),
-                    child: privacyContainer(
-                      isVisible: _isVisible1,
-                      leadIcon: Remix.git_repository_private_line,
-                      title: 'Privacy Policy',
-                      description: privacyPolicy,
-                      onPressed: () {
+                ),
+              ],
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    InkWell(
+                      onTap: (() {
                         setState(() {
-                          _isVisible1 = false;
+                          _isVisible = true;
                         });
-                      },
+                      }),
+                      child: privacyContainer(
+                        isVisible: _isVisible,
+                        leadIcon: Remix.account_pin_circle_line,
+                        title: 'User Account Security',
+                        description: securityDescription,
+                        onPressed: () {
+                          setState(() {
+                            _isVisible = false;
+                          });
+                        },
+                      ),
                     ),
-                  ),
-                ],
+                    InkWell(
+                      onTap: (() {
+                        setState(() {
+                          _isVisible1 = true;
+                        });
+                      }),
+                      child: privacyContainer(
+                        isVisible: _isVisible1,
+                        leadIcon: Remix.git_repository_private_line,
+                        title: 'Privacy Policy',
+                        description: privacyPolicy,
+                        onPressed: () {
+                          setState(() {
+                            _isVisible1 = false;
+                          });
+                        },
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

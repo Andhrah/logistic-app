@@ -14,10 +14,7 @@ import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/glow_widget.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/font.dart';
-import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
@@ -167,6 +164,8 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                   topRight: Radius.circular(8),
                   bottomRight: Radius.circular(8)),
               child: Image.asset(
+                
+                //if suspended? Assets.rider_home_suspended
                 Assets.rider_home_location,
                 height: 135,
               ),
@@ -248,6 +247,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
   Widget cardWithOnBoarding(BuildContext context, bool completedContact,
       bool completedNok, bool completedVehicles) {
     var theme = Theme.of(context);
+    var mediaQuery = MediaQuery.of(context);
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 450),
@@ -313,11 +313,12 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                'Add Contact Details',
+                                'Add Contact Details', textScaleFactor: 0.8,
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
                                     fontWeight: kSemiBoldWeight,
-                                    fontSize: textFontSize(context, 10)),
+                                    //fontSize: textFontSize(context, 10)
+                                    ),
                               ),
                             ),
                             // 2.widthInPixel(),
@@ -376,11 +377,12 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                'Add Next of Kin Details',
+                                'Add Next of Kin Details', textScaleFactor: 0.8,
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
                                     fontWeight: kSemiBoldWeight,
-                                    fontSize: textFontSize(context, 10)),
+                                    //fontSize: textFontSize(context, 10)
+                                    ),
                               ),
                             ),
                             // 2.widthInPixel(),
@@ -439,11 +441,12 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                'Add Vehicle Details',
+                                'Add Vehicle Details', textScaleFactor: 0.8,
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
                                     fontWeight: kSemiBoldWeight,
-                                    fontSize: textFontSize(context, 10)),
+                                    //fontSize: textFontSize(context, 10)
+                                    ),
                               ),
                             ),
                             // 2.widthInPixel(),

@@ -30,7 +30,6 @@ import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
-import 'package:trakk/src/screens/merchant/notifications.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -41,6 +40,8 @@ import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart'
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
+import 'package:trakk/src/screens/riders/home/rider_home.dart';
+import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_notification.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
 import 'package:trakk/src/screens/support/send_message.dart';
@@ -57,6 +58,8 @@ import 'package:trakk/src/screens/wallet/wallet.dart';
 import 'package:trakk/src/screens/wallet/wallet_history.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/values.dart';
+
+import 'screens/merchant/merchant_notifications.dart';
 
 class Home extends StatefulWidget {
   //final String _pusher = "ec680890477ff06ecb9a";
@@ -156,7 +159,8 @@ class _HomeState extends State<Home> {
               DispatchHistory.id: (context) => const DispatchHistory(),
               ListOfVehicles.id: (context) => const ListOfVehicles(),
               EditVehicle.id: (context) => const EditVehicle(),
-
+              MerchantNotifications.id:(context) =>  MerchantNotifications(),
+              RiderNotification.id:(context) => const RiderNotification(),
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
               AddRider.id: (context) => const AddRider(),
               AddRider1.id: (context) => const AddRider1(),
@@ -165,7 +169,6 @@ class _HomeState extends State<Home> {
               MerchantRiderProfile.id: (context) =>
                   const MerchantRiderProfile(),
               ListOfRiders.id: (context) => const ListOfRiders(),
-              Notifications.id: (context) => const Notifications(),
               // RejectedRides.id: (context) => const RejectedRides(),
               // FulfilledDispatch.id: (context) => const FulfilledDispatch(),
               // RiderOrderScreen.id: (context) => const RiderHomeScreen(),

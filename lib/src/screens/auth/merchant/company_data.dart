@@ -110,7 +110,8 @@ class _CompanyDataState extends State<CompanyData>
                           return null;
                         },
                       ),
-                      const SizedBox(height: 30.0),
+                      // const SizedBox(height: 30.0),
+
                       // InputField(
                       //   key: const Key('phoneNumber'),
                       //   textController: phoneNumberController,
@@ -137,7 +138,7 @@ class _CompanyDataState extends State<CompanyData>
                       //     return null;
                       //   },
                       // ),
-                      // const SizedBox(height: 30.0),
+                      const SizedBox(height: 30.0),
                       InputField(
                         key: const Key('cac'),
                         textController: rcNumberController,
@@ -149,11 +150,11 @@ class _CompanyDataState extends State<CompanyData>
                         hintText: 'CAC RC number',
                         textHeight: 10.0,
                         borderColor: appPrimaryColor.withOpacity(0.9),
-                        suffixIcon: const Icon(
-                          Remix.user_line,
-                          size: 18.0,
-                          color: Color(0xFF909090),
-                        ),
+                        // suffixIcon: const Icon(
+                        //   Remix.user_line,
+                        //   size: 18.0,
+                        //   color: Color(0xFF909090),
+                        // ),
                         onSaved: (value) {
                           return null;
                         },

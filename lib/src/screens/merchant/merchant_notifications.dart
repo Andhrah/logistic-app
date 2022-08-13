@@ -5,16 +5,16 @@ import 'package:trakk/src/widgets/default_container.dart';
 
 import '../../widgets/back_icon.dart';
 
-class Notifications extends StatefulWidget {
-  static const String id = '/notifications';
+class MerchantNotifications extends StatefulWidget {
+  static const String id = 'merchantNotifications';
 
-  const Notifications({Key? key}) : super(key: key);
+  const MerchantNotifications({Key? key}) : super(key: key);
 
   @override
-  State<Notifications> createState() => _NotificationsState();
+  State<MerchantNotifications> createState() => _MerchantNotificationsState();
 }
 
-class _NotificationsState extends State<Notifications> {
+class _MerchantNotificationsState extends State<MerchantNotifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

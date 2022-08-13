@@ -101,19 +101,19 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                   },
                 ),
                 Container(
-                  height: 98,
+                 // height: 98,
                   margin: EdgeInsets.symmetric(
-                      horizontal: MediaQuery.of(context).size.width * 0.2),
+                      horizontal: MediaQuery.of(context).size.width * 0.2, vertical: 20),
                   alignment: Alignment.center,
-                  child: const Text(
-                    'PROFILE MENU',
-                    textScaleFactor: 1.2,
-                    style: TextStyle(
-                      color: appPrimaryColor,
-                      fontWeight: FontWeight.bold,
-                      // decoration: TextDecoration.underline,
-                    ),
+                  child:  Text(
+              'PROFILE MENU',
+              style: theme.textTheme.subtitle1!.copyWith(
+                  fontWeight: kBoldWeight,
+                  fontSize: 18,
+                  fontFamily: kDefaultFontFamilyHeading
+                  // decoration: TextDecoration.underline,
                   ),
+            ),
                 ),
               ],
             ),
@@ -407,7 +407,7 @@ class _EditProfileState extends State<EditProfile> with ProfileHelper {
                                   color: appPrimaryColor,
                                   textColor: whiteColor,
                                   isLoading: _loading,
-                                  width: 350.0)),
+                                  width: MediaQuery.of(context).size.width/1.1)),
                           const SizedBox(height: 25.0),
                         ],
                       ),

@@ -105,12 +105,12 @@ class _AddRider2State extends State<AddRider2>
       backgroundColor: whiteColor,
       body: SafeArea(
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          const SizedBox(
-            height: 20,
-          ),
+          // const SizedBox(
+          //   height: 20,
+          // ),
           Padding(
             padding:
-                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
+                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -136,7 +136,7 @@ class _AddRider2State extends State<AddRider2>
               ],
             ),
           ),
-          30.heightInPixel(),
+          10.heightInPixel(),
           if (arg != null && arg["previousScreenID"] == AddRider1.id)
             Padding(
               padding:

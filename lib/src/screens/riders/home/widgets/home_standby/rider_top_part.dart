@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/socket_state_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
+import 'package:trakk/src/screens/merchant/merchant_notifications.dart';
+import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_notification.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/enums.dart';
@@ -102,7 +104,9 @@ class _RiderTopPartState extends State<RiderTopPart> {
                     );
                   }),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                  Navigator.pushNamed(context, RiderNotification.id);
+                },
                 child: Container(
                   decoration: const BoxDecoration(
                       color: secondaryColor, borderRadius: Radii.k4pxRadius),
