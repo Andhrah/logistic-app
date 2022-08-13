@@ -2,20 +2,21 @@ import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/rider/rider_order_history_bloc.dart';
 import 'package:trakk/src/models/order/order_history_response.dart';
-import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/styles.dart';
+import 'package:trakk/src/values/values.dart';
 
 class ListDispatchHistory extends StatefulWidget {
   const ListDispatchHistory({Key? key}) : super(key: key);
 
   @override
-  State<ListDispatchHistory> createState() => _UserDispatcHistoryState();
+  State<ListDispatchHistory> createState() => _ListDispatchHistoryState();
 }
 
-class _UserDispatcHistoryState extends State<ListDispatchHistory> {
+class _ListDispatchHistoryState extends State<ListDispatchHistory> {
   bool containToday = false;
   bool containThisWeek = false;
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -115,7 +116,6 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Expanded(
                                 child: Text(
@@ -130,7 +130,9 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                             height: 6.5,
                           ),
                           Text(
-                            '${getLongDate(dateValue: attributes.createdAt!.toIso8601String())}',
+                            getLongDate(
+                                dateValue:
+                                    attributes.createdAt!.toIso8601String()),
                             style: const TextStyle(
                                 color: grayColor,
                                 fontSize: 14,
@@ -139,30 +141,6 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                         ],
                       ),
                     ),
-                    // trailing: Padding(
-                    //   padding:
-                    //       const EdgeInsets.symmetric(vertical: 12),
-                    //   child: Column(
-                    //     crossAxisAlignment: CrossAxisAlignment.end,
-                    //     children: [
-                    //       const Text(
-                    //         '#4000',
-                    //         style: TextStyle(
-                    //             color: Colors.black,
-                    //             fontSize: 18,
-                    //             fontWeight: FontWeight.w600),
-                    //       ),
-                    //       const SizedBox(
-                    //         height: 10,
-                    //       ),
-                    //       Icon(
-                    //         Icons.keyboard_arrow_up,
-                    //         size: 14,
-                    //         color: Colors.black,
-                    //       )
-                    //     ],
-                    //   ),
-                    // ),
                     children: [
                       Column(
                         children: [
@@ -181,62 +159,68 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    SizedBox(
+                                    Image.asset(
+                                      Assets.pickup_route,
+                                      height: 100.0,
                                       width: 50,
-                                      //height: 100,
-                                      //color: appPrimaryColor,
-                                      child: Image.asset(
-                                        "assets/images/order_highlighter2.png",
-                                        height: 70.0,
-                                      ),
                                     ),
-                                    const SizedBox(width: 0.0),
-                                    Column(
-                                      children: const [
-                                        Text('Pickup Location'),
-                                        SizedBox(height: 35.0),
-                                        Text(
-                                          'Delivery Location',
-                                          // style: TextStyle(
-                                          //     fontSize: 16,
-                                          //     fontWeight:
-                                          //         FontWeight
-                                          //             .w500),
-                                        ),
-                                      ],
-                                    ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Expanded(
+                                        child: Column(
                                       children: [
-                                        Text('${attributes.pickup}'),
-                                        const SizedBox(height: 35.0),
-                                        Text(
-                                          '${attributes.destination}',
-                                          // style: TextStyle(
-                                          //     fontSize: 16,
-                                          //     fontWeight:
-                                          //         FontWeight
-                                          //             .w500),
+                                        const SizedBox(width: 0.0),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Expanded(
+                                                child: Text('Pickup Location')),
+                                            const SizedBox(width: 12.0),
+                                            Expanded(
+                                                flex: 3,
+                                                child: Text(
+                                                    '${attributes.pickup}')),
+                                          ],
+                                        ),
+                                        const SizedBox(
+                                          height: 20,
+                                        ),
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            const Expanded(
+                                              child: Text(
+                                                'Delivery Location',
+                                                // style: TextStyle(
+                                                //     fontSize: 16,
+                                                //     fontWeight:
+                                                //         FontWeight
+                                                //             .w500),
+                                              ),
+                                            ),
+                                            const SizedBox(width: 12.0),
+                                            Expanded(
+                                              flex: 3,
+                                              child: Text(
+                                                  attributes.destination ?? ''),
+                                            ),
+                                          ],
                                         ),
                                       ],
-                                    ),
+                                    ))
                                   ],
                                 ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(4.0),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Radio(
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 50,
+                                          child: Radio(
                                             value: null,
                                             groupValue: null,
                                             fillColor:
@@ -247,70 +231,52 @@ class _UserDispatcHistoryState extends State<ListDispatchHistory> {
 
                                             //mouseCursor: MouseCursor.uncontrolled,
                                           ),
-                                          const Text("Item"),
-                                          const SizedBox(
-                                            width: 95,
-                                          ),
-                                          Text(
+                                        ),
+                                        const Expanded(child: Text("Item")),
+                                        const SizedBox(width: 12.0),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
                                             attributes.itemName ?? '',
                                             style: const TextStyle(
                                                 overflow: TextOverflow.ellipsis,
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w500),
                                           ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 4),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        //crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Radio(
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      children: [
+                                        SizedBox(
+                                          width: 50,
+                                          child: Radio(
                                             value: null,
                                             groupValue: null,
                                             fillColor:
                                                 MaterialStateProperty.all(
                                                     secondaryColor),
-
                                             onChanged: null,
-
-                                            //mouseCursor: MouseCursor.uncontrolled,
                                           ),
-                                          const Text("Rider"),
-                                          // const SizedBox(
-                                          //   width: 20,
-                                          // ),
-                                          const SizedBox(
-                                            width: 95,
+                                        ),
+                                        const Expanded(
+                                          child: Text("Rider"),
+                                        ),
+                                        const SizedBox(
+                                          width: 12,
+                                        ),
+                                        Expanded(
+                                          flex: 3,
+                                          child: Text(
+                                            '${attributes.riderId?.data?.attributes?.userID?.data?.attributes?.firstName ?? ''} ${attributes.riderId?.data?.attributes?.userID?.data?.attributes?.lastName ?? ''}',
+                                            style: const TextStyle(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w500),
                                           ),
-                                          Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Text(
-                                                attributes.itemName ?? '',
-                                                style: const TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                              const SizedBox(
-                                                height: 5,
-                                              ),
-                                              const Text(
-                                                '',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w500),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),

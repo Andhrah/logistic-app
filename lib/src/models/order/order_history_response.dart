@@ -15,7 +15,11 @@ class OrderHistoryResponse {
         data: json["data"] == null
             ? null
             : json["data"] is List
-                ? null
+                ? OrderHistoryResponseData(
+                    attributes: OrderHistoryResponseDataDatum(
+                        attributes: PurpleAttributes(
+                            data: List<OrderHistoryDatum>.from(json["data"]
+                                .map((x) => OrderHistoryDatum.fromJson(x))))))
                 : OrderHistoryResponseData.fromJson(json["data"]),
         meta: json["meta"] == null ? null : Meta.fromJson(json["meta"]),
       );
@@ -324,22 +328,22 @@ class OrderHistoryDatumAttributesRiderIdData {
 }
 
 class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
-  OrderHistoryDatumAttributesRiderIdDataPurpleAttributes({
-    this.avatar,
-    this.dateOfBirth,
-    this.currentLocation,
-    this.currentLongitude,
-    this.currentLatitude,
-    this.stateOfOrigin,
-    this.stateOfResidence,
-    this.residentialAddress,
-    this.phone,
-    this.createdAt,
-    this.updatedAt,
-    this.publishedAt,
-    this.status,
-    this.cost,
-  });
+  OrderHistoryDatumAttributesRiderIdDataPurpleAttributes(
+      {this.avatar,
+      this.dateOfBirth,
+      this.currentLocation,
+      this.currentLongitude,
+      this.currentLatitude,
+      this.stateOfOrigin,
+      this.stateOfResidence,
+      this.residentialAddress,
+      this.phone,
+      this.createdAt,
+      this.updatedAt,
+      this.publishedAt,
+      this.status,
+      this.cost,
+      this.userID});
 
   final String? avatar;
   final String? dateOfBirth;
@@ -355,6 +359,7 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
   final DateTime? publishedAt;
   final String? status;
   final String? cost;
+  final OrderHistoryDatumAttributesUserId? userID;
 
   factory OrderHistoryDatumAttributesRiderIdDataPurpleAttributes.fromJson(
           Map<String, dynamic> json) =>
@@ -388,6 +393,9 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
             : DateTime.parse(json["publishedAt"]),
         status: json["status"] == null ? null : json["status"],
         cost: json["cost"] == null ? null : json["avatar"].toString(),
+        userID: json["userId"] == null
+            ? null
+            : OrderHistoryDatumAttributesUserId.fromJson(json["userId"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -407,6 +415,7 @@ class OrderHistoryDatumAttributesRiderIdDataPurpleAttributes {
             publishedAt == null ? null : publishedAt!.toIso8601String(),
         "status": status == null ? null : status,
         "cost": cost == null ? null : cost,
+        "userId": userID == null ? null : userID!.toJson(),
       };
 }
 

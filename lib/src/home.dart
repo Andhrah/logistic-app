@@ -193,8 +193,7 @@ class _HomeState extends State<Home> {
               WalletHistory.id: (context) => const WalletHistory(),
               QrPayment.id: (context) => const QrPayment(),
               QrCodePayment.id: (context) => const QrCodePayment(),
-              VerifiyAccountScreen.id: (context) =>
-                  const VerifiyAccountScreen(),
+              VerifyAccountScreen.id: (context) => const VerifyAccountScreen(),
               CompanyData.id: (context) => const CompanyData(),
             },
             // home: const GetStarted(),
