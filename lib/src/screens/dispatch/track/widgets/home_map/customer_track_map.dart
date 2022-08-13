@@ -9,7 +9,6 @@ import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
 import 'package:trakk/src/models/order/user_order_history_response.dart';
-import 'package:trakk/src/provider/customer/customer_map_provider.dart';
 import 'package:trakk/src/screens/dispatch/track/widgets/home_map/customer_bottom_sheet.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
@@ -118,7 +117,7 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
 
   void _onMapCreated(GoogleMapController controller) async {
     customerStreamSocket.behaviorSubject.listen((value) {
-      if (value.model != null) {
+      if (value.model != null && mounted) {
         moveCameraToUser(riderLatLng: value.model!);
 
         var arg = ModalRoute.of(context)!.settings.arguments;

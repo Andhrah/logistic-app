@@ -11,10 +11,10 @@ class MerchantNotifications extends StatefulWidget {
   const MerchantNotifications({Key? key}) : super(key: key);
 
   @override
-  State<MerchantNotifications> createState() => _NotificationsState();
+  State<MerchantNotifications> createState() => _MerchantNotificationsState();
 }
 
-class _NotificationsState extends State<MerchantNotifications> {
+class _MerchantNotificationsState extends State<MerchantNotifications> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

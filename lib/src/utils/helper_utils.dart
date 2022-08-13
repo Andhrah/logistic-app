@@ -266,3 +266,8 @@ UserType userTypeDeterminant(String userType) {
       return UserType.none;
   }
 }
+
+double textFontSize(context, double size) {
+  double _scaleFactor = MediaQuery.of(context).textScaleFactor;
+  return (size) / _scaleFactor;
+}

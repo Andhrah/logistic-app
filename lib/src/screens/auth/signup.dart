@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
@@ -24,11 +25,8 @@ class Signup extends StatefulWidget {
 
 class _SignupState extends State<Signup>
     with SignupHelper, ConnectivityHelper, LogoutHelper {
-  String? _firstName;
-  String? _lastName;
-  String? _email;
-  String? _phoneNumber;
-  String? _password;
+  ValidationBloc validationBloc = ValidationBloc();
+
   String? userType;
 
   bool _loading = false;
@@ -45,6 +43,7 @@ class _SignupState extends State<Signup>
   @override
   void dispose() {
     disposeControllers();
+    validationBloc.dispose();
     super.dispose();
   }
 
@@ -88,6 +87,8 @@ class _SignupState extends State<Signup>
 
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
+
     final arg = ModalRoute.of(context)!.settings.arguments as Map;
     String userType = arg["userType"];
 
@@ -154,7 +155,6 @@ class _SignupState extends State<Signup>
                           return "Enter a valid first name";
                         },
                         onSaved: (value) {
-                          _firstName = value!.trim();
                           return null;
                         },
                       ),
@@ -180,7 +180,6 @@ class _SignupState extends State<Signup>
                           return "Enter a valid last name";
                         },
                         onSaved: (value) {
-                          _lastName = value!.trim();
                           return null;
                         },
                       ),
@@ -203,7 +202,6 @@ class _SignupState extends State<Signup>
                           return _validateEmail();
                         },
                         onSaved: (value) {
-                          _email = value!.trim();
                           return null;
                         },
                       ),
@@ -230,57 +228,122 @@ class _SignupState extends State<Signup>
                           return "Enter a valid phone number";
                         },
                         onSaved: (value) {
-                          _phoneNumber = value!.trim();
                           return null;
                         },
                       ),
                       const SizedBox(height: 30.0),
-                      InputField(
-                        key: const Key('password'),
-                        textController: passwordController,
-                        obscureText: _hidePassword,
-                        maxLines: 1,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        text: 'Password',
-                        hintText: 'password',
-                        textHeight: 5.0,
-                        borderColor: appPrimaryColor.withOpacity(0.9),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _hidePassword == false
-                                ? Remix.eye_line
-                                : Remix.eye_close_line,
-                            size: 18.0,
-                            color: const Color(0xFF909090),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _hidePassword = !_hidePassword;
-                            });
-                          },
-                        ),
-                        validator: (value) {
-                          // This statements handles password validation
-                          RegExp regex;
-                          String strongRegex =
-                              r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})';
-                          if (value!.isEmpty) {
-                            _passwordIsValid = false;
-                            return "Password cannot be empty";
-                          } else {
-                            regex = RegExp(strongRegex);
-                            _passwordIsValid = regex.hasMatch(value);
-                            if (_passwordIsValid == false) {
-                              return "Password should be 8 characters or more,\ncontain at least a number, \na lowercase, \na capital letter and a special character";
+                      StreamBuilder<PasswordValidationStage>(
+                          stream: validationBloc.password,
+                          builder: (context, snapshot) {
+                            PasswordValidationStage stage =
+                                PasswordValidationStage();
+                            if (snapshot.hasData && snapshot.data != null) {
+                              stage = snapshot.data!;
                             }
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          _password = value!.trim();
-                          return null;
-                        },
-                      ),
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InputField(
+                                  key: const Key('password'),
+                                  textController: passwordController,
+                                  obscureText: _hidePassword,
+                                  maxLines: 1,
+                                  text: 'Password',
+                                  hintText: 'password',
+                                  textHeight: 5.0,
+                                  borderColor: appPrimaryColor.withOpacity(0.9),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _hidePassword == false
+                                          ? Remix.eye_line
+                                          : Remix.eye_close_line,
+                                      size: 18.0,
+                                      color: const Color(0xFF909090),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _hidePassword = !_hidePassword;
+                                      });
+                                    },
+                                  ),
+                                  onChanged: validationBloc.changePassword,
+                                  validator: validationBloc.passwordValidator,
+                                  onSaved: (value) {
+                                    return null;
+                                  },
+                                ),
+                                if (stage.oneCharacterEntered)
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 8 characters.',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.minimumOf8Characters
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 1 uppercase letter. (A - Z)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneUpperCase
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 1 number (i.e. 0 - 9)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneNumberCase
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 1 special character (i.e. #?!@\$%^&*-)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneSpecialCharacter
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- lowercase letters. (a - z)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneLowerCase
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  )
+                              ],
+                            );
+                          }),
                       SizedBox(
                         height: 7,
                       ),

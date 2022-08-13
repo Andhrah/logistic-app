@@ -22,6 +22,17 @@ enum RiderOrderState {
   isOrderCompleted
 }
 
+enum NewOrderState { isNew, isOngoing }
+
+enum NetworkState {
+  connecting,
+  connected,
+  connectionError,
+  disconnected,
+  noInternet,
+  internetTurnedOff
+}
+
 enum HttpRequestType { get, post, put, patch, delete, head, request, download }
 
 enum AppToastType { success, failed, normal }

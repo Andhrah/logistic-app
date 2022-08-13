@@ -1,4 +1,5 @@
 import 'package:badges/badges.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
@@ -7,23 +8,24 @@ import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/merchant_notifications.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
-import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/merchant_container.dart';
 
 class CompanyHome extends StatefulWidget {
-  static const String id = 'companyhome';
+  final Function(int index) forHomeNavigation;
 
-  const CompanyHome({Key? key}) : super(key: key);
+  static const String id = '/companyHome';
+
+  const CompanyHome(this.forHomeNavigation, {Key? key}) : super(key: key);
 
   @override
   State<CompanyHome> createState() => _CompanyHomeState();
 }
 
 class _CompanyHomeState extends State<CompanyHome> {
-  int notificatiobount = 26;
+  int notificatiobount = 0;
 
   @override
   void initState() {
@@ -61,15 +63,49 @@ class _CompanyHomeState extends State<CompanyHome> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Column(children: [
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).pushNamed(ProfileMenu.id);
-                        },
-                        child: const CircleAvatar(
-                          backgroundImage:
-                              AssetImage('assets/images/ladySmiling.png'),
-                        ),
-                      ),
+                      StreamBuilder<AppSettings>(
+                          stream: appSettingsBloc.appSettings,
+                          builder: (context, snapshot) {
+                            String avatar = '';
+
+                            if (snapshot.hasData) {
+                              avatar = snapshot.data?.loginResponse?.data?.user
+                                      ?.avatar ??
+                                  '';
+                            }
+                            return InkWell(
+                              onTap: () {
+                                widget.forHomeNavigation(3);
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(
+                                        color: whiteColor, width: 1.5)),
+                                child: ClipOval(
+                                  child: CachedNetworkImage(
+                                    imageUrl: avatar,
+                                    height: 40,
+                                    width: 40,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) => Image.asset(
+                                      Assets.dummy_avatar,
+                                      height: 40,
+                                      width: 40,
+                                      fit: BoxFit.cover,
+                                    ),
+                                    errorWidget: (context, url, err) =>
+                                        Image.asset(
+                                      Assets.dummy_avatar,
+                                      height: 40,
+                                      width: 40,
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }),
                       const SizedBox(
                         height: 5,
                       ),

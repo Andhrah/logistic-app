@@ -10,9 +10,9 @@ import 'package:trakk/src/bloc/map_ui_extras_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_map/rider_bottom_sheet.dart';
-import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class RiderHomeMapScreen extends StatefulWidget {
   final MiscBloc locaBloc;
@@ -60,8 +60,22 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
   }
 
   updateRoute() {
-    var model = riderStreamSocket.behaviorSubject.value.model;
-    if (model != null && model.order != null) {
+    var modelValue = riderStreamSocket.behaviorSubject.value.model;
+    if (modelValue != null &&
+        modelValue
+            .where(
+                (element) => element.order?.id == orderInFocus.acceptedOrderID)
+            .isNotEmpty &&
+        modelValue
+                .where((element) =>
+                    element.order?.id == orderInFocus.acceptedOrderID)
+                .first
+                .order !=
+            null) {
+      var model = modelValue
+          .where((element) => element.order?.id == orderInFocus.acceptedOrderID)
+          .first;
+
       if (model.order!.destinationLatitude != null &&
               model.order!.destinationLongitude != null &&
               widget.orderState ==
@@ -82,6 +96,23 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
     miscBloc.location.onLocationChanged.listen((loca) {
       if (widget.orderState == RiderOrderState.isRequestAccepted ||
           widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {
+        var model = modelValue != null &&
+                modelValue
+                    .where((element) =>
+                        element.order?.id == orderInFocus.acceptedOrderID)
+                    .isNotEmpty &&
+                modelValue
+                        .where((element) =>
+                            element.order?.id == orderInFocus.acceptedOrderID)
+                        .first
+                        .order !=
+                    null
+            ? modelValue
+                .where((element) =>
+                    element.order?.id == orderInFocus.acceptedOrderID)
+                .first
+            : null;
+
         mapExtraUIBloc.updateMarkersWithCircle([
           LatLng(model?.order?.pickupLatitude ?? 0.0,
               model?.order?.pickupLongitude ?? 0.0)
@@ -90,6 +121,23 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
       if (widget.orderState ==
               RiderOrderState.isItemPickedUpLocationAndEnRoute ||
           widget.orderState == RiderOrderState.isAlmostAtDestinationLocation) {
+        var model = modelValue != null &&
+                modelValue
+                    .where((element) =>
+                        element.order?.id == orderInFocus.acceptedOrderID)
+                    .isNotEmpty &&
+                modelValue
+                        .where((element) =>
+                            element.order?.id == orderInFocus.acceptedOrderID)
+                        .first
+                        .order !=
+                    null
+            ? modelValue
+                .where((element) =>
+                    element.order?.id == orderInFocus.acceptedOrderID)
+                .first
+            : null;
+
         mapExtraUIBloc.updateMarkersWithCircle([
           LatLng(model?.order?.destinationLatitude ?? 0.0,
               model?.order?.destinationLongitude ?? 0.0)

@@ -5,10 +5,10 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/screens/merchant/add_rider1.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
+import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/values/padding.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
 import 'package:trakk/src/widgets/input_field.dart';
@@ -90,12 +90,13 @@ class _AddRiderState extends State<AddRider> {
                     child: Text(
                       'ADD RIDER',
                       style: theme.textTheme.subtitle1!.copyWith(
-                        color: appPrimaryColor,
-                        ///fontWeight: FontWeight.bold,
-                        fontWeight: kBoldWeight,
-                      fontFamily: kDefaultFontFamilyHeading
-                        // decoration: TextDecoration.underline,
-                      ),
+                          color: appPrimaryColor,
+
+                          ///fontWeight: FontWeight.bold,
+                          fontWeight: kBoldWeight,
+                          fontFamily: kDefaultFontFamilyHeading
+                          // decoration: TextDecoration.underline,
+                          ),
                     ),
                   ),
                   BackIcon(
@@ -227,41 +228,121 @@ class _AddRiderState extends State<AddRider> {
                         },
                       ),
                       const SizedBox(height: 30.0),
-                      InputField(
-                        key: const Key('password'),
-                        textController: _passwordController,
-                        node: _passwordNode,
-                        obscureText: _hidePassword,
-                        maxLines: 1,
-                        autovalidateMode: AutovalidateMode.onUserInteraction,
-                        text: 'Password',
-                        hintText: 'password',
-                        textHeight: 5.0,
-                        borderColor: appPrimaryColor.withOpacity(0.9),
-                        suffixIcon: IconButton(
-                          icon: Icon(
-                            _hidePassword == false
-                                ? Remix.eye_line
-                                : Remix.eye_close_line,
-                            size: 18.0,
-                            color: const Color(0xFF909090),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              _hidePassword = !_hidePassword;
-                            });
-                          },
-                        ),
-                        validator: (value) {
-                          if (value!.trim().length < 7) {
-                            return "Password should be 8 characters or more";
-                          }
-                          return null;
-                        },
-                        onSaved: (value) {
-                          return null;
-                        },
-                      ),
+                      StreamBuilder<PasswordValidationStage>(
+                          stream: validationBloc.password,
+                          builder: (context, snapshot) {
+                            PasswordValidationStage stage =
+                                PasswordValidationStage();
+                            if (snapshot.hasData && snapshot.data != null) {
+                              stage = snapshot.data!;
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                InputField(
+                                  key: const Key('password'),
+                                  textController: _passwordController,
+                                  node: _passwordNode,
+                                  obscureText: _hidePassword,
+                                  maxLines: 1,
+                                  autovalidateMode:
+                                      AutovalidateMode.onUserInteraction,
+                                  text: 'Password',
+                                  hintText: 'password',
+                                  textHeight: 5.0,
+                                  borderColor: appPrimaryColor.withOpacity(0.9),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _hidePassword == false
+                                          ? Remix.eye_line
+                                          : Remix.eye_close_line,
+                                      size: 18.0,
+                                      color: const Color(0xFF909090),
+                                    ),
+                                    onPressed: () {
+                                      setState(() {
+                                        _hidePassword = !_hidePassword;
+                                      });
+                                    },
+                                  ),
+                                  onChanged: validationBloc.changePassword,
+                                  validator: validationBloc.passwordValidator,
+                                  onSaved: (value) {
+                                    return null;
+                                  },
+                                ),
+                                if (stage.oneCharacterEntered)
+                                  const SizedBox(
+                                    height: 10,
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 8 characters.',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.minimumOf8Characters
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 1 uppercase letter. (A - Z)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneUpperCase
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 1 number (i.e. 0 - 9)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneNumberCase
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- at least 1 special character (i.e. #?!@\$%^&*-)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneSpecialCharacter
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  ),
+                                if (stage.oneCharacterEntered)
+                                  Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 4.0),
+                                    child: Text(
+                                      '- lowercase letters. (a - z)',
+                                      style: theme.textTheme.caption!.copyWith(
+                                          color: stage.oneLowerCase
+                                              ? green
+                                              : kTextColor,
+                                          fontWeight: kSemiBoldWeight),
+                                    ),
+                                  )
+                              ],
+                            );
+                          }),
                       const SizedBox(height: 40.0),
                       InputField(
                         key: const Key('confirm'),

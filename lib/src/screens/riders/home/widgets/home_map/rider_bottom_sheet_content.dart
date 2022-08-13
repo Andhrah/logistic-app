@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
+import 'package:trakk/src/values/enums.dart';
+import 'package:trakk/src/values/font.dart';
+import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 typedef OnButtonClicked = Function(RiderOrderState data, String orderNo,
@@ -59,83 +59,100 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
         ),
         34.heightInPixel(),
         SizedBox(
-          height: 110,
+          height: 135,
           child: Row(
             children: [
               Image.asset(
                 Assets.pickup_route,
-                height: 90,
+                height: 120,
               ),
               12.widthInPixel(),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'PICKUP LOCATION',
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyText1!.copyWith(
-                          fontWeight: kSemiBoldWeight, color: dividerColor),
+                    Expanded(
+                      child: FutureBuilder<String>(
+                          future: getAddressFromLatLng(
+                              pickupLatitude, pickupLongitude),
+                          builder: (context, snapshot) {
+                            String pickupAddress = '';
+                            if (snapshot.hasData) {
+                              pickupAddress = snapshot.data ?? '';
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'PICKUP LOCATION',
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.bodyText1!.copyWith(
+                                      fontWeight: kSemiBoldWeight,
+                                      color: dividerColor),
+                                ),
+                                4.heightInPixel(),
+                                Text(
+                                  pickupAddress,
+                                  textAlign: TextAlign.start,
+                                  style: theme.textTheme.bodyText1!
+                                      .copyWith(fontWeight: kMediumWeight),
+                                ),
+                                1.flexSpacer(),
+                                Text(
+                                  'DELIVERY LOCATION',
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.bodyText1!.copyWith(
+                                      fontWeight: kSemiBoldWeight,
+                                      color: dividerColor),
+                                ),
+                                4.heightInPixel(),
+                                FutureBuilder<String>(
+                                    future: getAddressFromLatLng(
+                                        deliveryLatitude, deliveryLongitude),
+                                    builder: (context, snapshot) {
+                                      String deliveryAddress = '';
+                                      if (snapshot.hasData) {
+                                        deliveryAddress = snapshot.data ?? '';
+                                      }
+                                      return RichText(
+                                        textAlign: TextAlign.start,
+                                        text: TextSpan(
+                                            text: 'From ',
+                                            style: theme.textTheme.bodyText1!
+                                                .copyWith(
+                                                    fontWeight: kLightWeight),
+                                            children: [
+                                              TextSpan(
+                                                text: '$pickupAddress ',
+                                                style: theme
+                                                    .textTheme.bodyText1!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            kMediumWeight),
+                                              ),
+                                              TextSpan(
+                                                text: 'to ',
+                                                style: theme
+                                                    .textTheme.bodyText1!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            kLightWeight),
+                                              ),
+                                              TextSpan(
+                                                text: '$deliveryAddress ',
+                                                style: theme
+                                                    .textTheme.bodyText1!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            kMediumWeight),
+                                              ),
+                                            ]),
+                                      );
+                                    }),
+                              ],
+                            );
+                          }),
                     ),
-                    4.heightInPixel(),
-                    FutureBuilder<String>(
-                        future: getAddressFromLatLng(
-                            pickupLatitude, pickupLongitude),
-                        builder: (context, snapshot) {
-                          String address = '';
-                          if (snapshot.hasData) {
-                            address = snapshot.data ?? '';
-                          }
-                          return Text(
-                            address,
-                            textAlign: TextAlign.start,
-                            style: theme.textTheme.bodyText1!
-                                .copyWith(fontWeight: kMediumWeight),
-                          );
-                        }),
-                    1.flexSpacer(),
-                    Text(
-                      'DELIVERY LOCATION',
-                      textAlign: TextAlign.center,
-                      style: theme.textTheme.bodyText1!.copyWith(
-                          fontWeight: kSemiBoldWeight, color: dividerColor),
-                    ),
-                    4.heightInPixel(),
-                    FutureBuilder<String>(
-                        future: getAddressFromLatLng(
-                            deliveryLatitude, deliveryLongitude),
-                        builder: (context, snapshot) {
-                          String pickupAddress = '';
-                          String deliveryAddress = '';
-                          if (snapshot.hasData) {
-                            pickupAddress = snapshot.data ?? '';
-                            deliveryAddress = snapshot.data ?? '';
-                          }
-                          return RichText(
-                            textAlign: TextAlign.start,
-                            text: TextSpan(
-                                text: 'From ',
-                                style: theme.textTheme.bodyText1!
-                                    .copyWith(fontWeight: kLightWeight),
-                                children: [
-                                  TextSpan(
-                                    text: '$pickupAddress ',
-                                    style: theme.textTheme.bodyText1!
-                                        .copyWith(fontWeight: kMediumWeight),
-                                  ),
-                                  TextSpan(
-                                    text: 'to ',
-                                    style: theme.textTheme.bodyText1!
-                                        .copyWith(fontWeight: kLightWeight),
-                                  ),
-                                  TextSpan(
-                                    text: '$deliveryAddress ',
-                                    style: theme.textTheme.bodyText1!
-                                        .copyWith(fontWeight: kMediumWeight),
-                                  ),
-                                ]),
-                          );
-                        }),
                   ],
                 ),
               )

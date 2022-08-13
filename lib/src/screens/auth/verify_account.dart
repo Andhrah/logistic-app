@@ -6,8 +6,8 @@ import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/logout_helper.dart';
 import 'package:trakk/src/mixins/signup_helper.dart';
 import 'package:trakk/src/values/values.dart';
-import 'package:trakk/src/widgets/back_icon.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/custom_app_bar.dart';
 
 class VerifiyAccountScreen extends StatefulWidget {
   static const String id = 'otp';
@@ -126,33 +126,8 @@ class _VerifiyAccountScreenState extends State<VerifiyAccountScreen>
             children: [
               const SizedBox(height: 10.0),
               kSizeBox,
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  BackIcon(
-                    onPress: () {
-                      Navigator.pop(context);
-                    },
-                  ),
-                  Container(
-                    margin: const EdgeInsets.only(right: 70.0),
-                    alignment: Alignment.center,
-                    child: InkWell(
-                      onTap: () {},
-                      customBorder: const CircleBorder(),
-                      child: const Text(
-                        'VERIFY ACCOUNT',
-                        textScaleFactor: 1.2,
-                        style: TextStyle(
-                          color: appPrimaryColor,
-                          fontWeight: FontWeight.bold,
-                          // decoration: TextDecoration.underline,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(),
-                ],
+              const CustomAppBar(
+                titleText: 'VERIFY ACCOUNT',
               ),
               const SizedBox(height: 30.0),
               Container(

@@ -26,12 +26,10 @@ import 'package:trakk/src/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/src/screens/merchant/add_rider.dart';
 import 'package:trakk/src/screens/merchant/add_rider1.dart';
 import 'package:trakk/src/screens/merchant/add_rider_2/add_rider2.dart';
-import 'package:trakk/src/screens/merchant/company_home.dart';
 import 'package:trakk/src/screens/merchant/dispatch_history.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/list_of_vehicles.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
-import 'package:trakk/src/screens/merchant/merchant_notifications.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/screens/onboarding/get_started.dart';
@@ -45,7 +43,6 @@ import 'package:trakk/src/screens/profile/profile_menu.dart';
 import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_notification.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
-import 'package:trakk/src/screens/riders/rider_order.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
 import 'package:trakk/src/screens/support/send_message.dart';
 import 'package:trakk/src/screens/tab.dart';
@@ -61,6 +58,8 @@ import 'package:trakk/src/screens/wallet/wallet.dart';
 import 'package:trakk/src/screens/wallet/wallet_history.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
 import 'package:trakk/src/values/values.dart';
+
+import 'screens/merchant/merchant_notifications.dart';
 
 class Home extends StatefulWidget {
   //final String _pusher = "ec680890477ff06ecb9a";
@@ -154,13 +153,13 @@ class _HomeState extends State<Home> {
               ProfileMenu.id: (context) => const ProfileMenu(),
               EditProfile.id: (context) => const EditProfile(),
               FundWalletScreen.id: (context) => const FundWalletScreen(),
-              CompanyHome.id: (context) => const CompanyHome(),
+              // CompanyHome.id: (context) => const CompanyHome(),
               Vehicles.id: (context) => const Vehicles(),
               Riders.id: (context) => const Riders(),
               DispatchHistory.id: (context) => const DispatchHistory(),
               ListOfVehicles.id: (context) => const ListOfVehicles(),
               EditVehicle.id: (context) => const EditVehicle(),
-              MerchantNotifications.id:(context) => const MerchantNotifications(),
+              MerchantNotifications.id:(context) =>  MerchantNotifications(),
               RiderNotification.id:(context) => const RiderNotification(),
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
               AddRider.id: (context) => const AddRider(),
@@ -172,8 +171,8 @@ class _HomeState extends State<Home> {
               ListOfRiders.id: (context) => const ListOfRiders(),
               // RejectedRides.id: (context) => const RejectedRides(),
               // FulfilledDispatch.id: (context) => const FulfilledDispatch(),
-              RiderOrderScreen.id: (context) => const RiderHomeScreen(),
-              RiderHomeScreen.id: (context) => const RiderHomeScreen(),
+              // RiderOrderScreen.id: (context) => const RiderHomeScreen(),
+              // RiderHomeScreen.id: (context) => const RiderHomeScreen(),
               CustomerTrackScreen.id: (context) => const CustomerTrackScreen(),
               Beneficiaries.id: (context) => const Beneficiaries(),
               // MyDatePicker.id: (context) => MyDatePicker(),
