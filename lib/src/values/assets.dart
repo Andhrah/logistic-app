@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 class Assets {
   //general
   static const String marker_icon = 'assets/images/rider/dummy_avatar.png';
