@@ -60,6 +60,17 @@ class _EditVehicleState extends State<EditVehicle>
   }
 
   @override
+  void dispose() {
+    _nameOfVehicleController.dispose();
+    _vehicleNumberController.dispose();
+    _vhicleModelController.dispose();
+    _nameOfVehicleNode.dispose();
+    _vehicleNumberNode.dispose();
+    _vhicleModelNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
 
