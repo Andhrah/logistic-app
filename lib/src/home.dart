@@ -62,8 +62,6 @@ import 'package:trakk/src/values/values.dart';
 import 'screens/merchant/merchant_notifications.dart';
 
 class Home extends StatefulWidget {
-  //final String _pusher = "ec680890477ff06ecb9a";
-
   const Home({Key? key}) : super(key: key);
 
   @override
@@ -76,7 +74,6 @@ class _HomeState extends State<Home> {
     super.dispose();
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setSystemUIOverlayStyle(

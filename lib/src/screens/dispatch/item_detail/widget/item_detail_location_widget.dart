@@ -48,7 +48,7 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
     var result = await googlePlace.autocomplete
         .get(value, components: [Component('country', "NG")]);
     if (result != null && result.predictions != null && mounted) {
-      print(result.predictions!.first.description);
+      // print(result.predictions!.first.description);
       setState(() {
         predictions = result.predictions!;
       });

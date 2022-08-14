@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
@@ -63,11 +69,14 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
 
   Widget _standby() {
     var theme = Theme.of(context);
-
+    var sizePixelHeight = MediaQuery.of(context).size.height;
+    double percentMinSize = 0.1;
+    double percentMaxSize =
+        (180 / sizePixelHeight) > 1 ? 1 : 180 / sizePixelHeight;
     return DraggableScrollableSheet(
-        initialChildSize: 0.1,
-        maxChildSize: 0.4,
-        minChildSize: 0.1,
+        initialChildSize: percentMinSize,
+        maxChildSize: percentMaxSize,
+        minChildSize: percentMinSize,
         builder: (BuildContext context, ScrollController scrollController) {
           return Container(
             decoration: const BoxDecoration(
@@ -81,13 +90,25 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
               child: SingleChildScrollView(
                 controller: scrollController,
                 padding: const EdgeInsets.symmetric(
-                    horizontal: kDefaultLayoutPadding + kDefaultLayoutPadding,
-                    vertical: 34),
+                    horizontal: kDefaultLayoutPadding + kDefaultLayoutPadding),
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 450),
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      const SizedBox(
+                        height: 12,
+                      ),
+                      Container(
+                        width: 80,
+                        height: 2.5,
+                        decoration: const BoxDecoration(
+                            color: Colors.black54,
+                            borderRadius: Radii.k12pxRadius),
+                      ),
+                      const SizedBox(
+                        height: 24,
+                      ),
                       Row(
                         children: [
                           Expanded(
@@ -180,6 +201,9 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(
+                        height: 34,
                       ),
                     ],
                   ),

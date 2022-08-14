@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
@@ -27,7 +28,7 @@ class AddRider1 extends StatefulWidget {
 }
 
 class _AddRider1State extends State<AddRider1>
-    with ProfileHelper, MerchantAddRiderAndVehicleHelper {
+    with ProfileHelper, MerchantAddRiderAndVehicleHelper, ConnectivityHelper {
   final _formKey = GlobalKey<FormState>();
 
   String? _stateOfOrigin;
@@ -83,12 +84,12 @@ class _AddRider1State extends State<AddRider1>
                         ? 'Contact Details'
                         : 'ADD RIDER',
                     style: theme.textTheme.subtitle1!.copyWith(
-                      color: appPrimaryColor,
-                      //fontWeight: FontWeight.bold,
-                      fontWeight: kBoldWeight,
-                      fontFamily: kDefaultFontFamilyHeading
-                      // decoration: TextDecoration.underline,
-                    ),
+                        color: appPrimaryColor,
+                        //fontWeight: FontWeight.bold,
+                        fontWeight: kBoldWeight,
+                        fontFamily: kDefaultFontFamilyHeading
+                        // decoration: TextDecoration.underline,
+                        ),
                   ),
                 ),
                 BackIcon(

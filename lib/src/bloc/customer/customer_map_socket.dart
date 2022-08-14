@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -20,27 +26,3 @@ class CustomerStreamSocket with BaseBloc<LatLng, String> {
 }
 
 CustomerStreamSocket customerStreamSocket = CustomerStreamSocket();
-
-class CustomerOrderInFocus with BaseBloc<int, String> {
-  CustomerOrderInFocus() {
-    setOrderInFocusID(inFocusOrderId);
-  }
-
-  int inFocusOrderId = -1;
-
-  setOrderInFocusID(int orderId) {
-    inFocusOrderId = orderId;
-    addToModel(inFocusOrderId);
-  }
-
-  invalidate() {
-    inFocusOrderId = -1;
-    invalidateBaseBloc();
-  }
-
-  void dispose() {
-    disposeBaseBloc();
-  }
-}
-
-CustomerOrderInFocus customerOrderInFocus = CustomerOrderInFocus();

@@ -8,6 +8,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/models/auth_response.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/models/update_profile/update_profile.dart';
@@ -21,14 +22,16 @@ import '../utils/operation.dart';
 
 typedef _ProfileFetchSuccess = Function(AuthData authData);
 
-class ProfileHelper {
+class ProfileHelper with ConnectivityHelper {
   doGetProfileOperation(
       {Function()? onShowLoader,
       Function()? onCloseLoader,
       _ProfileFetchSuccess? profileFetchSuccess}) async {
-    if (onShowLoader != null) onShowLoader();
-    profileService.getProfile().then(
-        (value) => _completeGet(value, onCloseLoader, profileFetchSuccess));
+    checkInternetConnection(hasInternetCallback: () async {
+      if (onShowLoader != null) onShowLoader();
+      profileService.getProfile().then(
+          (value) => _completeGet(value, onCloseLoader, profileFetchSuccess));
+    });
   }
 
   _completeGet(Operation operation,

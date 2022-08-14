@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
@@ -34,10 +35,9 @@ class _AddRider2State extends State<AddRider2>
     with
         MerchantAddRiderAndVehicleHelper,
         MerchantUpdateRiderAndVehicleHelper,
-        ProfileHelper {
+        ProfileHelper,
+        ConnectivityHelper {
   Map<String, String> _files = {};
-
-  bool _isButtonPress = false;
 
   var colors = ["black", "white", "gold", "grey", "ash", "blue", "red"];
   String? _colorsTypes;
@@ -233,16 +233,6 @@ class _AddRider2State extends State<AddRider2>
                           }).toList(),
                         ),
                       )),
-                  _isButtonPress && _colorsTypes == "Vehicle capacity"
-                      ? const Text(
-                          "Select weight",
-                          textScaleFactor: 0.9,
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: Colors.red,
-                          ),
-                        )
-                      : Container(),
                   20.heightInPixel(),
                   InputField(
                     key: const Key('vehiclenumber'),

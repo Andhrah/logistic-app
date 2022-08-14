@@ -10,6 +10,7 @@ import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/merchant/get_riders_list_bloc.dart';
 import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/message_only_response.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
@@ -26,7 +27,8 @@ import 'package:trakk/src/widgets/cancel_button.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:uploadcare_client/uploadcare_client.dart';
 
-class MerchantUpdateRiderAndVehicleHelper with ProfileHelper {
+class MerchantUpdateRiderAndVehicleHelper
+    with ProfileHelper, ConnectivityHelper {
   final BuildContext _authContext =
       SingletonData.singletonData.navKey.currentState!.context;
   final BuildContext _authContextOverLay =

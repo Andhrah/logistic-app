@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/merchant/get_vehicles_for_merchant_list_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/merchant/get_riders_for_merchant_response.dart';
 import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/src/models/rider/add_vehicle_to_merchant_model.dart';
-import 'package:trakk/src/screens/merchant/inactive_vehicle.dart';
 import 'package:trakk/src/screens/merchant/list_of_riders.dart';
 import 'package:trakk/src/screens/merchant/merchant_rider_profile/merchant_rider_profile.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
@@ -52,7 +52,10 @@ class ListOfVehicles extends StatefulWidget {
 }
 
 class _ListOfVehiclesState extends State<ListOfVehicles>
-    with MerchantUpdateRiderAndVehicleHelper, ProfileHelper {
+    with
+        MerchantUpdateRiderAndVehicleHelper,
+        ProfileHelper,
+        ConnectivityHelper {
   bool _isButtonPress = false;
 
   dynamic itemCount;
@@ -118,7 +121,6 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
               children: [
                 SizedBox(
                   width: 85,
-
                   child: Row(
                     children: [
                       BackIcon(
@@ -131,14 +133,15 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                   ),
                 ),
                 Text(
-                  'LIST OF VEHICLES', textScaleFactor: 1.2,
+                  'LIST OF VEHICLES',
+                  textScaleFactor: 1.2,
                   style: theme.textTheme.subtitle2!.copyWith(
-                    color: appPrimaryColor, 
-                    //fontWeight: FontWeight.bold,
-                    fontWeight: kBoldWeight,
+                      color: appPrimaryColor,
+                      //fontWeight: FontWeight.bold,
+                      fontWeight: kBoldWeight,
                       fontFamily: kDefaultFontFamilyHeading
-                    // decoration: TextDecoration.underline,
-                  ),
+                      // decoration: TextDecoration.underline,
+                      ),
                 ),
                 // SizedBox(
                 //   height: 50,
@@ -207,7 +210,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                       icon: const Icon(Remix.arrow_down_s_line),
                       elevation: 16,
                       isExpanded: true,
-                      
+
                       style: theme.textTheme.bodyText2!.copyWith(
                         color: appPrimaryColor.withOpacity(0.8),
                       ),
@@ -239,26 +242,26 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                       //   print(newValue);
                       // },
                       items: filters
-                        .map((e) => DropdownMenuItem<String>(
-                              value: e,
-                              child: Text(
-                                e,
-                                style: theme.textTheme.caption!.copyWith(
-                                  color: appPrimaryColor,
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  // decoration: TextDecoration.underline,
+                          .map((e) => DropdownMenuItem<String>(
+                                value: e,
+                                child: Text(
+                                  e,
+                                  style: theme.textTheme.caption!.copyWith(
+                                    color: appPrimaryColor,
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    // decoration: TextDecoration.underline,
+                                  ),
                                 ),
-                              ),
-                            ))
-                        .toList(),
-                    onChanged: (String? value) {
-                      setState(() {
-                        filter = value ?? filters.first;
-                      });
-                      getVehiclesForMerchantListBloc
-                          .fetchCurrent(filter == 'All Vehicles');
-                    },
+                              ))
+                          .toList(),
+                      onChanged: (String? value) {
+                        setState(() {
+                          filter = value ?? filters.first;
+                        });
+                        getVehiclesForMerchantListBloc
+                            .fetchCurrent(filter == 'All Vehicles');
+                      },
                     ),
                   ),
                 ),
@@ -457,7 +460,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                                             height:
                                                                                 10),
                                                                         const Icon(
-                                                                            Remix.delete_bin_6_line,),
+                                                                          Remix
+                                                                              .delete_bin_6_line,
+                                                                        ),
                                                                       ],
                                                                     ),
                                                                   )
@@ -514,7 +519,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                   ),
                                                 ]),
                                             child: const Icon(
-                                                Remix.delete_bin_5_line, color: appPrimaryColor,)),
+                                              Remix.delete_bin_5_line,
+                                              color: appPrimaryColor,
+                                            )),
                                       )
                                     ],
                                   ),
@@ -562,7 +569,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                       )
                                     ],
                                   ),
-                                  const SizedBox(height: 3,),
+                                  const SizedBox(
+                                    height: 3,
+                                  ),
                                   Button(
                                       text: isAssigned
                                           ? 'Asigned to ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.firstName ?? ''} ${data.elementAt(index).attributes?.riderId?.data?.attributes?.userId?.data?.attributes?.lastName ?? ''}'

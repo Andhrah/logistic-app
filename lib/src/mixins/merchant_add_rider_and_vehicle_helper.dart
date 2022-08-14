@@ -9,6 +9,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/auth/signup_model.dart';
 import 'package:trakk/src/models/auth_response.dart';
@@ -33,7 +34,7 @@ import 'package:trakk/src/widgets/cancel_button.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
 import 'package:uploadcare_client/uploadcare_client.dart';
 
-class MerchantAddRiderAndVehicleHelper with ProfileHelper {
+class MerchantAddRiderAndVehicleHelper with ProfileHelper, ConnectivityHelper {
   final BuildContext _authContext =
       SingletonData.singletonData.navKey.currentState!.context;
   final BuildContext _authContextOverLay =
