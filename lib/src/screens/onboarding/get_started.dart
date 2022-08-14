@@ -28,6 +28,7 @@ class _GetStartedState extends State<GetStarted> {
 
   @override
   Widget build(BuildContext context) {
+    var mediaQuery = MediaQuery.of(context);
     return WillPopScope(
       onWillPop: () {
         if (isBackPressed) {
@@ -91,7 +92,7 @@ class _GetStartedState extends State<GetStarted> {
                     color: appPrimaryColor,
                     isLoading: false,
                     textColor: whiteColor,
-                    width: 300,
+                    width: mediaQuery.size.width/1.4,
                   ),
                   const SizedBox(height: 15.0),
                   Button(
@@ -104,7 +105,7 @@ class _GetStartedState extends State<GetStarted> {
                     color: whiteColor,
                     isLoading: false,
                     textColor: appPrimaryColor,
-                    width: 300,
+                    width: mediaQuery.size.width/1.4,
                   ),
                   const SizedBox(height: 15.0),
                   Button(
@@ -118,7 +119,7 @@ class _GetStartedState extends State<GetStarted> {
                     color: whiteColor,
                     isLoading: false,
                     textColor: appPrimaryColor,
-                    width: 300,
+                    width: mediaQuery.size.width/1.4,
                   ),
                   const SizedBox(height: 25.0),
                   InkWell(

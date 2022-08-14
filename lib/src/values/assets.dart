@@ -37,6 +37,8 @@ class Assets {
       'assets/images/rider/rider_add_vehicle_details.png';
   static const String rider_home_location =
       'assets/images/rider/rider_home_location.png';
+  static const String rider_home_suspended =
+      'assets/images/rider/rider_home_suspended.png';
   static const String rider_location_icon =
       'assets/images/rider/rider_location_icon.png';
   static const String size_icon = 'assets/images/rider/size_icon.png';

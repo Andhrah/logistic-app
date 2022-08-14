@@ -5,7 +5,7 @@ import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/screens/merchant/dispatch_history.dart';
-import 'package:trakk/src/screens/merchant/notifications.dart';
+import 'package:trakk/src/screens/merchant/merchant_notifications.dart';
 import 'package:trakk/src/screens/merchant/riders.dart';
 import 'package:trakk/src/screens/merchant/vehicles.dart';
 import 'package:trakk/src/utils/app_toast.dart';
@@ -120,7 +120,7 @@ class _CompanyHomeState extends State<CompanyHome> {
                     ]),
                     InkWell(
                       onTap: () {
-                        Navigator.of(context).pushNamed(Notifications.id);
+                        Navigator.of(context).pushNamed(MerchantNotifications.id);
                       },
                       child: Badge(
                         badgeContent: Text("$notificatiobount"),

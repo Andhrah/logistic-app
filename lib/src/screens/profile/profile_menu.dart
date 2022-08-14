@@ -72,10 +72,15 @@ class _ProfileMenuState extends State<ProfileMenu>
       body: SafeArea(
         child: Column(
           children: [
-            25.heightInPixel(),
-            const CustomAppBar(
-              titleText: 'PROFILE MENU',
-              leading: SizedBox(),
+            20.heightInPixel(),
+            Text(
+              'PROFILE MENU',
+              style: theme.textTheme.subtitle1!.copyWith(
+                  fontWeight: kBoldWeight,
+                  fontSize: 18,
+                  fontFamily: kDefaultFontFamilyHeading
+                  // decoration: TextDecoration.underline,
+                  ),
             ),
             12.heightInPixel(),
             Expanded(

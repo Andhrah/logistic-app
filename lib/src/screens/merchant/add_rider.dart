@@ -71,7 +71,7 @@ class _AddRiderState extends State<AddRider> {
             child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            20.heightInPixel(),
+            10.heightInPixel(),
             Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
