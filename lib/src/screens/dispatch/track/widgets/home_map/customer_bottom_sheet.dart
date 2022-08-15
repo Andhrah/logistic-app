@@ -244,46 +244,46 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                                       height: 0,
                                     ),
                                     //i made use of the materialm buttons to enable the StepsIndicator
-                                    Row(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: <Widget>[
-                                        MaterialButton(
-                                          color: Colors.red,
-                                          onPressed: () {
-                                            if (trackIndex > 0 &&
-                                                textIndex > 0) {
-                                              setState(() {
-                                                trackIndex--;
-                                                textIndex--;
-                                                print(trackIndex);
-                                                print(
-                                                    deliveryStatus[textIndex]);
-                                              });
-                                            }
-                                          },
-                                          child: const Text('Prev'),
-                                        ),
-                                        MaterialButton(
-                                          color: Colors.green,
-                                          onPressed: () {
-                                            if (textIndex <
-                                                deliveryStatus.length - 1) {
-                                              setState(() {
-                                                trackIndex++;
-                                                textIndex++;
-                                                print(trackIndex);
-                                                print(
-                                                    deliveryStatus[textIndex]);
-                                              });
-                                            }
-                                          },
-                                          child: const Text('Next'),
-                                        ),
-                                      ],
-                                    ),
+                                    // Row(
+                                    //   crossAxisAlignment:
+                                    //       CrossAxisAlignment.center,
+                                    //   mainAxisAlignment:
+                                    //       MainAxisAlignment.center,
+                                    //   children: <Widget>[
+                                    //     MaterialButton(
+                                    //       color: Colors.red,
+                                    //       onPressed: () {
+                                    //         if (trackIndex > 0 &&
+                                    //             textIndex > 0) {
+                                    //           setState(() {
+                                    //             trackIndex--;
+                                    //             textIndex--;
+                                    //             print(trackIndex);
+                                    //             print(
+                                    //                 deliveryStatus[textIndex]);
+                                    //           });
+                                    //         }
+                                    //       },
+                                    //       child: const Text('Prev'),
+                                    //     ),
+                                    //     MaterialButton(
+                                    //       color: Colors.green,
+                                    //       onPressed: () {
+                                    //         if (textIndex <
+                                    //             deliveryStatus.length - 1) {
+                                    //           setState(() {
+                                    //             trackIndex++;
+                                    //             textIndex++;
+                                    //             print(trackIndex);
+                                    //             print(
+                                    //                 deliveryStatus[textIndex]);
+                                    //           });
+                                    //         }
+                                    //       },
+                                    //       child: const Text('Next'),
+                                    //     ),
+                                    //   ],
+                                    // ),
                                   ],
                                 ),
                               ),
