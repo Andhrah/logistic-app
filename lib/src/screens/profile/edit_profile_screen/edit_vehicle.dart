@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/colors.dart';
 
-import '../../../bloc/validation_bloc.dart';
 import '../../../values/font.dart';
 import '../../../widgets/back_icon.dart';
 import '../../../widgets/button.dart';
@@ -21,10 +21,10 @@ class EditVehicle extends StatefulWidget {
 }
 
 class _EditVehicleState extends State<EditVehicle>
-    with MerchantUpdateRiderAndVehicleHelper, ProfileHelper {
-  ValidationBloc validationBloc = ValidationBloc();
-
-  bool _isButtonPress = false;
+    with
+        MerchantUpdateRiderAndVehicleHelper,
+        ProfileHelper,
+        ConnectivityHelper {
   var colors = ["black", "white", "gold", "grey", "ash", "blue", "red"];
   String? _colorsTypes;
 
@@ -57,6 +57,17 @@ class _EditVehicleState extends State<EditVehicle>
       _colorsTypes = attribute?.color ?? '';
       _vhicleModelController.text = attribute?.model ?? '';
     });
+  }
+
+  @override
+  void dispose() {
+    _nameOfVehicleController.dispose();
+    _vehicleNumberController.dispose();
+    _vhicleModelController.dispose();
+    _nameOfVehicleNode.dispose();
+    _vehicleNumberNode.dispose();
+    _vhicleModelNode.dispose();
+    super.dispose();
   }
 
   @override

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/merchant/get_riders_list_bloc.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/merchant_add_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/merchant_update_rider_and_vehicle_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
@@ -66,7 +67,8 @@ class _ProfileWidgetState extends State<ProfileIdget>
     with
         MerchantUpdateRiderAndVehicleHelper,
         MerchantAddRiderAndVehicleHelper,
-        ProfileHelper {
+        ProfileHelper,
+        ConnectivityHelper {
   RiderProfileOptions selectedProfileOptions = RiderProfileOptions.none;
 
   final formValidation = ValidationBloc();

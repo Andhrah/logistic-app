@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
@@ -7,10 +13,7 @@ import 'package:trakk/src/models/app_settings.dart';
 import 'package:trakk/src/screens/merchant/merchant_notifications.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_notification.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
-import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/font.dart';
-import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
 
 class RiderTopPart extends StatefulWidget {

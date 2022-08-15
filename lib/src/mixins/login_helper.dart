@@ -31,7 +31,8 @@ class LoginHelper
         ConnectivityHelper,
         MerchantAddRiderAndVehicleHelper,
         ProfileHelper,
-        BiometricsHelper {
+        BiometricsHelper,
+        ConnectivityHelper {
   late Function() _onShowLoader;
   late Function() _onCloseLoader;
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -54,10 +55,12 @@ class LoginHelper
     _isPersistentLogin = isPersistentLogin;
 
     if (formKey.currentState!.validate()) {
-      onShowLoader();
-      loginService
-          .doLogin(emailCC.text.trim(), passwordCC.text)
-          .then((value) => _completeLogin(value));
+      checkInternetConnection(hasInternetCallback: () async {
+        onShowLoader();
+        loginService
+            .doLogin(emailCC.text.trim(), passwordCC.text)
+            .then((value) => _completeLogin(value));
+      });
     }
   }
 
@@ -104,7 +107,7 @@ class LoginHelper
         await appToast('Login Successful, please verify your account',
             appToastType: AppToastType.success);
         await SingletonData.singletonData.navKey.currentState!
-            .pushNamed(VerifiyAccountScreen.id, arguments: {
+            .pushNamed(VerifyAccountScreen.id, arguments: {
           "email": authResponse.data?.user?.email ?? '',
           "phoneNumber": authResponse.data?.user?.phoneNumber ?? '',
           'userType': authResponse.data?.user?.userType ?? ''

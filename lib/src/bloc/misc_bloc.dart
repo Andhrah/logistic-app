@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'package:location/location.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/values/enums.dart';

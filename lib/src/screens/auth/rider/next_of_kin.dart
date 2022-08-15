@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/validation_bloc.dart';
+import 'package:trakk/src/mixins/connectivity_helper.dart';
 import 'package:trakk/src/mixins/profile_helper.dart';
 import 'package:trakk/src/models/update_profile/update_profile.dart';
 import 'package:trakk/src/utils/app_toast.dart';
@@ -21,7 +22,8 @@ class NextOfKin extends StatefulWidget {
   _NextOfKinState createState() => _NextOfKinState();
 }
 
-class _NextOfKinState extends State<NextOfKin> with ProfileHelper {
+class _NextOfKinState extends State<NextOfKin>
+    with ProfileHelper, ConnectivityHelper {
   ValidationBloc validationBloc = ValidationBloc();
 
   final _formKey = GlobalKey<FormState>();

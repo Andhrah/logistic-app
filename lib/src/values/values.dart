@@ -1,11 +1,17 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 library values;
 
+export 'assets.dart';
 export 'colors.dart';
 export 'constant.dart';
-export 'radii.dart';
 export 'font.dart';
-export 'styles.dart';
-export 'assets.dart';
 export 'padding.dart';
-export 'theme/themes.dart';
+export 'radii.dart';
+export 'styles.dart';
 export 'text_font/scales.dart';
+export 'theme/themes.dart';

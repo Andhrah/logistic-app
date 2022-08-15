@@ -22,7 +22,9 @@ class GetRiderRatingBloc with BaseBloc<int, String>, ConnectivityHelper {
 
           if (operation.code == 200 || operation.code == 201) {
             int? average = operation.result['data'] != null
-                ? operation.result['data']['ratings']
+                ? int.tryParse(
+                        operation.result['data']['ratings'].toString()) ??
+                    0
                 : null;
             if (average != null) {
               addToModel(average);

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:trakk/src/bloc/rider/rider_order_history_bloc.dart';
-import 'package:trakk/src/screens/profile/dispatch_history_screen/widgets/date_widget.dart';
 import 'package:trakk/src/screens/profile/dispatch_history_screen/widgets/list_history.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/enums.dart';
@@ -100,10 +99,10 @@ class _UserDispatcHistoryState extends State<UserDispatchHistory> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    DateDispatchHistory(
-                      startDate: startDate,
-                      endDate: endDate,
-                    ),
+                    // DateDispatchHistory(
+                    //   startDate: startDate,
+                    //   endDate: endDate,
+                    // ),
                     24.heightInPixel(),
                     const ListDispatchHistory()
                   ],

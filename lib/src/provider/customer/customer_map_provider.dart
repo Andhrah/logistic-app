@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'dart:convert';
 import 'dart:developer';
 
@@ -11,6 +17,7 @@ import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/models/customer/customer_order_listener_response.dart';
 import 'package:trakk/src/utils/app_toast.dart';
 import 'package:trakk/src/utils/singleton_data.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class CustomerMapProvider extends ChangeNotifier {
   static CustomerMapProvider customerMapProvider(BuildContext context,
@@ -21,18 +28,14 @@ class CustomerMapProvider extends ChangeNotifier {
   bool isNewConnection = false;
   Socket? socket;
 
+  String _orderToListenToID = '';
+
+  String get orderToListenToID => _orderToListenToID;
+
   connectAndListenToSocket(
-      {required LatLng toLatLng,
-      required String orderID,
-      Function()? onConnected,
-      Function()? onConnectionError}) async {
+      {Function()? onConnected, Function()? onConnectionError}) async {
     var appSettings = await appSettingsBloc.fetchAppSettings();
     String? token = appSettings.loginResponse?.data?.token ?? '';
-    // orderID = '355';
-
-    if (kDebugMode) {
-      print('token: $token');
-    }
 
     socket = io(SingletonData.singletonData.socketURL, <String, dynamic>{
       "transports": ["websocket"],
@@ -79,20 +82,13 @@ class CustomerMapProvider extends ChangeNotifier {
       }
     });
 
-    _listeners(toLatLng, orderID);
+    orderCancelledListener();
   }
 
-  _listeners(LatLng toLatLng, String orderID) {
-    // if (SingletonData.singletonData.isDebug) {
-    socket?.onAny((event, data) {
-      if (kDebugMode) {
-        print('event: $event');
-        print('orderID: $orderID');
-      }
-    });
-    // }
+  trackListener({required LatLng toLatLng, required String orderID}) {
+    _orderToListenToID = orderID;
+    notifyListeners();
 
-    runToast('Checking order status');
     socket?.on("customer_order_$orderID", (data) {
       log('order_request_data ${jsonEncode(data)}');
 
@@ -103,10 +99,32 @@ class CustomerMapProvider extends ChangeNotifier {
           double.tryParse(response.info?.currentLatitude ?? '0.0') ?? 0.0,
           (double.tryParse(response.info?.currentLongitude ?? '0.0') ?? 0.0));
 
-      print('order_request_data ${jsonEncode(data)}');
-      print(fromLatLng.latitude);
-      print(fromLatLng.longitude);
+      debugPrint('order_request_data ${jsonEncode(data)}');
+      debugPrint(fromLatLng.latitude.toString());
+      debugPrint(fromLatLng.longitude.toString());
       customerStreamSocket.addResponseOnMove(fromLatLng);
+    });
+  }
+
+  removeTrackingListener() {
+    socket?.off('customer_order_$_orderToListenToID');
+  }
+
+  orderCancelledListener() {
+    socket?.onAny((event, data) {
+      if (kDebugMode) {
+        print('event: $event');
+        print('event data: $data');
+      }
+    });
+    //  when rider rejects an order, this is triggered
+
+    socket?.on("order_cancelled", (data) {
+      appToast(
+          'An order has been rejected by a rider.\nPlease check order history to see details',
+          appToastType: AppToastType.failed);
+      log('order_id ${jsonEncode(data)}');
+      String orderID = data['order_id'] ?? '';
     });
   }
 

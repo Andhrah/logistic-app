@@ -1,3 +1,9 @@
+/*
+*
+*  Created by [Folarin Opeyemi].
+*  Copyright © 2022 [Zebrra]. All rights reserved.
+    */
+
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 

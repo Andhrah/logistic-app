@@ -6,6 +6,7 @@ import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/mixins/customer_order_helper.dart';
 import 'package:trakk/src/models/order/available_rider_response.dart';
 import 'package:trakk/src/models/order/order.dart';
+import 'package:trakk/src/provider/customer/customer_map_provider.dart';
 import 'package:trakk/src/screens/dispatch/dispatch_summary.dart';
 import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_category_widget.dart';
 import 'package:trakk/src/screens/dispatch/item_detail/widget/item_detail_date_widget.dart';
@@ -53,6 +54,21 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  init() async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      CustomerMapProvider injector =
+          CustomerMapProvider.customerMapProvider(context);
+      // injector.connect();
+      injector.connectAndListenToSocket(
+          onConnected: () {},
+          onConnectionError: () {
+            injector.disconnectSocket();
+            // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
+          });
+    });
   }
 
   @override
