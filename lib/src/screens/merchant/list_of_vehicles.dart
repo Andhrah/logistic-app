@@ -114,8 +114,8 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
             child: Column(children: [
           //const SizedBox(height: 20.0),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding, vertical: 10),
+            padding: const EdgeInsets.symmetric(
+                horizontal: kDefaultLayoutPadding, vertical: 10),
             child: Row(
               //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -609,12 +609,19 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                     .fromJson(result);
 
                                             //  do add vehicle to merchant
-
                                             VehicleRequest vehicleModel =
                                                 VehicleRequest(
                                                     data: AddRiderToMerchantData(
                                                         riderId:
-                                                            '${datum.id ?? ''}'));
+                                                            '${datum.id ?? ''}',
+                                                        riderRootId: datum
+                                                                    .attributes
+                                                                    ?.userId
+                                                                    ?.data
+                                                                    ?.id !=
+                                                                null
+                                                            ? '${datum.attributes?.userId?.data?.id ?? ''}'
+                                                            : null));
                                             updateVehicle(id, vehicleModel);
                                           }
                                         }

@@ -20,10 +20,11 @@ class ProfileService extends BaseNetworkCallHandler {
 
   ///below are exclusive for rider
   Future<Operation> updateOnBoarding(
-      {bool? completedContact,
+      {String? riderID,
+      bool? completedContact,
       bool? completedNok,
       bool? completedVehicles}) async {
-    String id = await appSettingsBloc.getRootUserID;
+    String id = (riderID ?? await appSettingsBloc.getRootUserID);
 
     completedContact = completedContact ??
         (await appSettingsBloc.fetchAppSettings())
