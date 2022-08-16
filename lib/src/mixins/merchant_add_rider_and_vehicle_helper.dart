@@ -147,12 +147,17 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper, ConnectivityHelper {
               riderId: operation.result['data'] != null &&
                       operation.result['data']['id'] != null
                   ? operation.result['data']['id'].toString()
+                  : null,
+              riderRootId: operation.result['data'] != null &&
+                      operation.result['id'] != null
+                  ? operation.result['id'].toString()
                   : null));
 
       if (_vehicleModel != null) {
         _vehicleModel = _vehicleModel!.copyWith(
-            data: _vehicleModel!.data!
-                .copyWith(riderId: _riderToMerchantModel!.data!.riderId));
+            data: _vehicleModel!.data!.copyWith(
+                riderId: _riderToMerchantModel?.data?.riderId,
+                riderRootId: _riderToMerchantModel?.data?.riderRootId));
       }
 
       if (continueStepAfterCompletion) {
@@ -290,7 +295,10 @@ class MerchantAddRiderAndVehicleHelper with ProfileHelper, ConnectivityHelper {
         }
       }
 
+      //Pass the rider id in case it's a merchant that is
+      // updating the vehicle for a rider
       doUpdateOnBoardingOperation(
+          riderID: _vehicleModel?.data?.riderRootId,
           () => _finalStep(
               operation,
               onSuccessCallback,

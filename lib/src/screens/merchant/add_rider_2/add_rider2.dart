@@ -109,8 +109,8 @@ class _AddRider2State extends State<AddRider2>
           //   height: 20,
           // ),
           Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding, vertical: 10),
+            padding: const EdgeInsets.symmetric(
+                horizontal: kDefaultLayoutPadding, vertical: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

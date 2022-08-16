@@ -166,13 +166,27 @@ class RiderMapProvider extends ChangeNotifier {
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
       print('loation has changed');
+
+      //This broadcast rider location if order is ongoing
       if (riderStreamSocket.behaviorSubject.hasValue &&
           riderStreamSocket.behaviorSubject.value.model != null) {
         for (var data in riderStreamSocket.behaviorSubject.value.model ??
             <OrderResponse>[]) {
           sendData(riderID, _loca, data.order?.id);
         }
+
+        //This makes sure rider location is emitted incase no order is found/ongoing
+        if ((riderStreamSocket.behaviorSubject.value.model ?? <OrderResponse>[])
+            .isEmpty) {
+          sendData(riderID, _loca, null);
+        }
+      }
+
+      //This makes sure rider location is emitted incase no order is found/ongoing
+      if (!riderStreamSocket.behaviorSubject.hasValue) {
+        sendData(riderID, _loca, null);
       }
     });
   }
 }
+// &pagination[pageSize]=25&pagination[page]=1

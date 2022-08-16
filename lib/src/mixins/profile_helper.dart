@@ -124,11 +124,13 @@ class ProfileHelper with ConnectivityHelper {
 
   ///below is exclusive to rider only
   doUpdateOnBoardingOperation(Function() onCloseLoader,
-      {bool? completedContact,
+      {String? riderID,
+      bool? completedContact,
       bool? completedNok,
       bool? completedVehicles}) async {
     profileService
         .updateOnBoarding(
+            riderID: riderID,
             completedContact: completedContact,
             completedNok: completedNok,
             completedVehicles: completedVehicles)

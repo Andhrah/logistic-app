@@ -27,6 +27,7 @@ class AddRiderToMerchantData {
   AddRiderToMerchantData(
       {this.merchantId,
       this.riderId,
+      this.riderRootId,
       this.name,
       this.color,
       this.number,
@@ -41,6 +42,7 @@ class AddRiderToMerchantData {
 
   final String? merchantId;
   final String? riderId;
+  final String? riderRootId;
   final String? name;
   final String? color;
   final String? number;
@@ -56,6 +58,7 @@ class AddRiderToMerchantData {
   AddRiderToMerchantData copyWith(
           {String? merchantId,
           String? riderId,
+          String? riderRootId,
           String? name,
           String? color,
           String? number,
@@ -70,6 +73,7 @@ class AddRiderToMerchantData {
       AddRiderToMerchantData(
           merchantId: merchantId ?? this.merchantId,
           riderId: riderId ?? this.riderId,
+          riderRootId: riderRootId ?? this.riderRootId,
           name: name ?? this.name,
           color: color ?? this.color,
           number: number ?? this.number,
@@ -83,6 +87,7 @@ class AddRiderToMerchantData {
       AddRiderToMerchantData(
         merchantId: json["merchantId"] == null ? null : json["merchantId"],
         riderId: json["riderId"] == null ? null : json["riderId"],
+        riderRootId: json["riderRootId"] == null ? null : json["riderRootId"],
         name: json["name"] == null ? null : json["name"],
         color: json["color"] == null ? null : json["color"],
         number: json["number"] == null ? null : json["number"],
@@ -96,6 +101,7 @@ class AddRiderToMerchantData {
     Map<String, dynamic> map = {
       "merchantId": merchantId == null ? null : merchantId,
       "riderId": riderId == null ? null : riderId,
+      "riderRootId": riderRootId == null ? null : riderRootId,
       "name": name == null ? null : name,
       "color": color == null ? null : color,
       "number": number == null ? null : number,
