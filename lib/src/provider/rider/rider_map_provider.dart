@@ -167,6 +167,7 @@ class RiderMapProvider extends ChangeNotifier {
       Loca.LocationData? _loca = value;
       print('loation has changed');
 
+      //This broadcast rider location if order is ongoing
       if (riderStreamSocket.behaviorSubject.hasValue &&
           riderStreamSocket.behaviorSubject.value.model != null) {
         for (var data in riderStreamSocket.behaviorSubject.value.model ??
