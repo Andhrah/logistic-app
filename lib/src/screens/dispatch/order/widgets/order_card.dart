@@ -281,7 +281,7 @@ class _UserOrderCardState extends State<UserOrderCard> {
                       ? 'ORDER CANCELLED'
                       : 'TRACK YOUR ORDER',
               onPress: () {
-                if (orderStatus == OrderStatus.pending ||
+                if (orderStatus == OrderStatus.completed ||
                     orderStatus == OrderStatus.declined) {
                   widget.forHomeNavigation(0,
                       orderModel: OrderModel(
