@@ -6,7 +6,7 @@ import 'package:trakk/src/values/enums.dart';
 
 class ProfileService extends BaseNetworkCallHandler {
   Future<Operation> getProfile() async {
-    return runAPI('api/users/me', HttpRequestType.get);
+    return runAPI('api/users/me?populate=*', HttpRequestType.get);
   }
 
   Future<Operation> updateProfile(UpdateProfile updateProfile) async {
