@@ -167,6 +167,11 @@ class RiderMapProvider extends ChangeNotifier {
       Loca.LocationData? _loca = value;
       print('loation has changed');
 
+      //This makes sure rider location is emitted incase no order is found/ongoing
+      if (!riderStreamSocket.behaviorSubject.hasValue) {
+        sendData(riderID, _loca, null);
+      }
+
       //This broadcast rider location if order is ongoing
       if (riderStreamSocket.behaviorSubject.hasValue &&
           riderStreamSocket.behaviorSubject.value.model != null) {
@@ -180,11 +185,6 @@ class RiderMapProvider extends ChangeNotifier {
             .isEmpty) {
           sendData(riderID, _loca, null);
         }
-      }
-
-      //This makes sure rider location is emitted incase no order is found/ongoing
-      if (!riderStreamSocket.behaviorSubject.hasValue) {
-        sendData(riderID, _loca, null);
       }
     });
   }

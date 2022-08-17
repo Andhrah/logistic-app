@@ -14,9 +14,23 @@ typedef _OnInputCallback = Function(String senName, String senEmail,
 
 class ItemDetailParticipantWidget extends StatefulWidget {
   final _OnInputCallback onInputCallback;
+  final String? senName;
+  final String? senEmail;
+  final String? senPhone;
+  final String? recName;
+  final String? recEmail;
+  final String? recPhone;
 
-  const ItemDetailParticipantWidget(this.onInputCallback, {Key? key})
-      : super(key: key);
+  const ItemDetailParticipantWidget(
+    this.onInputCallback, {
+    Key? key,
+    this.senName,
+    this.senEmail,
+    this.senPhone,
+    this.recName,
+    this.recEmail,
+    this.recPhone,
+  }) : super(key: key);
 
   @override
   _ItemDetailParticipantWidgetState createState() =>
@@ -47,6 +61,14 @@ class _ItemDetailParticipantWidgetState
   @override
   void initState() {
     super.initState();
+    _receiverNameController.text = widget.recName ?? '';
+    _senderNameController.text = widget.senName ?? '';
+    _receiverPhoneNumberController.text = widget.recPhone ?? '';
+    _senderPhoneNumberController.text = widget.senPhone ?? '';
+    _receiverEmailController.text = widget.recEmail ?? '';
+    _senderEmailController.text = widget.senEmail ?? '';
+
+    print(_receiverNameController.text);
   }
 
   @override

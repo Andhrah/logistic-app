@@ -3,6 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:remixicon/remixicon.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/models/app_settings.dart';
+import 'package:trakk/src/models/order/order.dart';
 import 'package:trakk/src/screens/dispatch/item_detail/item_details.dart';
 import 'package:trakk/src/screens/dispatch/order/order.dart';
 import 'package:trakk/src/screens/merchant/company_home.dart';
@@ -28,6 +29,8 @@ class _TabsState extends State<Tabs> {
 
   String currentTitle = 'Home';
 
+  OrderModel? orderModel;
+
   Widget _currentOtherUserPage(_selectedIndex) {
     switch (_selectedIndex) {
       case 0:
@@ -41,7 +44,7 @@ class _TabsState extends State<Tabs> {
                     ? RiderHomeScreen(_onItemTapped)
                     : snapshot.data?.loginResponse?.data?.user?.userType ==
                             "customer"
-                        ? const ItemDetails()
+                        ? ItemDetails(orderModel: orderModel)
                         : CompanyHome(_onItemTapped);
               }
               return const SizedBox();
@@ -54,7 +57,7 @@ class _TabsState extends State<Tabs> {
                 if (snapshot.data?.loginResponse?.data?.user?.userType ==
                     "customer") {
                   currentTitle = 'Order';
-                  return const UserOrderScreen();
+                  return CustomerOrderScreen(_onItemTapped);
                 } else {
                   currentTitle = 'Dispatch history';
                   return const UserDispatchHistory(
@@ -87,11 +90,13 @@ class _TabsState extends State<Tabs> {
     }
   }
 
-  _onItemTapped(int index) {
+  _onItemTapped(int index, {OrderModel? orderModel}) {
     if (index == 2) {
       runToast('Coming soon!!');
     }
+    print(orderModel?.data?.receiverName);
     setState(() {
+      this.orderModel = orderModel;
       _selectedIndex = index == 2 ? _selectedIndex : index;
     });
   }

@@ -1,20 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:remixicon/remixicon.dart';
+import 'package:trakk/src/models/order/order.dart';
 import 'package:trakk/src/models/order/user_order_history_response.dart';
 import 'package:trakk/src/screens/dispatch/track/customer_track_screen.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/constant.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
 
 class UserOrderCard extends StatefulWidget {
+  final Function(int index, {OrderModel? orderModel}) forHomeNavigation;
+
   final UserOrderHistoryDatum datum;
 
-  UserOrderCard(this.datum, {Key? key}) : super(key: key);
+  const UserOrderCard(this.forHomeNavigation, this.datum, {Key? key})
+      : super(key: key);
 
   @override
   State<UserOrderCard> createState() => _UserOrderCardState();
@@ -40,8 +46,14 @@ class _UserOrderCardState extends State<UserOrderCard> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    bool isOrderCompleted =
-        (widget.datum.attributes?.deliveryDate ?? '') == 'completed';
+    OrderStatus orderStatus =
+        (widget.datum.attributes?.deliveryDate ?? '') == 'completed'
+            ? OrderStatus.completed
+            : (widget.datum.attributes?.deliveryDate ?? '') == 'declined'
+                ? OrderStatus.declined
+                : (widget.datum.attributes?.deliveryDate ?? '') == 'in_transit'
+                    ? OrderStatus.in_transit
+                    : OrderStatus.pending;
 
     return Card(
       color: whiteColor,
@@ -145,13 +157,13 @@ class _UserOrderCardState extends State<UserOrderCard> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: const Icon(
+                    const Expanded(
+                      child: Icon(
                         Remix.price_tag_3_fill,
                         color: secondaryColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 0,
                     ),
                     Text(
@@ -171,7 +183,7 @@ class _UserOrderCardState extends State<UserOrderCard> {
                       Remix.time_fill,
                       color: secondaryColor,
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 0,
                     ),
                     Text(
@@ -189,13 +201,13 @@ class _UserOrderCardState extends State<UserOrderCard> {
                 flex: 2,
                 child: Row(
                   children: [
-                    Expanded(
-                      child: const Icon(
+                    const Expanded(
+                      child: Icon(
                         Remix.pin_distance_fill,
                         color: secondaryColor,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 0,
                     ),
                     Expanded(
@@ -263,14 +275,62 @@ class _UserOrderCardState extends State<UserOrderCard> {
                 const EdgeInsets.symmetric(horizontal: kDefaultLayoutPadding),
             constraints: const BoxConstraints(maxWidth: 450),
             child: Button(
-              text: isOrderCompleted ? 'ORDER COMPLETED' : 'TRACK YOUR ORDER',
-              onPress: isOrderCompleted
-                  ? null
-                  : () {
-                      Navigator.pushNamed(context, CustomerTrackScreen.id,
-                          arguments: widget.datum.toJson());
-                    },
-              color: isOrderCompleted ? green : appPrimaryColor,
+              text: orderStatus == OrderStatus.completed
+                  ? 'ORDER COMPLETED'
+                  : orderStatus == OrderStatus.completed
+                      ? 'ORDER CANCELLED'
+                      : 'TRACK YOUR ORDER',
+              onPress: () {
+                if (orderStatus == OrderStatus.pending ||
+                    orderStatus == OrderStatus.declined) {
+                  widget.forHomeNavigation(0,
+                      orderModel: OrderModel(
+                          data: OrderModelData(
+                        pickup: widget.datum.attributes?.pickup ?? '',
+                        destination: widget.datum.attributes?.destination ?? '',
+                        pickupLatitude:
+                            (widget.datum.attributes?.pickupLatitude ?? 0.0)
+                                .toString(),
+                        pickupLongitude:
+                            (widget.datum.attributes?.pickupLongitude ?? 0.0)
+                                .toString(),
+                        destinationLatitude:
+                            (widget.datum.attributes?.destinationLatitude ??
+                                    0.0)
+                                .toString(),
+                        destinationLongitude:
+                            (widget.datum.attributes?.destinationLongitude ??
+                                    0.0)
+                                .toString(),
+                        distance:
+                            '${(Geolocator.distanceBetween((widget.datum.attributes?.pickupLatitude ?? 0.0), (widget.datum.attributes?.pickupLongitude ?? 0.0), (widget.datum.attributes?.destinationLatitude ?? 0.0), (widget.datum.attributes?.destinationLongitude ?? 0.0)).round() / 1000).toStringAsFixed(2)} km',
+                        pickupDate: widget.datum.attributes?.pickupDate ?? '',
+                        deliveryDate:
+                            widget.datum.attributes?.deliveryDate ?? '',
+                        itemName: widget.datum.attributes?.itemName ?? '',
+                        itemDescription:
+                            widget.datum.attributes?.itemDescription ?? '',
+                        itemImage: widget.datum.attributes?.itemImage ?? '',
+                        weight: widget.datum.attributes?.weight ?? '',
+                        senderName: widget.datum.attributes?.senderName ?? '',
+                        senderEmail: widget.datum.attributes?.senderEmail ?? '',
+                        senderPhone: widget.datum.attributes?.senderPhone ?? '',
+                        receiverName:
+                            widget.datum.attributes?.receiverName ?? '',
+                        receiverEmail:
+                            widget.datum.attributes?.receiverEmail ?? '',
+                        receiverPhone:
+                            widget.datum.attributes?.receiverPhone ?? '',
+                      )));
+                } else if (orderStatus == OrderStatus.pending ||
+                    orderStatus == OrderStatus.in_transit) {
+                  Navigator.pushNamed(context, CustomerTrackScreen.id,
+                      arguments: widget.datum.toJson());
+                }
+              },
+              color: orderStatus == OrderStatus.completed
+                  ? green
+                  : appPrimaryColor,
               textColor: whiteColor,
               isLoading: false,
               width: double.infinity,

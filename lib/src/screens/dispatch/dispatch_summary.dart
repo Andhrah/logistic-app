@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:trakk/src/models/order/available_rider_response.dart';
 import 'package:trakk/src/models/order/order.dart';
@@ -376,10 +377,20 @@ class _DispatchSummaryState extends State<DispatchSummary> {
                           borderRadius: Radii.k8pxRadius,
                           child: AspectRatio(
                             aspectRatio: 3 / 4,
-                            child: Image.file(
-                              File(orderModel.data?.itemImage ?? ''),
-                              fit: BoxFit.cover,
-                            ),
+                            child: orderModel.data?.itemImage != null &&
+                                    orderModel.data!.itemImage!
+                                        .startsWith('http')
+                                ? CachedNetworkImage(
+                                    imageUrl: orderModel.data?.itemImage ?? '',
+                                    placeholder: (context, url) =>
+                                        const SizedBox(),
+                                    errorWidget: (context, url, err) =>
+                                        const SizedBox(),
+                                  )
+                                : Image.file(
+                                    File(orderModel.data?.itemImage ?? ''),
+                                    fit: BoxFit.cover,
+                                  ),
                           ),
                         ),
                       ],

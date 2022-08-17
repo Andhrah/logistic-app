@@ -58,11 +58,13 @@ class OrderAPI extends BaseNetworkCallHandler {
         body: orderModel.toJson());
   }
 
-  Future<Operation> getCustomerOrders() async {
+  Future<Operation> getCustomerOrders(String? status) async {
     String userID = await appSettingsBloc.getUserID;
 
     return runAPI(
-        'api/orders?populate=riderId,riderId.userId,riderId.merchantId&filters[userId][id][\$eq]=$userID',
+        status == null || (status == 'All Orders')
+            ? 'api/orders?populate=riderId,riderId.userId,riderId.merchantId&filters[userId][id][\$eq]=$userID'
+            : 'api/orders?populate=*&filters[status][\$eq]=${status.toLowerCase().replaceAll('-', '_')}',
         HttpRequestType.get);
   }
 }
