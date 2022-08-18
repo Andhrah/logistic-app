@@ -88,6 +88,9 @@ class CustomerMapProvider extends ChangeNotifier {
   trackListener({required LatLng toLatLng, required String orderID}) {
     _orderToListenToID = orderID;
     notifyListeners();
+    socket?.onAny((event, data) {
+      log('new event $event ${jsonEncode(data)}');
+    });
 
     socket?.on("customer_order_$orderID", (data) {
       log('order_request_data ${jsonEncode(data)}');
@@ -95,14 +98,14 @@ class CustomerMapProvider extends ChangeNotifier {
       CustomerOrderListenerResponse response =
           CustomerOrderListenerResponse.fromJson(data);
 
-      LatLng fromLatLng = LatLng(
-          double.tryParse(response.info?.currentLatitude ?? '0.0') ?? 0.0,
-          (double.tryParse(response.info?.currentLongitude ?? '0.0') ?? 0.0));
+      // LatLng fromLatLng = LatLng(
+      //     double.tryParse(response.info?.currentLatitude ?? '0.0') ?? 0.0,
+      //     (double.tryParse(response.info?.currentLongitude ?? '0.0') ?? 0.0));
 
       debugPrint('order_request_data ${jsonEncode(data)}');
-      debugPrint(fromLatLng.latitude.toString());
-      debugPrint(fromLatLng.longitude.toString());
-      customerStreamSocket.addResponseOnMove(fromLatLng);
+      // debugPrint(fromLatLng.latitude.toString());
+      // debugPrint(fromLatLng.longitude.toString());
+      customerStreamSocket.addResponseOnMove(response);
     });
   }
 
@@ -124,7 +127,7 @@ class CustomerMapProvider extends ChangeNotifier {
           'An order has been rejected by a rider.\nPlease check order history to see details',
           appToastType: AppToastType.failed);
       log('order_id ${jsonEncode(data)}');
-      String orderID = data['order_id'] ?? '';
+      // String orderID = data['order_id'] ?? '';
     });
   }
 

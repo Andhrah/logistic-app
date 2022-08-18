@@ -6,6 +6,7 @@
 
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
+import 'package:trakk/src/values/enums.dart';
 
 class RiderStreamSocket with BaseBloc<List<OrderResponse>, String> {
   String? _socketID;
@@ -17,6 +18,18 @@ class RiderStreamSocket with BaseBloc<List<OrderResponse>, String> {
   void addResponseOnMove(OrderResponse event) {
     orders.add(event);
     addToModel(orders);
+  }
+
+  updateStatus(RiderOrderStatus status) {
+    var itemList = orders
+        .where((element) => element.order?.id == orderInFocus.acceptedOrderID);
+    if (itemList.isNotEmpty) {
+      int index = orders.indexOf(itemList.first);
+      var first = itemList.first;
+      first.order?.status = status.name;
+      orders.insert(index, first);
+      addToModel(orders);
+    }
   }
 
   remove({OrderResponse? data}) {
@@ -31,13 +44,11 @@ class RiderStreamSocket with BaseBloc<List<OrderResponse>, String> {
                     .first
                     .order !=
                 null)) {
-      orders.remove(data ??
+      orders.remove((data) ??
           orders
               .where((element) =>
                   element.order?.id == orderInFocus.acceptedOrderID)
-              .first
-              .order
-              ?.id);
+              .first);
     }
     orderInFocus.invalidate();
     addToModel(orders);

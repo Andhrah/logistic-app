@@ -43,6 +43,8 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
 
   var bottomSheetKey = UniqueKey();
 
+  final miscBloc = MiscBloc();
+
   @override
   void initState() {
     super.initState();
@@ -62,6 +64,7 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
   @override
   void dispose() {
     mapExtraUIBloc.dispose();
+
     super.dispose();
   }
 
@@ -99,6 +102,8 @@ class _RiderHomeMapScreenState extends State<RiderHomeMapScreen> {
         //   speakIsCloseOnce = false;
       }
     }
+
+//todo: change this stream so it's added to it's own stream that can be disposed so as to avoid leak
     miscBloc.location.onLocationChanged.listen((loca) {
       if (widget.orderState == RiderOrderState.isRequestAccepted ||
           widget.orderState == RiderOrderState.isAlmostAtPickupLocation) {

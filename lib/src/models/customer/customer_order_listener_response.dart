@@ -25,19 +25,20 @@ class CustomerOrderListenerResponse {
 }
 
 class CustomerOrderListenerInfo {
-  CustomerOrderListenerInfo({
-    this.riderId,
-    this.orderId,
-    this.currentLatitude,
-    this.currentLongitude,
-    this.currentLocation,
-  });
+  CustomerOrderListenerInfo(
+      {this.riderId,
+      this.orderId,
+      this.currentLatitude,
+      this.currentLongitude,
+      this.currentLocation,
+      this.status});
 
   final String? riderId;
   final String? orderId;
   final String? currentLatitude;
   final String? currentLongitude;
   final String? currentLocation;
+  final String? status;
 
   CustomerOrderListenerInfo copyWith({
     String? riderId,
@@ -45,6 +46,7 @@ class CustomerOrderListenerInfo {
     String? currentLatitude,
     String? currentLongitude,
     String? currentLocation,
+    String? status,
   }) =>
       CustomerOrderListenerInfo(
         riderId: riderId ?? this.riderId,
@@ -52,6 +54,7 @@ class CustomerOrderListenerInfo {
         currentLatitude: currentLatitude ?? this.currentLatitude,
         currentLongitude: currentLongitude ?? this.currentLongitude,
         currentLocation: currentLocation ?? this.currentLocation,
+        status: status ?? this.status,
       );
 
   factory CustomerOrderListenerInfo.fromJson(Map<String, dynamic> json) =>
@@ -67,6 +70,7 @@ class CustomerOrderListenerInfo {
         currentLocation: json["currentLocation"] == null
             ? null
             : json["currentLocation"].toString(),
+        status: json["status"] == null ? null : json["status"].toString(),
       );
 
   Map<String, dynamic> toJson() => {
@@ -75,5 +79,6 @@ class CustomerOrderListenerInfo {
         "currentLatitude": currentLatitude == null ? null : currentLatitude,
         "currentLongitude": currentLongitude == null ? null : currentLongitude,
         "currentLocation": currentLocation == null ? null : currentLocation,
+        "status": status == null ? null : status,
       };
 }

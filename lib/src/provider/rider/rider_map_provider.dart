@@ -130,7 +130,7 @@ class RiderMapProvider extends ChangeNotifier {
   playNewRequestSound() async {
     await FlutterRingtonePlayer.stop();
 
-    await FlutterRingtonePlayer.play(looping: true);
+    await FlutterRingtonePlayer.playNotification(looping: true);
     await Future.delayed(const Duration(seconds: 8), () {
       FlutterRingtonePlayer.stop();
     });
@@ -142,7 +142,8 @@ class RiderMapProvider extends ChangeNotifier {
     }
   }
 
-  sendData(String riderID, Loca.LocationData? _loca, int? orderId) async {
+  sendData(String riderID, Loca.LocationData? _loca,
+      {int? orderId, String? status}) async {
     if (kDebugMode) {
       print('trying to emit');
     }
@@ -160,14 +161,14 @@ class RiderMapProvider extends ChangeNotifier {
           'orderId': orderId,
           'currentLatitude': _loca.latitude.toString(),
           'currentLongitude': _loca.longitude.toString(),
-          'currentLocation': address == '...' ? '' : address
+          'currentLocation': address == '...' ? '' : address,
+          'status': status
         };
 
+        _location.removeWhere((key, value) => value == null);
         if (kDebugMode) {
           print(_location);
         }
-        _location.removeWhere((key, value) => value == null);
-
         if (socket?.id != null) {
           riderStreamSocket.updateSocketID(socket?.id ?? '');
         }
@@ -189,22 +190,21 @@ class RiderMapProvider extends ChangeNotifier {
       }
 
       //This makes sure rider location is emitted incase no order is found/ongoing
-      if (!riderStreamSocket.behaviorSubject.hasValue) {
-        sendData(riderID, _loca, null);
-      }
+      sendData(riderID, _loca);
 
       //This broadcast rider location if order is ongoing
       if (riderStreamSocket.behaviorSubject.hasValue &&
           riderStreamSocket.behaviorSubject.value.model != null) {
         for (var data in riderStreamSocket.behaviorSubject.value.model ??
             <OrderResponse>[]) {
-          sendData(riderID, _loca, data.order?.id);
+          sendData(riderID, _loca,
+              orderId: data.order?.id, status: data.order?.status);
         }
 
         //This makes sure rider location is emitted incase no order is found/ongoing
         if ((riderStreamSocket.behaviorSubject.value.model ?? <OrderResponse>[])
             .isEmpty) {
-          sendData(riderID, _loca, null);
+          sendData(riderID, _loca);
         }
       }
     });

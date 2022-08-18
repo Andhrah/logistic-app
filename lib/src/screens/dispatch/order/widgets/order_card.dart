@@ -13,6 +13,7 @@ import 'package:trakk/src/values/font.dart';
 import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/button.dart';
+import 'package:trakk/src/widgets/general_widget.dart';
 
 class UserOrderCard extends StatefulWidget {
   final Function(int index, {OrderModel? orderModel}) forHomeNavigation;
@@ -47,11 +48,11 @@ class _UserOrderCardState extends State<UserOrderCard> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     OrderStatus orderStatus =
-        (widget.datum.attributes?.deliveryDate ?? '') == 'completed'
+        (widget.datum.attributes?.status ?? '') == 'completed'
             ? OrderStatus.completed
-            : (widget.datum.attributes?.deliveryDate ?? '') == 'declined'
+            : (widget.datum.attributes?.status ?? '') == 'declined'
                 ? OrderStatus.declined
-                : (widget.datum.attributes?.deliveryDate ?? '') == 'in_transit'
+                : (widget.datum.attributes?.status ?? '') == 'in_transit'
                     ? OrderStatus.in_transit
                     : OrderStatus.pending;
 
@@ -277,51 +278,59 @@ class _UserOrderCardState extends State<UserOrderCard> {
             child: Button(
               text: orderStatus == OrderStatus.completed
                   ? 'ORDER COMPLETED'
-                  : orderStatus == OrderStatus.completed
+                  : orderStatus == OrderStatus.declined
                       ? 'ORDER CANCELLED'
                       : 'TRACK YOUR ORDER',
               onPress: () {
                 if (orderStatus == OrderStatus.completed ||
                     orderStatus == OrderStatus.declined) {
-                  widget.forHomeNavigation(0,
-                      orderModel: OrderModel(
-                          data: OrderModelData(
-                        pickup: widget.datum.attributes?.pickup ?? '',
-                        destination: widget.datum.attributes?.destination ?? '',
-                        pickupLatitude:
-                            (widget.datum.attributes?.pickupLatitude ?? 0.0)
-                                .toString(),
-                        pickupLongitude:
-                            (widget.datum.attributes?.pickupLongitude ?? 0.0)
-                                .toString(),
-                        destinationLatitude:
-                            (widget.datum.attributes?.destinationLatitude ??
-                                    0.0)
-                                .toString(),
-                        destinationLongitude:
-                            (widget.datum.attributes?.destinationLongitude ??
-                                    0.0)
-                                .toString(),
-                        distance:
-                            '${(Geolocator.distanceBetween((widget.datum.attributes?.pickupLatitude ?? 0.0), (widget.datum.attributes?.pickupLongitude ?? 0.0), (widget.datum.attributes?.destinationLatitude ?? 0.0), (widget.datum.attributes?.destinationLongitude ?? 0.0)).round() / 1000).toStringAsFixed(2)} km',
-                        pickupDate: widget.datum.attributes?.pickupDate ?? '',
-                        deliveryDate:
-                            widget.datum.attributes?.deliveryDate ?? '',
-                        itemName: widget.datum.attributes?.itemName ?? '',
-                        itemDescription:
-                            widget.datum.attributes?.itemDescription ?? '',
-                        itemImage: widget.datum.attributes?.itemImage ?? '',
-                        weight: widget.datum.attributes?.weight ?? '',
-                        senderName: widget.datum.attributes?.senderName ?? '',
-                        senderEmail: widget.datum.attributes?.senderEmail ?? '',
-                        senderPhone: widget.datum.attributes?.senderPhone ?? '',
-                        receiverName:
-                            widget.datum.attributes?.receiverName ?? '',
-                        receiverEmail:
-                            widget.datum.attributes?.receiverEmail ?? '',
-                        receiverPhone:
-                            widget.datum.attributes?.receiverPhone ?? '',
-                      )));
+                  yesNoDialog(context,
+                      title: 'Re-order',
+                      message: 'Are you sure you want to re-order this item?',
+                      positiveCallback: () {
+                    widget.forHomeNavigation(0,
+                        orderModel: OrderModel(
+                            data: OrderModelData(
+                          pickup: widget.datum.attributes?.pickup ?? '',
+                          destination:
+                              widget.datum.attributes?.destination ?? '',
+                          pickupLatitude:
+                              (widget.datum.attributes?.pickupLatitude ?? 0.0)
+                                  .toString(),
+                          pickupLongitude:
+                              (widget.datum.attributes?.pickupLongitude ?? 0.0)
+                                  .toString(),
+                          destinationLatitude:
+                              (widget.datum.attributes?.destinationLatitude ??
+                                      0.0)
+                                  .toString(),
+                          destinationLongitude:
+                              (widget.datum.attributes?.destinationLongitude ??
+                                      0.0)
+                                  .toString(),
+                          distance:
+                              '${(Geolocator.distanceBetween((widget.datum.attributes?.pickupLatitude ?? 0.0), (widget.datum.attributes?.pickupLongitude ?? 0.0), (widget.datum.attributes?.destinationLatitude ?? 0.0), (widget.datum.attributes?.destinationLongitude ?? 0.0)).round() / 1000).toStringAsFixed(2)} km',
+                          pickupDate: widget.datum.attributes?.pickupDate ?? '',
+                          deliveryDate:
+                              widget.datum.attributes?.deliveryDate ?? '',
+                          itemName: widget.datum.attributes?.itemName ?? '',
+                          itemDescription:
+                              widget.datum.attributes?.itemDescription ?? '',
+                          itemImage: widget.datum.attributes?.itemImage ?? '',
+                          weight: widget.datum.attributes?.weight ?? '',
+                          senderName: widget.datum.attributes?.senderName ?? '',
+                          senderEmail:
+                              widget.datum.attributes?.senderEmail ?? '',
+                          senderPhone:
+                              widget.datum.attributes?.senderPhone ?? '',
+                          receiverName:
+                              widget.datum.attributes?.receiverName ?? '',
+                          receiverEmail:
+                              widget.datum.attributes?.receiverEmail ?? '',
+                          receiverPhone:
+                              widget.datum.attributes?.receiverPhone ?? '',
+                        )));
+                  });
                 } else if (orderStatus == OrderStatus.pending ||
                     orderStatus == OrderStatus.in_transit) {
                   Navigator.pushNamed(context, CustomerTrackScreen.id,

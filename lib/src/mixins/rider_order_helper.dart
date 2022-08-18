@@ -38,6 +38,7 @@ class RiderOrderHelper {
       appToast('Request Accepted', appToastType: AppToastType.success);
       riderHomeStateBloc.updateState(RiderOrderState.isRequestAccepted);
       orderInFocus.setOrderInFocusID(orderID);
+      riderStreamSocket.updateStatus(RiderOrderStatus.toPickup);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(
@@ -102,6 +103,8 @@ class RiderOrderHelper {
       appToast('Item Picked Up', appToastType: AppToastType.success);
       riderHomeStateBloc
           .updateState(RiderOrderState.isItemPickedUpLocationAndEnRoute);
+
+      riderStreamSocket.updateStatus(RiderOrderStatus.toDestination);
     } else {
       MessageOnlyResponse messageOnlyResponse = operation.result;
       appToast(

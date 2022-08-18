@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:geocoding/geocoding.dart' as geocoding;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_place/google_place.dart';
@@ -99,20 +101,21 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
     if (loca != null) {
       pickUpLatLng = LatLng(loca.latitude ?? 0.0, loca.longitude ?? 0.0);
 
-      var list = (await geocoding.placemarkFromCoordinates(
-          pickUpLatLng?.latitude ?? 0.0, pickUpLatLng?.longitude ?? 0.0));
-      if (list.isNotEmpty) {
-        // for (var data in list) {
-        //   print(data.name);
-        //   print(data.street);
-        //   print(data.subLocality);
-        //   print(data.subAdministrativeArea);
-        //   print(data.thoroughfare);
-        //   print(data.subThoroughfare);
-        //   print(data.country);
-        // }
-        _pickUp = list.first.street;
-
+      try {
+        var list = (await geocoding.placemarkFromCoordinates(
+            pickUpLatLng?.latitude ?? 0.0, pickUpLatLng?.longitude ?? 0.0));
+        if (list.isNotEmpty) {
+          // for (var data in list) {
+          //   print(data.name);
+          //   print(data.street);
+          //   print(data.subLocality);
+          //   print(data.subAdministrativeArea);
+          //   print(data.thoroughfare);
+          //   print(data.subThoroughfare);
+          //   print(data.country);
+          // }
+          _pickUp = list.first.street;
+        }
         if (mounted) {
           setState(() {
             _pickUpController.text = _pickUp ?? '';
@@ -120,6 +123,10 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
         }
 
         doCallback();
+      } on PlatformException catch (err) {
+        if (kDebugMode) {
+          print(err.toString());
+        }
       }
     }
   }
@@ -211,6 +218,9 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                       },
                       onSaved: (value) {
                         doCallback();
+                        setState(() {
+                          predictions = [];
+                        });
                         return null;
                       },
                       onChanged: (value) {
@@ -245,6 +255,9 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
                       },
                       onSaved: (value) {
                         doCallback();
+                        setState(() {
+                          predictions = [];
+                        });
                         return null;
                       },
                       onChanged: (value) {
