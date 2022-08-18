@@ -39,6 +39,11 @@ class _ItemDetailDateWidgetState extends State<ItemDetailDateWidget> {
     super.initState();
     _pickupDate = widget.startDate;
     _dropOffDate = widget.endDate;
+
+    _pickUpDateController.text = getLongDate(dateValue: _pickupDate.toString());
+
+    _dropOffDateController.text =
+        getLongDate(dateValue: _dropOffDate.toString());
   }
 
   @override

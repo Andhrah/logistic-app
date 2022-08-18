@@ -16,11 +16,11 @@ class GetCustomersOrderHistoryBloc
     with BaseBloc<List<UserOrderHistoryDatum>, String>, ConnectivityHelper {
   CancelableOperation? _cancelableOperation;
 
-  fetchCurrent() async {
+  fetchCurrent({String? status}) async {
     setAsLoading();
     checkInternetConnection(
         hasInternetCallback: () async {
-          var operation = await orderAPI.getCustomerOrders();
+          var operation = await orderAPI.getCustomerOrders(status);
 
           if (operation.code == 200 || operation.code == 201) {
             UserOrderHistoryResponse response =

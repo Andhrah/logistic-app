@@ -7,6 +7,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:location/location.dart' as Loca;
@@ -41,7 +42,9 @@ class RiderMapProvider extends ChangeNotifier {
     String? riderID =
         '${appSettings.loginResponse?.data?.user?.rider?.id ?? ''}';
 
-    print('token: $token');
+    if (kDebugMode) {
+      print('token: $token');
+    }
 
     socket = io(SingletonData.singletonData.socketURL, <String, dynamic>{
       "transports": ["websocket"],
@@ -60,30 +63,40 @@ class RiderMapProvider extends ChangeNotifier {
 
       if (onConnected != null) onConnected();
       isNewConnection = true;
-      print('connected: ${socket?.id}');
+      if (kDebugMode) {
+        print('connected: ${socket?.id}');
+      }
       if (onConnected != null) onConnected();
     });
 
     socket?.onConnecting((_) {
-      print('connecting');
+      if (kDebugMode) {
+        print('connecting');
+      }
       socketStateBloc.updateState(NetworkState.connecting);
     });
 
     socket?.onConnectError((err) {
       socketStateBloc.updateState(NetworkState.connected);
       if (onConnectionError != null) onConnectionError();
-      print('connection error: ${err.toString()}');
+      if (kDebugMode) {
+        print('connection error: ${err.toString()}');
+      }
     });
 
     socket?.onError((data) {
-      print('error: ${data.toString()}');
+      if (kDebugMode) {
+        print('error: ${data.toString()}');
+      }
       socketStateBloc.updateState(NetworkState.noInternet);
     });
 
     socket?.onDisconnect((dis) {
       isNewConnection = false;
       socketStateBloc.updateState(NetworkState.disconnected);
-      print('disconnect: ${dis.toString()}');
+      if (kDebugMode) {
+        print('disconnect: ${dis.toString()}');
+      }
     });
 
     _listeners(riderID);
@@ -130,7 +143,9 @@ class RiderMapProvider extends ChangeNotifier {
   }
 
   sendData(String riderID, Loca.LocationData? _loca, int? orderId) async {
-    print('trying to emit');
+    if (kDebugMode) {
+      print('trying to emit');
+    }
     if (_loca != null) {
       if ((socket?.active ?? false) == true) {
         double lat =
@@ -148,7 +163,9 @@ class RiderMapProvider extends ChangeNotifier {
           'currentLocation': address == '...' ? '' : address
         };
 
-        print(_location);
+        if (kDebugMode) {
+          print(_location);
+        }
         _location.removeWhere((key, value) => value == null);
 
         if (socket?.id != null) {
@@ -156,7 +173,9 @@ class RiderMapProvider extends ChangeNotifier {
         }
 
         socket?.emit('riders_location', _location);
-        print('emitted riders_location: ${socket?.id}\n$_location');
+        if (kDebugMode) {
+          print('emitted riders_location: ${socket?.id}\n$_location');
+        }
       }
     }
   }
@@ -165,7 +184,14 @@ class RiderMapProvider extends ChangeNotifier {
     miscBloc.fetchLocation();
     miscBloc.location.onLocationChanged.listen((value) {
       Loca.LocationData? _loca = value;
-      print('loation has changed');
+      if (kDebugMode) {
+        print('loation has changed');
+      }
+
+      //This makes sure rider location is emitted incase no order is found/ongoing
+      if (!riderStreamSocket.behaviorSubject.hasValue) {
+        sendData(riderID, _loca, null);
+      }
 
       //This broadcast rider location if order is ongoing
       if (riderStreamSocket.behaviorSubject.hasValue &&
@@ -180,11 +206,6 @@ class RiderMapProvider extends ChangeNotifier {
             .isEmpty) {
           sendData(riderID, _loca, null);
         }
-      }
-
-      //This makes sure rider location is emitted incase no order is found/ongoing
-      if (!riderStreamSocket.behaviorSubject.hasValue) {
-        sendData(riderID, _loca, null);
       }
     });
   }

@@ -22,15 +22,23 @@ import '../../../models/app_settings.dart';
 import '../../../widgets/menu_button.dart';
 
 class ItemDetails extends StatefulWidget {
+  final OrderModel? orderModel;
+
   static const String id = 'itemDetails';
 
-  const ItemDetails({Key? key}) : super(key: key);
+  const ItemDetails({Key? key, this.orderModel}) : super(key: key);
 
   @override
   _ItemDetailsState createState() => _ItemDetailsState();
 }
 
 class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
+  UniqueKey key = UniqueKey();
+  UniqueKey key2 = UniqueKey();
+  UniqueKey key3 = UniqueKey();
+  UniqueKey key4 = UniqueKey();
+  UniqueKey key5 = UniqueKey();
+
   final _formKey = GlobalKey<FormState>();
 
   String _itemName = '';
@@ -61,13 +69,52 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       CustomerMapProvider injector =
           CustomerMapProvider.customerMapProvider(context);
-      // injector.connect();
+
       injector.connectAndListenToSocket(
           onConnected: () {},
           onConnectionError: () {
             injector.disconnectSocket();
             // showDialogButton(context, 'Failed', 'Could not start service', 'Ok');
           });
+      if (widget.orderModel != null) {
+        setState(() {
+          _itemName = widget.orderModel?.data?.itemName ?? '';
+          _itemDescription = widget.orderModel?.data?.itemDescription ?? '';
+          _itemWeight = widget.orderModel?.data?.weight ?? '';
+          _itemImagePath = widget.orderModel?.data?.itemImage ?? '';
+          _pickupDate = widget.orderModel?.data?.pickupDate ?? '';
+          _dropOffDate = widget.orderModel?.data?.deliveryDate ?? '';
+          pickupOrderLocation = OrderLocation(
+              latitude: double.tryParse(
+                      widget.orderModel?.data?.pickupLatitude ?? '') ??
+                  0.0,
+              longitude: double.tryParse(
+                      widget.orderModel?.data?.pickupLongitude ?? '') ??
+                  0.0,
+              address: widget.orderModel?.data?.pickup ?? '',
+              isPickUp: true);
+          dropOffOrderLocation = OrderLocation(
+              latitude: double.tryParse(
+                      widget.orderModel?.data?.destinationLatitude ?? '') ??
+                  0.0,
+              longitude: double.tryParse(
+                      widget.orderModel?.data?.destinationLongitude ?? '') ??
+                  0.0,
+              address: widget.orderModel?.data?.destination ?? '',
+              isDelivery: true);
+          _senName = widget.orderModel?.data?.senderName ?? '';
+          _senEmail = widget.orderModel?.data?.senderEmail ?? '';
+          _senPhone = widget.orderModel?.data?.senderPhone ?? '';
+          _recName = widget.orderModel?.data?.receiverName ?? '';
+          _recEmail = widget.orderModel?.data?.receiverEmail ?? '';
+          _recPhone = widget.orderModel?.data?.receiverPhone ?? '';
+          key = UniqueKey();
+          key2 = UniqueKey();
+          key3 = UniqueKey();
+          key4 = UniqueKey();
+          key5 = UniqueKey();
+        });
+      }
     });
   }
 
@@ -246,40 +293,63 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                       key: _formKey,
                       child: Column(children: [
                         ItemDetailLocationWidget(
+                            pickupOrderLocation, dropOffOrderLocation,
                             (OrderLocation? _pickupOrderLocation,
                                 OrderLocation? _dropOffOrderLocation) {
                           pickupOrderLocation = _pickupOrderLocation;
                           dropOffOrderLocation = _dropOffOrderLocation;
-                        }),
-                        ItemDetailCategoryWidget((String? itemName,
-                            String description, String weight) {
+                        }, key: key),
+                        ItemDetailCategoryWidget(
+                            _itemName, _itemDescription, _itemWeight,
+                            (String? itemName, String description,
+                                String weight) {
                           _itemName = itemName ?? '';
                           _itemDescription = description;
                           _itemWeight = weight;
-                        }),
+                        }, key: key2),
                         const SizedBox(height: 20.0),
                         ItemDetailDateWidget((pickup, dropOff) {
                           _pickupDate = pickup;
                           _dropOffDate = dropOff;
-                        }),
+                        },
+                            startDate: _pickupDate,
+                            endDate: _dropOffDate,
+                            key: key3),
                         const SizedBox(height: 30.0),
                         ItemDetailParticipantWidget((String senName,
-                            String senEmail,
-                            String senPhone,
-                            String recName,
-                            String recEmail,
-                            String recPhone) {
+                                String senEmail,
+                                String senPhone,
+                                String recName,
+                                String recEmail,
+                                String recPhone) {
                           _senName = senName;
                           _senEmail = senEmail;
                           _senPhone = senPhone;
                           _recName = recName;
                           _recEmail = recEmail;
                           _recPhone = recPhone;
-                        }),
+                        },
+                            senName: _senName,
+                            senEmail: _senEmail,
+                            senPhone: _senPhone,
+                            recName: _recName,
+                            recEmail: _recEmail,
+                            recPhone: _recPhone,
+                            key: key4),
                         const SizedBox(height: 20.0),
-                        ItemDetailImageSelectorWidget((String? itemImagePath) {
-                          _itemImagePath = itemImagePath;
-                        }),
+                        ItemDetailImageSelectorWidget(_itemImagePath, (
+                            {String? itemImagePath, String? imageURI}) {
+                          if (itemImagePath != null) {
+                            _itemImagePath = itemImagePath;
+
+                            return;
+                          }
+                          if (imageURI != null) {
+                            _itemImagePath = imageURI;
+
+                            return;
+                          }
+                        }, key: key5),
                         const SizedBox(height: 30.0),
                         Button(
                           text: 'Proceed',

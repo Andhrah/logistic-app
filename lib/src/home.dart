@@ -17,8 +17,6 @@ import 'package:trakk/src/screens/auth/verify_account.dart';
 import 'package:trakk/src/screens/dispatch/cart.dart';
 import 'package:trakk/src/screens/dispatch/checkout.dart';
 import 'package:trakk/src/screens/dispatch/dispatch_summary.dart';
-import 'package:trakk/src/screens/dispatch/item_detail/item_details.dart';
-import 'package:trakk/src/screens/dispatch/order/order.dart';
 import 'package:trakk/src/screens/dispatch/pay_with_transfer.dart';
 import 'package:trakk/src/screens/dispatch/payment.dart';
 import 'package:trakk/src/screens/dispatch/pick_ride.dart';
@@ -40,7 +38,6 @@ import 'package:trakk/src/screens/profile/edit_profile_screen/edit_profile.dart'
 import 'package:trakk/src/screens/profile/edit_profile_screen/edit_vehicle.dart';
 import 'package:trakk/src/screens/profile/privacy_and_policy.dart';
 import 'package:trakk/src/screens/profile/profile_menu.dart';
-import 'package:trakk/src/screens/riders/home/rider_home.dart';
 import 'package:trakk/src/screens/riders/home/widgets/home_standby/rider_notification.dart';
 import 'package:trakk/src/screens/riders/pick_up.dart';
 import 'package:trakk/src/screens/support/help_and_support.dart';
@@ -130,7 +127,7 @@ class _HomeState extends State<Home> {
               Tabs.id: (context) => const Tabs(),
               GetStarted.id: (context) => const GetStarted(),
               Signup.id: (context) => const Signup(),
-              ItemDetails.id: (context) => const ItemDetails(),
+              // ItemDetails.id: (context) => const ItemDetails(),
               PickRide.id: (context) => const PickRide(),
               Checkout.id: (context) => const Checkout(),
               DispatchSummary.id: (context) => const DispatchSummary(),
@@ -146,7 +143,7 @@ class _HomeState extends State<Home> {
               PickUpScreen.id: (context) => const PickUpScreen(),
               CartScreen.id: (context) => const CartScreen(),
               // PolylineScreen.id: (context) => PolylineScreen(),
-              UserOrderScreen.id: (context) => const UserOrderScreen(),
+              // CustomerOrderScreen.id: (context) => const CustomerOrderScreen(),
               ProfileMenu.id: (context) => const ProfileMenu(),
               EditProfile.id: (context) => const EditProfile(),
               FundWalletScreen.id: (context) => const FundWalletScreen(),
@@ -156,8 +153,8 @@ class _HomeState extends State<Home> {
               DispatchHistory.id: (context) => const DispatchHistory(),
               ListOfVehicles.id: (context) => const ListOfVehicles(),
               EditVehicle.id: (context) => const EditVehicle(),
-              MerchantNotifications.id:(context) =>  MerchantNotifications(),
-              RiderNotification.id:(context) => const RiderNotification(),
+              MerchantNotifications.id: (context) => MerchantNotifications(),
+              RiderNotification.id: (context) => const RiderNotification(),
               // RegisterNewVehicle.id: (context) => const RegisterNewVehicle(),
               AddRider.id: (context) => const AddRider(),
               AddRider1.id: (context) => const AddRider1(),

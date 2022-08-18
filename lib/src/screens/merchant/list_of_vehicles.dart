@@ -33,15 +33,6 @@ class Item {
   bool isExpanded;
 }
 
-List<Item> generateItems(int numberOfItems) {
-  return List<Item>.generate(numberOfItems, (int index) {
-    return Item(
-      headerValue: 'Panel $index',
-      expandedValue: 'This is item number $index',
-    );
-  });
-}
-
 class ListOfVehicles extends StatefulWidget {
   static const String id = 'listOfVehicles';
 
@@ -56,12 +47,6 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
         MerchantUpdateRiderAndVehicleHelper,
         ProfileHelper,
         ConnectivityHelper {
-  bool _isButtonPress = false;
-
-  dynamic itemCount;
-  dynamic responseKey;
-  dynamic responseId;
-
   String filter = 'Active Vehicles';
 
   List<String> filters = ['Active Vehicles', 'All Vehicles'];
@@ -70,38 +55,9 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
   void initState() {
     filter = filters.first;
     getVehiclesForMerchantListBloc.fetchCurrent(filter == 'All Vehicles');
-    fetchVehicleList().whenComplete(() {
-      setState(() {});
-    });
-    fetchVehicleList();
 
     super.initState();
   }
-
-  fetchVehicleList() async {}
-
-  // fetchVehicleList() async {
-  //   var response = await VehiclesProvider.vehiclesProvider(context)
-  //       .getVehiclesList();
-  //   print(
-  //       "responseData=> ${response}");
-
-  //   // responseHolder =
-  //   //     response["data"]["attributes"]["orders"]["data"][0]["attributes"];
-  // }
-
-  var vehicles = [
-    // "All vehicles",
-    "Assigned", 'Unassigned'
-  ];
-
-  String _listOfVehicles = 'Assigned';
-
-  double _width = 160;
-  final List<Item> _data = generateItems(1);
-
-  bool isActive = false;
-  bool showAll = true;
 
   @override
   Widget build(BuildContext context) {
@@ -266,17 +222,6 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                   ),
                 ),
               ),
-              const SizedBox(height: 5.0),
-              _isButtonPress && _listOfVehicles == "All vehicles"
-                  ? const Text(
-                      " Choose vehicle",
-                      textScaleFactor: 0.9,
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.red,
-                      ),
-                    )
-                  : Container(),
               Expanded(
                 child: CustomStreamBuilder<List<GetVehiclesForMerchantDatum>,
                     String>(
@@ -380,7 +325,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                   SizedBox(
                                                     width: 300,
                                                     child: Text(
-                                                      'You are about to remove ${name}\nVeh.No. 889 from the list of \nvehicles',
+                                                      'You are about to remove $name\nVeh.No. 889 from the list of \nvehicles',
                                                       // maxLines: 2,
                                                       style: const TextStyle(
                                                         fontSize: 13,
@@ -445,7 +390,7 @@ class _ListOfVehiclesState extends State<ListOfVehicles>
                                                                         Center(
                                                                           child:
                                                                               Text(
-                                                                            '  You have successfully removed\n${name} Veh.No${number} from the list \nof riders',
+                                                                            '  You have successfully removed\n$name Veh.No$number from the list \nof riders',
                                                                             // maxLines: 2,
                                                                             textAlign:
                                                                                 TextAlign.center,

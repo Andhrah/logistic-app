@@ -106,13 +106,22 @@ class CustomerOrderHelper {
   doCreateOrder(OrderModel orderModel, Function() showLoading,
       Function() closeLoading) async {
     showLoading();
-    uploadToCloudinary(orderModel.data?.itemImage, ({String? imageUrl}) async {
-      orderModel.data!.itemImage = imageUrl;
 
+    if ((orderModel.data?.itemImage ?? '').isNotEmpty &&
+        orderModel.data!.itemImage!.startsWith('http')) {
       var operation = await orderAPI.createOrder(orderModel);
 
       _completeCreateOrderOperation(operation, closeLoading);
-    });
+    } else {
+      uploadToCloudinary(orderModel.data?.itemImage, (
+          {String? imageUrl}) async {
+        orderModel.data!.itemImage = imageUrl;
+
+        var operation = await orderAPI.createOrder(orderModel);
+
+        _completeCreateOrderOperation(operation, closeLoading);
+      });
+    }
   }
 
   _completeCreateOrderOperation(

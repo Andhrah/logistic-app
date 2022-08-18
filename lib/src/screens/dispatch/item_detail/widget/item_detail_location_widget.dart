@@ -18,8 +18,13 @@ typedef _OnInputCallback = Function(
 
 class ItemDetailLocationWidget extends StatefulWidget {
   final _OnInputCallback callback;
+  final OrderLocation? pickupOrderLocation;
+  final OrderLocation? dropOffOrderLocation;
 
-  const ItemDetailLocationWidget(this.callback, {Key? key}) : super(key: key);
+  const ItemDetailLocationWidget(
+      this.pickupOrderLocation, this.dropOffOrderLocation, this.callback,
+      {Key? key})
+      : super(key: key);
 
   @override
   _ItemDetailLocationWidgetState createState() =>
@@ -64,6 +69,31 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
   }
 
   init() async {
+    if (widget.pickupOrderLocation != null ||
+        widget.dropOffOrderLocation != null) {
+      if (widget.dropOffOrderLocation != null) {
+        _dropOff = widget.dropOffOrderLocation?.address;
+        dropOffLatLng = LatLng(widget.dropOffOrderLocation?.latitude ?? 0.0,
+            widget.dropOffOrderLocation?.longitude ?? 0.0);
+        if (mounted) {
+          setState(() {
+            _dropOffController.text = _dropOff ?? '';
+          });
+        }
+      }
+
+      if (widget.pickupOrderLocation != null) {
+        _pickUp = widget.pickupOrderLocation?.address;
+        pickUpLatLng = LatLng(widget.pickupOrderLocation?.latitude ?? 0.0,
+            widget.pickupOrderLocation?.longitude ?? 0.0);
+        if (mounted) {
+          setState(() {
+            _pickUpController.text = _pickUp ?? '';
+          });
+        }
+        return;
+      }
+    }
     var loca = await fetchLocation();
 
     if (loca != null) {
@@ -83,9 +113,11 @@ class _ItemDetailLocationWidgetState extends State<ItemDetailLocationWidget> {
         // }
         _pickUp = list.first.street;
 
-        setState(() {
-          _pickUpController.text = _pickUp ?? '';
-        });
+        if (mounted) {
+          setState(() {
+            _pickUpController.text = _pickUp ?? '';
+          });
+        }
 
         doCallback();
       }

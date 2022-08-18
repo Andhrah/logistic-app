@@ -4,9 +4,17 @@ import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/input_field.dart';
 
 class ItemDetailCategoryWidget extends StatefulWidget {
+  final String? itemName;
+  final String? itemDescription;
+
+  final String? itemWeight;
+
   final Function(String? itemName, String description, String weight) callback;
 
-  const ItemDetailCategoryWidget(this.callback, {Key? key}) : super(key: key);
+  const ItemDetailCategoryWidget(
+      this.itemName, this.itemDescription, this.itemWeight, this.callback,
+      {Key? key})
+      : super(key: key);
 
   @override
   _ItemDetailCategoryWidgetState createState() =>
@@ -27,6 +35,17 @@ class _ItemDetailCategoryWidgetState extends State<ItemDetailCategoryWidget> {
   @override
   void initState() {
     super.initState();
+    if (widget.itemName != null) {
+      if (itemsCategory.contains(widget.itemName)) {
+        _pickItem = widget.itemName ?? '';
+      }
+    }
+    if (widget.itemName != null) {
+      _itemDescriptionController.text = widget.itemDescription ?? '';
+    }
+    if (widget.itemWeight != null) {
+      _itemWeightCC.text = widget.itemWeight ?? '';
+    }
   }
 
   @override
