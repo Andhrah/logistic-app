@@ -1,17 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:trakk/src/bloc/customer/customer_map_socket.dart';
 import 'package:trakk/src/bloc/rider/rider_rating_bloc.dart';
 import 'package:trakk/src/mixins/rider_order_helper.dart';
+import 'package:trakk/src/models/customer/customer_order_listener_response.dart';
 import 'package:trakk/src/models/order/user_order_history_response.dart';
 import 'package:trakk/src/screens/dispatch/track/widgets/home_map/cutomer_track_bottom_sheet_content.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
 import 'package:trakk/src/values/enums.dart';
-import 'package:trakk/src/values/padding.dart';
 import 'package:trakk/src/values/values.dart';
+import 'package:trakk/src/widgets/custom_stepper_widget.dart';
 import 'package:trakk/src/widgets/general_widget.dart';
-import 'package:steps_indicator/steps_indicator.dart';
 
 class CustomerBottomSheet extends StatefulWidget {
   const CustomerBottomSheet({Key? key}) : super(key: key);
@@ -26,19 +27,6 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
       DraggableScrollableController();
 
   final TextEditingController _controller = TextEditingController();
-
-  int trackIndex = 1;
-  int textIndex = 0;
-
-  int nbSteps = 4;
-
-  final List<int> steps = [1, 2, 3, 4];
-  List<String> deliveryStatus = [
-    "Going to pick-up",
-    "Going to delivery",
-    "Item delivered",
-    "Delivery confirmed"
-  ];
 
   @override
   void initState() {
@@ -94,8 +82,8 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 24.0, horizontal: 30),
+                                padding: const EdgeInsets.only(
+                                    left: 30.0, right: 30, top: 24),
                                 child: Row(
                                   children: [
                                     ClipOval(
@@ -213,79 +201,50 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                                   ],
                                 ),
                               ),
-                              Padding(
+                              Container(
                                 padding: const EdgeInsets.symmetric(
                                     vertical: 0.0, horizontal: 25),
-                                child: Column(
-                                  //crossAxisAlignment: CrossAxisAlignment.end,
-                                  children: [
-                                    Text(deliveryStatus[textIndex], style: TextStyle(
-                                      color: secondaryColor
-                                    ),),
-                                    StepsIndicator(
-                                      unselectedStepColorIn: whiteColor,
-                                      selectedStep: trackIndex,
-                                      nbSteps: nbSteps,
-                                      selectedStepSize: 15,
-                                      unselectedStepSize: 15,
-                                      doneStepSize: 15,
-                                      doneLineColor: secondaryColor,
-                                      doneStepColor: secondaryColor,
-                                      undoneLineColor: Colors.white,
-                                      lineLength: 50,
-                                      lineLengthCustomStep: [
-                                        StepsIndicatorCustomLine(
-                                            nbStep: 4, length: 60)
-                                      ],
-                                      enableLineAnimation: true,
-                                      enableStepAnimation: true,
-                                    ),
-                                    const SizedBox(
-                                      height: 0,
-                                    ),
-                                    //i made use of the materialm buttons to enable the StepsIndicator
-                                    // Row(
-                                    //   crossAxisAlignment:
-                                    //       CrossAxisAlignment.center,
-                                    //   mainAxisAlignment:
-                                    //       MainAxisAlignment.center,
-                                    //   children: <Widget>[
-                                    //     MaterialButton(
-                                    //       color: Colors.red,
-                                    //       onPressed: () {
-                                    //         if (trackIndex > 0 &&
-                                    //             textIndex > 0) {
-                                    //           setState(() {
-                                    //             trackIndex--;
-                                    //             textIndex--;
-                                    //             print(trackIndex);
-                                    //             print(
-                                    //                 deliveryStatus[textIndex]);
-                                    //           });
-                                    //         }
-                                    //       },
-                                    //       child: const Text('Prev'),
-                                    //     ),
-                                    //     MaterialButton(
-                                    //       color: Colors.green,
-                                    //       onPressed: () {
-                                    //         if (textIndex <
-                                    //             deliveryStatus.length - 1) {
-                                    //           setState(() {
-                                    //             trackIndex++;
-                                    //             textIndex++;
-                                    //             print(trackIndex);
-                                    //             print(
-                                    //                 deliveryStatus[textIndex]);
-                                    //           });
-                                    //         }
-                                    //       },
-                                    //       child: const Text('Next'),
-                                    //     ),
-                                    //   ],
-                                    // ),
-                                  ],
-                                ),
+                                constraints: const BoxConstraints(
+                                    maxWidth: 350, maxHeight: 50),
+                                child: StreamBuilder<
+                                        BaseModel<CustomerOrderListenerResponse,
+                                            String>>(
+                                    stream:
+                                        customerStreamSocket.behaviorSubject,
+                                    builder: (context, snapshot) {
+                                      int trackIndex = 0;
+
+                                      if (snapshot.hasData &&
+                                          snapshot.data!.hasData) {
+                                        String status = snapshot
+                                                .data?.model?.info?.status ??
+                                            '';
+
+                                        trackIndex = status ==
+                                                RiderOrderStatus
+                                                    .deliveryConfirmed.name
+                                            ? 3
+                                            : status ==
+                                                    RiderOrderStatus
+                                                        .delivered.name
+                                                ? 2
+                                                : status ==
+                                                        RiderOrderStatus
+                                                            .toDestination.name
+                                                    ? 1
+                                                    : 0;
+                                      }
+
+                                      return CustomStepperWidget(
+                                        currentPosition: trackIndex,
+                                        text: [
+                                          "Going to pick-up",
+                                          "Going to delivery",
+                                          "Item delivered",
+                                          "Delivery confirmed"
+                                        ].elementAt(trackIndex),
+                                      );
+                                    }),
                               ),
                             ],
                           )),
@@ -294,7 +253,7 @@ class _CustomerBottomSheetState extends State<CustomerBottomSheet>
                 ),
               ),
               Positioned(
-                top: 180,
+                top: 140,
                 left: 0,
                 right: 0,
                 child: ClipRRect(

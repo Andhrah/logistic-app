@@ -12,6 +12,7 @@ import 'package:trakk/src/models/order/user_order_history_response.dart';
 import 'package:trakk/src/screens/dispatch/track/widgets/home_map/customer_bottom_sheet.dart';
 import 'package:trakk/src/utils/helper_utils.dart';
 import 'package:trakk/src/values/assets.dart';
+import 'package:trakk/src/values/enums.dart';
 import 'package:trakk/src/values/values.dart';
 import 'package:trakk/src/widgets/back_icon.dart';
 
@@ -118,7 +119,13 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
   void _onMapCreated(GoogleMapController controller) async {
     customerStreamSocket.behaviorSubject.listen((value) {
       if (value.model != null && mounted) {
-        moveCameraToUser(riderLatLng: value.model!);
+        String status = value.model?.info?.status ?? '';
+        var fromLatLng = LatLng(
+            (double.tryParse(value.model?.info?.currentLocation ?? '0.0') ??
+                0.0),
+            (double.tryParse(value.model?.info?.currentLongitude ?? '0.0') ??
+                0.0));
+        moveCameraToUser(riderLatLng: fromLatLng);
 
         var arg = ModalRoute.of(context)!.settings.arguments;
         if (arg != null) {
@@ -126,17 +133,34 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
               UserOrderHistoryDatum.fromJson(arg as Map<String, dynamic>);
 
           if (model.id != null) {
+            // print('------attributes------');
+            // print(model.attributes?.pickupLatitude ?? 0.0);
+            // print(model.attributes?.pickupLongitude ?? 0.0);
+
+            //Status we have that rider can broadcast
+            // pending, to-pickup,delivered,delivery_confirmed
             mapExtraUIBloc.updateMarkersWithCircle(
-              [
-                LatLng(
-                  model.attributes?.destinationLatitude ?? 0.0,
-                  model.attributes?.destinationLongitude ?? 0.0,
-                )
-              ],
-              'Destination',
+              (status == RiderOrderStatus.pending.name ||
+                      status == RiderOrderStatus.toPickup.name)
+                  ? [
+                      LatLng(
+                        model.attributes?.pickupLatitude ?? 0.0,
+                        model.attributes?.pickupLongitude ?? 0.0,
+                      )
+                    ]
+                  : [
+                      LatLng(
+                        model.attributes?.destinationLatitude ?? 0.0,
+                        model.attributes?.destinationLongitude ?? 0.0,
+                      )
+                    ],
+              (status == RiderOrderStatus.pending.name ||
+                      status == RiderOrderStatus.toPickup.name)
+                  ? 'Pickup'
+                  : 'Destination',
               true,
               true,
-              fromLatLng: value.model!,
+              fromLatLng: fromLatLng,
             );
           }
         }

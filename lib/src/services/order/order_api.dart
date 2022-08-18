@@ -40,7 +40,7 @@ class OrderAPI extends BaseNetworkCallHandler {
     return runAPI(
         type == OrderHistoryType.all
             ? 'api/orders?populate=riderId.userId&filters[riderId][id][\$eq]=$userID'
-            : 'api/orders?populate=*&filters[status][\$eq]=${type.name}&filters[riderId][id][\$eq]=31',
+            : 'api/orders?populate=*&filters[status][\$eq]=${type.name}&filters[riderId][id][\$eq]=$userID',
         HttpRequestType.get);
   }
 
@@ -59,12 +59,12 @@ class OrderAPI extends BaseNetworkCallHandler {
   }
 
   Future<Operation> getCustomerOrders(String? status) async {
-    String userID = await appSettingsBloc.getUserID;
+    String userID = await appSettingsBloc.getRootUserID;
 
     return runAPI(
         status == null || (status == 'All Orders')
             ? 'api/orders?populate=riderId,riderId.userId,riderId.merchantId&filters[userId][id][\$eq]=$userID'
-            : 'api/orders?populate=*&filters[status][\$eq]=${status.toLowerCase().replaceAll('-', '_')}',
+            : 'api/orders?populate=*&filters[status][\$eq]=${status.toLowerCase().replaceAll('-', '_')}&filters[userId][id][\$eq]=$userID',
         HttpRequestType.get);
   }
 }

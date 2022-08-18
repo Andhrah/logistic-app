@@ -22,6 +22,8 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
   final double pickupLongitude;
   final double deliveryLatitude;
   final double deliveryLongitude;
+  final String pickupAddress;
+  final String deliveryAddress;
   final OnButtonClicked onButtonClick;
 
   const RiderBottomSheetContentOnGoing(
@@ -34,6 +36,8 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
       required this.pickupLongitude,
       required this.deliveryLatitude,
       required this.deliveryLongitude,
+      required this.pickupAddress,
+      required this.deliveryAddress,
       required this.onButtonClick})
       : super(key: key);
 
@@ -80,8 +84,9 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
                           future: getAddressFromLatLng(
                               pickupLatitude, pickupLongitude),
                           builder: (context, snapshot) {
-                            String pickupAddress = '';
-                            if (snapshot.hasData) {
+                            String pickupAddress = this.pickupAddress;
+                            if (snapshot.hasData &&
+                                this.pickupAddress.isEmpty) {
                               pickupAddress = snapshot.data ?? '';
                             }
                             return Column(
@@ -114,8 +119,10 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
                                     future: getAddressFromLatLng(
                                         deliveryLatitude, deliveryLongitude),
                                     builder: (context, snapshot) {
-                                      String deliveryAddress = '';
-                                      if (snapshot.hasData) {
+                                      String deliveryAddress =
+                                          this.deliveryAddress;
+                                      if (snapshot.hasData &&
+                                          this.deliveryAddress.isEmpty) {
                                         deliveryAddress = snapshot.data ?? '';
                                       }
                                       return RichText(
@@ -216,6 +223,8 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
   final double deliveryLongitude;
   final String deliveryDate;
   final String pickupDate;
+  final String pickupAddress;
+  final String deliveryAddress;
   final OnButtonClicked onButtonClick;
 
   const RiderBottomSheetContentCompleted(
@@ -230,6 +239,8 @@ class RiderBottomSheetContentCompleted extends StatelessWidget {
       required this.deliveryLongitude,
       required this.deliveryDate,
       required this.pickupDate,
+      required this.pickupAddress,
+      required this.deliveryAddress,
       required this.onButtonClick})
       : super(key: key);
 

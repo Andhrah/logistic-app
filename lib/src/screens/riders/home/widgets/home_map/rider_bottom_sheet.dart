@@ -136,6 +136,9 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                             final double pickupLongitude =
                                                 data?.order?.pickupLongitude ??
                                                     0.0;
+                                            final String pickupAddress =
+                                                data?.order?.pickup ?? '';
+
                                             final double deliveryLatitude = data
                                                     ?.order
                                                     ?.destinationLatitude ??
@@ -144,6 +147,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                                     ?.order
                                                     ?.destinationLongitude ??
                                                 0.0;
+                                            final String deliveryAddress =
+                                                data?.order?.destination ?? '';
 
                                             if (orderState ==
                                                 RiderOrderState
@@ -168,6 +173,9 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                                     deliveryLongitude,
                                                 deliveryDate: deliveryDate,
                                                 pickupDate: pickupDate,
+                                                pickupAddress: pickupAddress,
+                                                deliveryAddress:
+                                                    deliveryAddress,
                                                 onButtonClick: _onButtonClick,
                                               );
                                             }
@@ -182,6 +190,8 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                                   deliveryLatitude,
                                               deliveryLongitude:
                                                   deliveryLongitude,
+                                              pickupAddress: pickupAddress,
+                                              deliveryAddress: deliveryAddress,
                                               onButtonClick: _onButtonClick,
                                             );
                                           },
@@ -263,6 +273,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
           .updateState(RiderOrderState.isAlmostAtDestinationLocation);
     } else if (data == RiderOrderState.isAlmostAtDestinationLocation) {
       riderHomeStateBloc.updateState(RiderOrderState.isAtDestinationLocation);
+      riderStreamSocket.updateStatus(RiderOrderStatus.delivered);
     } else if (data == RiderOrderState.isAtDestinationLocation) {
       modalCodeDialog(
         context,
@@ -270,6 +281,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
         positiveLabel: 'Confirm',
         onPositiveCallback: (String value) {
           if (value == deliveryCode) {
+            riderStreamSocket.updateStatus(RiderOrderStatus.deliveryConfirmed);
             doDeliverOrder(orderNo);
             return;
           }

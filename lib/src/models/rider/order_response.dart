@@ -83,7 +83,7 @@ class Order {
   final DateTime? createdAt;
   final DateTime? updatedAt;
   final DateTime? publishedAt;
-  final String? status;
+  String? status;
   final String? orderRef;
   final dynamic quantity;
   final Rider? rider;
