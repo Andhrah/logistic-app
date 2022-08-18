@@ -147,6 +147,7 @@ class RiderMapProvider extends ChangeNotifier {
     if (kDebugMode) {
       print('trying to emit');
     }
+
     if (_loca != null) {
       if ((socket?.active ?? false) == true) {
         double lat =
@@ -155,6 +156,7 @@ class RiderMapProvider extends ChangeNotifier {
         double long =
             double.tryParse(_loca.longitude.toString().replaceAll(',', '')) ??
                 0.0;
+
         String address = await getAddressFromLatLng(lat, long);
         Map<String, dynamic> _location = {
           'riderId': riderID,

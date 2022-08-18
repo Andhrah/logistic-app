@@ -42,6 +42,16 @@ class UpdateProfile {
   String? stateOfResidence;
   String? residentialAddress;
 
+  UpdateProfile.riderLocation({
+    this.currentLocation,
+    this.currentLatitude,
+    this.currentLongitude,
+  });
+
+  String? currentLocation;
+  double? currentLatitude;
+  double? currentLongitude;
+
   factory UpdateProfile.fromJson(Map<String, dynamic> json) => UpdateProfile(
         firstName: json["firstName"],
         lastName: json["lastName"],
@@ -86,6 +96,19 @@ class UpdateProfile {
         "NOKaddress": nOKaddress,
         "NOKphoneNumber": nOKphoneNumber,
         "NOKemail": nOKemail,
+      }
+    };
+
+    _map.removeWhere((key, value) => value == null);
+    return _map;
+  }
+
+  Map<String, dynamic> toRiderLocationJson() {
+    Map<String, dynamic> _map = {
+      'data': {
+        "currentLocation": currentLocation,
+        "currentLongitude": currentLongitude,
+        "currentLatitude": currentLatitude,
       }
     };
 

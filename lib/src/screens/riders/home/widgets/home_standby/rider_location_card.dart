@@ -9,9 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:location/location.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
+import 'package:trakk/src/bloc/rider/get_vehicles_for_rider_list_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_home_state_bloc.dart';
 import 'package:trakk/src/bloc/rider/rider_map_socket.dart';
 import 'package:trakk/src/models/app_settings.dart';
+import 'package:trakk/src/models/merchant/get_vehicles_for_merchant_response.dart';
 import 'package:trakk/src/models/rider/add_rider_to_merchant_model.dart';
 import 'package:trakk/src/models/rider/order_response.dart';
 import 'package:trakk/src/screens/auth/rider/next_of_kin.dart';
@@ -40,6 +42,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
   void initState() {
     super.initState();
     widget.locaBloc.fetchLocation();
+    getVehiclesForRiderListBloc.fetchCurrent();
   }
 
   @override
@@ -170,7 +173,6 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                   topRight: Radius.circular(8),
                   bottomRight: Radius.circular(8)),
               child: Image.asset(
-                
                 //if suspended? Assets.rider_home_suspended
                 Assets.rider_home_location,
                 height: 135,
@@ -319,12 +321,13 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                'Add Contact Details', textScaleFactor: 0.8,
+                                'Add Contact Details',
+                                textScaleFactor: 0.8,
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
-                                    fontWeight: kSemiBoldWeight,
-                                    //fontSize: textFontSize(context, 10)
-                                    ),
+                                  fontWeight: kSemiBoldWeight,
+                                  //fontSize: textFontSize(context, 10)
+                                ),
                               ),
                             ),
                             // 2.widthInPixel(),
@@ -383,12 +386,13 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                           children: [
                             Expanded(
                               child: Text(
-                                'Add Next of Kin Details', textScaleFactor: 0.8,
+                                'Add Next of Kin Details',
+                                textScaleFactor: 0.8,
                                 textAlign: TextAlign.center,
                                 style: theme.textTheme.caption!.copyWith(
-                                    fontWeight: kSemiBoldWeight,
-                                    //fontSize: textFontSize(context, 10)
-                                    ),
+                                  fontWeight: kSemiBoldWeight,
+                                  //fontSize: textFontSize(context, 10)
+                                ),
                               ),
                             ),
                             // 2.widthInPixel(),
@@ -407,67 +411,86 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
             ),
             20.widthInPixel(),
             Expanded(
-              child: GestureDetector(
-                onTap: () {
-                  if (completedVehicles) {
-                    appToast('You had previously added vehicle');
-                    return;
-                  }
-                  Navigator.pushNamed(context, AddRider2.id,
-                      arguments: {'previousScreenID': RiderLocationCard.id});
-                },
-                child: AspectRatio(
-                  aspectRatio: 1,
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black45.withOpacity(0.1),
-                          spreadRadius: 1,
-                          offset: const Offset(0.0, 0.0), //(x,y)
-                          blurRadius: 8.0,
-                        ),
-                      ],
-                      color: whiteColor,
-                    ),
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 12),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Image.asset(
-                          Assets.rider_add_vehicle_details,
-                          height: 20,
-                          width: 20,
-                        ),
-                        2.5.heightInPixel(),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: Text(
-                                'Add Vehicle Details', textScaleFactor: 0.8,
-                                textAlign: TextAlign.center,
-                                style: theme.textTheme.caption!.copyWith(
-                                    fontWeight: kSemiBoldWeight,
-                                    //fontSize: textFontSize(context, 10)
-                                    ),
+              child: StreamBuilder<
+                      BaseModel<List<GetVehiclesForMerchantDatum>, String>>(
+                  stream: getVehiclesForRiderListBloc.behaviorSubject,
+                  builder: (context, snapshot) {
+                    bool? completedVehicles;
+
+                    if (snapshot.hasData && snapshot.data!.hasData) {
+                      completedVehicles = snapshot.data?.model?.isNotEmpty;
+                    }
+                    return GestureDetector(
+                      onTap: () {
+                        if (completedVehicles == null) {
+                          runToast('Fetching data');
+                          return;
+                        }
+                        if (completedVehicles) {
+                          appToast('You had previously added vehicle');
+                          return;
+                        }
+                        Navigator.pushNamed(context, AddRider2.id, arguments: {
+                          'previousScreenID': RiderLocationCard.id
+                        });
+                      },
+                      child: AspectRatio(
+                        aspectRatio: 1,
+                        child: Container(
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black45.withOpacity(0.1),
+                                spreadRadius: 1,
+                                offset: const Offset(0.0, 0.0), //(x,y)
+                                blurRadius: 8.0,
                               ),
-                            ),
-                            // 2.widthInPixel(),
-                            Icon(
-                              completedVehicles ? Icons.check : Icons.add,
-                              size: 14,
-                              color: secondaryColor,
-                            )
-                          ],
+                            ],
+                            color: whiteColor,
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 12, vertical: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                Assets.rider_add_vehicle_details,
+                                height: 20,
+                                width: 20,
+                              ),
+                              2.5.heightInPixel(),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Add Vehicle Details',
+                                      textScaleFactor: 0.8,
+                                      textAlign: TextAlign.center,
+                                      style: theme.textTheme.caption!.copyWith(
+                                        fontWeight: kSemiBoldWeight,
+                                        //fontSize: textFontSize(context, 10)
+                                      ),
+                                    ),
+                                  ),
+                                  // 2.widthInPixel(),
+                                  if (completedVehicles != null)
+                                    Icon(
+                                      completedVehicles
+                                          ? Icons.check
+                                          : Icons.add,
+                                      size: 14,
+                                      color: secondaryColor,
+                                    )
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
+                      ),
+                    );
+                  }),
             ),
           ],
         ),
