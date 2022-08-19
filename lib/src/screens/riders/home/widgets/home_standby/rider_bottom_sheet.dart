@@ -348,7 +348,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                               ConstrainedBox(
                                                 constraints:
                                                     const BoxConstraints(
-                                                        maxWidth: 250),
+                                                        maxWidth: 400),
                                                 child: FutureBuilder<String>(
                                                     future: getAddressFromLatLng(
                                                         order?.destinationLatitude ??

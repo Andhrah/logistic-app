@@ -125,33 +125,10 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                                       return RichText(
                                         textAlign: TextAlign.start,
                                         text: TextSpan(
-                                            text: 'From ',
+                                            text: '$deliveryAddress ',
                                             style: theme.textTheme.caption!
                                                 .copyWith(
-                                                    fontWeight: kLightWeight),
-                                            children: [
-                                              TextSpan(
-                                                text: '$pickupAddress ',
-                                                style: theme.textTheme.caption!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            kMediumWeight),
-                                              ),
-                                              TextSpan(
-                                                text: 'to ',
-                                                style: theme.textTheme.caption!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            kLightWeight),
-                                              ),
-                                              TextSpan(
-                                                text: '$deliveryAddress ',
-                                                style: theme.textTheme.caption!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            kMediumWeight),
-                                              ),
-                                            ]),
+                                                    fontWeight: kMediumWeight)),
                                       );
                                     }),
                               ],

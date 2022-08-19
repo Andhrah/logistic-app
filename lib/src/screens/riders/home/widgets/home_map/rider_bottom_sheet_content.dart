@@ -128,36 +128,11 @@ class RiderBottomSheetContentOnGoing extends StatelessWidget {
                                       return RichText(
                                         textAlign: TextAlign.start,
                                         text: TextSpan(
-                                            text: 'From ',
-                                            style: theme.textTheme.bodyText1!
-                                                .copyWith(
-                                                    fontWeight: kLightWeight),
-                                            children: [
-                                              TextSpan(
-                                                text: '$pickupAddress ',
-                                                style: theme
-                                                    .textTheme.bodyText1!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            kMediumWeight),
-                                              ),
-                                              TextSpan(
-                                                text: 'to ',
-                                                style: theme
-                                                    .textTheme.bodyText1!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            kLightWeight),
-                                              ),
-                                              TextSpan(
-                                                text: '$deliveryAddress ',
-                                                style: theme
-                                                    .textTheme.bodyText1!
-                                                    .copyWith(
-                                                        fontWeight:
-                                                            kMediumWeight),
-                                              ),
-                                            ]),
+                                          text: '$deliveryAddress ',
+                                          style: theme.textTheme.bodyText1!
+                                              .copyWith(
+                                                  fontWeight: kMediumWeight),
+                                        ),
                                       );
                                     }),
                               ],
