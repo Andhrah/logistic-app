@@ -75,16 +75,19 @@ class _AddRider2State extends State<AddRider2>
   init() async {
     UserType userType = await appSettingsBloc.getUserType;
     if (userType == UserType.rider) {
-      var attribute = getVehiclesForRiderListBloc
-          .behaviorSubject.value.model?.first.attributes;
-      setState(() {
-        _vehicleNameController.text = attribute?.name ?? '';
-        _vehicleNumberController.text = attribute?.number ?? '';
-        _colorsTypes = attribute?.color ?? '';
-        _vehicleModelController.text = attribute?.model ?? '';
-        _vehicleCapacityController.text = attribute?.capacity ?? '';
-        deliveryBox = attribute?.deliveryBox ?? false;
-      });
+      if (getVehiclesForRiderListBloc.behaviorSubject.hasValue &&
+          getVehiclesForRiderListBloc.behaviorSubject.value.hasData) {
+        var attribute = getVehiclesForRiderListBloc
+            .behaviorSubject.value.model?.first.attributes;
+        setState(() {
+          _vehicleNameController.text = attribute?.name ?? '';
+          _vehicleNumberController.text = attribute?.number ?? '';
+          _colorsTypes = attribute?.color;
+          _vehicleModelController.text = attribute?.model ?? '';
+          _vehicleCapacityController.text = attribute?.capacity ?? '';
+          deliveryBox = attribute?.deliveryBox ?? false;
+        });
+      }
     }
   }
 

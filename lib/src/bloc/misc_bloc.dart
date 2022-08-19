@@ -15,8 +15,6 @@ class MiscBloc {
 
   var location = Location();
 
-  LocationData? currentLocation;
-
   Future<LocationData?> fetchLocation() async {
     LocationData? locationData;
     final Location location = Location();

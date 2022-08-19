@@ -6,7 +6,7 @@ import 'package:trakk/src/values/enums.dart';
 
 class ProfileService extends BaseNetworkCallHandler {
   Future<Operation> getProfile() async {
-    return runAPI('api/users/me?populate=*', HttpRequestType.get);
+    return runAPI('api/users/me', HttpRequestType.get);
   }
 
   Future<Operation> updateProfile(UpdateProfile updateProfile) async {
@@ -70,6 +70,14 @@ class ProfileService extends BaseNetworkCallHandler {
   Future<Operation> updateRiderNextOfKin(UpdateProfile updateProfile) async {
     return runAPI('api/next-of-kins', HttpRequestType.post,
         body: updateProfile.toRiderNOKJson());
+  }
+
+  Future<Operation> updateRiderLocationManually(
+      UpdateProfile updateProfile) async {
+    String id = await appSettingsBloc.getUserID;
+
+    return runAPI('api/riders/$id', HttpRequestType.put,
+        body: updateProfile.toRiderLocationJson());
   }
 
   Future<Operation> getRiderRatings() async {

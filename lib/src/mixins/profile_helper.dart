@@ -196,4 +196,25 @@ class ProfileHelper with ConnectivityHelper {
       appToast(error.message ?? '', appToastType: AppToastType.failed);
     }
   }
+
+  doUpdateRiderLocationManuallyOperation(UpdateProfile updateProfile,
+      Function() onShowLoader, Function() onCloseLoader) async {
+    onShowLoader();
+
+    profileService
+        .updateRiderLocationManually(updateProfile)
+        .then((value) => _completeLocationUpdateManually(value, onCloseLoader));
+  }
+
+  _completeLocationUpdateManually(
+      Operation operation, Function() onCloseLoader) async {
+    if (operation.code == 200 || operation.code == 201) {
+      onCloseLoader();
+    } else {
+      onCloseLoader();
+      MessageOnlyResponse error = operation.result;
+
+      appToast(error.message ?? '', appToastType: AppToastType.failed);
+    }
+  }
 }
