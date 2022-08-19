@@ -284,12 +284,12 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                     ),
                                     18.heightInPixel(),
                                     SizedBox(
-                                      height: 90,
+                                      height: 100,
                                       child: Row(
                                         children: [
                                           Image.asset(
                                             Assets.pickup_route,
-                                            height: 90,
+                                            height: 100,
                                           ),
                                           12.widthInPixel(),
                                           Column(
@@ -314,13 +314,14 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                                       order?.pickupLongitude ??
                                                           0.0),
                                                   builder: (context, snapshot) {
-                                                    String address = '...';
-                                                    if (snapshot.hasData) {
+                                                    String address =
+                                                        order?.pickup ?? '';
+                                                    if (snapshot.hasData &&
+                                                        address.isNotEmpty) {
                                                       address =
                                                           snapshot.data ?? '-';
-                                                    } else {
-                                                      address = '...';
                                                     }
+
                                                     return Text(
                                                       address,
                                                       textAlign:
@@ -344,31 +345,41 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                                                         color: dividerColor),
                                               ),
                                               4.heightInPixel(),
-                                              FutureBuilder<String>(
-                                                  future: getAddressFromLatLng(
-                                                      order?.destinationLatitude ??
-                                                          0.0,
-                                                      order?.destinationLongitude ??
-                                                          0.0),
-                                                  builder: (context, snapshot) {
-                                                    String address = '...';
-                                                    if (snapshot.hasData) {
-                                                      address =
-                                                          snapshot.data ?? '-';
-                                                    } else {
-                                                      address = '...';
-                                                    }
-                                                    return Text(
-                                                      address,
-                                                      textAlign:
-                                                          TextAlign.center,
-                                                      style: theme
-                                                          .textTheme.bodyText1!
-                                                          .copyWith(
-                                                              fontWeight:
-                                                                  kMediumWeight),
-                                                    );
-                                                  }),
+                                              ConstrainedBox(
+                                                constraints:
+                                                    const BoxConstraints(
+                                                        maxWidth: 250),
+                                                child: FutureBuilder<String>(
+                                                    future: getAddressFromLatLng(
+                                                        order?.destinationLatitude ??
+                                                            0.0,
+                                                        order?.destinationLongitude ??
+                                                            0.0),
+                                                    builder:
+                                                        (context, snapshot) {
+                                                      String address =
+                                                          order?.destination ??
+                                                              '';
+                                                      if (snapshot.hasData &&
+                                                          address.isNotEmpty) {
+                                                        address =
+                                                            snapshot.data ??
+                                                                '-';
+                                                      }
+
+                                                      return Text(
+                                                        address,
+                                                        softWrap: true,
+                                                        textAlign:
+                                                            TextAlign.start,
+                                                        style: theme.textTheme
+                                                            .bodyText1!
+                                                            .copyWith(
+                                                                fontWeight:
+                                                                    kMediumWeight),
+                                                      );
+                                                    }),
+                                              ),
                                             ],
                                           )
                                         ],

@@ -121,10 +121,12 @@ class _CustomerHomeMapScreenState extends State<CustomerHomeMapScreen> {
       if (value.model != null && mounted) {
         String status = value.model?.info?.status ?? '';
         var fromLatLng = LatLng(
-            (double.tryParse(value.model?.info?.currentLocation ?? '0.0') ??
+            (double.tryParse(value.model?.info?.currentLatitude ?? '0.0') ??
                 0.0),
             (double.tryParse(value.model?.info?.currentLongitude ?? '0.0') ??
                 0.0));
+
+        // print('fromLatLng: ${fromLatLng.latitude} ${fromLatLng.longitude}');
         moveCameraToUser(riderLatLng: fromLatLng);
 
         var arg = ModalRoute.of(context)!.settings.arguments;
