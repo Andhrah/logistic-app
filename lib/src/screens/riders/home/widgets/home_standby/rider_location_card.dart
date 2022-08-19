@@ -6,6 +6,7 @@
 
 import 'package:custom_bloc/custom_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:location/location.dart';
 import 'package:trakk/src/bloc/app_settings_bloc.dart';
 import 'package:trakk/src/bloc/misc_bloc.dart';
@@ -139,6 +140,7 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                       onPress: () {
                         riderHomeStateBloc
                             .updateState(RiderOrderState.isNewRequestClicked);
+                        FlutterRingtonePlayer.stop();
                       },
                       color: appPrimaryColor,
                       textColor: whiteColor,

@@ -16,7 +16,10 @@ class RiderStreamSocket with BaseBloc<List<OrderResponse>, String> {
   List<OrderResponse> orders = [];
 
   void addResponseOnMove(OrderResponse event) {
-    orders.add(event);
+    print('called addResponseOnMove');
+    if (!orders.contains(event)) {
+      orders.add(event);
+    }
     addToModel(orders);
   }
 
@@ -27,7 +30,7 @@ class RiderStreamSocket with BaseBloc<List<OrderResponse>, String> {
       int index = orders.indexOf(itemList.first);
       var first = itemList.first;
       first.order?.status = status.name;
-      orders.insert(index, first);
+      orders[index] = first;
       addToModel(orders);
     }
   }
