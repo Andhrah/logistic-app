@@ -416,7 +416,7 @@ class _ItemDetailsState extends State<ItemDetails> with CustomerOrderHelper {
                       child: Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          "Hold on while Trakk find you a rider",
+                          "Hold on while Trakk finds you a rider",
                           style: TextStyle(color: appPrimaryColor),
                         ),
                       ),
