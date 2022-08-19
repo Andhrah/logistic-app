@@ -72,84 +72,91 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                     ),
                     12.widthInPixel(),
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'PICKUP LOCATION',
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyText1!.copyWith(
-                                fontWeight: kSemiBoldWeight,
-                                color: dividerColor),
-                          ),
-                          4.heightInPixel(),
-                          FutureBuilder<String>(
-                              future: getAddressFromLatLng(
-                                  model.attributes?.pickupLatitude ?? 0.0,
-                                  model.attributes?.pickupLongitude ?? 0.0),
-                              builder: (context, snapshot) {
-                                String address = '';
-                                if (snapshot.hasData) {
-                                  address = snapshot.data ?? '';
-                                }
-                                return Text(
-                                  address,
+                      child: FutureBuilder<String>(
+                          future: getAddressFromLatLng(
+                              model.attributes?.pickupLatitude ?? 0.0,
+                              model.attributes?.pickupLongitude ?? 0.0),
+                          builder: (context, snapshot) {
+                            String pickupAddress =
+                                model.attributes?.pickup ?? '';
+                            if (snapshot.hasData && pickupAddress.isEmpty) {
+                              pickupAddress = snapshot.data ?? '';
+                            }
+                            return Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'PICKUP LOCATION',
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.bodyText1!.copyWith(
+                                      fontWeight: kSemiBoldWeight,
+                                      color: dividerColor),
+                                ),
+                                4.heightInPixel(),
+                                Text(
+                                  pickupAddress,
                                   textAlign: TextAlign.start,
                                   style: theme.textTheme.caption!
                                       .copyWith(fontWeight: kMediumWeight),
-                                );
-                              }),
-                          1.flexSpacer(),
-                          Text(
-                            'DELIVERY LOCATION',
-                            textAlign: TextAlign.center,
-                            style: theme.textTheme.bodyText1!.copyWith(
-                                fontWeight: kSemiBoldWeight,
-                                color: dividerColor),
-                          ),
-                          4.heightInPixel(),
-                          FutureBuilder<String>(
-                              future: getAddressFromLatLng(
-                                  model.attributes?.destinationLatitude ?? 0.0,
-                                  model.attributes?.destinationLongitude ??
-                                      0.0),
-                              builder: (context, snapshot) {
-                                String pickupAddress = '';
-                                String deliveryAddress = '';
-                                if (snapshot.hasData) {
-                                  pickupAddress = snapshot.data ?? '';
-                                  deliveryAddress = snapshot.data ?? '';
-                                }
-                                return RichText(
-                                  textAlign: TextAlign.start,
-                                  text: TextSpan(
-                                      text: 'From ',
-                                      style: theme.textTheme.caption!
-                                          .copyWith(fontWeight: kLightWeight),
-                                      children: [
-                                        TextSpan(
-                                          text: '$pickupAddress ',
-                                          style: theme.textTheme.caption!
-                                              .copyWith(
-                                                  fontWeight: kMediumWeight),
-                                        ),
-                                        TextSpan(
-                                          text: 'to ',
-                                          style: theme.textTheme.caption!
-                                              .copyWith(
-                                                  fontWeight: kLightWeight),
-                                        ),
-                                        TextSpan(
-                                          text: '$deliveryAddress ',
-                                          style: theme.textTheme.caption!
-                                              .copyWith(
-                                                  fontWeight: kMediumWeight),
-                                        ),
-                                      ]),
-                                );
-                              }),
-                        ],
-                      ),
+                                ),
+                                1.flexSpacer(),
+                                Text(
+                                  'DELIVERY LOCATION',
+                                  textAlign: TextAlign.center,
+                                  style: theme.textTheme.bodyText1!.copyWith(
+                                      fontWeight: kSemiBoldWeight,
+                                      color: dividerColor),
+                                ),
+                                4.heightInPixel(),
+                                FutureBuilder<String>(
+                                    future: getAddressFromLatLng(
+                                        model.attributes?.destinationLatitude ??
+                                            0.0,
+                                        model.attributes
+                                                ?.destinationLongitude ??
+                                            0.0),
+                                    builder: (context, snapshot) {
+                                      String deliveryAddress =
+                                          model.attributes?.destination ?? '';
+                                      if (snapshot.hasData &&
+                                          deliveryAddress.isEmpty) {
+                                        deliveryAddress = snapshot.data ?? '';
+                                      }
+                                      return RichText(
+                                        textAlign: TextAlign.start,
+                                        text: TextSpan(
+                                            text: 'From ',
+                                            style: theme.textTheme.caption!
+                                                .copyWith(
+                                                    fontWeight: kLightWeight),
+                                            children: [
+                                              TextSpan(
+                                                text: '$pickupAddress ',
+                                                style: theme.textTheme.caption!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            kMediumWeight),
+                                              ),
+                                              TextSpan(
+                                                text: 'to ',
+                                                style: theme.textTheme.caption!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            kLightWeight),
+                                              ),
+                                              TextSpan(
+                                                text: '$deliveryAddress ',
+                                                style: theme.textTheme.caption!
+                                                    .copyWith(
+                                                        fontWeight:
+                                                            kMediumWeight),
+                                              ),
+                                            ]),
+                                      );
+                                    }),
+                              ],
+                            );
+                          }),
                     )
                   ],
                 ),
@@ -185,24 +192,26 @@ class CustomerTrackBottomSheetContentOnGoing extends StatelessWidget {
                   }
                 },
                 child: Container(
-                  margin: EdgeInsets.all(5),
-                  height: 44,
-                  width: 44,
-                  decoration: const BoxDecoration(
-                      color: whiteColor,
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4),
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.white10,
-                          blurRadius: 8,
-                          spreadRadius: 2,
-                          offset: Offset(2, 2),
-                        )
-                      ]),
-                  child: Icon(Remix.share_line, color: appPrimaryColor,)
-                ),
+                    margin: EdgeInsets.all(5),
+                    height: 44,
+                    width: 44,
+                    decoration: const BoxDecoration(
+                        color: whiteColor,
+                        borderRadius: BorderRadius.all(
+                          Radius.circular(4),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.white10,
+                            blurRadius: 8,
+                            spreadRadius: 2,
+                            offset: Offset(2, 2),
+                          )
+                        ]),
+                    child: Icon(
+                      Remix.share_line,
+                      color: appPrimaryColor,
+                    )),
               )
             ],
           ),

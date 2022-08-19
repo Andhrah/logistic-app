@@ -417,8 +417,9 @@ class _RiderLocationCardState extends State<RiderLocationCard> {
                   builder: (context, snapshot) {
                     bool? completedVehicles;
 
-                    if (snapshot.hasData && snapshot.data!.hasData) {
-                      completedVehicles = snapshot.data?.model?.isNotEmpty;
+                    if (snapshot.hasData) {
+                      completedVehicles = snapshot.data!.hasData &&
+                          (snapshot.data?.model?.length ?? 0) > 0;
                     }
                     return GestureDetector(
                       onTap: () {
