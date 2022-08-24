@@ -63,7 +63,7 @@ class _RiderBottomSheetState extends State<RiderBottomSheet>
                 });
           }
 
-          return _standby();
+          return Container();
         });
   }
 

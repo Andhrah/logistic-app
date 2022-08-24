@@ -106,20 +106,20 @@ class _RiderTopPartState extends State<RiderTopPart> {
                       ],
                     );
                   }),
-              InkWell(
-                onTap: () {
-                  Navigator.pushNamed(context, RiderNotification.id);
-                },
-                child: Container(
-                  decoration: const BoxDecoration(
-                      color: secondaryColor, borderRadius: Radii.k4pxRadius),
-                  padding: const EdgeInsets.all(8),
-                  child: Image.asset(
-                    Assets.notification_icon_only,
-                    width: 22,
-                  ),
-                ),
-              )
+              // InkWell(
+              //   onTap: () {
+              //     Navigator.pushNamed(context, RiderNotification.id);
+              //   },
+              //   child: Container(
+              //     decoration: const BoxDecoration(
+              //         color: secondaryColor, borderRadius: Radii.k4pxRadius),
+              //     padding: const EdgeInsets.all(8),
+              //     child: Image.asset(
+              //       Assets.notification_icon_only,
+              //       width: 22,
+              //     ),
+              //   ),
+              // )
             ],
           ),
         ),
