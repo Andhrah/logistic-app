@@ -1,4 +1,4 @@
-# trakk
+# Logistic-app
 
 A new Flutter project.
 
